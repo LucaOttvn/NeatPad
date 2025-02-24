@@ -1,0 +1,79 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@font-face {
+  font-family: "OpenSans";
+  src: url("/fonts/OpenSans.ttf") format("truetype");
+  font-weight: normal;
+  font-style: normal;
+}
+
+:root {
+  --mainBoxShadow: #151515 0px 8px 24px;
+  --mainBorderRadius: 10px;
+  --black: #101010;
+  --lightBlack: #202020;
+  --accentColor: #0a84ff;
+}
+
+.center {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.start {
+  display: flex;
+  justify-content: start;
+  align-items: center;
+}
+
+.end {
+  display: flex;
+  justify-content: end;
+  align-items: center;
+}
+
+body {
+  font-family: "OpenSans", sans-serif;
+  background-color: var(--lightBlack);
+  height: 100dvh;
+}
+
+.mainBtn {
+  width: fit-content;
+  padding: 0.4rem 1rem;
+  border-radius: var(--mainBorderRadius);
+  background-color: var(--accentColor);
+}
+
+.mainBtn,
+.addBtn {
+  cursor: pointer;
+  -webkit-user-drag: none;
+  transition: 0.2s;
+
+  &:hover {
+    scale: 0.95;
+  }
+
+  &:active {
+    filter: brightness(60%);
+    scale: 0.9;
+  }
+}
+
+.addBtn {
+  width: 4rem;
+  height: 4rem;
+  border-radius: 50%;
+  background-color: var(--accentColor);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: fixed;
+  bottom: 2rem;
+  right: 2rem;
+  box-shadow: var(--mainBoxShadow);
+}
