@@ -1,0 +1,12 @@
+.generalModal {
+    position: absolute;
+    scale: 0;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    overflow: hidden;
+    background-color: var(--grey);
+    padding: 1rem;
+    border-radius: var(--mainBorderRadius);
+}
+
