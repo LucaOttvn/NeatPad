@@ -15,12 +15,13 @@
   --black: #101010;
   --white: #f0f0f0;
   --lightBlack: #202020;
+  --lightGrey: #909090;
   --grey: #747474;
   --accentColor: #0a84ff;
 }
 
-* { 
-  color: var(--white)
+* {
+  color: var(--white);
 }
 
 .center {
@@ -54,8 +55,11 @@ body {
   background-color: var(--accentColor);
 }
 
+
+
 .mainBtn,
-.addBtn {
+.addBtn,
+.iconBtn {
   cursor: pointer;
   -webkit-user-drag: none;
   transition: 0.2s;
@@ -82,4 +86,8 @@ body {
   bottom: 2rem;
   right: 2rem;
   box-shadow: var(--mainBoxShadow);
+}
+
+.icon {
+  color: white;
 }
