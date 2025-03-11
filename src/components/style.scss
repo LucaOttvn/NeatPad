@@ -84,7 +84,6 @@
     resize: none;
     color: var(--white);
 
-
     &:focus {
       outline: none;
     }
@@ -104,7 +103,8 @@
     }
   }
 }
+
 [data-placeholder]:empty:before {
-   content: attr(data-placeholder);
-   color: #888;
+  content: attr(data-placeholder);
+  color: #888;
 }
