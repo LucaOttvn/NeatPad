@@ -3,9 +3,7 @@ import { ReactSVG } from "react-svg";
 import "./style.scss";
 import { handleSideMenu } from "@/utils/globalMethods";
 
-interface TopBarProps {}
-
-export default function TopBar(props: TopBarProps) {
+export default function TopBar() {
   return (
     <div className="topBar">
       <ReactSVG src="/icons/hamburgerMenu.svg" className="iconBtn" onClick={()=>{

@@ -6,9 +6,12 @@
     "dev": "next dev --turbopack",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "static": "next build && next export"
   },
   "dependencies": {
+    "@capacitor/android": "^7.0.1",
+    "@capacitor/core": "^7.0.1",
     "gsap": "^3.12.7",
     "next": "15.1.7",
     "react": "^19.0.0",
@@ -16,6 +19,7 @@
     "react-svg": "^16.3.0"
   },
   "devDependencies": {
+    "@capacitor/cli": "^7.0.1",
     "@eslint/eslintrc": "^3",
     "@types/node": "^20",
     "@types/react": "^19",
