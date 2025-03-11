@@ -3,8 +3,8 @@
 @tailwind utilities;
 
 @font-face {
-  font-family: "OpenSans";
-  src: url("/fonts/OpenSans.ttf") format("truetype");
+  font-family: "Inter";
+  src: url("/fonts/Inter.ttf") format("truetype");
   font-weight: normal;
   font-style: normal;
 }
@@ -12,12 +12,20 @@
 :root {
   --mainBoxShadow: #151515 0px 8px 24px;
   --mainBorderRadius: 10px;
+  --lightBlack: #202020;
   --black: #101010;
   --white: #f0f0f0;
-  --lightBlack: #202020;
   --lightGrey: #909090;
   --grey: #747474;
+  --darkGrey: #303030;
   --accentColor: #0a84ff;
+
+  /* Lighter and Darker Accent Colors */
+  --accentColorLight: #66b2ff; /* 40% lighter */
+  --accentColorDark: #0060cc; /* 30% darker */
+
+  /* Secondary Color */
+  --secondaryColor: #5a6770; /* Soft desaturated purple */
 }
 
 * {
@@ -43,9 +51,11 @@
 }
 
 body {
-  font-family: "OpenSans", sans-serif;
-  background-color: var(--lightBlack);
+  font-family: "Inter", sans-serif;
+  background-color: var(--black);
   height: 100dvh;
+  display: flex;
+  flex-direction: column;
 }
 
 .mainBtn {
@@ -54,8 +64,6 @@ body {
   border-radius: var(--mainBorderRadius);
   background-color: var(--accentColor);
 }
-
-
 
 .mainBtn,
 .addBtn,
@@ -88,6 +96,44 @@ body {
   box-shadow: var(--mainBoxShadow);
 }
 
+.iconBtn {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 0.4rem;
+  border-radius: 50%;
+  &:hover {
+    background-color: var(--darkGrey);
+  }
+  svg {
+    width: 20px;
+    height: 20px;
+  }
+}
+
 .icon {
-  color: white;
+  svg {
+    width: 15px;
+    height: 15px;
+  }
+}
+
+.logo {
+  background-color: var(--white);
+  padding: 0.2rem 0.6rem;
+  border-radius: var(--mainBorderRadius);
+  * {
+    color: black;
+    user-select: none;
+  }
+  .icon {
+    svg {
+      width: 12px;
+      fill: black;
+    }
+  }
+}
+
+h1 {
+  font-weight: bold;
 }

@@ -8,10 +8,20 @@ interface GeneralModalProps {
 
 export default function GeneralModal(props: GeneralModalProps) {
   return (
-    <div className="generalModalBackdrop" onClick={() => {
-      handleModal()
-    }}>
-      <div className="generalModal">{props.children}</div>
+    <div
+      className="generalModalBackdrop"
+      onClick={() => {
+        handleModal();
+      }}
+    >
+      <div
+        className="generalModal"
+        onClick={(e) => {
+          e.stopPropagation();
+        }}
+      >
+        {props.children}
+      </div>
     </div>
   );
 }
