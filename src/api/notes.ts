@@ -1,13 +1,5 @@
 import { supabase } from './supabaseClient';
 
-
-export async function login() {
-    const { data, error } = await supabase.auth.signInWithPassword({
-        email: 'lucatremila@gmail.com',
-        password: 'example-password',
-    })
-}
-
 export async function fetchData() {
     const { data, error } = await supabase
         .from('notes')
