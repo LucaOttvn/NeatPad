@@ -1,5 +1,5 @@
 import React from "react";
-import "./style.scss";
+import "./ui.scss";
 import { handleModal } from "@/utils/globalMethods";
 
 interface GeneralModalProps {

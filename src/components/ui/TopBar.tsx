@@ -1,6 +1,6 @@
 import React from "react";
 import { ReactSVG } from "react-svg";
-import "./style.scss";
+import "./ui.scss";
 import { handleSideMenu } from "@/utils/globalMethods";
 
 export default function TopBar() {

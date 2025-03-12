@@ -1,9 +1,14 @@
+'use client'
+import { login } from "@/api/notes";
 import { handleModal } from "@/utils/globalMethods";
-import React from "react";
+import React, { useEffect } from "react";
 import { ReactSVG } from "react-svg";
 
 export default function NoteEditor() {
-//   const noteRef = useRef<HTMLDivElement | null>(null);
+
+  useEffect(() => {
+    login()
+  }, []);
 
   return (
     <div className="noteEditorContainer">
@@ -21,8 +26,7 @@ export default function NoteEditor() {
         className="noteEditorInputField"
         placeholder="Insert your note..."
         data-placeholder="Insert your note..."
-      >
-      </textarea>
+      ></textarea>
     </div>
   );
 }

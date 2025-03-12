@@ -1,8 +1,8 @@
 "use client";
-import GeneralModal from "@/components/GeneralModal";
+import GeneralModal from "@/components/ui/GeneralModal";
 import NoteEditor from "@/components/NoteEditor";
-import GeneralSideMenu from "@/components/SideMenu";
-import TopBar from "@/components/TopBar";
+import GeneralSideMenu from "@/components/ui/SideMenu";
+import TopBar from "@/components/ui/TopBar";
 import { handleModal } from "@/utils/globalMethods";
 import Image from "next/image";
 
