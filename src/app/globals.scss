@@ -10,7 +10,7 @@
 }
 
 :root {
-  --mainBoxShadow: #151515 0px 8px 24px;
+  --mainBoxShadow: #151515 0px 8px 20px;
   --mainBorderRadius: 10px;
   --lightBlack: #202020;
   --black: #101010;
@@ -147,7 +147,7 @@ h1 {
 }
 
 input[type="text"], input[type="password"] {
-  background-color: var(--grey);
+  background-color: var(--darkGrey);
   padding: 0.5rem 1rem;
   border-radius: var(--mainBorderRadius);
   &:focus {
