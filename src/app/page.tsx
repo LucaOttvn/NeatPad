@@ -10,6 +10,7 @@ import { useContext, useEffect, useState } from "react";
 import { UserContext } from "@/utils/contexts";
 import { ScaleLoader } from "react-spinners";
 import Login from "@/components/login/Login";
+import AnimatedDiv from "@/components/animated/AnimatedDiv";
 
 export default function Home() {
   const userContext = useContext(UserContext);
@@ -37,7 +38,7 @@ export default function Home() {
   return (
     <>
       {userContext?.user ? (
-        <>
+        <AnimatedDiv className="w-full h-full">
           <TopBar />
           <GeneralModal width={80} height={80}>
             <NoteEditor />
@@ -56,7 +57,7 @@ export default function Home() {
               draggable={false}
             />
           </button>
-        </>
+        </AnimatedDiv>
       ) : (
         <Login></Login>
       )}
