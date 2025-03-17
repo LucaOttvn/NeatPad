@@ -5,44 +5,42 @@ import GeneralSideMenu from "@/components/ui/SideMenu";
 import TopBar from "@/components/ui/TopBar";
 import { handleModal } from "@/utils/globalMethods";
 import Image from "next/image";
+import { getUser } from "@/api/user";
 import { UserContext } from "@/utils/contexts";
-import { useEffect } from "react";
-import { getUser, login } from "@/api/users";
+import { useContext, useEffect } from "react";
 
 export default function Home() {
-  (async () => {
-    // await login();
-    let user = await getUser();
-    if (user) {
-    }
-  })();
+  
+  const userContext = useContext(UserContext);
+  useEffect(() => {
+    (async () => {
+      const user = await getUser();
+      if (userContext) userContext.setUser(user)
+    })();
+  }, []);
 
   return (
     <>
-      {
-        <UserContext value={undefined}>
-          <TopBar></TopBar>
-          <GeneralModal>
-            <NoteEditor />
-          </GeneralModal>
-          <GeneralSideMenu />
-          <button
-            className="addBtn"
-            style={{ borderRadius: "50%" }}
-            onClick={() => {
-              handleModal();
-            }}
-          >
-            <Image
-              src={"/icons/plus.svg"}
-              width={25}
-              height={25}
-              alt={""}
-              draggable={false}
-            ></Image>
-          </button>
-        </UserContext>
-      }
+      <TopBar></TopBar>
+      <GeneralModal>
+        <NoteEditor />
+      </GeneralModal>
+      <GeneralSideMenu />
+      <button
+        className="addBtn"
+        style={{ borderRadius: "50%" }}
+        onClick={() => {
+          handleModal();
+        }}
+      >
+        <Image
+          src={"/icons/plus.svg"}
+          width={25}
+          height={25}
+          alt={""}
+          draggable={false}
+        ></Image>
+      </button>
     </>
   );
 }
