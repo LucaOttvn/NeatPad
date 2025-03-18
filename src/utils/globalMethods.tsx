@@ -9,9 +9,7 @@ export function handleModal() {
     duration: 0.2,
     ease: Power4.easeOut,
   })
-  console.log(isModalOpen)
   isModalOpen = !isModalOpen;
-  console.log(isModalOpen)
 }
 
 export function handleSideMenu() {

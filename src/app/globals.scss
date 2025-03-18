@@ -106,13 +106,14 @@ input[type="password"], textarea {
   justify-content: center;
   align-items: center;
   border-radius: 50%;
-  padding: 0.4rem;
+
   &:hover {
     background-color: var(--darkGrey);
   }
   svg {
-    width: 25px;
-    height: 25px;
+    margin: 0.4rem;
+    width: 25px !important;
+    height: 25px !important;
   }
 }
 
