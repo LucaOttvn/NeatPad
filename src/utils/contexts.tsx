@@ -1,6 +1,6 @@
 "use client";
 import { User } from "@supabase/supabase-js";
-import { createContext, ReactNode, useEffect, useState } from "react";
+import { createContext, ReactNode, useState } from "react";
 
 interface UserContextType {
   user: User | null;
