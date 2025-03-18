@@ -1,6 +1,6 @@
 import { ReactNode, useEffect } from "react";
 import { gsap, Power4 } from "gsap";
-import "../style.scss";
+import "./animatedStyle.scss";
 
 interface AnimatedDivProps {
   children: ReactNode;

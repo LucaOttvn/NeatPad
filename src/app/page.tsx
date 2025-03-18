@@ -1,6 +1,6 @@
 "use client";
 import GeneralModal from "@/components/ui/GeneralModal";
-import NoteEditor from "@/components/NoteEditor";
+import NoteEditor from "@/components/noteEditor/NoteEditor";
 import GeneralSideMenu from "@/components/ui/SideMenu";
 import TopBar from "@/components/ui/TopBar";
 import { handleModal } from "@/utils/globalMethods";
@@ -10,7 +10,7 @@ import { useContext, useEffect, useState } from "react";
 import { UserContext } from "@/utils/contexts";
 import { ScaleLoader } from "react-spinners";
 import Login from "@/components/login/Login";
-import AnimatedDiv from "@/components/animated/AnimatedDiv";
+import AnimatedDiv from "@/components/animatedComponents/AnimatedDiv";
 
 export default function Home() {
   const userContext = useContext(UserContext);

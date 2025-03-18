@@ -1,7 +1,7 @@
 import React, { useContext, useState } from "react";
-import "./style.scss";
+import "./login.scss";
 import { signIn, signUp } from "@/api/user";
-import AnimatedDiv from "../animated/AnimatedDiv";
+import AnimatedDiv from "../animatedComponents/AnimatedDiv";
 import GeneralModal from "../ui/GeneralModal";
 import { handleModal } from "@/utils/globalMethods";
 import { UserContext } from "@/utils/contexts";

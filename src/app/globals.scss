@@ -60,7 +60,7 @@ body {
 
 .mainBtn,
 .addBtn,
-.iconBtn, input[type='text'], input[type='password'] {
+.iconBtn {
   cursor: pointer;
   -webkit-user-drag: none;
   transition: 0.2s;
@@ -72,6 +72,18 @@ body {
   &:active {
     filter: brightness(60%);
     scale: 0.9;
+  }
+}
+
+input[type="text"],
+input[type="password"], textarea {
+  cursor: pointer;
+  -webkit-user-drag: none;
+  transition: 0.2s;
+  border: solid 1px transparent;
+
+  &:hover {
+    border: solid 1px var(--grey);
   }
 }
 
@@ -146,7 +158,8 @@ h1 {
   align-items: center;
 }
 
-input[type="text"], input[type="password"] {
+input[type="text"],
+input[type="password"] {
   background-color: var(--darkGrey);
   padding: 0.5rem 1rem;
   border-radius: var(--mainBorderRadius);

@@ -1,0 +1,51 @@
+.noteEditorContainer {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  height: 100%;
+  padding: 1rem;
+  header {
+    width: 100%;
+    background-color: var(--lightBlack);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 0.5rem;
+    input {
+      width: 100%;
+      font-weight: bolder;
+      font-size: 130%;
+      &:focus {
+        outline: none;
+      }
+    }
+  }
+  .noteEditorInputField {
+    height: 100%;
+    display: flex;
+    align-items: flex-start;
+    padding: 1rem;
+    background-color: var(--darkGrey);
+    border-radius: var(--mainBorderRadius);
+    resize: none;
+    color: var(--white);
+
+    &:focus {
+      outline: none;
+    }
+    &::-webkit-scrollbar {
+      width: 13px;
+    }
+    &::-webkit-scrollbar-track {
+      background: var(--darkGrey);
+    }
+    &::-webkit-scrollbar-thumb {
+      background: var(--grey);
+      border-radius: 10px;
+    }
+    &::-webkit-scrollbar-thumb:hover {
+      cursor: pointer;
+      background: var(--lightGrey);
+    }
+  }
+}

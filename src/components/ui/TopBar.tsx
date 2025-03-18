@@ -17,7 +17,7 @@ export default function TopBar() {
         <ReactSVG src="/icons/edit.svg" className="icon"/>
       </div>
       <div className="w-full"></div>
-      <ReactSVG src="/icons/logout.svg" className="iconBtn mr-5" onClick={()=>{
+      <ReactSVG src="/icons/logout.svg" className="iconBtn mr-1" onClick={()=>{
         localStorage.clear()
         userContext?.setUser(null)
       }}/>
