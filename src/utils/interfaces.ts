@@ -4,3 +4,9 @@ export interface Note {
     text: string
     state: number
 }
+
+export enum ModalsNames {
+    newNote = "newNoteModal",
+    updateNote = "updateNoteModal",
+    login = "login"
+}
