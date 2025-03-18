@@ -1,9 +1,8 @@
 "use client";
 import { handleModal } from "@/utils/globalMethods";
 import "./noteEditor.scss";
-import { useContext, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import SvgButton from "../ui/SvgButton";
-import { SelectedNoteContext } from "@/utils/contexts";
 import { Note } from "@/utils/interfaces";
 
 interface NoteEditorProps {
@@ -18,8 +17,9 @@ export default function NoteEditor(props: NoteEditorProps) {
     function handleKeyDown(e: KeyboardEvent) {
       if (e.key === "Escape") {
         // this removes the automatic browser's focus on the button when esc is pressed
-        document.activeElement instanceof HTMLElement &&
+        if (document.activeElement instanceof HTMLElement) {
           document.activeElement.blur();
+        }
         handleModal(false);
       }
     }
