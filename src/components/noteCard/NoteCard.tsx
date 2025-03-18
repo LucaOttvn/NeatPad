@@ -17,7 +17,7 @@ export default function NoteCard(props: NoteCardProps) {
         handleModal(true, ModalsNames.updateNote);
       }}
     >
-      {props.note.title ? <h1 className="title">{props.note.title}</h1> : <h1 className="title" style={{color: 'var(--grey)'}}>No title</h1>}
+      {props.note.title ? <h1>{props.note.title}</h1> : <h1 style={{color: 'var(--grey)'}}>No title</h1>}
       <span>{props.note.text}</span>
     </div>
   );

@@ -1,4 +1,4 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import "./login.scss";
 import { signIn, signUp } from "@/api/user";
 import AnimatedDiv from "../animatedComponents/AnimatedDiv";
@@ -6,6 +6,7 @@ import GeneralModal from "../ui/GeneralModal";
 import { handleModal } from "@/utils/globalMethods";
 import { UserContext } from "@/utils/contexts";
 import { ModalsNames } from "@/utils/interfaces";
+import { getNotes } from "@/api/notes";
 
 export default function Login() {
   const [formData, setFormData] = useState({ email: "", password: "" });
@@ -27,7 +28,7 @@ export default function Login() {
   }
 
   async function handleSubmit() {
-    handleModal(false)
+    handleModal(false);
     const user = creatingAccount
       ? await signUp(formData.email, formData.password)
       : await signIn(formData.email, formData.password);
@@ -36,6 +37,9 @@ export default function Login() {
     }
   }
 
+  useEffect(() => {
+    getNotes();
+  }, []);
   return (
     <AnimatedDiv className="loginContainer">
       <h1 className="title">NeatPad</h1>

@@ -8,10 +8,12 @@ import { Note } from "@/utils/interfaces";
 interface NoteEditorProps {
   note: Note | undefined;
   setNotes: React.Dispatch<React.SetStateAction<Note[]>>;
+  setSelectedNote?: React.Dispatch<React.SetStateAction<number | undefined>>;
 }
 
 export default function NoteEditor(props: NoteEditorProps) {
   const [title, setTitle] = useState<string>("");
+  const [text, setText] = useState<string>("");
 
   useEffect(() => {
     function handleKeyDown(e: KeyboardEvent) {
@@ -29,7 +31,10 @@ export default function NoteEditor(props: NoteEditorProps) {
   }, []);
 
   useEffect(() => {
-    if (props.note) setTitle(props.note.title);
+    if (props.note) {
+      setTitle(props.note.title);
+      setText(props.note.text);
+    }
   }, [props.note]);
 
   return (
@@ -44,6 +49,7 @@ export default function NoteEditor(props: NoteEditorProps) {
         <SvgButton
           fileName="close"
           callback={() => {
+            if (props.setSelectedNote) props.setSelectedNote(undefined);
             handleModal(false);
           }}
         />
@@ -52,7 +58,8 @@ export default function NoteEditor(props: NoteEditorProps) {
         className="noteEditorInputField"
         placeholder="Insert your note..."
         data-placeholder="Insert your note..."
-        // value={noteContext?.note?.text}
+        value={text}
+        onChange={(e) => setText(e.target.value)}
       ></textarea>
     </div>
   );
