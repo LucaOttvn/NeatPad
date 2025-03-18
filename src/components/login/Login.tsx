@@ -26,6 +26,7 @@ export default function Login() {
   }
 
   async function handleSubmit() {
+    handleModal()
     const user = creatingAccount
       ? await signUp(formData.email, formData.password)
       : await signIn(formData.email, formData.password);
