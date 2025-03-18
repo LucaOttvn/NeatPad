@@ -2,18 +2,19 @@ import { useContext } from "react";
 import { ReactSVG } from "react-svg";
 import "./ui.scss";
 import { handleSideMenu } from "@/utils/globalMethods";
-import { UserContext } from "@/utils/contexts";
+import { ScreenSizeContext, UserContext } from "@/utils/contexts";
 import SvgButton from "./SvgButton";
 
 export default function TopBar() {
   const userContext = useContext(UserContext);
+  const screenSizeContext = useContext(ScreenSizeContext);
 
   return (
     <div className="topBar">
       <SvgButton
         fileName="hamburgerMenu"
         callback={() => {
-          handleSideMenu();
+          handleSideMenu(screenSizeContext);
         }}
       />
       <div className="logo start gap-2">
