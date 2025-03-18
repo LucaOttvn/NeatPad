@@ -40,6 +40,7 @@ export default function Home() {
       {userContext?.user ? (
         <AnimatedDiv className="w-full h-full">
           <TopBar />
+
           <GeneralModal width={80} height={80}>
             <NoteEditor />
           </GeneralModal>
@@ -47,7 +48,7 @@ export default function Home() {
           <button
             className="addBtn"
             style={{ borderRadius: "50%" }}
-            onClick={()=>{handleModal()}}
+            onClick={()=>{handleModal(true)}}
           >
             <Image
               src="/icons/plus.svg"

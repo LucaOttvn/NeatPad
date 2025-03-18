@@ -26,7 +26,7 @@ export default function Login() {
   }
 
   async function handleSubmit() {
-    handleModal()
+    handleModal(false)
     const user = creatingAccount
       ? await signUp(formData.email, formData.password)
       : await signIn(formData.email, formData.password);
@@ -44,7 +44,7 @@ export default function Login() {
           onClick={() => {
             setCreatingAccount(false);
             setFormData({ email: "", password: "" });
-            handleModal();
+            handleModal(true);
           }}
         >
           Login
@@ -55,7 +55,7 @@ export default function Login() {
           onClick={() => {
             setCreatingAccount(true);
             setFormData({ email: "", password: "" });
-            handleModal();
+            handleModal(true);
           }}
         >
           Create new account
