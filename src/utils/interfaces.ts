@@ -1,8 +1,6 @@
 export interface Note {
+    id: number
+    title: string
     text: string
+    state: number
 }
-
-// export interface User { 
-//     id: string
-//     email: string
-// }

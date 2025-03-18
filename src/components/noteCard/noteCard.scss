@@ -1,0 +1,13 @@
+.noteCard {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  background-color: var(--darkGrey);
+  border-radius: var(--mainBorderRadius);
+  padding: 1rem;
+  span {
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+  }
+}

@@ -1,0 +1,23 @@
+.notesOverviewContainer {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: flex-start;
+  padding: 2rem;
+  .notesSection {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    .notes {
+      width: 100%;
+      display: grid;
+      grid-template-columns: repeat(
+        auto-fill,
+        minmax(200px, 1fr)
+      ); /* Dynamic columns */
+      gap: 10px; /* Space between items */
+    }
+  }
+}
