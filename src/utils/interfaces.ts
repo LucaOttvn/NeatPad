@@ -1,8 +1,9 @@
 export interface Note {
-    id: number
+    id?: number
     title: string
     text: string
     state: number
+    user: string
 }
 
 export enum ModalsNames {

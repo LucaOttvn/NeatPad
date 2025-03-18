@@ -20,7 +20,6 @@ export default function Home() {
   const [isLoading, setIsLoading] = useState(true);
   const [notes, setNotes] = useState<Note[]>([]);
 
-
   useEffect(() => {
     (async () => {
       const user = await getUser();
@@ -31,7 +30,6 @@ export default function Home() {
         userContext.setUser(user);
       }
     })();
-
   }, []);
 
   if (isLoading) {
@@ -61,6 +59,7 @@ export default function Home() {
             className="addBtn"
             style={{ borderRadius: "50%" }}
             onClick={() => {
+              // createNote(userContext!.user!.id)
               handleModal(true, ModalsNames.newNote);
             }}
           >

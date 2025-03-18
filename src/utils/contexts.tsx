@@ -2,7 +2,6 @@
 
 import { User } from "@supabase/supabase-js";
 import { createContext, ReactNode, useState, useEffect } from "react";
-import { Note } from "./interfaces";
 
 interface UserContextType {
   user: User | null;
@@ -52,12 +51,6 @@ interface SelectedNoteContextType {
   selectedNote: number | null;
   setSelectedNote: (Note: number | null) => void;
 }
-export const basicNote: Note = {
-  id: 12763,
-  state: 0,
-  text: '',
-  title: ''
-};
 
 export const SelectedNoteContext = createContext<SelectedNoteContextType | undefined>(
   undefined

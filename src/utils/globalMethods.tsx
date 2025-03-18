@@ -2,12 +2,19 @@ import { gsap, Power4 } from "gsap";
 
 let isSideMenuOpen = false;
 
-export function handleModal(open: boolean, target?: string) {
-  gsap.to(target ? ("#" + target) : '.generalModalBackdrop', {
+export function handleModal(
+  open: boolean,
+  target?: string,
+  onCloseCallback?: () => void
+) {
+  gsap.to(target ? "#" + target : ".generalModalBackdrop", {
     scale: open ? 1 : 0,
     duration: 0.2,
     ease: Power4.easeOut,
   });
+  if (!open && onCloseCallback) {
+    onCloseCallback()
+  } 
 }
 
 export function handleSideMenu(isMobile: boolean) {

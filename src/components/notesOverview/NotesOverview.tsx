@@ -3,8 +3,9 @@ import "./notesOverview.scss";
 import NoteCard from "../noteCard/NoteCard";
 import NoteEditor from "../noteEditor/NoteEditor";
 import GeneralModal from "../ui/GeneralModal";
-import { useEffect, useState } from "react";
-import { getNotes } from "@/api/notes";
+import { useContext, useEffect, useState } from "react";
+import { createNote, getNotes } from "@/api/notes";
+import { UserContext } from "@/utils/contexts";
 
 interface NotesOverviewProps {
   notes: Note[];
@@ -16,13 +17,17 @@ export default function NotesOverview(props: NotesOverviewProps) {
     undefined
   );
 
+  const userContext = useContext(UserContext)
+
   useEffect(() => {
     getNotes();
   }, []);
 
   return (
     <div className="notesOverviewContainer">
-      <GeneralModal id={ModalsNames.updateNote} width={80} height={80}>
+      <GeneralModal id={ModalsNames.updateNote} width={80} height={80} onCloseCallback={()=>{
+        createNote(userContext!.user!.id)
+      }}>
         <NoteEditor
           setSelectedNote={setSelectedNote}
           setNotes={props.setNotes}
