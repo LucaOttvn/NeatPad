@@ -5,12 +5,12 @@ import { handleModal } from "@/utils/globalMethods";
 import Image from "next/image";
 import { getUser } from "@/api/user";
 import { useContext, useEffect, useState } from "react";
-import { UserContext } from "@/utils/contexts";
 import { ScaleLoader } from "react-spinners";
 import Login from "@/components/login/Login";
 import AnimatedDiv from "@/components/animatedComponents/AnimatedDiv";
 import NotesOverview from "@/components/notesOverview/NotesOverview";
 import { ModalsNames } from "@/utils/interfaces";
+import { UserContext } from "@/contexts/userContext";
 
 export default function Home() {
   const userContext = useContext(UserContext);

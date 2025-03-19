@@ -4,9 +4,9 @@ import { signIn, signUp } from "@/api/user";
 import AnimatedDiv from "../animatedComponents/AnimatedDiv";
 import GeneralModal from "../ui/modals/GeneralModal";
 import { handleModal } from "@/utils/globalMethods";
-import { UserContext } from "@/utils/contexts";
 import { ModalsNames } from "@/utils/interfaces";
 import { getNotes } from "@/api/notes";
+import { UserContext } from "@/contexts/userContext";
 
 export default function Login() {
   const [formData, setFormData] = useState({ email: "", password: "" });
