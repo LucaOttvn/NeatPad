@@ -4,6 +4,7 @@ export interface Note {
     text: string
     state: number
     user: string
+    last_update: Date
 }
 
 export enum ModalsNames {

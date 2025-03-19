@@ -21,7 +21,6 @@ export default function NotesOverview() {
   }, []);
 
   function updateNoteLocally(updatedNote: Note) {
-    console.log(updatedNote)
     setNotes((prevNotes) =>
       prevNotes.map((note) => (note.id === updatedNote.id ? updatedNote : note))
     );
@@ -32,7 +31,6 @@ export default function NotesOverview() {
     if (selectedNoteData) updateNote(selectedNoteData.id!, selectedNoteData.title, selectedNoteData.text)
     setSelectedNote(undefined)
   }
-
 
   return (
     <div className="notesOverviewContainer">

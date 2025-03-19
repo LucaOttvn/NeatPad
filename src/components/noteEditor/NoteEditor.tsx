@@ -22,7 +22,7 @@ export default function NoteEditor(props: NoteEditorProps) {
 
   useEffect(() => {
     if (props.note) {
-      let updatedNote = props.note
+      const updatedNote = props.note
       updatedNote.title = title
       updatedNote.text = text
       props.updateNoteLocally(updatedNote);

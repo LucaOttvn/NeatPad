@@ -1,11 +1,12 @@
 .notesOverviewContainer {
   width: 100%;
-  height: 100%;
+  height: calc(100% - 4rem);
   display: flex;
   flex-direction: column;
   align-items: flex-start;
   justify-content: flex-start;
   padding: 2rem;
+  overflow-y: scroll;
   .notesSection {
     width: 100%;
     display: flex;
@@ -13,11 +14,9 @@
     gap: 1rem;
     .notes {
       width: 100%;
+      height: 100%;
       display: grid;
-      grid-template-columns: repeat(
-        auto-fill,
-        minmax(200px, 1fr)
-      );
+      grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
       gap: 0.8rem;
     }
   }

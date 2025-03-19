@@ -31,23 +31,5 @@
     border-radius: var(--mainBorderRadius);
     resize: none;
     color: var(--white);
-
-    &:focus {
-      outline: none;
-    }
-    &::-webkit-scrollbar {
-      width: 13px;
-    }
-    &::-webkit-scrollbar-track {
-      background: var(--darkGrey);
-    }
-    &::-webkit-scrollbar-thumb {
-      background: var(--grey);
-      border-radius: 10px;
-    }
-    &::-webkit-scrollbar-thumb:hover {
-      cursor: pointer;
-      background: var(--lightGrey);
-    }
   }
 }
