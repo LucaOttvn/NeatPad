@@ -2,7 +2,7 @@ import React, { useContext, useEffect, useState } from "react";
 import "./login.scss";
 import { signIn, signUp } from "@/api/user";
 import AnimatedDiv from "../animatedComponents/AnimatedDiv";
-import GeneralModal from "../ui/GeneralModal";
+import GeneralModal from "../ui/modals/GeneralModal";
 import { handleModal } from "@/utils/globalMethods";
 import { UserContext } from "@/utils/contexts";
 import { ModalsNames } from "@/utils/interfaces";

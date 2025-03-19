@@ -2,7 +2,7 @@ import { ReactSVG } from "react-svg";
 
 interface SvgButtonProps {
   fileName: string;
-  callback: () => void;
+  onClick: () => void;
 }
 
 export default function SvgButton(props: SvgButtonProps) {
@@ -10,7 +10,7 @@ export default function SvgButton(props: SvgButtonProps) {
     <button
       className="iconBtn"
       onClick={() => {
-        props.callback();
+        props.onClick();
       }}
     >
       <ReactSVG src={`/icons/${props.fileName}.svg`} className="icon" />

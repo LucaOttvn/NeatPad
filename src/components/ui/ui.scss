@@ -18,6 +18,16 @@
     background-color: var(--lightBlack);
     border-radius: var(--mainBorderRadius);
     overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    .modalHeader {
+      width: 100%;
+      padding: 1rem 1rem 0 1rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      gap: 4rem;
+    }
   }
 }
 

@@ -13,7 +13,7 @@ export default function TopBar() {
     <div className="topBar">
       <SvgButton
         fileName="hamburgerMenu"
-        callback={() => {
+        onClick={() => {
           handleSideMenu(screenSizeContext);
         }}
       />
@@ -25,7 +25,7 @@ export default function TopBar() {
       <div className="w-full"></div>
       <SvgButton
         fileName="logout"
-        callback={() => {
+        onClick={() => {
           localStorage.clear();
           userContext?.setUser(null);
         }}

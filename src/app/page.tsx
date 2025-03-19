@@ -1,6 +1,4 @@
-"use client";
-import GeneralModal from "@/components/ui/GeneralModal";
-import NoteEditor from "@/components/noteEditor/NoteEditor";
+"use client";;
 import GeneralSideMenu from "@/components/ui/SideMenu";
 import TopBar from "@/components/ui/TopBar";
 import { handleModal } from "@/utils/globalMethods";
@@ -12,19 +10,15 @@ import { ScaleLoader } from "react-spinners";
 import Login from "@/components/login/Login";
 import AnimatedDiv from "@/components/animatedComponents/AnimatedDiv";
 import NotesOverview from "@/components/notesOverview/NotesOverview";
-import { ModalsNames, Note } from "@/utils/interfaces";
-import { getNotes } from "@/api/notes";
+import { ModalsNames } from "@/utils/interfaces";
 
 export default function Home() {
   const userContext = useContext(UserContext);
   const [isLoading, setIsLoading] = useState(true);
-  const [notes, setNotes] = useState<Note[]>([]);
 
   useEffect(() => {
     (async () => {
       const user = await getUser();
-      const notes = await getNotes()
-      if (notes) setNotes(notes)
       setIsLoading(false);
       if (userContext) {
         userContext.setUser(user);
@@ -47,14 +41,9 @@ export default function Home() {
           <TopBar />
           <div className="w-full h-full flex justify-start items-start">
             <GeneralSideMenu />
-            <NotesOverview notes={notes} setNotes={setNotes} />
+            <NotesOverview />
           </div>
-          <GeneralModal id={ModalsNames.newNote} width={80} height={80}>
-            <NoteEditor
-              setNotes={setNotes}
-              note={undefined}
-            />
-          </GeneralModal>
+          
           <button
             className="addBtn"
             style={{ borderRadius: "50%" }}
