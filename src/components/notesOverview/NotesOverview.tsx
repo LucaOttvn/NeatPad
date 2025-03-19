@@ -21,15 +21,25 @@ export default function NotesOverview() {
   }, []);
 
   function updateNoteLocally(updatedNote: Note) {
+    console.log(updatedNote);
     setNotes((prevNotes) =>
       prevNotes.map((note) => (note.id === updatedNote.id ? updatedNote : note))
     );
   }
-  
+
   function updateNoteOnModalClose() {
     const selectedNoteData = notes.find((n) => n.id === selectedNote);
-    if (selectedNoteData) updateNote(selectedNoteData.id!, selectedNoteData.title, selectedNoteData.text)
-    setSelectedNote(undefined)
+    if (selectedNoteData) {
+      selectedNoteData.last_update = new Date();
+      updateNote(
+        selectedNoteData.id!,
+        selectedNoteData.title,
+        selectedNoteData.text,
+        selectedNoteData.last_update,
+        selectedNoteData.pinned
+      );
+    }
+    setSelectedNote(undefined);
   }
 
   return (
@@ -43,6 +53,8 @@ export default function NotesOverview() {
         }}
       >
         <NoteEditorModalHeader
+          updateNoteLocally={updateNoteLocally}
+          note={notes.find((n) => n.id === selectedNote)}
           modalId={ModalsNames.updateNote}
           onCloseCallback={() => {
             updateNoteOnModalClose();
@@ -63,32 +75,50 @@ export default function NotesOverview() {
         }}
       >
         <NoteEditorModalHeader
+          updateNoteLocally={updateNoteLocally}
+          note={notes.find((n) => n.id === selectedNote)}
           modalId={ModalsNames.newNote}
           onCloseCallback={() => {
             updateNoteOnModalClose();
           }}
         />
-        <NoteEditor
-          updateNoteLocally={updateNoteLocally}
-          note={undefined}
-        />
+        <NoteEditor updateNoteLocally={updateNoteLocally} note={undefined} />
       </GeneralModal>
 
       {/* pinnedSection */}
-      <section className="notesSection"></section>
+      {notes.some((el) => el.pinned) && (
+        <section className="notesSection">
+          <h1 className="title ms-2">Pinned</h1>
+          <div className="notes">
+            {notes
+              .filter((el) => el.pinned)
+              .map((note: Note) => {
+                return (
+                  <NoteCard
+                    key={note.id}
+                    note={note}
+                    setSelectedNote={setSelectedNote}
+                  />
+                );
+              })}
+          </div>
+        </section>
+      )}
       {/* notesSection */}
       <section className="notesSection">
         <h1 className="title ms-2">Your notes</h1>
         <div className="notes">
-          {notes.map((note: Note) => {
-            return (
-              <NoteCard
-                key={note.id}
-                note={note}
-                setSelectedNote={setSelectedNote}
-              />
-            );
-          })}
+          {notes
+            .filter((el) => el.pinned == false)
+            .map((note: Note) => {
+              return (
+                <NoteCard
+                  key={note.id}
+                  note={note}
+                  setSelectedNote={setSelectedNote}
+                />
+              );
+            })}
         </div>
       </section>
     </div>

@@ -1,17 +1,16 @@
-"use client";
+"use client";;
 import TopBar from "@/components/ui/TopBar";
 import { handleModal } from "@/utils/globalMethods";
 import Image from "next/image";
 import { getUser } from "@/api/user";
 import { useContext, useEffect, useState } from "react";
 import { ScaleLoader } from "react-spinners";
-import Login from "@/components/login/Login";
 import AnimatedDiv from "@/components/animatedComponents/AnimatedDiv";
 import NotesOverview from "@/components/notesOverview/NotesOverview";
 import { ModalsNames } from "@/utils/interfaces";
 import { UserContext } from "@/contexts/userContext";
-import { createNote } from "@/api/notes";
 import GeneralSideMenu from "@/components/ui/SideMenu";
+import Login from "@/components/Login";
 
 export default function Home() {
   const userContext = useContext(UserContext);
@@ -49,7 +48,7 @@ export default function Home() {
             className="addBtn"
             style={{ borderRadius: "50%" }}
             onClick={() => {
-              createNote(userContext!.user!.id);
+              // createNote(userContext!.user!.id);
               handleModal(true, ModalsNames.newNote);
             }}
           >

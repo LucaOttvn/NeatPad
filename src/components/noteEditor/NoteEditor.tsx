@@ -5,7 +5,7 @@ import { Note } from "@/utils/interfaces";
 
 interface NoteEditorProps {
   note: Note | undefined;
-  updateNoteLocally: (updatedNote: Note) => void; // New function to update note
+  updateNoteLocally: (updatedNote: Note) => void;
 }
 
 export default function NoteEditor(props: NoteEditorProps) {
