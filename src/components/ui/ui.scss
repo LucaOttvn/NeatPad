@@ -17,6 +17,7 @@
     height: 80%;
     background-color: var(--lightBlack);
     border-radius: var(--mainBorderRadius);
+    border: solid 1px var(--white);
     overflow: hidden;
     display: flex;
     flex-direction: column;
@@ -40,8 +41,8 @@
   display: flex;
   justify-content: start;
   align-items: center;
-  background-color: var(--lightBlack);
-  box-shadow: var(--mainBoxShadow);
+  background-color: var(--black);
+  border-bottom: solid 1px var(--white);
   padding: 0 0.5rem;
   gap: 1rem;
   z-index: 2;
@@ -65,9 +66,12 @@
     }
   }
   .generalSideMenu {
+    user-select: none;
     margin-top: 4rem;
     position: fixed;
     top: 0;
     left: 0;
+    background-color: #20202092;
+    backdrop-filter: blur(10px);
   }
 }

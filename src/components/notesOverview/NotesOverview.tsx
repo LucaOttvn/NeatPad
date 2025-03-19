@@ -6,6 +6,7 @@ import GeneralModal from "../ui/modals/GeneralModal";
 import { useEffect, useState } from "react";
 import { getNotes, updateNote } from "@/api/notes";
 import NoteEditorModalHeader from "../ui/modals/modalsHeaders/NoteEditorModalHeader";
+import { ReactSVG } from "react-svg";
 
 export default function NotesOverview() {
   const [selectedNote, setSelectedNote] = useState<number | undefined>(
@@ -88,7 +89,7 @@ export default function NotesOverview() {
       {/* pinnedSection */}
       {notes.some((el) => el.pinned) && (
         <section className="notesSection">
-          <h1 className="title ms-2">Pinned</h1>
+          <h1 className="title ms-2">Pinned</h1>{" "}
           <div className="notes">
             {notes
               .filter((el) => el.pinned)

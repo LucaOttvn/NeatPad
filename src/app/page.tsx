@@ -39,7 +39,7 @@ export default function Home() {
       {userContext?.user ? (
         <AnimatedDiv className="w-full h-full flex start">
           <TopBar />
-          <div className="w-full h-full flex" style={{ marginTop: "6rem" }}>
+          <div className="w-full h-full flex" style={{ marginTop: "8rem" }}>
             <GeneralSideMenu />
             <NotesOverview />
           </div>

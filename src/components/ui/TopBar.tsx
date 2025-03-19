@@ -18,10 +18,8 @@ export default function TopBar() {
           handleSideMenu(screenSizeContext);
         }}
       />
-      <div className="logo start gap-2">
-        <h1>NeatPad</h1>
-        <ReactSVG src="/icons/edit.svg" className="icon" />
-      </div>
+
+      <h1 style={{letterSpacing: '1px'}}>NeatPad</h1>
       {/* spacer */}
       <div className="w-full"></div>
       <SvgButton
