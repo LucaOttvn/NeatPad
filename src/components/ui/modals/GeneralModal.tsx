@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import ".././ui.scss";
 import { handleModal } from "@/utils/globalMethods";
 
@@ -13,6 +13,23 @@ interface GeneralModalProps {
 export default function GeneralModal(props: GeneralModalProps) {
   const width = props.width + "%";
   const height = props.height + "%";
+
+  function handleKeyDown(e: KeyboardEvent) {
+    if (e.key === "Escape") {
+      // this removes the automatic browser's focus on the button when esc is pressed
+      if (document.activeElement instanceof HTMLElement) {
+        document.activeElement.blur();
+      }
+      if (props.onCloseCallback) props.onCloseCallback();
+      handleModal(false);
+    }
+  }
+  
+  useEffect(() => {
+    document.addEventListener("keydown", handleKeyDown);
+    return () => document.removeEventListener("keydown", handleKeyDown);
+  }, []);
+  
   return (
     <div
       id={props.id}

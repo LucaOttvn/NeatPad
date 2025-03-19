@@ -3,26 +3,36 @@ import "./notesOverview.scss";
 import NoteCard from "../noteCard/NoteCard";
 import NoteEditor from "../noteEditor/NoteEditor";
 import GeneralModal from "../ui/modals/GeneralModal";
-import { useContext, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { getNotes, updateNote } from "@/api/notes";
 import NoteEditorModalHeader from "../ui/modals/modalsHeaders/NoteEditorModalHeader";
-import { UserContext } from "@/contexts/userContext";
 
 export default function NotesOverview() {
   const [selectedNote, setSelectedNote] = useState<number | undefined>(
     undefined
   );
-
   const [notes, setNotes] = useState<Note[]>([]);
-
-  const userContext = useContext(UserContext);
 
   useEffect(() => {
     (async () => {
-      const notes = await getNotes();
-      if (notes) setNotes(notes);
+      const fetchedNotes = await getNotes();
+      if (fetchedNotes) setNotes(fetchedNotes);
     })();
   }, []);
+
+  function updateNoteLocally(updatedNote: Note) {
+    console.log(updatedNote)
+    setNotes((prevNotes) =>
+      prevNotes.map((note) => (note.id === updatedNote.id ? updatedNote : note))
+    );
+  }
+  
+  function updateNoteOnModalClose() {
+    const selectedNoteData = notes.find((n) => n.id === selectedNote);
+    if (selectedNoteData) updateNote(selectedNoteData.id!, selectedNoteData.title, selectedNoteData.text)
+    setSelectedNote(undefined)
+  }
+
 
   return (
     <div className="notesOverviewContainer">
@@ -31,19 +41,18 @@ export default function NotesOverview() {
         width={80}
         height={80}
         onCloseCallback={() => {
-          updateNote(userContext!.user!.id);
+          updateNoteOnModalClose();
         }}
       >
         <NoteEditorModalHeader
           modalId={ModalsNames.updateNote}
           onCloseCallback={() => {
-            updateNote(userContext!.user!.id);
+            updateNoteOnModalClose();
           }}
         />
         <NoteEditor
-          setSelectedNote={setSelectedNote}
-          setNotes={setNotes}
-          note={notes.find((n) => n.id == selectedNote)}
+          updateNoteLocally={updateNoteLocally}
+          note={notes.find((n) => n.id === selectedNote)}
         />
       </GeneralModal>
 
@@ -52,17 +61,21 @@ export default function NotesOverview() {
         width={80}
         height={80}
         onCloseCallback={() => {
-          updateNote(userContext!.user!.id);
+          updateNoteOnModalClose();
         }}
       >
         <NoteEditorModalHeader
           modalId={ModalsNames.newNote}
           onCloseCallback={() => {
-            updateNote(userContext!.user!.id);
+            updateNoteOnModalClose();
           }}
         />
-        <NoteEditor setNotes={setNotes} note={undefined} />
+        <NoteEditor
+          updateNoteLocally={updateNoteLocally}
+          note={undefined}
+        />
       </GeneralModal>
+
       {/* pinnedSection */}
       <section className="notesSection"></section>
       {/* notesSection */}

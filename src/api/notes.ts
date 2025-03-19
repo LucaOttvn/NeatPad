@@ -37,9 +37,21 @@ export async function createNote(userId: string) {
         return null;
     }
 
-    console.log("New note added:", data);
     return data;
 }
 
-export async function updateNote(userId: string) {
+export async function updateNote(noteId: number, title: string, text: string) {
+    const { data, error } = await supabase
+        .from('notes')
+        .update({ title: title, text: text })
+        .eq('id', noteId)
+
+    if (error) {
+        console.error("Error updating note:", error);
+        return null;
+    }
+
+    console.log(data)
+
+    return data;
 }
