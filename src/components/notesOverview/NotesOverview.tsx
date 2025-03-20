@@ -6,6 +6,7 @@ import GeneralModal from "../ui/modals/GeneralModal";
 import { useEffect, useState } from "react";
 import { getNotes, updateNote } from "@/api/notes";
 import NoteEditorModalHeader from "../ui/modals/modalsHeaders/NoteEditorModalHeader";
+import AnimatedText from "../animatedComponents/AnimatedText";
 
 export default function NotesOverview() {
   const [selectedNote, setSelectedNote] = useState<number | undefined>(
@@ -88,7 +89,7 @@ export default function NotesOverview() {
       {/* pinnedSection */}
       {notes.some((el) => el.pinned) && (
         <section className="notesSection">
-          <span className="title ms-2">Pinned</span>{" "}
+          <AnimatedText className="title ms-2" text="Pinned" />
           <div className="notes">
             {notes
               .filter((el) => el.pinned)
@@ -106,10 +107,8 @@ export default function NotesOverview() {
       )}
       {/* notesSection */}
       <section className="notesSection">
-        <span className="title ms-2">
-          My
-          <br /> Notes
-        </span>
+        <AnimatedText className="title ms-2" text="My" />
+        <AnimatedText className="title ms-2" text="Notes" />
         <div className="notes">
           {notes
             .filter((el) => el.pinned == false)
