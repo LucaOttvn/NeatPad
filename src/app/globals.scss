@@ -27,7 +27,7 @@
   --grey: #747474;
   --darkGrey: #303030;
   --accentColor: #0c85ff;
-  --test: #4C6274;
+  --yellow: #f9c210;
 }
 
 * {
@@ -119,7 +119,7 @@ textarea {
   width: 4rem;
   height: 4rem;
   border-radius: 50%;
-  background-color: var(--white);
+  background-color: var(--yellow);
   display: flex;
   justify-content: center;
   align-items: center;

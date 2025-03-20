@@ -73,12 +73,12 @@
     position: fixed;
     top: 0;
     left: 0;
-    background: rgb(43, 47, 53);
-    background: linear-gradient(
-      180deg,
-      rgba(43, 47, 53, 1) 0%,
-      rgba(43, 47, 53, 0.6) 5%
-    );
+    background: rgba(0, 0, 0, 0.8);
+    // background: linear-gradient(
+    //   180deg,
+    //   rgba(43, 47, 53, 1) 0%,
+    //   rgba(43, 47, 53, 0.6) 5%
+    // );
     backdrop-filter: blur(10px);
   }
 }
