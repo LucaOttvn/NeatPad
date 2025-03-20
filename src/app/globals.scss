@@ -8,12 +8,19 @@
   font-weight: normal;
   font-style: normal;
 }
+@font-face {
+  font-family: "Outfit";
+  src: url("/fonts/Outfit.ttf") format("truetype");
+  font-weight: normal;
+  font-style: normal;
+}
 
 :root {
   --mainBoxShadow: #151515 0px 8px 20px;
   --mainBorderRadius: 10px;
+  // --lightBlack: #2b2f35;
   --lightBlack: #2b2f35;
-  --black: #101010;
+  --black: #000000;
   --white: #f0f0f0;
   --softWhite: #cacaca;
   --lightGrey: #909090;
@@ -150,7 +157,9 @@ h1 {
 }
 
 .title {
-  font-size: 140%;
+  font-family: "Anton", sans-serif;
+  font-size: 240%;
+  letter-spacing: 2px;
 }
 
 .loader {
