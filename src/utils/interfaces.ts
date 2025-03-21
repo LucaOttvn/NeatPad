@@ -11,7 +11,8 @@ export interface Note {
 export enum ModalsNames {
     newNote = "newNoteModal",
     updateNote = "updateNoteModal",
-    login = "login"
+    login = "login",
+    createFolder = "createFolderModal"
 }
 
 export interface Folder {
@@ -19,4 +20,15 @@ export interface Folder {
     name: string
     color?: string
     notes: number[]
+    user: string
 }
+
+export const colors = [
+    "Orange",
+    "Red",
+    "Yellow",
+    "Blue",
+    "Purple",
+    "Brown",
+    "Green",
+];
