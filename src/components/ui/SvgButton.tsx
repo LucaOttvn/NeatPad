@@ -14,7 +14,7 @@ export default function SvgButton(props: SvgButtonProps) {
         props.onClick();
       }}
     >
-      <ReactSVG src={`/icons/${props.fileName}.svg`} className="icon" />
+      <ReactSVG src={`/icons/${props.fileName}.svg`} className="icon"/>
     </button>
   );
 }
