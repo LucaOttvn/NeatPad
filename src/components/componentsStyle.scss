@@ -9,26 +9,76 @@
 }
 
 .folderCard {
-  width: fit-content;
+  position: relative;
   display: flex;
   justify-content: flex-start;
   align-items: center;
   gap: 0.8rem;
-  border-radius: var(--mainBorderRadius);
-  padding: 0.5rem 1rem;
+  border-radius: 15px;
+  background-color: var(--lightBlack);
+  padding: 1.3rem 1rem;
   transition: 0.2s;
   user-select: none;
-  border: solid 1px transparent;
+  margin-top: -10px;
+  box-shadow: var(--bigBoxShadow);
+  transform: perspective(800px) rotateX(-10deg);
+  .icon {
+    svg {
+      color: var(--black) !important;
+      fill: var(--black) !important;
+    }
+  }
+  span {
+    color: var(--black) !important;
+  }
+  z-index: 0;
   &:hover {
     cursor: pointer;
-    background-color: var(--grey);
+    scale: 0.95;
+    // background-color: var(--grey);
+  }
+  .notesCounter {
+    font-size: 80%;
+    color: var(--softWhite);
+  }
+  .cornerRounder1 {
+    position: absolute;
+    top: -5px;
+    left: 0;
+    width: 43%;
+    height: 100%;
+    z-index: -1;
+    border-radius: var(--mainBorderRadius) 20px var(--mainBorderRadius)
+      var(--mainBorderRadius);
+  }
+  .cornerRounder2 {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 85%;
+    z-index: -1;
+    // background-color: red !important;
+    border-radius: 0 0 var(--mainBorderRadius)
+      var(--mainBorderRadius);
+  }
+  .cornerRounder3 {
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 59.5%;
+    height: 18%;
+    z-index: -1;
+    background-color: var(--lightBlack);
+    // background-color: red !important;
+    border-radius: 0 15px 0 30px;
   }
 }
 
 .loginModal,
 .loginModalHeader {
   background-color: var(--lightBlack);
-  input { 
+  input {
     color: var(--black);
   }
   .mainBtn {
@@ -42,10 +92,9 @@
   // remove hover effect on folder cards
   .folderCard {
     &:hover {
-      background-color: transparent;
+      // background-color: transparent;
     }
     &:active {
-      border: solid 1px var(--grey);
       scale: 0.95;
     }
   }
