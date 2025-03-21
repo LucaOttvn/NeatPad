@@ -10,19 +10,19 @@ export default function FolderCard(props: FolderProps) {
   return (
     <div
       className="folderCard"
-      style={{ backgroundColor: props.folder.colors.shadow }}
+      style={{ backgroundColor: `var(--dark${props.folder.color})` }}
     >
       <div
         className="cornerRounder1"
-        style={{ backgroundColor: props.folder.colors.mainColor }}
+        style={{ backgroundColor: `var(--${props.folder.color})` }}
       ></div>
       <div
         className="cornerRounder2"
-        style={{ backgroundColor: props.folder.colors.mainColor }}
+        style={{ backgroundColor: `var(--${props.folder.color})` }}
       ></div>
       <div
         className="cornerRounder3"
-        style={{ backgroundColor: props.folder.colors.shadow }}
+        style={{ backgroundColor: `var(--dark${props.folder.color})` }}
       ></div>
       <ReactSVG src="/icons/folder.svg" className="icon" />
       <div className="flex items-start justify-start flex-col">

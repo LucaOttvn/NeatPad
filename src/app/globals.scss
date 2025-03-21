@@ -21,31 +21,31 @@
   --mainBorderRadius: 10px;
   // --lightBlack: #2b2f35;
   --lightBlack: #2b2f35;
-  --black: #000000;
-  --white: #f0f0f0;
+  --Black: #000000;
+  --White: #f0f0f0;
   --softWhite: #cacaca;
   --lightGrey: #909090;
-  --grey: #747474;
+  --Grey: #747474;
   --darkGrey: #303030;
-  --blue: #0c85ff;
+  --Blue: #0c85ff;
   --darkBlue: #0857b5;
 
-  --yellow: #e3f503;
+  --Yellow: #e3f503;
   --darkYellow: #b3840c;
-  --brown: #8b5e3c;
+  --Brown: #8b5e3c;
   --darkBrown: #604028;
-  --red: #d11a1a;
+  --Red: #d11a1a;
   --darkRed: #7a0f0f;
-  --orange: #ffa500;
+  --Orange: #ffa500;
   --darkOrange: #cc7a00;
-  --green: #25e679;
+  --Green: #25e679;
   --darkGreen: #198f4a;
-  --purple: #9b4f96;
+  --Purple: #9b4f96;
   --darkPurple: #6b1d6c;
 }
 
 * {
-  color: var(--white);
+  color: var(--White);
   &:focus {
     outline: none;
   }
@@ -56,7 +56,7 @@
     background: var(--darkGrey);
   }
   &::-webkit-scrollbar-thumb {
-    background: var(--grey);
+    background: var(--Grey);
     border-radius: 10px;
   }
   &::-webkit-scrollbar-thumb:hover {
@@ -85,7 +85,7 @@
 
 body {
   font-family: "Inter", sans-serif;
-  background-color: var(--black);
+  background-color: var(--Black);
   height: 100svh;
   display: flex;
   flex-direction: column;
@@ -95,7 +95,7 @@ body {
   width: fit-content;
   padding: 0.4rem 1rem;
   border-radius: var(--mainBorderRadius);
-  background-color: var(--blue);
+  background-color: var(--Blue);
 }
 
 .mainBtn,
@@ -125,7 +125,7 @@ textarea {
   border: solid 1px transparent;
 
   &:hover {
-    // border: solid 1px var(--grey);
+    // border: solid 1px var(--Grey);
   }
 }
 
@@ -133,7 +133,7 @@ textarea {
   width: 4rem;
   height: 4rem;
   border-radius: 50%;
-  background-color: var(--yellow);
+  background-color: var(--Yellow);
   display: flex;
   justify-content: center;
   align-items: center;

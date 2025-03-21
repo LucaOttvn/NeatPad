@@ -17,7 +17,7 @@
     height: 80%;
     background-color: var(--lightBlack);
     border-radius: var(--mainBorderRadius);
-    border: solid 1px var(--white);
+    border: solid 1px var(--White);
     overflow: hidden;
     display: flex;
     flex-direction: column;
@@ -41,7 +41,7 @@
   display: flex;
   justify-content: start;
   align-items: center;
-  background-color: var(--black);
+  background-color: var(--Black);
   // border-bottom: solid 5px var(--lightBlack);
   padding: 0 0.5rem;
   gap: 1rem;
@@ -53,7 +53,7 @@
   width: 0;
   height: 100%;
   overflow: hidden;
-  background-color: var(--black);
+  background-color: var(--Black);
 }
 
 // tablet && smartphones

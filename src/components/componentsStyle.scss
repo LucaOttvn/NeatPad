@@ -24,18 +24,18 @@
   transform: perspective(800px) rotateX(-10deg);
   .icon {
     svg {
-      color: var(--black) !important;
-      fill: var(--black) !important;
+      color: var(--Black) !important;
+      fill: var(--Black) !important;
     }
   }
   span {
-    color: var(--black) !important;
+    color: var(--Black) !important;
   }
   z-index: 0;
   &:hover {
     cursor: pointer;
     scale: 0.95;
-    // background-color: var(--grey);
+    // background-color: var(--Grey);
   }
   .notesCounter {
     font-size: 80%;
@@ -79,11 +79,11 @@
 .loginModalHeader {
   background-color: var(--lightBlack);
   input {
-    color: var(--black);
+    color: var(--Black);
   }
   .mainBtn {
-    color: var(--black);
-    background-color: var(--yellow);
+    color: var(--Black);
+    background-color: var(--Yellow);
   }
 }
 

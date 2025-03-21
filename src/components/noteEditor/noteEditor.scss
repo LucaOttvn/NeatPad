@@ -7,7 +7,7 @@
   padding: 1rem;
   header {
     width: 100%;
-    background-color: var(--black);
+    background-color: var(--Black);
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -24,7 +24,7 @@
       &:focus {
         outline: none;
         border: none;
-        border-bottom: solid 1px var(--white);
+        border-bottom: solid 1px var(--White);
       }
     }
   }
@@ -38,6 +38,6 @@
     background-color: var(--ligthBlack);
 
     resize: none;
-    color: var(--white);
+    color: var(--White);
   }
 }
