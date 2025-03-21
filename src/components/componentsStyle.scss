@@ -1,41 +1,52 @@
 .loginContainer {
-    width: 100%;
-    height: 100%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    flex-direction: column;
-    gap: 2rem;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  gap: 2rem;
 }
 
 .folderCard {
-    width: fit-content;
-    display: flex;
-    justify-content: flex-start;
-    align-items: center;
-    gap: 0.8rem;
-    border-radius: var(--mainBorderRadius);
-    padding: 0.5rem 1rem;
-    transition: 0.2s;
-    user-select: none;
-    border: solid 1px transparent;
-    &:hover {
-        cursor: pointer;
-        background-color: var(--grey);
-    }
+  width: fit-content;
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  gap: 0.8rem;
+  border-radius: var(--mainBorderRadius);
+  padding: 0.5rem 1rem;
+  transition: 0.2s;
+  user-select: none;
+  border: solid 1px transparent;
+  &:hover {
+    cursor: pointer;
+    background-color: var(--grey);
+  }
+}
+
+.loginModal,
+.loginModalHeader {
+  background-color: var(--lightBlack);
+  input { 
+    color: var(--black);
+  }
+  .mainBtn {
+    color: var(--black);
+    background-color: var(--yellow);
+  }
 }
 
 // tablet && smartphones
 @media (max-width: 768px) {
-    // remove hover effect on folder cards
-    .folderCard {
-      &:hover {
-        background-color: transparent;
-      }
-      &:active {
-        border: solid 1px var(--grey);
-        scale: 0.95;
-      }
+  // remove hover effect on folder cards
+  .folderCard {
+    &:hover {
+      background-color: transparent;
+    }
+    &:active {
+      border: solid 1px var(--grey);
+      scale: 0.95;
     }
   }
-  
+}

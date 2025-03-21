@@ -8,6 +8,7 @@ import { getNotes } from "@/api/notes";
 import { UserContext } from "@/contexts/userContext";
 import AnimatedDiv from "./animatedComponents/AnimatedDiv";
 import GeneralModal from "./ui/modals/GeneralModal";
+import GeneralModalHeader from "./ui/modals/modalsHeaders/GeneralModalHeader";
 
 export default function Login() {
   const [formData, setFormData] = useState({ email: "", password: "" });
@@ -69,7 +70,8 @@ export default function Login() {
       </div>
 
       <GeneralModal id={ModalsNames.login} width={40} height={40}>
-        <div className="w-full h-full center flex-col gap-8">
+        <GeneralModalHeader modalId={ModalsNames.login} className="loginModalHeader"></GeneralModalHeader>
+        <div className="loginModal w-full h-full center flex-col gap-8">
           <h1 className="title">
             {creatingAccount ? "Create account" : "Login"}
           </h1>

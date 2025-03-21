@@ -107,8 +107,10 @@ export default function NotesOverview() {
       )}
       {/* notesSection */}
       <section className="notesSection">
-        <AnimatedText className="title ms-2" text="My" />
-        <AnimatedText className="title ms-2" text="Notes" />
+        <div className="flex flex-col items-start">
+          <AnimatedText className="title ms-2" text="My" />
+          <AnimatedText className="title ms-2" text="Notes" />
+        </div>
         <div className="notes">
           {notes
             .filter((el) => el.pinned == false)
