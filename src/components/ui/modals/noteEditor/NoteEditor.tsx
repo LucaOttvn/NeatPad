@@ -1,16 +1,18 @@
 "use client";
 import "./noteEditor.scss";
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { Note } from "@/utils/interfaces";
+import { NotesContext } from "@/contexts/notesContext";
 
 interface NoteEditorProps {
   note: Note | undefined;
-  updateNoteLocally: (updatedNote: Note) => void;
 }
 
 export default function NoteEditor(props: NoteEditorProps) {
   const [title, setTitle] = useState<string>("");
   const [text, setText] = useState<string>("");
+
+  const notesContext = useContext(NotesContext);
 
   useEffect(() => {
     // initially set title and text based on the selected note
@@ -22,10 +24,14 @@ export default function NoteEditor(props: NoteEditorProps) {
 
   useEffect(() => {
     if (props.note) {
-      const updatedNote = props.note
-      updatedNote.title = title
-      updatedNote.text = text
-      props.updateNoteLocally(updatedNote);
+      const updatedNote = props.note;
+      updatedNote.title = title;
+      updatedNote.text = text;
+      notesContext?.setNotes(
+        notesContext.notes.map((note) =>
+          note.id === updatedNote.id ? updatedNote : note
+        )
+      );
     }
   }, [title, text]);
 
@@ -37,7 +43,7 @@ export default function NoteEditor(props: NoteEditorProps) {
           placeholder="Insert title"
           value={title}
           onChange={(e) => {
-            setTitle(e.target.value)
+            setTitle(e.target.value);
           }}
         />
       </header>
@@ -47,7 +53,7 @@ export default function NoteEditor(props: NoteEditorProps) {
         data-placeholder="Insert your note..."
         value={text}
         onChange={(e) => {
-          setText(e.target.value)
+          setText(e.target.value);
         }}
       ></textarea>
     </div>

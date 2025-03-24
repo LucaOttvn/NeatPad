@@ -5,18 +5,20 @@ import { Note } from "@/utils/interfaces";
 import { gsap, Power4 } from "gsap";
 import { FolderContext } from "@/contexts/foldersContext";
 import { ReactSVG } from "react-svg";
+import { NotesContext } from "@/contexts/notesContext";
 
 interface BasicComponentProps {
   onCloseCallback?: () => void;
   modalId: string;
   note: Note | undefined;
-  updateNoteLocally: (updatedNote: Note) => void;
 }
 
 export default function NoteEditorModalHeader(props: BasicComponentProps) {
   const foldersContext = useContext(FolderContext);
   const [pinned, setPinned] = useState(false);
   const [foldersListOpened, setFoldersListOpened] = useState(true);
+
+  const notesContext = useContext(NotesContext);
 
   useEffect(() => {
     if (props.note) setPinned(props.note.pinned);
@@ -26,7 +28,11 @@ export default function NoteEditorModalHeader(props: BasicComponentProps) {
     if (props.note) {
       const updatedNote = props.note;
       updatedNote.pinned = pinned;
-      props.updateNoteLocally(updatedNote);
+      notesContext?.setNotes(
+        notesContext.notes.map((note) =>
+          note.id === updatedNote.id ? updatedNote : note
+        )
+      );
     }
   }, [pinned]);
 
@@ -67,7 +73,11 @@ export default function NoteEditorModalHeader(props: BasicComponentProps) {
         <div className="w-full start flex-wrap gap-5 p-5">
           {foldersContext?.folders.map((folder, index) => {
             return (
-              <div key={'folder' + index} className="start gap-1" onClick={() => {}}>
+              <div
+                key={"folder" + index}
+                className="start gap-1"
+                onClick={() => {}}
+              >
                 <ReactSVG src={`/icons/folder.svg`} className="icon" />
                 <span>{folder.name}</span>
               </div>

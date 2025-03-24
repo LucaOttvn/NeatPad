@@ -117,6 +117,7 @@ body {
   padding: 0.4rem 1rem;
   border-radius: var(--mainBorderRadius);
   background-color: var(--Blue);
+  user-select: none;
 }
 
 .mainBtn,
