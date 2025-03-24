@@ -3,7 +3,7 @@
   height: 100%;
   position: fixed;
   scale: 0;
-  top: 0;
+top: 0;
   left: 0;
   transform: translate(-50%, -50%);
   overflow: hidden;
@@ -13,11 +13,10 @@
   backdrop-filter: blur(5px);
   z-index: 2;
   .generalModal {
-    width: 80%;
+    width: fit-content;
     height: 80%;
     background-color: var(--lightBlack);
     border-radius: var(--mainBorderRadius);
-    border: solid 1px var(--White);
     overflow: hidden;
     display: flex;
     flex-direction: column;
@@ -51,7 +50,6 @@
   justify-content: start;
   align-items: center;
   background-color: var(--Black);
-  // border-bottom: solid 5px var(--lightBlack);
   padding: 0 0.5rem;
   gap: 1rem;
   z-index: 2;
@@ -93,7 +91,7 @@
 }
 
 // tablet && smartphones
-@media (max-width: 768px) {
+@media (max-width: 1000px) {
   .generalModalBackdrop {
     .generalModal {
       width: 100% !important;

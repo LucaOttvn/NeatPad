@@ -145,6 +145,10 @@ textarea {
   transition: 0.2s;
   padding: 0.5rem 1rem;
   background-color: transparent;
+}
+
+input[type="text"],
+input[type="password"] {
   border-bottom: var(--White) 1px solid !important;
 }
 
@@ -207,7 +211,7 @@ h1 {
 }
 
 // tablet && smartphones
-@media (max-width: 768px) {
+@media (max-width: 1000px) {
   // remove hover effect on buttons
   .iconBtn {
     &:hover {

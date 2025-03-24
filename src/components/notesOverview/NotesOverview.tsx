@@ -70,7 +70,7 @@ export default function NotesOverview() {
         />
       </GeneralModal>
 
-      <GeneralModal id={ModalsNames.createFolder} width={60} height={80}>
+      <GeneralModal id={ModalsNames.createFolder} height={50}>
         <GeneralModalHeader
           modalId={ModalsNames.createFolder}
         ></GeneralModalHeader>
