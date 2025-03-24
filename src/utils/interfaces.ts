@@ -24,23 +24,72 @@ export interface Folder {
 }
 
 export const colors = [
-    "Pink",
-    "FrenchPurple",
-    "SlateRed",
-    "Magenta",
-    
-    "Yellow",
-    "Orange",
-    "FlameRed",
-    "Red",
-    
-    "Turquoise",
-    "Green",
-    "ShamrockGreen",
-    "PersianGreen",
-    
-    "Cyan",
-    "GreyishBlue",
-    "SlateBlue",
-    "Blue",
+    {
+        color: "lightBlack",
+        text: 'White'
+    },
+    {
+        color: "Pink",
+        text: 'Black'
+    },
+    {
+        color: "FrenchPurple",
+        text: 'Black'
+    },
+    {
+        color: "SlateRed",
+        text: 'Black'
+    },
+    {
+        color: "Magenta",
+        text: 'White'
+    },
+    {
+        color: "Yellow",
+        text: 'Black'
+    },
+    {
+        color: "Orange",
+        text: 'Black'
+    },
+    {
+        color: "FlameRed",
+        text: 'Black'
+    },
+    {
+        color: "Red",
+        text: 'White'
+    },
+    {
+        color: "Turquoise",
+        text: 'Black'
+    },
+    {
+        color: "Green",
+        text: 'Black'
+    },
+    {
+        color: "ShamrockGreen",
+        text: 'Black'
+    },
+    {
+        color: "PersianGreen",
+        text: 'Black'
+    },
+    {
+        color: "Cyan",
+        text: 'Black'
+    },
+    {
+        color: "GreyishBlue",
+        text: 'Black'
+    },
+    {
+        color: "SlateBlue",
+        text: 'Black'
+    },
+    {
+        color: "Blue",
+        text: 'Black'
+    },
 ];

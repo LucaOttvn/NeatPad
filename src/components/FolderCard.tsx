@@ -1,33 +1,69 @@
-import { Folder } from "@/utils/interfaces";
+import { colors, Folder } from "@/utils/interfaces";
 import { ReactSVG } from "react-svg";
 import "./componentsStyle.scss";
-
+import { useEffect, useState } from "react";
+import gsap from "gsap";
 interface FolderProps {
   folder: Folder;
 }
 
 export default function FolderCard(props: FolderProps) {
+  const [textColor, setTextColor] = useState("");
+
+  useEffect(() => {
+    let foundColor = colors.find((el) => el.color === props.folder.color);
+    if (foundColor) {
+      setTextColor(foundColor.text);
+    }
+  }, [props.folder.color]);
+  
   return (
     <div
       className="folderCard"
-      style={{ backgroundColor: (props.folder.color ? `var(--dark${props.folder.color})` : 'var(--darkGrey)') }}
+      style={{
+        backgroundColor: props.folder.color
+          ? `var(--dark${props.folder.color})`
+          : "var(--darkGrey)",
+      }}
     >
       <div
         className="cornerRounder1"
-        style={{ backgroundColor: (props.folder.color ? `var(--${props.folder.color})` : 'var(--lightBlack)') }}
+        style={{
+          backgroundColor: props.folder.color
+            ? `var(--${props.folder.color})`
+            : "var(--lightBlack)",
+        }}
       ></div>
       <div
         className="cornerRounder2"
-        style={{ backgroundColor: (props.folder.color ? `var(--${props.folder.color})` : 'var(--lightBlack)') }}
+        style={{
+          backgroundColor: props.folder.color
+            ? `var(--${props.folder.color})`
+            : "var(--lightBlack)",
+        }}
       ></div>
       <div
         className="cornerRounder3"
-        style={{ backgroundColor: (props.folder.color ? `var(--dark${props.folder.color})` : 'var(--darkGrey)') }}
+        style={{
+          backgroundColor: props.folder.color
+            ? `var(--dark${props.folder.color})`
+            : "var(--darkGrey)",
+        }}
       ></div>
-      <ReactSVG src="/icons/folder.svg" className="icon" />
+      <ReactSVG
+        src="/icons/folder.svg"
+        className="icon"
+        beforeInjection={(svg) => {
+          if (textColor) svg.setAttribute("fill", `var(--${textColor})`);
+        }}
+      />
       <div className="flex items-start justify-start flex-col">
-        <span>{props.folder.name}</span>
-        <span className="notesCounter">{props.folder.notes.length} notes</span>
+        <span style={{ color: `var(--${textColor})` }}>
+          {props.folder.name}
+        </span>
+        <span style={{ color: `var(--${textColor})` }} className="notesCounter">
+          {props.folder.notes.length} notes
+        </span>
       </div>
     </div>
   );

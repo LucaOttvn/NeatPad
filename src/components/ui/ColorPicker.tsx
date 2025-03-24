@@ -7,19 +7,21 @@ interface ColorPickerProps {
 }
 
 export default function ColorPicker(props: ColorPickerProps) {
- 
   return (
     <AnimatedDiv className="colorPicker">
-      {colors.map((color, index) => (
-        <div
-          key={"color" + index}
-          className="colorSelector"
-          style={{ background: `var(--${color})` }}
-          onClick={()=>{
-            props.setSelectedColor(color)
-          }}
-        ></div>
-      ))}
+      {colors.map((color, index) => {
+        if (color.color != "lightBlack")
+          return (
+            <div
+              key={"color" + index}
+              className="colorSelector"
+              style={{ background: `var(--${color.color})` }}
+              onClick={() => {
+                props.setSelectedColor(color.color);
+              }}
+            ></div>
+          );
+      })}
     </AnimatedDiv>
   );
 }
