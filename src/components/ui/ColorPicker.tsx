@@ -9,7 +9,7 @@ interface ColorPickerProps {
 export default function ColorPicker(props: ColorPickerProps) {
  
   return (
-    <AnimatedDiv className="start gap-5">
+    <AnimatedDiv className="colorPicker">
       {colors.map((color, index) => (
         <div
           key={"color" + index}

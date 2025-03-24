@@ -24,9 +24,10 @@ export interface Folder {
 }
 
 export const colors = [
+    "Yellow",
     "Orange",
     "Red",
-    "Yellow",
+    "Pink",
     "Blue",
     "Purple",
     "Brown",
