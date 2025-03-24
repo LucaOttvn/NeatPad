@@ -18,7 +18,7 @@ export default function AnimatedText(props: AnimatedTextProps) {
       { opacity: 0, y: 20 },
       { opacity: 1, y: 0, duration: 0.4, stagger: 0.1, delay: 0.3 }
     );
-  }, []);
+  }, [text]);
 
   return (
     <span className={`animatedText ${props.className}`}>

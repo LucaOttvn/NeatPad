@@ -1,13 +1,16 @@
 import { colors, Folder } from "@/utils/interfaces";
 import { ReactSVG } from "react-svg";
 import "./componentsStyle.scss";
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
+import { FolderContext } from "@/contexts/foldersContext";
 interface FolderProps {
   folder: Folder;
 }
 
 export default function FolderCard(props: FolderProps) {
   const [textColor, setTextColor] = useState("");
+
+  const folderContext = useContext(FolderContext)
 
   useEffect(() => {
     let foundColor = colors.find((el) => el.color === props.folder.color);
@@ -19,6 +22,9 @@ export default function FolderCard(props: FolderProps) {
   return (
     <div
       className="folderCard"
+      onClick={()=>{
+        folderContext?.setSelectedFolder(props.folder.id)
+      }}
       style={{
         backgroundColor: props.folder.color
           ? `var(--dark${props.folder.color})`
