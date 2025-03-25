@@ -29,7 +29,7 @@ export default function NoteCard(props: NoteCardProps) {
       const foundColor = colors.find(
         (item) => item.color == selectedFolder?.color
       );
-      setTextColor(foundColor ? foundColor.text : "lightBlack");
+      setTextColor(foundColor ? foundColor.text : "White");
 
       console.log(selectedFolder);
     }
@@ -40,17 +40,17 @@ export default function NoteCard(props: NoteCardProps) {
       <div
         className="cornerRounder1"
         style={{
-          background: selectedFolder
+          background: selectedFolder?.color
             ? `var(--${selectedFolder?.color})`
-            : "auto",
+            : "var(--lightBlack)",
         }}
       ></div>
       <div
         className="cornerRounder2"
         style={{
-          background: selectedFolder
+          background: selectedFolder?.color
             ? `var(--${selectedFolder?.color})`
-            : "auto",
+            : "var(--lightBlack)",
         }}
       ></div>
       <div className="cornerRounder3"></div>
