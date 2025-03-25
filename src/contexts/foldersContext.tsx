@@ -1,29 +1,37 @@
 "use client";
+import { getFolders } from "@/api/folders";
 import { Folder } from "@/utils/interfaces";
-import { createContext, ReactNode, useState } from "react";
+import { createContext, ReactNode, useEffect, useState } from "react";
 
-interface FolderContextType {
+interface FoldersContextType {
   folders: Folder[];
   setFolders: React.Dispatch<React.SetStateAction<Folder[]>>;
-  selectedFolder: number | undefined;
-  setSelectedFolder: React.Dispatch<React.SetStateAction<number | undefined>>;
+  selectedFolder: Folder | undefined;
+  setSelectedFolder: React.Dispatch<React.SetStateAction<Folder | undefined>>;
 }
 
-export const FolderContext = createContext<FolderContextType | undefined>(
+export const FoldersContext = createContext<FoldersContextType | undefined>(
   undefined
 );
 
 export function FolderProvider({ children }: { children: ReactNode }) {
   const [folders, setFolders] = useState<Folder[]>([]);
-  const [selectedFolder, setSelectedFolder] = useState<number | undefined>(
+  const [selectedFolder, setSelectedFolder] = useState<Folder | undefined>(
     undefined
   );
 
+  useEffect(() => {
+    (async () => {
+      const fetchedfolders = await getFolders();
+      setFolders(fetchedfolders || []);
+    })();
+  }, []);
+
   return (
-    <FolderContext.Provider
+    <FoldersContext.Provider
       value={{ folders, setFolders, selectedFolder, setSelectedFolder }}
     >
       {children}
-    </FolderContext.Provider>
+    </FoldersContext.Provider>
   );
 }

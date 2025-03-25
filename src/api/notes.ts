@@ -44,18 +44,17 @@ export async function createNote(userId: string) {
     return data;
 }
 
-export async function updateNote(noteId: number, title: string, text: string, last_update: Date, pinned: boolean) {
+export async function updateNote(updatedNote: Note) {
+
     const { data, error } = await supabase
         .from('notes')
-        .update({ title: title, text: text, last_update: last_update, pinned: pinned })
-        .eq('id', noteId)
+        .update(updatedNote)
+        .eq('id', updatedNote.id)
 
     if (error) {
         console.error("Error updating note:", error);
         return null;
     }
-
-    console.log(data)
 
     return data;
 }

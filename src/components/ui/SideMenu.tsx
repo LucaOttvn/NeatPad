@@ -1,19 +1,11 @@
 import { ModalsNames } from "@/utils/interfaces";
-import { useContext, useEffect } from "react";
+import { useContext } from "react";
 import FolderCard from "../FolderCard";
-import { getFolders } from "@/api/folders";
 import { handleModal } from "@/utils/globalMethods";
-import { FolderContext } from "@/contexts/foldersContext";
+import { FoldersContext } from "@/contexts/foldersContext";
 
 export default function GeneralSideMenu() {
-  const foldersContext = useContext(FolderContext);
-
-  useEffect(() => {
-    (async () => {
-      const fetchedfolders = await getFolders();
-      foldersContext?.setFolders(fetchedfolders || []);
-    })();
-  }, []);
+  const foldersContext = useContext(FoldersContext);
 
   return (
     <div className="generalSideMenu">

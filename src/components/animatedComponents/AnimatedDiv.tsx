@@ -15,13 +15,6 @@ export default function AnimatedDiv(props: AnimatedDivProps) {
       ease: Power4.easeOut,
       duration: 1,
     });
-    return () => {
-      // gsap.to(".animatedDiv", {
-      //   opacity: 0,
-      //   ease: Power4.easeOut,
-      //   duration: 1,
-      // });
-    };
   }, []);
 
   return (

@@ -1,14 +1,14 @@
 import AnimatedDiv from "@/components/animatedComponents/AnimatedDiv";
 import { useContext, useState } from "react";
 import ColorPicker from "../ColorPicker";
-import { FolderContext } from "@/contexts/foldersContext";
+import { FoldersContext } from "@/contexts/foldersContext";
 import { Folder, ModalsNames } from "@/utils/interfaces";
 import { UserContext } from "@/contexts/userContext";
 import { createFolder } from "@/api/folders";
 import { handleModal } from "@/utils/globalMethods";
 
 export default function FolderCreator() {
-  const folderContext = useContext(FolderContext);
+  const foldersContext = useContext(FoldersContext);
   const userContext = useContext(UserContext);
 
   const [folderName, setFolderName] = useState("");
@@ -57,7 +57,7 @@ export default function FolderCreator() {
             user: userContext!.user!.id,
           };
           await createFolder(newFolder);
-          folderContext?.setFolders((prevState: Folder[]) => [
+          foldersContext?.setFolders((prevState: Folder[]) => [
             ...prevState,
             newFolder,
           ]);
