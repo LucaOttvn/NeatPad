@@ -23,7 +23,9 @@ export function FolderProvider({ children }: { children: ReactNode }) {
   useEffect(() => {
     (async () => {
       const fetchedfolders = await getFolders();
-      setFolders(fetchedfolders || []);
+      if (fetchedfolders) {
+        setFolders(fetchedfolders)
+      }
     })();
   }, []);
 

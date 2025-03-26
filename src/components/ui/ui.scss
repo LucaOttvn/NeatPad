@@ -12,6 +12,7 @@
   align-items: center;
   backdrop-filter: blur(5px);
   z-index: 2;
+
   .generalModal {
     width: fit-content;
     height: fit-content;
@@ -20,6 +21,7 @@
     overflow: hidden;
     display: flex;
     flex-direction: column;
+
     .addNoteToFolder {
       width: 100%;
       height: 0;
@@ -28,6 +30,7 @@
       overflow: hidden;
       position: relative;
     }
+
     .modalHeader {
       width: 100%;
       padding: 1rem 1rem 0 1rem;
@@ -65,25 +68,42 @@
   background-color: var(--Black);
   display: flex;
   flex-direction: column;
-  gap: 1rem;
-  padding: 1rem 0;
+  gap: 2rem;
+  padding: 2rem 0;
   overflow-y: scroll;
+  position: relative;
+
+  .sideMenuBtn {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    padding-left: 1.5rem;
+
+    button {
+      padding: 0.5rem;
+      border: solid 1px var(--White);
+      border-radius: var(--mainBorderRadius);
+    }
+  }
 }
 
 .colorPicker {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
   gap: 1rem;
+
   .colorSelector {
     width: 40px;
     height: 40px;
     border-radius: 50%;
     transition: 0.2s;
     border: solid 3px transparent;
+
     &:active {
       scale: 0.9;
       border: solid 3px var(--White);
     }
+
     &:hover {
       cursor: pointer;
       scale: 0.95;
@@ -98,6 +118,7 @@
   flex-direction: column;
   gap: 0.8rem;
   background: rgba(0, 0, 0, 0.8);
+
   .notes {
     width: 100%;
     height: 100%;
@@ -117,6 +138,7 @@
       border-radius: 0 !important;
     }
   }
+
   .generalSideMenu {
     user-select: none;
     margin-top: 4rem;
