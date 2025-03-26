@@ -16,7 +16,7 @@
 }
 
 :root {
-  --mainBoxShadow: #151515 0px 8px 20px;
+  --mainBoxShadow: #303030 0px 8px 20px;
   --bigBoxShadow: black 0px 10px 30px;
   --mainBorderRadius: 10px;
   
@@ -24,8 +24,8 @@
   --Black: #000000;
   --White: #f0f0f0;
   --softWhite: #cacaca;
-  --lightGrey: #909090;
-  --Grey: #747474;
+  --lightGrey: #707070;
+  --Grey: #505050;
   --darkGrey: #202020;
 
   --Pink: #f7a9a8;
@@ -38,7 +38,7 @@
   --darkMagenta: #7e1b6c;
   
   --Yellow: #e3f503;
-  --darkYellow: #b3840c;
+  --darkYellow: #bdca03;
   --Orange: #ffa500;
   --darkOrange: #cc7a00;
   --FlameRed: #ee5622;
@@ -157,7 +157,7 @@ input[type="password"] {
   width: 4rem;
   height: 4rem;
   border-radius: 50%;
-  background-color: var(--Blue);
+  background-color: var(--White);
   display: flex;
   justify-content: center;
   align-items: center;
@@ -195,8 +195,8 @@ h1 {
 }
 
 .title {
-  font-family: "Anton", sans-serif;
-  font-size: 240%;
+  font-size: 300%;
+  font-weight: bolder;
   letter-spacing: 2px;
 }
 

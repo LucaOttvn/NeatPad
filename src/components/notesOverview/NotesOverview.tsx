@@ -47,31 +47,24 @@ export default function NotesOverview() {
 
   return (
     <div className="notesOverviewContainer">
+      <div className="notesOverviewTitle flex flex-col items-start">
+        <div className="blur"></div>
+        <AnimatedText className="title" text="My" />
+        <AnimatedText className="title ms-5" text="Notes" />
+      </div>
       {/* pinnedSection */}
       {notesToShow.some((el) => el.pinned) && (
-        <NotesSection notes={notesToShow.filter((el) => el.pinned)}>
-          <AnimatedText className="title ms-2" text="Pinned" />
-        </NotesSection>
+        <NotesSection
+          notes={notesToShow.filter((el) => el.pinned)}
+          title="Pinned"
+        />
       )}
 
       {/* non-pinned notes section */}
-      <NotesSection notes={notesToShow.filter((el) => !el.pinned)}>
-        {foldersContext?.selectedFolder ? (
-          <AnimatedText
-            className="title ms-2"
-            text={
-              foldersContext.folders.find(
-                (el) => el.id == foldersContext.selectedFolder
-              )?.name || "No name"
-            }
-          />
-        ) : (
-          <div className="flex flex-col items-start">
-            <AnimatedText className="title ms-2" text="My" />
-            <AnimatedText className="title ms-2" text="Notes" />
-          </div>
-        )}
-      </NotesSection>
+      <NotesSection
+        notes={notesToShow.filter((el) => !el.pinned)}
+        title="Others"
+      />
 
       <GeneralModal
         id={ModalsNames.updateNote}
