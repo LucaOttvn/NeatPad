@@ -8,18 +8,19 @@
   font-weight: normal;
   font-style: normal;
 }
+
 @font-face {
-  font-family: "Outfit";
-  src: url("/fonts/Outfit.ttf") format("truetype");
+  font-family: "Poppins";
+  src: url("/fonts/Poppins.ttf") format("truetype");
   font-weight: normal;
   font-style: normal;
 }
 
 :root {
   --mainBoxShadow: #303030 0px 8px 20px;
-  --bigBoxShadow: black 0px 10px 30px;
+  --bigBoxShadow: var(--Black) 0px 10px 30px;
   --mainBorderRadius: 10px;
-  
+
   --lightBlack: #2b2f35;
   --Black: #000000;
   --White: #f0f0f0;
@@ -36,7 +37,7 @@
   --darkSlateRed: #d7595d;
   --Magenta: #c528a3;
   --darkMagenta: #7e1b6c;
-  
+
   --Yellow: #e3f503;
   --darkYellow: #aab603;
   --Orange: #ffa500;
@@ -45,7 +46,7 @@
   --darkFlameRed: #c3441a;
   --Red: #da2323;
   --darkRed: #831212;
-  
+
   --Turquoise: #a9e5bb;
   --darkTurquoise: #87ba97;
   --Green: #25e679;
@@ -54,7 +55,7 @@
   --darkPersianGreen: #14786c;
   --ShamrockGreen: #109648;
   --darkShamrockGreen: #0d544c;
-  
+
   --Cyan: #9EADC8;
   --darkCyan: #7c889f;
   --GreyishBlue: #77A0A9;
@@ -67,19 +68,24 @@
 
 * {
   color: var(--White);
+
   &:focus {
     outline: none;
   }
+
   &::-webkit-scrollbar {
     width: 5px;
   }
+
   &::-webkit-scrollbar-track {
     background: var(--darkGrey);
   }
+
   &::-webkit-scrollbar-thumb {
     background: var(--Grey);
     border-radius: 10px;
   }
+
   &::-webkit-scrollbar-thumb:hover {
     cursor: pointer;
     background: var(--lightGrey);
@@ -176,6 +182,7 @@ input[type="password"] {
   &:hover {
     background-color: var(--darkGrey);
   }
+
   svg {
     margin: 0.4rem;
     width: 20px !important;
@@ -195,9 +202,11 @@ h1 {
 }
 
 .title {
-  font-size: 300%;
-  font-weight: bolder;
-  letter-spacing: 2px;
+  // font-family: "Poppins", 'sans-serif';
+  font-size: 3rem;
+  font-weight: bold;
+
+  letter-spacing: 4px;
 }
 
 .loader {
@@ -213,6 +222,7 @@ h1 {
 
 // tablet && smartphones
 @media (max-width: 1000px) {
+
   // remove hover effect on buttons
   .iconBtn {
     &:hover {

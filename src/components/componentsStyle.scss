@@ -18,19 +18,23 @@
   align-items: center;
   flex-direction: column;
   gap: 3rem;
+
   * {
     user-select: none;
   }
+
   .wrapper {
     display: flex;
     gap: 4rem;
     justify-content: center;
     align-items: center;
+
     .heading {
       display: flex;
       flex-direction: column;
       gap: 2rem;
     }
+
     .createFolderBtn {
       width: 100%;
       height: 5rem;
@@ -39,67 +43,149 @@
 }
 
 .folderCard {
-  position: relative;
-  display: flex;
-  justify-content: flex-start;
-  align-items: center;
-  gap: 0.8rem;
-  border-radius: 15px;
-  background-color: var(--lightBlack);
-  padding: 1.3rem 1rem;
   transition: 0.2s;
-  user-select: none;
-  margin-top: -10px;
-  box-shadow: var(--bigBoxShadow);
-  transform: perspective(800px) rotateX(-10deg);
-  z-index: 0;
-  &:hover {
-    cursor: pointer;
-    scale: 0.95;
+}
+
+.generalSideMenu {
+  z-index: 1;
+  width: 0;
+  height: calc(100% - 4rem);
+  overflow: hidden;
+  background-color: rgb(0, 0, 0, 0.8);
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+  padding: 2rem 0;
+  position: relative;
+
+  .sideMenuBtn {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    padding-left: 1.5rem;
+
+    button {
+      padding: 0.5rem;
+      border: solid 1px var(--White);
+      border-radius: var(--mainBorderRadius);
+    }
   }
-  .notesCounter {
-    font-size: 80%;
-    color: var(--softWhite);
-  }
-  .cornerRounder1 {
-    position: absolute;
-    top: -5px;
-    left: 0;
-    width: 43%;
-    height: 100%;
-    z-index: -1;
-    border-radius: var(--mainBorderRadius) 20px var(--mainBorderRadius)
-      var(--mainBorderRadius);
-  }
-  .cornerRounder2 {
-    position: absolute;
-    bottom: 0;
-    left: 0;
+
+  .foldersList {
+    display: flex;
+    padding-left: 2rem;
     width: 100%;
-    height: 85%;
-    z-index: -1;
-    // background-color: red !important;
-    border-radius: 0 0 var(--mainBorderRadius) var(--mainBorderRadius);
-  }
-  .cornerRounder3 {
-    position: absolute;
-    top: 0;
-    right: 0;
-    width: 59.5%;
-    height: 18%;
-    z-index: -1;
-    background-color: var(--lightBlack);
-    // background-color: red !important;
-    border-radius: 0 15px 0 30px;
+    height: 100%;
+    position: relative;
+    z-index: 0;
+    overflow: hidden;
+
+    * {
+      &::-webkit-scrollbar {
+        display: none;
+        text-overflow: ellipsis;
+      }
+
+    }
+
+    .shaderTop {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 4rem;
+      background: linear-gradient(var(--Black), transparent);
+      z-index: 1;
+    }
+
+    .shaderBottom {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      height: 4rem;
+      background: linear-gradient(0deg, var(--Black), transparent);
+      z-index: 1;
+    }
   }
 }
+
+.ellipsis-multi {
+  width: 100%;
+  overflow: hidden;
+  display: -webkit-box;
+  -webkit-line-clamp: 1;
+  /* Number of lines before ellipsis */
+  -webkit-box-orient: vertical;
+  word-break: break-word;
+  /* Keeps word integrity */
+}
+
+//////////////////// old version folder card ////////////////////
+// .folderCard {
+//   position: relative;
+//   display: flex;
+//   justify-content: flex-start;
+//   align-items: center;
+//   gap: 0.8rem;
+//   border-radius: 15px;
+//   background-color: var(--lightBlack);
+//   padding: 1.3rem 1rem;
+//   transition: 0.2s;
+//   user-select: none;
+//   margin-top: -10px;
+//   box-shadow: var(--bigBoxShadow);
+//   transform: perspective(800px) rotateX(-10deg);
+//   z-index: 0;
+//   &:hover {
+//     cursor: pointer;
+//     scale: 0.95;
+//   }
+//   .notesCounter {
+//     font-size: 80%;
+//     color: var(--softWhite);
+//   }
+//   .cornerRounder1 {
+//     position: absolute;
+//     top: -5px;
+//     left: 0;
+//     width: 43%;
+//     height: 100%;
+//     z-index: -1;
+//     border-radius: var(--mainBorderRadius) 20px var(--mainBorderRadius)
+//       var(--mainBorderRadius);
+//   }
+//   .cornerRounder2 {
+//     position: absolute;
+//     bottom: 0;
+//     left: 0;
+//     width: 100%;
+//     height: 85%;
+//     z-index: -1;
+//     // background-color: red !important;
+//     border-radius: 0 0 var(--mainBorderRadius) var(--mainBorderRadius);
+//   }
+//   .cornerRounder3 {
+//     position: absolute;
+//     top: 0;
+//     right: 0;
+//     width: 59.5%;
+//     height: 18%;
+//     z-index: -1;
+//     background-color: var(--lightBlack);
+//     // background-color: red !important;
+//     border-radius: 0 15px 0 30px;
+//   }
+// }
 
 .loginModal,
 .loginModalHeader {
   background-color: var(--lightBlack);
+
   input {
     color: var(--Black);
   }
+
   .mainBtn {
     color: var(--Black);
     background-color: var(--Yellow);
@@ -108,19 +194,32 @@
 
 // tablet && smartphones
 @media (max-width: 1000px) {
+
+  .generalSideMenu {
+    user-select: none;
+    margin-top: 4rem;
+    position: fixed;
+    top: 0;
+    left: 0;
+    backdrop-filter: blur(10px);
+  }
+
   .folderCreator {
     padding: 1rem;
+
     .wrapper {
       width: 100%;
       flex-direction: column;
     }
   }
+
   // remove hover effect on folder cards
   .folderCard {
     &:hover {
       // background-color: transparent;
       scale: 1;
     }
+
     &:active {
       scale: 0.95;
     }

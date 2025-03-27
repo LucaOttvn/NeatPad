@@ -3,6 +3,7 @@ import gsap from "gsap";
 
 interface AnimatedTextProps {
   text: string;
+  color?: string | undefined
   className?: string;
   onClick?: () => void;
 }
@@ -24,6 +25,7 @@ export default function AnimatedText(props: AnimatedTextProps) {
     <span className={`animatedText ${props.className}`}>
       {chars.map((char, i) => (
         <span
+        style={{color: `var(--${props.color || 'White'})`}}
           className="animatedChar"
           key={i}
           ref={(el) => {
