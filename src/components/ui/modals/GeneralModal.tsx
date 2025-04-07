@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import ".././ui.scss";
+import "../../componentsStyle.scss";
 import { handleModal } from "@/utils/globalMethods";
 
 interface GeneralModalProps {

@@ -1,13 +1,47 @@
 import { ModalsNames } from "@/utils/interfaces";
-import { useContext } from "react";
+import { useContext, useEffect } from "react";
 
 import { handleModal, handleSideMenu } from "@/utils/globalMethods";
 import { FoldersContext } from "@/contexts/foldersContext";
 import SvgButton from "./SvgButton";
 import FolderCard from "../FolderCard";
+import gsap from 'gsap';
 
 export default function GeneralSideMenu() {
-  const foldersContext = useContext(FoldersContext);
+  const foldersContext = useContext(FoldersContext)
+
+
+  useEffect(() => {
+    setTimeout(() => {
+      const foldersList = document.querySelector('.foldersList')
+      const folderCards = document.querySelectorAll('.folderCard')
+      if (foldersList) {
+        folderCards.forEach((folder, folderIndex) => {
+          const folderTop = folder.getBoundingClientRect().top
+          const folderH = folder.getBoundingClientRect().height
+
+          const distanceFromTop = folderTop - foldersList.getBoundingClientRect().top
+          console.log(folderH)
+
+          // const windowBottom = window.innerHeight + window.scrollY;
+          // const foldersListMiddlePoint = (windowBottom - foldersList.getBoundingClientRect().height) / 2
+          // console.log(foldersListMiddlePoint);
+
+          gsap.set('#' + folder.id, {
+            // scale: folderH
+            // top: `calc(8rem * ${folderIndex})`,
+            // scale: 
+            opacity: ''
+          });
+        })
+        // foldersList.addEventListener('scroll', () => {
+        //   folderCards.forEach((folder, folderIndex) => {
+        //     const folderCardMiddleYPoint = folder.getBoundingClientRect().top + folder.getBoundingClientRect().height / 2;
+        //   })
+        // })
+      }
+    }, 1000);
+  }, []);
 
   return (
     <div className="generalSideMenu">
@@ -29,13 +63,9 @@ export default function GeneralSideMenu() {
       </div>
 
       <div className="foldersList">
-        <div className="shaderTop"></div>
-        <div className="shaderBottom"></div>
-        <div className="w-full h-full flex flex-col gap-5 py-8 bg-transparent overflow-y-scroll">
-          {foldersContext?.folders.map((folder, index) => {
-            return <FolderCard key={folder.name + index} folder={folder} />;
-          })}
-        </div>
+        {foldersContext?.folders.map((folder, index) => {
+          return <FolderCard key={folder.name + index} index={index} folder={folder} />;
+        })}
       </div>
     </div>
   );
