@@ -28,28 +28,38 @@ export default function GeneralSideMenu() {
     if (foldersList) {
 
       folderCards.forEach((folder, i) => {
-        const folderCenterFromTop = (folder.getBoundingClientRect().top - foldersList.getBoundingClientRect().top) + (folder.getBoundingClientRect().height / 2)
-        const folderCenterFromBottom = (foldersList.getBoundingClientRect().bottom - folder.getBoundingClientRect().bottom) + (folder.getBoundingClientRect().height / 2)
         const foldersListRect = foldersList.getBoundingClientRect()
-        const distanceFromTop = folderCenterFromTop - foldersListRect.top
+        const folderRect = folder.getBoundingClientRect()
+        const folderCenter = (folderRect.top + folderRect.bottom) / 2 
+        const distanceFromTop = folderCenter - foldersListRect.top
         const containerHeight = foldersListRect.bottom - foldersListRect.top
 
-        const foldersListMiddleY = foldersListRect.top + (foldersList.getBoundingClientRect().height / 2)
+        const foldersListMiddleY = foldersListRect.bottom - (foldersListRect.height / 2)
         // scaling percentage of a single px
         const opacityPxPercentage = (100 / foldersListMiddleY)
+        gsap.set('.sign', {
+          position: 'fixed',
+          top: foldersListMiddleY,
+          right: 0,
+          background: 'red',
+          width: 30,
+          height: 2
+        })
 
-        if (folderCenterFromTop <= foldersListMiddleY) {
+        if (folderCenter <= foldersListMiddleY) {
+          if (i == folderCards.length - 1) console.log(' sopra')
+
           gsap.to('#' + folder.id, {
-            opacity: (opacityPxPercentage * (folderCenterFromTop * 2)) / 100,
+            opacity: (opacityPxPercentage * (folderCenter * 2)) / 100,
             duration: 0.2
           })
         }
-        if (folderCenterFromBottom < foldersListMiddleY) {
-          if (i == folderCards.length - 1) console.log((opacityPxPercentage * folderCenterFromBottom) / 100)
-          // gsap.to('#' + folder.id, {
-          //   opacity: (opacityPxPercentage * folderCenterFromBottom) / 100,
-          //   duration: 0.2
-          // })
+        if (folderCenter > foldersListMiddleY) {
+          if (i == folderCards.length - 1) console.log((opacityPxPercentage * (folderCenter * 2)) / 100)
+          gsap.to('#' + folder.id, {
+            opacity: (opacityPxPercentage * (folderCenter * 2)) / 100,
+            duration: 0.2
+          })
         }
 
         // let scaleFactor = Number((distanceFromTop / containerHeight).toFixed(4))
@@ -90,6 +100,7 @@ export default function GeneralSideMenu() {
       </div>
 
       <div className="foldersList">
+        <div className="sign"></div>
         {foldersContext?.folders.map((folder, index) => {
           return <FolderCard key={folder.name + index} index={index} folder={folder} />;
         })}
