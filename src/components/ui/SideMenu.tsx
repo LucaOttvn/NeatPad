@@ -27,27 +27,45 @@ export default function GeneralSideMenu() {
 
     if (foldersList) {
 
-      folderCards.forEach((folder) => {
-        const folderCenter = folder.getBoundingClientRect().top + (folder.getBoundingClientRect().height / 2)
+      folderCards.forEach((folder, i) => {
+        const folderCenterFromTop = (folder.getBoundingClientRect().top - foldersList.getBoundingClientRect().top) + (folder.getBoundingClientRect().height / 2)
+        const folderCenterFromBottom = (foldersList.getBoundingClientRect().bottom - folder.getBoundingClientRect().bottom) + (folder.getBoundingClientRect().height / 2)
         const foldersListRect = foldersList.getBoundingClientRect()
-        const distanceFromTop = folderCenter - foldersListRect.top
+        const distanceFromTop = folderCenterFromTop - foldersListRect.top
         const containerHeight = foldersListRect.bottom - foldersListRect.top
 
-        let scaleFactor = Number((distanceFromTop / containerHeight).toFixed(4))
+        const foldersListMiddleY = foldersListRect.top + (foldersList.getBoundingClientRect().height / 2)
+        // scaling percentage of a single px
+        const opacityPxPercentage = (100 / foldersListMiddleY)
 
-        if (scaleFactor <= 0.5) {
+        if (folderCenterFromTop <= foldersListMiddleY) {
           gsap.to('#' + folder.id, {
-            scale: scaleFactor / 0.5,
-            opacity: scaleFactor / 0.5,
-            duration: 0.2
-          })
-        } else {
-          gsap.to('#' + folder.id, {
-            scale: Math.abs(((scaleFactor - 0.5) / 0.5) - 1),
-            opacity: Math.abs(((scaleFactor - 0.5) / 0.5) - 1),
+            opacity: (opacityPxPercentage * (folderCenterFromTop * 2)) / 100,
             duration: 0.2
           })
         }
+        if (folderCenterFromBottom < foldersListMiddleY) {
+          if (i == folderCards.length - 1) console.log((opacityPxPercentage * folderCenterFromBottom) / 100)
+          // gsap.to('#' + folder.id, {
+          //   opacity: (opacityPxPercentage * folderCenterFromBottom) / 100,
+          //   duration: 0.2
+          // })
+        }
+
+        // let scaleFactor = Number((distanceFromTop / containerHeight).toFixed(4))
+
+        // if (scaleFactor <= 0.5 && scaleFactor >= 0) {
+        //   gsap.to('#' + folder.id, {
+        //     opacity: scaleFactor / 0.5,
+        //     duration: 0.2
+        //   })
+        // } 
+        // if (scaleFactor > 0.5 && scaleFactor <= 1) {
+        //   gsap.to('#' + folder.id, {
+        //     opacity: Math.abs(((scaleFactor - 0.5) / 0.5) - 1),
+        //     duration: 0.2
+        //   })
+        // }
       })
     }
   }
