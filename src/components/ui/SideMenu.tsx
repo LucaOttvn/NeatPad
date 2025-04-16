@@ -55,9 +55,9 @@ export default function GeneralSideMenu() {
   return (
     <div className="generalSideMenu">
 
-      <span className="title ms-5">Folders</span>
+      <span className="title" style={{fontSize: '380%'}}>Folders</span>
 
-      <div className="start gap-">
+      <div className="center gap-10 pt-20 pb-10">
         <div className="sideMenuBtn" onClick={() => {
           foldersContext?.setSelectedFolder(undefined)
           handleSideMenu(false)
