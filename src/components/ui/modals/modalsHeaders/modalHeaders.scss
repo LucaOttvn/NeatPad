@@ -2,10 +2,37 @@
     display: flex;
     flex-direction: column;
     justify-content: flex-start;
+
     .addNoteToFolder {
         width: 100%;
         height: 0;
-        background-color: var(--darkGrey);
+        background-color: var(--Ligh);
         overflow: hidden;
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-start;
+        align-items: flex-start;
+
+        .foldersList {
+            width: 100%;
+            height: 100%;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));            
+            gap: 1rem;
+            padding: 1.5rem;
+
+            .folderCard {
+                width: 100%;
+                height: 100%;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                border-radius: var(--mainBorderRadius);
+                padding: 0.6rem 0;
+                transition: 0.2s;
+                user-select: none;
+            }
+        }
+
     }
 }
