@@ -1,0 +1,11 @@
+.noteEditorModalHeader {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    .addNoteToFolder {
+        width: 100%;
+        height: 0;
+        background-color: var(--darkGrey);
+        overflow: hidden;
+    }
+}
