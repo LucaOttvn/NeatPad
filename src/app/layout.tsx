@@ -5,6 +5,7 @@ import { ScreenSizeProvider } from "@/contexts/screenSizeContext";
 import { UserProvider } from "@/contexts/userContext";
 import { FolderProvider } from "@/contexts/foldersContext";
 import { NotesProvider } from "@/contexts/notesContext";
+import { ModalsProvider } from "@/contexts/modalsContext";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -31,13 +32,15 @@ export default function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
-        <NotesProvider>
-          <FolderProvider>
-            <ScreenSizeProvider>
-              <UserProvider>{children}</UserProvider>
-            </ScreenSizeProvider>
-          </FolderProvider>
-        </NotesProvider>
+        <ModalsProvider>
+          <NotesProvider>
+            <FolderProvider>
+              <ScreenSizeProvider>
+                <UserProvider>{children}</UserProvider>
+              </ScreenSizeProvider>
+            </FolderProvider>
+          </NotesProvider>
+        </ModalsProvider>
       </body>
     </html>
   );

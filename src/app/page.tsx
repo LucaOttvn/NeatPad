@@ -11,9 +11,11 @@ import { ModalsNames } from "@/utils/interfaces";
 import { UserContext } from "@/contexts/userContext";
 import GeneralSideMenu from "@/components/ui/SideMenu";
 import Login from "@/components/Login";
+import { ModalsContext } from "@/contexts/modalsContext";
 
 export default function Home() {
   const userContext = useContext(UserContext);
+  const modalsContext = useContext(ModalsContext);
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
@@ -48,8 +50,7 @@ export default function Home() {
             className="addBtn"
             style={{ borderRadius: "50%" }}
             onClick={() => {
-              // createNote(userContext!.user!.id);
-              handleModal(true, ModalsNames.newNote);
+              modalsContext?.setSelectedModal(ModalsNames.newNote)
             }}
           >
             <Image

@@ -5,6 +5,7 @@ import { handleModal } from "@/utils/globalMethods";
 import { FoldersContext } from "@/contexts/foldersContext";
 import { useContext } from "react";
 import { NotesContext } from "@/contexts/notesContext";
+import { ModalsContext } from "@/contexts/modalsContext";
 
 interface NoteCardProps {
   note: Note;
@@ -13,6 +14,7 @@ interface NoteCardProps {
 export default function NoteCard(props: NoteCardProps) {
   const foldersContext = useContext(FoldersContext);
   const notesContext = useContext(NotesContext);
+  const modalsContext = useContext(ModalsContext);
 
   const foundParentFolder = foldersContext?.folders.find((el) =>
     props.note.id ? el.notes.includes(props.note.id) : undefined
@@ -28,7 +30,7 @@ export default function NoteCard(props: NoteCardProps) {
       className="noteCard"
       onClick={() => {
         notesContext?.setSelectedNote(props.note.id);
-        handleModal(true, ModalsNames.updateNote);
+        modalsContext?.setSelectedModal(ModalsNames.updateNote)
       }}
     >
       <div

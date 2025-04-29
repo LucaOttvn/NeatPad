@@ -4,11 +4,11 @@ import { gsap, Power4 } from "gsap";
 let isSideMenuOpen = false;
 
 export function handleModal(
-  open: boolean,
-  target?: string,
+  target: string | undefined,
 ) {
-  gsap.to(target ? "#" + target : ".generalModalBackdrop", {
-    scale: open ? 1 : 0,
+  // if target is undefined close the generalBackdrop that stays behind each modal, in this way every modal in the app gets closed
+  gsap.to((target ? "#" : '') + (target ?? '.generalModalBackdrop'), {
+    scale: target != undefined ? 1 : 0,
     duration: 0.2,
     ease: Power4.easeOut,
   });

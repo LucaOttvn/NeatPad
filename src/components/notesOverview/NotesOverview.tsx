@@ -2,7 +2,7 @@ import { ModalsNames, Note } from "@/utils/interfaces";
 import "./notesOverview.scss";
 import NoteEditor from "../ui/modals/noteEditor/NoteEditor";
 import GeneralModal from "../ui/modals/GeneralModal";
-import { useContext, useEffect } from "react";
+import { useContext } from "react";
 import { updateNote } from "@/api/notes";
 import NoteEditorModalHeader from "../ui/modals/modalsHeaders/NoteEditorModalHeader";
 import AnimatedText from "../animatedComponents/AnimatedText";
@@ -11,9 +11,11 @@ import FolderCreator from "../ui/modals/FolderCreator";
 import { NotesContext } from "@/contexts/notesContext";
 import { FoldersContext } from "@/contexts/foldersContext";
 import NotesSection from "../ui/NotesSection";
+import { ModalsContext } from "@/contexts/modalsContext";
 
 export default function NotesOverview() {
   const notesContext = useContext(NotesContext);
+  const modalsContext = useContext(ModalsContext);
   const foldersContext = useContext(FoldersContext);
 
   const selectedNoteData = notesContext?.notes.find(
@@ -53,10 +55,6 @@ export default function NotesOverview() {
     }
     notesContext?.setSelectedNote(undefined);
   }
-
-  useEffect(() => {
-    console.log(selectedNoteData)
-  }, [selectedNoteData]);
 
   return (
     <div className="notesOverviewContainer">

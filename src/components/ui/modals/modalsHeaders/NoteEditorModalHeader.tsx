@@ -1,11 +1,11 @@
 import { useContext, useEffect, useState } from "react";
 import SvgButton from "../../SvgButton";
-import { handleModal } from "@/utils/globalMethods";
 import { Note } from "@/utils/interfaces";
 import { gsap, Power4 } from "gsap";
 import { FoldersContext } from "@/contexts/foldersContext";
 import { NotesContext } from "@/contexts/notesContext";
 import './modalHeaders.scss';
+import { ModalsContext } from "@/contexts/modalsContext";
 
 interface BasicComponentProps {
   onCloseCallback?: () => void;
@@ -15,6 +15,7 @@ interface BasicComponentProps {
 
 export default function NoteEditorModalHeader(props: BasicComponentProps) {
   const foldersContext = useContext(FoldersContext);
+  const modalsContext = useContext(ModalsContext);
 
   const [pinned, setPinned] = useState(false);
   const [foldersListOpened, setFoldersListOpened] = useState(true);
@@ -66,7 +67,7 @@ export default function NoteEditorModalHeader(props: BasicComponentProps) {
           fileName="close"
           onClick={() => {
             if (props.onCloseCallback) props.onCloseCallback();
-            handleModal(false, props.modalId);
+            modalsContext?.setSelectedModal(undefined)
           }}
         />
       </div>
