@@ -1,19 +1,26 @@
-import React, { useEffect } from "react";
+import { useContext, useEffect } from "react";
 import "../../componentsStyle.scss";
-import { handleModal } from "@/utils/globalMethods";
+import { ModalsContext } from "@/contexts/modalsContext";
+import { ModalsNames } from "@/utils/interfaces";
+import GeneralModalHeader from "./modalsHeaders/GeneralModalHeader";
+import FolderCreator from "./FolderCreator";
+import NoteEditorModalHeader from "./modalsHeaders/NoteEditorModalHeader";
+import { NotesContext } from "@/contexts/notesContext";
+import NoteEditor from "./noteEditor/NoteEditor";
+import LoginModal from "./LoginModal";
 
 interface GeneralModalProps {
-  children: React.ReactNode;
-  id: string;
   width?: number;
   height?: number;
   onCloseCallback?: () => void;
 }
 
 export default function GeneralModal(props: GeneralModalProps) {
+  const modalsContext = useContext(ModalsContext)
+  const notesContext = useContext(NotesContext)
   const width = props.width ? props.width + "%" : '';
   const height = props.height + "%";
-  
+
   useEffect(() => {
     document.addEventListener("keydown", handleKeyDown);
     return () => document.removeEventListener("keydown", handleKeyDown);
@@ -26,17 +33,18 @@ export default function GeneralModal(props: GeneralModalProps) {
         document.activeElement.blur();
       }
       if (props.onCloseCallback) props.onCloseCallback();
-      // handleModal(false);
+      modalsContext?.setSelectedModal(undefined)
     }
   }
 
   return (
     <div
-      id={props.id}
+      id={modalsContext?.selectedModal}
       className="generalModalBackdrop"
       onClick={() => {
         if (props.onCloseCallback) props.onCloseCallback();
-        // handleModal(false, props.id);
+        modalsContext?.setSelectedModal(undefined)
+
       }}
     >
       <div
@@ -46,7 +54,28 @@ export default function GeneralModal(props: GeneralModalProps) {
           e.stopPropagation();
         }}
       >
-        {props.children}
+        {modalsContext?.selectedModal == ModalsNames.createFolder && <><GeneralModalHeader
+          modalId={ModalsNames.createFolder}
+        ></GeneralModalHeader>
+          <FolderCreator /></>}
+
+        {(modalsContext?.selectedModal == ModalsNames.newNote || modalsContext?.selectedModal == ModalsNames.updateNote) && <>
+          <NoteEditorModalHeader
+            note={notesContext?.notes.find(
+              (n) => n.id === notesContext.selectedNote
+            )}
+            modalId={modalsContext?.selectedModal == ModalsNames.newNote ? ModalsNames.newNote : ModalsNames.updateNote}
+            onCloseCallback={() => {
+              // handleNoteOnModalClose();
+            }}
+          />
+          <NoteEditor /></>}
+
+
+        {modalsContext?.selectedModal == ModalsNames.login && <>
+          <GeneralModalHeader modalId={ModalsNames.login} className="loginModalHeader"/>
+          <LoginModal/>
+          </>}
       </div>
     </div>
   );
