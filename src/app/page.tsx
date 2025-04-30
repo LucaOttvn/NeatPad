@@ -12,6 +12,7 @@ import { UserContext } from "@/contexts/userContext";
 import GeneralSideMenu from "@/components/ui/SideMenu";
 import Login from "@/components/Login";
 import { ModalsContext } from "@/contexts/modalsContext";
+import GeneralModal from "@/components/ui/modals/GeneralModal";
 
 export default function Home() {
   const userContext = useContext(UserContext);
@@ -65,6 +66,7 @@ export default function Home() {
       ) : (
         <Login></Login>
       )}
+      <GeneralModal/>
     </>
   );
 }

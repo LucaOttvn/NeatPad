@@ -23,19 +23,19 @@ export default function NoteEditorModalHeader(props: BasicComponentProps) {
   const notesContext = useContext(NotesContext);
 
   useEffect(() => {
-    if (props.note) setPinned(props.note.pinned);
+    // if (props.note) setPinned(props.note.pinned);
   }, [props.note?.pinned]);
 
   useEffect(() => {
-    if (props.note) {
-      const updatedNote = props.note;
-      updatedNote.pinned = pinned;
-      notesContext?.setNotes(
-        notesContext.notes.map((note) =>
-          note.id === updatedNote.id ? updatedNote : note
-        )
-      );
-    }
+    // if (props.note) {
+    //   const updatedNote = props.note;
+    //   updatedNote.pinned = pinned;
+    //   notesContext?.setNotes(
+    //     notesContext.notes.map((note) =>
+    //       note.id === updatedNote.id ? updatedNote : note
+    //     )
+    //   );
+    // }
   }, [pinned]);
 
   useEffect(() => {
@@ -53,7 +53,7 @@ export default function NoteEditorModalHeader(props: BasicComponentProps) {
           <SvgButton
             fileName={pinned ? "pinFill" : "pin"}
             onClick={() => {
-              setPinned(!pinned);
+              // setPinned(!pinned);
             }}
           />
           <SvgButton

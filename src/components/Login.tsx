@@ -4,7 +4,6 @@ import { ModalsNames } from "@/utils/interfaces";
 import { getNotes } from "@/api/notes";
 import AnimatedDiv from "./animatedComponents/AnimatedDiv";
 import { ModalsContext } from "@/contexts/modalsContext";
-import GeneralModal from "./ui/modals/GeneralModal";
 
 export default function Login() {
 
@@ -36,8 +35,6 @@ export default function Login() {
           Create new account
         </button>
       </div>
-
-      <GeneralModal/>
     </AnimatedDiv>
   );
 }
