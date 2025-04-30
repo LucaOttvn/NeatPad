@@ -13,8 +13,8 @@ export default function NotesSection(props: NotesSectionProps) {
     <div className="notesSection">
       <span className="smallTitle">{props.title}</span>
       <div className="notes">
-        {props.notes.map((note: Note) => {
-          return <NoteCard key={note.id} note={note} />;
+        {props.notes.map((note: Note, i: number) => {
+          return <NoteCard key={'noteCard' + i} note={note} />;
         })}
       </div>
     </div>

@@ -1,5 +1,5 @@
 "use client";
-import { getNotes } from "@/api/notes";
+import { getNotes, updateNote } from "@/api/notes";
 import { Note } from "@/utils/interfaces";
 import { createContext, ReactNode, useEffect, useState } from "react";
 
@@ -8,6 +8,7 @@ interface NotesContextType {
   setNotes: (Notes: Note[]) => void;
   selectedNote: number | undefined;
   setSelectedNote: (noteId: number | undefined) => void;
+  updateNoteState: (note: Note) => void
 }
 
 export const NotesContext = createContext<NotesContextType | undefined>(
@@ -27,9 +28,25 @@ export function NotesProvider({ children }: { children: ReactNode }) {
     })();
   }, []);
 
+
+  function updateNoteState(note: Note) {
+    setNotes(prevState =>
+      prevState.map((el) =>
+        el.id === note.id
+          ? { ...el, title: note.title, text: note.text, last_update: note.last_update }
+          : el
+      )
+    );
+    updateNote(note)
+  }
+
+  useEffect(() => {
+    console.log(notes)
+  }, [notes]);
+
   return (
     <NotesContext.Provider
-      value={{ notes, setNotes, selectedNote, setSelectedNote }}
+      value={{ notes, setNotes, selectedNote, setSelectedNote, updateNoteState }}
     >
       {children}
     </NotesContext.Provider>

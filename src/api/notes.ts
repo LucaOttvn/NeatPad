@@ -21,7 +21,6 @@ export async function getNotes(): Promise<Note[] | null> {
 
 export async function createNote(newNote: Note) {
 
-    // Insert the new note into the "notes" table
     const { data, error } = await supabase
         .from('notes')
         .insert([

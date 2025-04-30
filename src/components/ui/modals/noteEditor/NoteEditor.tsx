@@ -1,39 +1,39 @@
 "use client";;
 import "./noteEditor.scss";
-import { useContext, useEffect, useState } from "react";
+import { ChangeEvent, useContext, useEffect, useState } from "react";
 import { NotesContext } from "@/contexts/notesContext";
+import { Note } from "@/utils/interfaces";
+import { UserContext } from "@/contexts/userContext";
+import { createNote } from "@/api/notes";
 
 export default function NoteEditor() {
   const notesContext = useContext(NotesContext);
-
-  const [title, setTitle] = useState<string>("");
-  const [text, setText] = useState<string>("");
+  const userContext = useContext(UserContext);
 
   const foundNote = notesContext?.notes?.find(
     (el) => el.id == notesContext.selectedNote
   );
 
-  useEffect(() => {
-    console.log(foundNote)
-    // initially set title and text based on the selected note
+  function handleInput(keyToUpdate: 'title' | 'text', e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) {
+    // if updating an existing note
     if (foundNote) {
-      setTitle(foundNote.title);
-      setText(foundNote.text);
+      foundNote[keyToUpdate] = e.target.value
+      notesContext?.updateNoteState(foundNote)
     }
-  }, [foundNote]);
-
-  useEffect(() => {
-    if (foundNote) {
-      const updatedNote = foundNote;
-      updatedNote.title = title;
-      updatedNote.text = text;
-      notesContext?.setNotes(
-        notesContext.notes.map((note) =>
-          note.id === updatedNote.id ? updatedNote : note
-        )
-      );
+    // if creating a new note
+    else {
+      const newNote: Note = {
+        user: userContext!.user!.id,
+        title: keyToUpdate == 'title' ? e.target.value : '',
+        text: keyToUpdate == 'text' ? e.target.value : '',
+        last_update: new Date(),
+        pinned: false
+      }
+      const updatedNotes = [...notesContext!.notes, newNote]
+      notesContext?.setNotes(updatedNotes)
+      createNote(newNote)
     }
-  }, [title, text]);
+  }
 
   return (
     <div className="noteEditorContainer">
@@ -41,9 +41,9 @@ export default function NoteEditor() {
         <input
           type="text"
           placeholder="Insert title"
-          value={title}
+          value={foundNote ? foundNote.title : ''}
           onChange={(e) => {
-            setTitle(e.target.value);
+            handleInput('title', e)
           }}
         />
       </header>
@@ -51,9 +51,9 @@ export default function NoteEditor() {
         className="noteEditorInputField"
         placeholder="Insert your note..."
         data-placeholder="Insert your note..."
-        value={text}
+        value={foundNote ? foundNote.text : ''}
         onChange={(e) => {
-          setText(e.target.value);
+          handleInput('text', e)
         }}
       ></textarea>
     </div>
