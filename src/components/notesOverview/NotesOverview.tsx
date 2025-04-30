@@ -1,7 +1,6 @@
 import { Note } from "@/utils/interfaces";
 import "./notesOverview.scss";
-import GeneralModal from "../ui/modals/GeneralModal";
-import { useContext, useEffect } from "react";
+import { useContext } from "react";
 import { updateNote } from "@/api/notes";
 import AnimatedText from "../animatedComponents/AnimatedText";
 import { NotesContext } from "@/contexts/notesContext";
@@ -51,10 +50,6 @@ export default function NotesOverview() {
     }
     notesContext?.setSelectedNote(undefined);
   }
-
-  useEffect(() => {
-    console.log(notesToShow)
-  }, [notesToShow]);
 
   return (
     <div className="notesOverviewContainer">
