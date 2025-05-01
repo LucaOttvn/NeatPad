@@ -48,3 +48,21 @@ export async function updateNote(updatedNote: Note) {
 
     return data;
 }
+
+
+export async function deleteNote(id: number) {
+    // run the delete, then select the deleted row back
+    const { data, error } = await supabase
+      .from("notes")
+      .delete()
+      .eq("id", id)
+      .select()
+      .single();
+  
+    if (error) {
+      console.error("Error deleting note:", error);
+      return null;
+    }
+  
+    return data;
+  }
