@@ -29,6 +29,7 @@ export function NotesProvider({ children }: { children: ReactNode }) {
   }, []);
 
 
+  // this updates the local notes array but the real db update happens when the user closes the create/update modal to avoid tons of api calls on each key press
   function updateNoteState(note: Note) {
     setNotes(prevState =>
       prevState.map((el) =>
@@ -37,7 +38,6 @@ export function NotesProvider({ children }: { children: ReactNode }) {
           : el
       )
     );
-    updateNote(note)
   }
 
   useEffect(() => {
