@@ -12,7 +12,7 @@ import GeneralSideMenu from "@/components/ui/SideMenu";
 import Login from "@/components/Login";
 import { ModalsContext } from "@/contexts/modalsContext";
 import GeneralModal from "@/components/ui/modals/GeneralModal";
-import { createNote } from "@/api/notes";
+import { createNote, deleteNote } from "@/api/notes";
 import { NotesContext } from "@/contexts/notesContext";
 import { flushSync } from "react-dom";
 import gsap from 'gsap';
@@ -38,7 +38,7 @@ export default function Home() {
       rotateY: notesContext?.deleteMode.active ? '180deg' : '0deg',
       background: notesContext?.deleteMode.active ? 'var(--Red)' : '',
       duration: 0.2,
-      onComplete: ()=> {
+      onComplete: () => {
         gsap.to('#trashBtn', {
           scale: notesContext?.deleteMode.active ? 1 : 0,
           duration: 0.2
@@ -95,7 +95,15 @@ export default function Home() {
             className="addBtn"
             style={{ borderRadius: "50%" }}
             onClick={() => {
-              openNewNoteModal()
+              if (notesContext?.deleteMode.active) {
+                let updatedNotes = notesContext.notes.filter(note => !notesContext.deleteMode.notes.includes(note.id!));
+                notesContext.setNotes(updatedNotes)
+                deleteNote(notesContext.deleteMode.notes)
+                notesContext.setDeleteMode({active: false, notes: []})
+              }
+              else {
+                openNewNoteModal()
+              }
             }}
           >
             <Image
