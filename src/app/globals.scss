@@ -134,13 +134,9 @@ body {
   -webkit-user-drag: none;
   transition: 0.2s;
 
-  &:hover {
-    scale: 0.95;
-  }
-
   &:active {
+    scale: 0.95;
     filter: brightness(60%);
-    scale: 0.9;
   }
 }
 
@@ -240,6 +236,18 @@ h1 {
   .iconBtn {
     &:hover {
       background-color: transparent;
+    }
+  }
+}
+
+// desktop
+@media (min-width: 1000px) {
+  .mainBtn,
+  .addBtn,
+  .iconBtn,
+  .noteCard {
+    &:hover {
+      scale: 0.95
     }
   }
 }
