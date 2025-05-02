@@ -54,7 +54,6 @@ export default function Home() {
     if (newNoteFromDB) {
       if (!notesContext) return null
       let arr = [...notesContext.notes, newNoteFromDB]
-      // React batch states updates by default but, since the
       flushSync(() => {
         notesContext.setNotes(arr)
         notesContext.setSelectedNote(newNoteFromDB.id)
