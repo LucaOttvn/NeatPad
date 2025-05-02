@@ -35,7 +35,7 @@ export default function NoteCard(props: NoteCardProps) {
     let noteToDelete = notesContext?.deleteMode.notes.find(noteId => noteId == props.note.id)
 
     gsap.to('#noteCard' + props.note.id, {
-      border: noteToDelete ? 'solid 4px var(--Red)' : 'none',
+      outline: noteToDelete ? 'solid 4px var(--Red)' : 'none',
       duration: 0.2
     })
   }, [notesContext?.deleteMode]);
