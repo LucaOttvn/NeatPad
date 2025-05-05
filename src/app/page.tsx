@@ -16,6 +16,7 @@ import { createNote, deleteNote } from "@/api/notes";
 import { NotesContext } from "@/contexts/notesContext";
 import { flushSync } from "react-dom";
 import gsap from 'gsap';
+import { animateDivUnmount } from "@/utils/globalMethods";
 
 export default function Home() {
   const userContext = useContext(UserContext);
@@ -98,8 +99,14 @@ export default function Home() {
               if (notesContext?.deleteMode.active) {
                 let updatedNotes = notesContext.notes.filter(note => !notesContext.deleteMode.notes.includes(note.id!));
                 notesContext.setNotes(updatedNotes)
-                deleteNote(notesContext.deleteMode.notes)
-                notesContext.setDeleteMode({active: false, notes: []})
+                notesContext.deleteMode.notes.forEach((noteId)=>{
+                  console.log(noteId)
+                  animateDivUnmount('noteCard' + noteId)
+                })
+                setTimeout(()=>{
+                  deleteNote(notesContext.deleteMode.notes)
+                  notesContext.setDeleteMode({active: false, notes: []})
+                }, 2000)
               }
               else {
                 openNewNoteModal()
