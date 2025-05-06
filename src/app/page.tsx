@@ -97,16 +97,15 @@ export default function Home() {
             style={{ borderRadius: "50%" }}
             onClick={() => {
               if (notesContext?.deleteMode.active) {
-                let updatedNotes = notesContext.notes.filter(note => !notesContext.deleteMode.notes.includes(note.id!));
-                notesContext.setNotes(updatedNotes)
-                notesContext.deleteMode.notes.forEach((noteId)=>{
-                  console.log(noteId)
-                  animateDivUnmount('noteCard' + noteId)
+                let notesToDelete = notesContext.deleteMode.notes.map((noteId) => {
+                  return 'noteCard' + noteId
                 })
-                setTimeout(()=>{
+                animateDivUnmount(notesToDelete, () => {
+                  let updatedNotes = notesContext.notes.filter(note => !notesContext.deleteMode.notes.includes(note.id!));
+                  notesContext.setNotes(updatedNotes)
                   deleteNote(notesContext.deleteMode.notes)
-                  notesContext.setDeleteMode({active: false, notes: []})
-                }, 2000)
+                  notesContext.setDeleteMode({ active: false, notes: [] })
+                })
               }
               else {
                 openNewNoteModal()
