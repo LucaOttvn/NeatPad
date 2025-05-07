@@ -25,7 +25,7 @@ export default function NoteEditor(props: NoteEditorProps) {
     }
   }
 
-  // this keeps up to date the context's state with the new local changes on each keystroke 
+  // this keeps the context's state up to date with the new local changes on each keystroke 
   useEffect(() => {
     if (currentNote) {
       notesContext?.updateNoteState(currentNote)

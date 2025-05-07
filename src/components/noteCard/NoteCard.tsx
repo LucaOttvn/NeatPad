@@ -17,9 +17,7 @@ export default function NoteCard(props: NoteCardProps) {
   const modalsContext = useContext(ModalsContext);
   const timerRef = useRef<any>(null);
 
-  const foundParentFolder = foldersContext?.folders.find((el) =>
-    props.note.id ? el.notes.includes(props.note.id) : undefined
-  );
+  const foundParentFolder = foldersContext?.folders.find((folder) => folder.id == props.note.folder);
 
   const textColor =
     colors.find((item) => item.color == foundParentFolder?.color)?.text ||
@@ -46,10 +44,9 @@ export default function NoteCard(props: NoteCardProps) {
   }, [notesContext?.deleteMode]);
 
 
+  // start the timer to detect long presses
   function handleTouchStart() {
-
     if (!notesContext?.deleteMode.active) {
-      // start the timer to detect long presses
       timerRef.current = setTimeout(() => {
         let notesToDeleteUpdated: number[] = [...notesContext!.deleteMode.notes, props.note.id!]
         notesContext?.setDeleteMode({ active: true, notes: notesToDeleteUpdated })
@@ -62,6 +59,26 @@ export default function NoteCard(props: NoteCardProps) {
     clearTimeout(timerRef.current);
   }
 
+  function handleClick() {
+    // if in delete mode
+    if (notesContext!.deleteMode.active) {
+      let notesToDeleteUpdated: number[] = []
+
+      // is the cliked card already selected?
+      let isNoteAlreadySelected = notesContext?.deleteMode.notes.some(noteId => noteId == props.note.id)
+
+      // if it's already selected remove it, otherwise add it
+      notesToDeleteUpdated = isNoteAlreadySelected ? notesContext!.deleteMode.notes.filter(noteId => noteId != props.note.id!) : [...notesContext!.deleteMode.notes, props.note.id!]
+
+      notesContext?.setDeleteMode({ active: true, notes: notesToDeleteUpdated })
+    }
+    else {
+      notesContext?.setSelectedNote(props.note.id);
+      modalsContext?.setSelectedModal(ModalsNames.updateNote)
+    }
+
+  }
+
   return (
     <AnimatedDiv
       id={'noteCard' + props.note.id}
@@ -71,25 +88,7 @@ export default function NoteCard(props: NoteCardProps) {
       onTouchStart={handleTouchStart}
       onTouchEnd={handleTouchEnd}
       onClick={() => {
-        // if in delete mode
-        if (notesContext!.deleteMode.active) {
-          let notesToDeleteUpdated: number[] = []
-
-          // is the cliked card already selected?
-          let isNoteAlreadySelected = notesContext?.deleteMode.notes.some(noteId => noteId == props.note.id)
-
-          // if it's already selected remove it, otherwise add it
-          notesToDeleteUpdated = isNoteAlreadySelected ? notesContext!.deleteMode.notes.filter(noteId => noteId != props.note.id!) : [...notesContext!.deleteMode.notes, props.note.id!]
-
-          notesContext?.setDeleteMode({ active: true, notes: notesToDeleteUpdated })
-        }
-        else {
-          notesContext?.setSelectedNote(props.note.id);
-          modalsContext?.setSelectedModal(ModalsNames.updateNote)
-        }
-
-
-
+        handleClick()
       }}
     >
       <div
