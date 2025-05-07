@@ -24,6 +24,10 @@ export interface Folder {
 
 export const colors = [
     {
+        color: "White",
+        text: 'Black'
+    },
+    {
         color: "lightBlack",
         text: 'White'
     },

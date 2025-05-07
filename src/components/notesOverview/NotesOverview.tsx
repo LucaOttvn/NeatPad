@@ -1,35 +1,34 @@
 import { Note } from "@/utils/interfaces";
 import "./notesOverview.scss";
-import { useContext } from "react";
-import { updateNote } from "@/api/notes";
+import { useContext, useEffect, useState } from "react";
 import AnimatedText from "../animatedComponents/AnimatedText";
 import { NotesContext } from "@/contexts/notesContext";
 import { FoldersContext } from "@/contexts/foldersContext";
 import NotesSection from "../ui/NotesSection";
-import { ModalsContext } from "@/contexts/modalsContext";
 
 export default function NotesOverview() {
   const notesContext = useContext(NotesContext);
-  const modalsContext = useContext(ModalsContext);
   const foldersContext = useContext(FoldersContext);
-
-  const selectedNoteData = notesContext?.notes.find(
-    (n) => n.id === notesContext.selectedNote
-  );
 
   const foundSelectedFolderData = foldersContext?.folders.find(
     (el) => el.id == foldersContext.selectedFolder
   );
 
-  let notesToShow: Note[] = [];
-  if (foundSelectedFolderData) {
-    notesToShow =
-      foundSelectedFolderData?.notes.flatMap(
-        (noteId) => notesContext?.notes.find((note) => note.id === noteId) ?? []
-      ) || [];
-  } else {
-    notesToShow = notesContext!.notes;
-  }
+  const [notesToShow, setNotesToShow] = useState<Note[]>([])
+
+  useEffect(() => {
+    if (foldersContext?.selectedFolder) {
+      const filteredNotes = notesContext?.notes.filter(note => note.folder == foldersContext?.selectedFolder)
+      console.log(filteredNotes)
+      if (filteredNotes) setNotesToShow(filteredNotes)
+    }
+    else {
+      if (notesContext) {
+        console.log(notesContext.notes)
+        setNotesToShow(notesContext.notes)
+      }
+    }
+  }, [foldersContext?.selectedFolder]);
 
   return (
     <div className="notesOverviewContainer">
@@ -40,16 +39,16 @@ export default function NotesOverview() {
         <AnimatedText className="title ms-5" text="Notes" />
       </div>}
       {/* pinnedSection (show it only if there's at least one pinned note) */}
-      {notesToShow.some((el) => el.pinned) && (
+      {(foldersContext?.selectedFolder ? notesToShow : notesContext!.notes).some((el) => el.pinned) && (
         <NotesSection
-          notes={notesToShow.filter((el) => el.pinned)}
+          notes={(foldersContext?.selectedFolder ? notesToShow : notesContext!.notes).filter((el) => el.pinned)}
           title="Pinned"
         />
       )}
 
       {/* non-pinned notes section */}
       <NotesSection
-        notes={notesToShow.filter((el) => !el.pinned)}
+        notes={(foldersContext?.selectedFolder ? notesToShow : notesContext!.notes).filter((el) => !el.pinned)}
         title="Others"
       />
     </div>

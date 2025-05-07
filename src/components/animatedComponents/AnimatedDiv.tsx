@@ -1,4 +1,4 @@
-import { ReactNode, useEffect } from "react";
+import { CSSProperties, ReactNode, useEffect } from "react";
 import { gsap, Power4 } from "gsap";
 import "./animatedStyle.scss";
 
@@ -6,6 +6,7 @@ interface AnimatedDivProps {
   children: ReactNode;
   className?: string;
   id?: string
+  style?: CSSProperties
   onClick?: () => void;
   onTouchStart?: () => void;
   onTouchEnd?: () => void;
@@ -25,6 +26,7 @@ export default function AnimatedDiv(props: AnimatedDivProps) {
     <div
       id={props.id || ''}
       className={`animatedDiv ${props.className || ""}`}
+      style={props.style}
       onClick={() => {
         if (props.onClick) props.onClick();
       }}
