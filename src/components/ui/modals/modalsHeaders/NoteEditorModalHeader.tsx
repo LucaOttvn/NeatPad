@@ -7,6 +7,7 @@ import { NotesContext } from "@/contexts/notesContext";
 import './modalHeaders.scss';
 import { ModalsContext } from "@/contexts/modalsContext";
 import { updateNote } from "@/api/notes";
+import { ReactSVG } from "react-svg";
 
 interface BasicComponentProps {
   modalId: string;
@@ -73,21 +74,24 @@ export default function NoteEditorModalHeader(props: BasicComponentProps) {
         />
       </div>
       <div className="addNoteToFolder">
-        {foldersContext?.folders.map((folder, index) => {
-          return (
-            <div
-              key={"folder" + index}
-              className="folderCard"
-              onClick={() => { }}
-              style={{ border: `2px solid var(--${folder.color})` }}
-            >
-              {/* <ReactSVG src={`/icons/folder.svg`} className="icon" beforeInjection={(svg) => {
-                    svg.setAttribute("fill", `var(--${folder.color})`);
-                  }} /> */}
-              <span className="font-bold" style={{ color: `var(--${folder.color})` }}>{folder.name}</span>
-            </div>
-          );
-        })}
+        <span className="font-bold">Add note to folder</span>
+        <div className="foldersList">
+          {foldersContext?.folders.map((folder, index) => {
+            return (
+              <div
+                key={"folder" + index}
+                className="folderCard gap-3"
+                onClick={() => { }}
+                style={{ border: `${props.note?.folder == folder.id ? 4 : 2}px solid var(--${folder.color})` }}
+              >
+                {props.note?.folder == folder.id && <ReactSVG src={`/icons/folder.svg`} className="icon" beforeInjection={(svg) => {
+                  svg.setAttribute("fill", `var(--${folder.color})`);
+                }} />}
+                <span className="font-bold" style={{ color: `var(--${folder.color})` }}>{folder.name}</span>
+              </div>
+            );
+          })}
+        </div>
       </div>
     </header>
   );

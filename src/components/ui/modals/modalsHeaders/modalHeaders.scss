@@ -7,22 +7,28 @@
     .addNoteToFolder {
         width: 100%;
         height: 0;
-        display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-        gap: 1rem;
-        padding: 0 1.5rem;;
+        display: flex;
+        flex-direction: column;
+        padding: 0 1.5rem;
         overflow: hidden;
+        gap: 1rem;
 
-        .folderCard {
-            width: 100%;
-            height: 100%;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            border-radius: var(--mainBorderRadius);
-            padding: 0.6rem 0;
-            transition: 0.2s;
-            user-select: none;
+        .foldersList {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 1rem;
+
+            .folderCard {
+                width: 100%;
+                height: 100%;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                border-radius: var(--mainBorderRadius);
+                padding: 0.6rem 0;
+                transition: 0.2s;
+                user-select: none;
+            }
         }
     }
 }
