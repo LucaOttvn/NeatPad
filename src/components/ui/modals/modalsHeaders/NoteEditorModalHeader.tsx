@@ -81,7 +81,14 @@ export default function NoteEditorModalHeader(props: BasicComponentProps) {
               <div
                 key={"folder" + index}
                 className="folderCard gap-3"
-                onClick={() => { }}
+                onClick={() => {
+                  const updatedNote = props.note
+                  if (updatedNote) {
+                    updatedNote.folder = folder.id
+                    notesContext?.updateNoteState(updatedNote)
+                    updateNote(updatedNote)
+                  }
+                }}
                 style={{ border: `${props.note?.folder == folder.id ? 4 : 2}px solid var(--${folder.color})` }}
               >
                 {props.note?.folder == folder.id && <ReactSVG src={`/icons/folder.svg`} className="icon" beforeInjection={(svg) => {
