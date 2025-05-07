@@ -1,5 +1,8 @@
 
+import { deleteNote, updateNote } from "@/api/notes";
+import { NotesContext } from "@/contexts/notesContext";
 import { gsap, Power4 } from "gsap";
+import { useContext } from "react";
 
 let isSideMenuOpen = false;
 
@@ -36,3 +39,4 @@ export function animateDivUnmount(ids: string[], onComplete: () => void) {
     }, 0); // all animations start at the same time
   });
 }
+

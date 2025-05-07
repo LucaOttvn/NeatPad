@@ -1,4 +1,4 @@
-import { useContext, useEffect } from "react";
+import { useContext, useEffect, useLayoutEffect, useRef } from "react";
 import "../../componentsStyle.scss";
 import { ModalsContext } from "@/contexts/modalsContext";
 import { ModalsNames } from "@/utils/interfaces";
@@ -12,7 +12,6 @@ import LoginModal from "./LoginModal";
 interface GeneralModalProps {
   width?: number;
   height?: number;
-  onCloseCallback?: () => void;
 }
 
 export default function GeneralModal(props: GeneralModalProps) {
@@ -21,18 +20,22 @@ export default function GeneralModal(props: GeneralModalProps) {
   const width = props.width ? props.width + "%" : '';
   const height = props.height + "%";
 
-  useEffect(() => {
-    document.addEventListener("keydown", handleKeyDown);
-    return () => document.removeEventListener("keydown", handleKeyDown);
-  }, []);
+  const generalModalRef = useRef<HTMLDivElement>(null)
 
-  function handleKeyDown(e: KeyboardEvent) {
+  useEffect(() => {
+    generalModalRef.current?.focus();
+  }, [notesContext?.selectedNote]);
+
+
+  function handleKeyDown(e: React.KeyboardEvent<HTMLDivElement>) {
     if (e.key === "Escape") {
       // this removes the automatic browser's focus on the button when esc is pressed
       if (document.activeElement instanceof HTMLElement) {
         document.activeElement.blur();
       }
-      if (props.onCloseCallback) props.onCloseCallback();
+      if (modalsContext?.selectedModal == ModalsNames.newNote || modalsContext?.selectedModal == ModalsNames.updateNote) {
+        notesContext?.handleNoteEditorClose()
+      }
       modalsContext?.setSelectedModal(undefined)
     }
   }
@@ -42,15 +45,20 @@ export default function GeneralModal(props: GeneralModalProps) {
       id={modalsContext?.selectedModal}
       className="generalModalBackdrop"
       onClick={() => {
-        if (props.onCloseCallback) props.onCloseCallback();
         modalsContext?.setSelectedModal(undefined)
       }}
     >
       <div
         className="generalModal"
         style={{ width, height }}
+        ref={generalModalRef}
         onClick={(e) => {
           e.stopPropagation();
+        }}
+        // this allows the generalModalRef to automatically focus itself on open, since this condition is necessary to detect the ESC key press
+        tabIndex={0}
+        onKeyDown={(e) => {
+          handleKeyDown(e)
         }}
       >
         {modalsContext?.selectedModal == ModalsNames.createFolder && <><GeneralModalHeader
@@ -64,11 +72,10 @@ export default function GeneralModal(props: GeneralModalProps) {
               (el) => el.id === notesContext.selectedNote
             )}
             modalId={modalsContext?.selectedModal == ModalsNames.newNote ? ModalsNames.newNote : ModalsNames.updateNote}
-            onCloseCallback={() => {
-              // handleNoteOnModalClose();
-            }}
           />
-          <NoteEditor /></>}
+          <NoteEditor note={notesContext?.notes.find(
+            (el) => el.id === notesContext.selectedNote
+          )} /></>}
 
 
         {modalsContext?.selectedModal == ModalsNames.login && <>

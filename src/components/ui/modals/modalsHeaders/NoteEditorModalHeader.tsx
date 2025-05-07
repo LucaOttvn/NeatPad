@@ -6,9 +6,9 @@ import { FoldersContext } from "@/contexts/foldersContext";
 import { NotesContext } from "@/contexts/notesContext";
 import './modalHeaders.scss';
 import { ModalsContext } from "@/contexts/modalsContext";
+import { updateNote } from "@/api/notes";
 
 interface BasicComponentProps {
-  onCloseCallback?: () => void;
   modalId: string;
   note: Note | undefined;
 }
@@ -17,25 +17,18 @@ export default function NoteEditorModalHeader(props: BasicComponentProps) {
   const foldersContext = useContext(FoldersContext);
   const modalsContext = useContext(ModalsContext);
 
-  const [pinned, setPinned] = useState(false);
+  const [pinned, setPinned] = useState(props.note ? props.note.pinned : false);
   const [foldersListOpened, setFoldersListOpened] = useState(false);
 
   const notesContext = useContext(NotesContext);
 
   useEffect(() => {
-    // if (props.note) setPinned(props.note.pinned);
-  }, [props.note?.pinned]);
-
-  useEffect(() => {
-    // if (props.note) {
-    //   const updatedNote = props.note;
-    //   updatedNote.pinned = pinned;
-    //   notesContext?.setNotes(
-    //     notesContext.notes.map((note) =>
-    //       note.id === updatedNote.id ? updatedNote : note
-    //     )
-    //   );
-    // }
+    const updatedNote = props.note;
+    if (updatedNote) {
+      updatedNote.pinned = pinned
+      updateNote(updatedNote)
+      notesContext?.updateNoteState(updatedNote)
+    }
   }, [pinned]);
 
   useEffect(() => {
@@ -60,7 +53,7 @@ export default function NoteEditorModalHeader(props: BasicComponentProps) {
           <SvgButton
             fileName={pinned ? "pinFill" : "pin"}
             onClick={() => {
-              // setPinned(!pinned);
+              setPinned(!pinned);
             }}
           />
           <SvgButton
@@ -74,7 +67,7 @@ export default function NoteEditorModalHeader(props: BasicComponentProps) {
         <SvgButton
           fileName="close"
           onClick={() => {
-            if (props.onCloseCallback) props.onCloseCallback();
+            notesContext?.handleNoteEditorClose()
             modalsContext?.setSelectedModal(undefined)
           }}
         />

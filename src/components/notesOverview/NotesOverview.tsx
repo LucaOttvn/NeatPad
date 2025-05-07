@@ -31,26 +31,6 @@ export default function NotesOverview() {
     notesToShow = notesContext!.notes;
   }
 
-  function handleNoteOnModalClose() {
-    // if there's a selected note
-    if (selectedNoteData) {
-      selectedNoteData.last_update = new Date();
-      updateNote(selectedNoteData);
-    }
-    else {
-      // const note: Note = {
-      //   title: 'New',
-      //   text: 'New',
-      //   state: 0,
-      //   user: userId,
-      //   last_update: new Date(),
-      //   pinned: false
-      // }
-      // createNote()
-    }
-    notesContext?.setSelectedNote(undefined);
-  }
-
   return (
     <div className="notesOverviewContainer">
 
