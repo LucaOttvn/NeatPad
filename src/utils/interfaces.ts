@@ -12,7 +12,7 @@ export enum ModalsNames {
     newNote = "newNoteModal",
     updateNote = "updateNoteModal",
     login = "login",
-    createFolder = "createFolderModal"
+    folderHandler = "folderHandlerModal",
 }
 
 export interface Folder {
@@ -77,10 +77,6 @@ export const colors = [
     },
     {
         color: "PersianGreen",
-        text: 'Black'
-    },
-    {
-        color: "Cyan",
         text: 'Black'
     },
     {

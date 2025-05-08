@@ -4,6 +4,7 @@ import { colors } from "@/utils/interfaces";
 
 interface ColorPickerProps {
   setSelectedColor: React.Dispatch<React.SetStateAction<string | undefined>>;
+  selectedColor: string | undefined
 }
 
 export default function ColorPicker(props: ColorPickerProps) {
@@ -15,7 +16,7 @@ export default function ColorPicker(props: ColorPickerProps) {
             <div
               key={"color" + index}
               className="colorSelector"
-              style={{ background: `var(--${color.color})` }}
+              style={{ background: `var(--${color.color})`, border: props.selectedColor == color.color ? `solid 3px var(--Black)` : '', outline: props.selectedColor == color.color ? `solid 3px var(--White)` : ''}}
               onClick={() => {
                 props.setSelectedColor(color.color);
               }}

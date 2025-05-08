@@ -83,7 +83,7 @@ export default function NoteCard(props: NoteCardProps) {
     <AnimatedDiv
       id={'noteCard' + props.note.id}
       className="noteCard"
-      // when the user long press but then drags the finger outside of the div don't trigger the long press event
+      // when the user long press but then drags the finger outside of the div doesn't trigger the long press event
       onTouchMove={handleTouchEnd}
       onTouchStart={handleTouchStart}
       onTouchEnd={handleTouchEnd}
