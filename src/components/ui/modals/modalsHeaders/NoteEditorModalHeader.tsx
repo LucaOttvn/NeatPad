@@ -84,9 +84,9 @@ export default function NoteEditorModalHeader(props: BasicComponentProps) {
                 onClick={() => {
                   const updatedNote = props.note
                   if (updatedNote) {
-                    updatedNote.folder = folder.id
+
+                    updatedNote.folder = updatedNote.folder == folder.id ? undefined : folder.id
                     notesContext?.updateNoteState(updatedNote)
-                    updateNote(updatedNote)
                   }
                 }}
                 style={{ border: `${props.note?.folder == folder.id ? 4 : 2}px solid var(--${folder.color})` }}
