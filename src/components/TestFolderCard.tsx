@@ -31,7 +31,7 @@ export default function TestFolderCard(props: FolderProps) {
           : "var(--darkGrey)",
       }}
     >
-      <div
+      {/* <div
         className="cornerRounder1"
         style={{
           backgroundColor: props.folder.color
@@ -69,7 +69,7 @@ export default function TestFolderCard(props: FolderProps) {
         <span style={{ color: `var(--${textColor})` }} className="notesCounter">
           {props.folder.notes.length} notes
         </span>
-      </div>
+      </div> */}
     </div>
   );
 }

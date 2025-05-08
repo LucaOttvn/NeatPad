@@ -53,7 +53,6 @@ export default function FolderCreator() {
         onClick={async () => {
           const newFolder: Folder = {
             name: folderName,
-            notes: [],
             color: selectedColor || 'White',
             user: userContext!.user!.id,
           };
