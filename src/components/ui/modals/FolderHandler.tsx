@@ -21,6 +21,7 @@ export default function FolderHandler() {
   let foundFolder = useRef<Folder | undefined>(undefined)
 
   useEffect(() => {
+    // if updating a folder get its data into the view
     if (foldersContext?.updatingFolder) {
       foundFolder.current = foldersContext.folders.find((folder) => folder.id == foldersContext.updatingFolder)
       if (foundFolder.current) {
@@ -28,19 +29,16 @@ export default function FolderHandler() {
         if (foundFolder.current.color) setSelectedColor(foundFolder.current.color)
       }
     }
-    console.log(foldersContext?.updatingFolder)
   }, []);
 
   async function handleFolderCreation() {
 
+    // if updating
     if (foldersContext?.updatingFolder) {
-
       const changesDetected = foundFolder.current?.name != folderName || foundFolder.current.color != selectedColor
-      if (changesDetected) {
-        if (foundFolder.current) {
-          await updateFolder(foundFolder.current.id!, { name: folderName, color: selectedColor })
-          foldersContext.updateFolderState(foundFolder.current.id!, { name: folderName, color: foundFolder.current.color })
-        }
+      if (changesDetected && foundFolder.current) {
+        await updateFolder(foundFolder.current.id!, { name: folderName, color: selectedColor })
+        foldersContext.updateFolderState(foundFolder.current.id!, { name: folderName, color: foundFolder.current.color })
       }
     } else {
       const newFolder: Folder = {
@@ -54,6 +52,7 @@ export default function FolderHandler() {
         newFolder,
       ]);
     }
+    // close the modal
     foldersContext?.setUpdatingFolder(undefined)
     modalsContext?.setSelectedModal(undefined)
   }

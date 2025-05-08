@@ -1,0 +1,6 @@
+TODO
+
+folder deletion
+folder sorting
+shared notes
+web version

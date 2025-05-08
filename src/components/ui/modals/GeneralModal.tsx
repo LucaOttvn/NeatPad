@@ -8,6 +8,7 @@ import { NotesContext } from "@/contexts/notesContext";
 import NoteEditor from "./noteEditor/NoteEditor";
 import LoginModal from "./LoginModal";
 import FolderHandler from "./FolderHandler";
+import { FoldersContext } from "@/contexts/foldersContext";
 
 interface GeneralModalProps {
   width?: number;
@@ -17,6 +18,7 @@ interface GeneralModalProps {
 export default function GeneralModal(props: GeneralModalProps) {
   const modalsContext = useContext(ModalsContext)
   const notesContext = useContext(NotesContext)
+  const foldersContext = useContext(FoldersContext)
   const width = props.width ? props.width + "%" : '';
   const height = props.height + "%";
 
@@ -36,6 +38,7 @@ export default function GeneralModal(props: GeneralModalProps) {
       if (modalsContext?.selectedModal == ModalsNames.newNote || modalsContext?.selectedModal == ModalsNames.updateNote) {
         notesContext?.handleNoteEditorClose()
       }
+      if (modalsContext?.selectedModal == ModalsNames.folderHandler) { foldersContext?.setUpdatingFolder(undefined) }
       modalsContext?.setSelectedModal(undefined)
     }
   }
