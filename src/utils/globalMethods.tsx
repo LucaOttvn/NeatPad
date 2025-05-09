@@ -1,8 +1,6 @@
 
 import { gsap, Power4 } from "gsap";
 
-let isSideMenuOpen = false;
-
 export function handleModal(
   target: string | undefined,
 ) {
@@ -14,13 +12,12 @@ export function handleModal(
   });
 }
 
-export function handleSideMenu(isMobile: boolean) {
+export function handleSideMenu(opening: boolean, isMobile: boolean) {
   gsap.to(".generalSideMenu", {
-    width: isSideMenuOpen ? 0 : (isMobile ? "100%" : "auto"),
+    width: opening ? (isMobile ? "100%" : "auto") : 0,
     duration: 0.2,
     ease: Power4.easeOut,
   });
-  isSideMenuOpen = !isSideMenuOpen;
 }
 
 export function animateDivUnmount(ids: string[], onComplete: () => void) {

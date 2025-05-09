@@ -1,4 +1,4 @@
-import { useContext } from "react";
+import { useContext, useEffect, useState } from "react";
 import "../componentsStyle.scss";
 import { handleSideMenu } from "@/utils/globalMethods";
 import SvgButton from "./SvgButton";
@@ -9,16 +9,30 @@ export default function TopBar() {
   const userContext = useContext(UserContext);
   const screenSizeContext = useContext(ScreenSizeContext);
 
+  const [openingSideMenu, setOpeningSideMenu] = useState(false)
+
+  useEffect(() => {
+    handleSideMenu(openingSideMenu, screenSizeContext);
+  }, [openingSideMenu]);
+
   return (
     <div className="topBar">
       <SvgButton
-        fileName="hamburgerMenu"
+        fileName="close"
+        style={{display: openingSideMenu ? '' : 'none'}}
         onClick={() => {
-          handleSideMenu(screenSizeContext);
+          setOpeningSideMenu(!openingSideMenu)
+        }}
+      />
+      <SvgButton
+        fileName="hamburgerMenu"
+        style={{display: openingSideMenu ? 'none' : ''}}
+        onClick={() => {
+          setOpeningSideMenu(!openingSideMenu)
         }}
       />
 
-      <h1 style={{letterSpacing: '1px'}}>NeatPad</h1>
+      <h1 style={{ letterSpacing: '1px' }}>NeatPad</h1>
       {/* spacer */}
       <div className="w-full"></div>
       <SvgButton

@@ -6,6 +6,7 @@ import { ScreenSizeContext } from "@/contexts/screenSizeContext";
 import { handleSideMenu } from "@/utils/globalMethods";
 import { NotesContext } from "@/contexts/notesContext";
 import { ModalsContext } from "@/contexts/modalsContext";
+import gsap from 'gsap'
 
 interface FolderProps {
   folder: Folder;
@@ -26,6 +27,10 @@ export default function FolderCard(props: FolderProps) {
 
   // start the timer to detect long presses
   function handleTouchStart() {
+    gsap.to('#folder' + props.index, {
+      scale: 0.9,
+      duration: 0.2
+    })
     if (!notesContext?.deleteMode.active) {
       timerRef.current = setTimeout(() => {
         foldersContext?.setUpdatingFolder(props.folder.id)
@@ -36,13 +41,17 @@ export default function FolderCard(props: FolderProps) {
 
   // if the user removes the finger from the screen before the end of the timeout, clear the timer so no card selection animation gets triggered
   function handleTouchEnd() {
+    gsap.to('#folder' + props.index, {
+      scale: 1,
+      duration: 0.2
+    })
     clearTimeout(timerRef.current);
   }
 
   function handleClick() {
     foldersContext?.setSelectedFolder(props.folder.id)
     // only on mobile, close the side menu on folder selection
-    if (screenSizeContext) handleSideMenu(false)
+    if (screenSizeContext) handleSideMenu(true, false)
   }
 
   return (
