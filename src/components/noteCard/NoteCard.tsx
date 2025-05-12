@@ -96,23 +96,6 @@ export default function NoteCard(props: NoteCardProps) {
           : "var(--lightBlack)",
       }}
     >
-      {/* <div
-        className="cornerRounder1"
-        style={{
-          background: foundParentFolder?.color
-            ? `var(--${foundParentFolder?.color})`
-            : "var(--lightBlack)",
-        }}
-      ></div> */}
-      {/* <div
-        className="cornerRounder2"
-        style={{
-          background: foundParentFolder?.color
-            ? `var(--${foundParentFolder?.color})`
-            : "var(--lightBlack)",
-        }}
-      ></div> */}
-      {/* <div className="cornerRounder3"></div>       */}
       <div className="overflow-hidden">
         {props.note.title ? (
           <h1 style={{ color: textColor ? `var(--${textColor})` : "auto" }}>

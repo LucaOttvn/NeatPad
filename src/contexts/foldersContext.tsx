@@ -43,6 +43,10 @@ export function FolderProvider({ children }: { children: ReactNode }) {
     );
   }
 
+  useEffect(() => {
+    console.log(folders)
+  }, [folders]);
+
   return (
     <FoldersContext.Provider
       value={{ folders, setFolders, selectedFolder, setSelectedFolder, updatingFolder, setUpdatingFolder, updateFolderState }}

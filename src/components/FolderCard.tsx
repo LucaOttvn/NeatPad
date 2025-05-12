@@ -14,7 +14,7 @@ interface FolderProps {
   index: number
 }
 
-export default function FolderCard(props: FolderProps) {
+export default function   FolderCard(props: FolderProps) {
   const textColor = colors.find(
     (item) => item.color == props.folder.color
   )?.text || "White"

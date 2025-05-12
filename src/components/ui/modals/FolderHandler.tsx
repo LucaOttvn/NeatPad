@@ -4,7 +4,7 @@ import ColorPicker from "../ColorPicker";
 import { FoldersContext } from "@/contexts/foldersContext";
 import { Folder } from "@/utils/interfaces";
 import { UserContext } from "@/contexts/userContext";
-import { createFolder, updateFolder } from "@/api/folders";
+import { createFolder, deleteFolder, updateFolder } from "@/api/folders";
 import { ModalsContext } from "@/contexts/modalsContext";
 
 export default function FolderHandler() {
@@ -86,15 +86,32 @@ export default function FolderHandler() {
         <ColorPicker selectedColor={selectedColor} setSelectedColor={setSelectedColor} />
       </div>
 
-      <button
-        className="mainBtn createFolderBtn"
-        disabled={folderName == ''}
-        onClick={() => {
-          handleFolderCreation()
-        }}
-      >
-        Confirm
-      </button>
+      <div className="flex items-center gap-3 pb-5">
+        <button
+          className="mainBtn createFolderBtn"
+          disabled={folderName == ''}
+          onClick={() => {
+            handleFolderCreation()
+          }}
+        >
+          Confirm
+        </button>
+        {foldersContext?.updatingFolder && <>
+          or
+          <button
+            className="mainBtn createFolderBtn"
+            style={{ background: 'var(--Red)' }}
+            onClick={() => {
+              foldersContext?.setFolders(prev => prev.filter(folder => folder.id != foundFolder.current?.id))
+              if (foundFolder.current && foundFolder.current.id) deleteFolder(foundFolder.current?.id)
+              modalsContext?.setSelectedModal(undefined)
+              foldersContext.setUpdatingFolder(undefined)
+            }}
+          >
+            Delete folder
+          </button>
+        </>}
+      </div>
     </AnimatedDiv>
   );
 }
