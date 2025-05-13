@@ -64,7 +64,7 @@ export default function GeneralModal(props: GeneralModalProps) {
           handleKeyDown(e)
         }}
       >
-        {modalsContext?.selectedModal == ModalsNames.folderHandler && <div className="w-full h-full overflow-y-scroll"><GeneralModalHeader
+        {modalsContext?.selectedModal == ModalsNames.folderHandler && <div className="w-full h-full"><GeneralModalHeader
           modalId={ModalsNames.folderHandler}
         />
           <FolderHandler /></div>}

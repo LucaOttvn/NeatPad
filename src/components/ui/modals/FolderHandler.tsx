@@ -58,10 +58,10 @@ export default function FolderHandler() {
   }
 
   return (
-    <AnimatedDiv className="FolderHandler">
+    <AnimatedDiv className="folderHandler">
       <div className="wrapper flex">
         <div className="heading">
-          <span className="title flex flex-col items-start justify-start">
+          <div className="title flex flex-col items-start justify-start">
             {foldersContext?.updatingFolder ? <span>Update</span> : <><span>Create</span>
               <span className="ms-3">New</span></>}
             <b
@@ -73,7 +73,7 @@ export default function FolderHandler() {
             >
               Folder
             </b>
-          </span>
+          </div>
           <input
             type="text"
             placeholder="Folder name"
