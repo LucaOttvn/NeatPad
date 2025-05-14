@@ -2,24 +2,24 @@ import { Note } from '@/utils/interfaces';
 import { supabase } from './supabaseClient';
 
 
-export async function getNotes(): Promise<Note[] | null> {
+export async function getNotes(){
 
   const { data, error } = await supabase
     .from('notes')
     .select('*')
-    .order('last_update', { ascending: false }); // Sort by latest first
-
+    .order('last_update', { ascending: false });
 
   if (error) {
     console.error("Error fetching data:", error);
     return null;
   }
 
+  console.log(data)
   return data;
 }
 
 
-export async function createNote(newNote: Note): Promise<Note | null> {
+export async function createNote(newNote: Note){
   const { data, error } = await supabase
     .from('notes')
     .insert([newNote])

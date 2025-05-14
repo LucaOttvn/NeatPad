@@ -24,16 +24,6 @@ export function FolderProvider({ children }: { children: ReactNode }) {
     undefined
   );
 
-  // initially get all the folders
-  useEffect(() => {
-    (async () => {
-      const fetchedfolders = await getFolders();
-      if (fetchedfolders) {
-        setFolders(fetchedfolders)
-      }
-    })();
-  }, []);
-
   function updateFolderState(id: number, folder: Partial<Folder>) {
     setFolders(prevState =>
       prevState.map((el) =>

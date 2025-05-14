@@ -1,17 +1,12 @@
-import { useContext, useEffect } from "react";
+import { useContext } from "react";
 import "./componentsStyle.scss";
 import { ModalsNames } from "@/utils/interfaces";
-import { getNotes } from "@/api/notes";
 import AnimatedDiv from "./animatedComponents/AnimatedDiv";
 import { ModalsContext } from "@/contexts/modalsContext";
 
 export default function Login() {
 
   const modalsContext = useContext(ModalsContext);
-  
-  useEffect(() => {
-    getNotes();
-  }, []);
 
   return (
     <AnimatedDiv className="loginContainer">
