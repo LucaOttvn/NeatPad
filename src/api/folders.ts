@@ -17,22 +17,21 @@ export async function getFolders(): Promise<Folder[] | null> {
     return data;
 }
 
+export async function createFolder(folder: Folder){
+  const { data, error } = await supabase
+    .from("folders")
+    .insert(folder)
+    .select()      
+    .single();     
 
-export async function createFolder(folder: Folder) {
+  if (error) {
+    console.error("Error inserting folder:", error);
+    return null;
+  }
 
-    const { data, error } = await supabase
-        .from('folders')
-        .insert([
-            folder
-        ]);
-
-    if (error) {
-        console.error("Error inserting folder:", error);
-        return null;
-    }
-
-    return data;
+  return data;       
 }
+
 
 export async function updateFolder(
     id: number,

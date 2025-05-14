@@ -10,23 +10,21 @@ export default function NotesOverview() {
   const notesContext = useContext(NotesContext);
   const foldersContext = useContext(FoldersContext);
 
-  const foundSelectedFolderData = foldersContext?.folders.find(
-    (el) => el.id == foldersContext.selectedFolder
-  );
-
   const [notesToShow, setNotesToShow] = useState<Note[]>([])
 
+  // if there's a selected folder set it
+  const foundSelectedFolderData = foldersContext?.selectedFolder ? foldersContext?.folders.find(
+    (el) => el.id == foldersContext.selectedFolder
+  ) : undefined;
+
+  // if there's a selected folder, filter the notes by it, otherwise show them all
   useEffect(() => {
     if (foldersContext?.selectedFolder) {
       const filteredNotes = notesContext?.notes.filter(note => note.folder == foldersContext?.selectedFolder)
-      console.log(filteredNotes)
       if (filteredNotes) setNotesToShow(filteredNotes)
     }
     else {
-      if (notesContext) {
-        console.log(notesContext.notes)
-        setNotesToShow(notesContext.notes)
-      }
+      if (notesContext) setNotesToShow(notesContext.notes)
     }
   }, [foldersContext?.selectedFolder]);
 

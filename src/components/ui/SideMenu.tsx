@@ -1,5 +1,4 @@
 import { useContext, useLayoutEffect, useRef } from "react";
-import { handleSideMenu } from "@/utils/globalMethods";
 import { FoldersContext } from "@/contexts/foldersContext";
 import SvgButton from "./SvgButton";
 import FolderCard from "../FolderCard";

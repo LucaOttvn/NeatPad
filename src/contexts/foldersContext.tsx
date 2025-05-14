@@ -24,6 +24,7 @@ export function FolderProvider({ children }: { children: ReactNode }) {
     undefined
   );
 
+  // initially get all the folders
   useEffect(() => {
     (async () => {
       const fetchedfolders = await getFolders();
@@ -42,10 +43,6 @@ export function FolderProvider({ children }: { children: ReactNode }) {
       )
     );
   }
-
-  useEffect(() => {
-    console.log(folders)
-  }, [folders]);
 
   return (
     <FoldersContext.Provider

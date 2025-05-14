@@ -25,11 +25,13 @@ export default function NoteCard(props: NoteCardProps) {
     "White";
 
   useEffect(() => {
+    
     return () => {
       clearTimeout(timerRef.current);
     };
-  }, []);
 
+  }, []);
+  
   useEffect(() => {
     let noteToDelete = notesContext?.deleteMode.notes.find(noteId => noteId == props.note.id)
 
@@ -74,6 +76,7 @@ export default function NoteCard(props: NoteCardProps) {
       notesContext?.setDeleteMode({ active: true, notes: notesToDeleteUpdated })
     }
     else {
+      // show the clicked note
       notesContext?.setSelectedNote(props.note.id);
       modalsContext?.setSelectedModal(ModalsNames.updateNote)
     }
@@ -87,9 +90,7 @@ export default function NoteCard(props: NoteCardProps) {
       onTouchMove={handleTouchEnd}
       onTouchStart={handleTouchStart}
       onTouchEnd={handleTouchEnd}
-      onClick={() => {
-        handleClick()
-      }}
+      onClick={handleClick}
       style={{
         background: foundParentFolder?.color
           ? `var(--${foundParentFolder?.color})`
