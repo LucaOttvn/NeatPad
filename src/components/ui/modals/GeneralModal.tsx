@@ -32,9 +32,7 @@ export default function GeneralModal(props: GeneralModalProps) {
   function handleKeyDown(e: React.KeyboardEvent<HTMLDivElement>) {
     if (e.key === "Escape") {
       // this removes the automatic browser's focus on the button when esc is pressed
-      if (document.activeElement instanceof HTMLElement) {
-        document.activeElement.blur();
-      }
+      if (document.activeElement instanceof HTMLElement) document.activeElement.blur()
       if (modalsContext?.selectedModal == ModalsNames.newNote || modalsContext?.selectedModal == ModalsNames.updateNote) {
         notesContext?.handleNoteEditorClose()
       }

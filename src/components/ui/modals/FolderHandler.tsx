@@ -14,9 +14,7 @@ export default function FolderHandler() {
 
   const [folderName, setFolderName] = useState("");
 
-  const [selectedColor, setSelectedColor] = useState<string | undefined>(
-    undefined
-  );
+  const [selectedColor, setSelectedColor] = useState<string | undefined>(undefined);
 
   let foundFolder = useRef<Folder | undefined>(undefined)
 
@@ -32,26 +30,30 @@ export default function FolderHandler() {
   }, []);
 
   async function handleFolderCreation() {
-    // if updating
+    // if the user's updating the folder (so it's not a new one) and there are some actual updates
     if (foldersContext?.updatingFolder) {
       const changesDetected = foundFolder.current?.name != folderName || foundFolder.current.color != selectedColor
       if (changesDetected && foundFolder.current) {
         await updateFolder(foundFolder.current.id!, { name: folderName, color: selectedColor })
         foldersContext.updateFolderState(foundFolder.current.id!, { name: folderName, color: foundFolder.current.color })
       }
-    } else {
+    } 
+    // if it's a new folder create a new Folder object and save it
+    else {
       const newFolder: Folder = {
         name: folderName,
         color: selectedColor || 'White',
         user: userContext!.user!.id,
       };
+      // insert the folder in the db
       let folderWithId = await createFolder(newFolder);
+      // update the local state
       foldersContext?.setFolders((prevState: Folder[]) => [
         ...prevState,
         folderWithId,
       ]);
     }
-    // close the modal
+    // close the modal at the end
     foldersContext?.setUpdatingFolder(undefined)
     modalsContext?.setSelectedModal(undefined)
   }
