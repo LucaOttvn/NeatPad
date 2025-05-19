@@ -1,12 +1,11 @@
 import { useContext, useEffect, useState } from "react";
 import SvgButton from "../../SvgButton";
-import { Note } from "@/utils/interfaces";
+import { Folder, Note } from "@/utils/interfaces";
 import { gsap, Power4 } from "gsap";
 import { FoldersContext } from "@/contexts/foldersContext";
 import { NotesContext } from "@/contexts/notesContext";
 import './modalHeaders.scss';
 import { ModalsContext } from "@/contexts/modalsContext";
-import { updateNote } from "@/api/notes";
 import { ReactSVG } from "react-svg";
 
 interface BasicComponentProps {
@@ -27,8 +26,6 @@ export default function NoteEditorModalHeader(props: BasicComponentProps) {
     const updatedNote = props.note;
     if (updatedNote) {
       updatedNote.pinned = pinned
-      // update the note in the db
-      updateNote(updatedNote)
       // update the local state
       notesContext?.updateNoteState(updatedNote)
     }
@@ -49,6 +46,15 @@ export default function NoteEditorModalHeader(props: BasicComponentProps) {
       ease: Power4.easeOut,
     })
   }, [foldersListOpened]);
+
+  function handleFolderSelection(folder: Folder) {
+    const updatedNote = props.note
+    if (updatedNote) {
+      // if the folder is already selected, remove the selection, otherwise set it as the current one
+      updatedNote.folder = updatedNote.folder == folder.id ? null : folder.id!
+      notesContext?.updateNoteState(updatedNote)
+    }
+  }
 
   return (
     <header className="noteEditorModalHeader">
@@ -82,16 +88,12 @@ export default function NoteEditorModalHeader(props: BasicComponentProps) {
         <div className="foldersList">
           {foldersContext?.folders.map((folder, index) => {
             return (
+              // folder card
               <div
                 key={"folder" + index}
                 className="folderCard gap-3"
-                onClick={() => {
-                  const updatedNote = props.note
-                  if (updatedNote) {
-                    // if the folder is already selected, remove the selection, otherwise set it as the current one
-                    updatedNote.folder = updatedNote.folder == folder.id ? undefined : folder.id
-                    notesContext?.updateNoteState(updatedNote)
-                  }
+                onClick={()=>{
+                  handleFolderSelection(folder)
                 }}
                 style={{ border: `${props.note?.folder == folder.id ? 4 : 2}px solid var(--${folder.color})` }}
               >
