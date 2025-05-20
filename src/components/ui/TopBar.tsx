@@ -1,16 +1,13 @@
-import { useContext, useEffect, useState } from "react";
+import { useContext } from "react";
 import "../componentsStyle.scss";
-import { handleSideMenu } from "@/utils/globalMethods";
 import SvgButton from "./SvgButton";
-import { ScreenSizeContext } from "@/contexts/screenSizeContext";
-import { UserContext } from "@/contexts/userContext";
 import { SideMenusContext } from "@/contexts/sideMenusContext";
-import { SideMenusNames } from "@/utils/interfaces";
+import { ModalsNames, SideMenusNames } from "@/utils/interfaces";
+import { ModalsContext } from "@/contexts/modalsContext";
 
 export default function TopBar() {
-  const userContext = useContext(UserContext);
-  const screenSizeContext = useContext(ScreenSizeContext);
   const sideMenusContext = useContext(SideMenusContext);
+  const modalsContext = useContext(ModalsContext);
 
   return (
     <div className="topBar">
@@ -33,10 +30,11 @@ export default function TopBar() {
       {/* spacer */}
       <div className="w-full"></div>
       <SvgButton
-        fileName="logout"
+        fileName="settings"
         onClick={() => {
-          localStorage.clear();
-          userContext?.setUser(null);
+          modalsContext?.setSelectedModal(ModalsNames.settings)
+          // logout
+      
         }}
       />
     </div>
