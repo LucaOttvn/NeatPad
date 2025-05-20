@@ -1,12 +1,16 @@
 import React, { Dispatch, RefObject, SetStateAction } from 'react';
 import SvgButton from './SvgButton';
+import EmailInput from './EmailInput';
+import PasswordInput from './PasswordInput';
 
 interface DisableableInputProps {
     keyToUpdate: string
     updateData: Dispatch<SetStateAction<any>>
     values: { inputValue: any, disabled: boolean }
     inputRef: RefObject<HTMLInputElement | null>
+    showToggle?: boolean
     placeholder?: string
+    type?: string
 }
 
 // This component expects an object like { inputValue: any, disabled: boolean }
@@ -38,7 +42,6 @@ export default function DisableableInput(props: DisableableInputProps) {
 
     // handle the text input
     function handleInput(e: React.ChangeEvent<HTMLInputElement>) {
-        // update only the [key] param
         props.updateData((prev: any) => {
             const currentItem = prev[key]
             const updatedItem = {
@@ -54,14 +57,19 @@ export default function DisableableInput(props: DisableableInputProps) {
 
     return (
         <div className='flex flex-col gap-2'>
-            <span>Update {props.keyToUpdate}</span>
-            <div className='flex gap-2'>
-                <input ref={props.inputRef} type="text" className='w-full' placeholder={`Insert ${props.placeholder || props.keyToUpdate}`} disabled={props.values.disabled} value={props.values.inputValue} onChange={(e) => { handleInput(e) }} />
+            <div className='flex items-start gap-2'>
+                {(props.keyToUpdate != 'email' && props.keyToUpdate != 'password' && props.keyToUpdate != 'newPassword') && <input ref={props.inputRef} type={props.type || 'text'} className='w-full' placeholder={`Insert ${props.placeholder || props.keyToUpdate}`} disabled={props.values.disabled} value={props.values.inputValue} onChange={(e) => { handleInput(e) }} />}
 
-                <SvgButton style={{ display: props.values.disabled ? '' : 'none' }}
-                    fileName='edit' onClick={handleInputsDisable} />
-                <SvgButton style={{ display: props.values.disabled ? 'none' : '' }}
-                    fileName='check' onClick={handleInputsDisable} />
+                {props.keyToUpdate == 'email' && <EmailInput disabled={props.values.disabled} onChange={handleInput} value={props.values.inputValue} inputRef={props.inputRef} />}
+                {props.keyToUpdate == 'password' && <PasswordInput disabled={props.values.disabled} onChange={handleInput} value={props.values.inputValue} inputRef={props.inputRef} />}
+                {props.keyToUpdate == 'newPassword' && <PasswordInput disabled={props.values.disabled} onChange={handleInput} value={props.values.inputValue} inputRef={props.inputRef} placeholder='Insert new password' />}
+
+                {props.showToggle && <>
+                    <SvgButton style={{ display: props.values.disabled ? '' : 'none' }}
+                        fileName='edit' onClick={handleInputsDisable} className='pt-1' />
+                    <SvgButton style={{ display: props.values.disabled ? 'none' : '' }}
+                        fileName='check' onClick={handleInputsDisable} className='pt-1' />
+                </>}
             </div>
         </div>
     );

@@ -4,7 +4,8 @@ import { useContext, useEffect, useRef, useState } from 'react';
 import './settingsModal.scss';
 import { ReactSVG } from 'react-svg';
 import DisableableInput from '../../DisableableInput';
-import {gsap, Power4} from 'gsap'
+import { gsap, Power4 } from 'gsap'
+import PasswordInput from '../../PasswordInput';
 
 interface SettingsModalProps { }
 
@@ -13,10 +14,12 @@ export default function SettingsModal(props: SettingsModalProps) {
   const modalsContext = useContext(ModalsContext)
   const emailInputRef = useRef<HTMLInputElement>(null)
   const passwordInputRef = useRef<HTMLInputElement>(null)
+  const newPasswordInputRef = useRef<HTMLInputElement>(null)
 
   const [profileData, setProfileData] = useState({
     email: { value: userContext?.user?.email, disabled: true },
-    password: { value: '', disabled: true }
+    password: { value: '', disabled: true },
+    newPassword: { value: '', disabled: true }
   })
 
   function logout() {
@@ -44,12 +47,26 @@ export default function SettingsModal(props: SettingsModalProps) {
       <span className='title'>Settings</span>
       <div className='w-full h-full flex flex-col justify-between mt-20'>
         <section className='profileSection'>
-          <h1 className='w-full center' style={{ fontSize: '140%' }}>Profile</h1>
+          <h1 className='w-full center' style={{ fontSize: '140%' }}>Update profile</h1>
           {/* email and password input fields with modify/confirm button */}
-          <DisableableInput keyToUpdate='email' updateData={setProfileData} values={{ inputValue: profileData.email.value, disabled: profileData.email.disabled }} inputRef={emailInputRef} />
-          <DisableableInput keyToUpdate='password' updateData={setProfileData} values={{ inputValue: profileData.password.value, disabled: profileData.password.disabled }} inputRef={passwordInputRef} placeholder='current password' />
+          <DisableableInput keyToUpdate='email' updateData={setProfileData} values={{ inputValue: profileData.email.value, disabled: profileData.email.disabled }} inputRef={emailInputRef} showToggle={true} />
+          <DisableableInput keyToUpdate='password' updateData={setProfileData} values={{ inputValue: profileData.password.value, disabled: profileData.password.disabled }} inputRef={passwordInputRef} placeholder='current password' type='password' showToggle={true} />
           <div className='newPassword'>
-            <input type="text" placeholder='New password' />
+            <DisableableInput keyToUpdate='newPassword' updateData={setProfileData} values={{ inputValue: profileData.newPassword.value, disabled: false }} inputRef={newPasswordInputRef} placeholder='new password' type='password' />
+
+            {/* <PasswordInput disabled={false} onChange={(e) => {
+              setProfileData((prev: any) => {
+                const currentItem = prev.newPassword
+                const updatedItem = {
+                  ...currentItem,
+                  value: e.target.value
+                }
+                return {
+                  ...prev,
+                  newPassword: updatedItem
+                }
+              })
+            }} value={props.values.inputValue} inputRef={props.inputRef} /> */}
           </div>
 
         </section>
