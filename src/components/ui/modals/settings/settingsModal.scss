@@ -11,8 +11,12 @@
         flex-direction: column;
         justify-content: center;
         background-color: var(--darkGrey);
-        padding: 1rem;
+        padding: 2rem 1rem 1rem 1rem;
         border-radius: var(--mainBorderRadius);
         gap: 1rem;
+        .newPassword {
+            height: 0;
+            overflow: hidden;
+        }
     }
 }
