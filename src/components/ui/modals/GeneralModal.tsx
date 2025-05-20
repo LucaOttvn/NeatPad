@@ -86,6 +86,7 @@ export default function GeneralModal(props: GeneralModalProps) {
         </>}
        
         {modalsContext?.selectedModal == ModalsNames.settings && <>
+          <GeneralModalHeader modalId={ModalsNames.login} className="loginModalHeader" />
           <SettingsModal />
         </>}
       </div>

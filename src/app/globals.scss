@@ -148,6 +148,12 @@ textarea {
   transition: 0.2s;
   padding: 0.5rem 1rem;
   background-color: transparent;
+  &:disabled {
+    background-color: var(--Grey);
+    border-radius: var(--mainBorderRadius);
+    filter: opacity(50%);
+    border: none !important;
+  }
 }
 
 input[type="text"],
