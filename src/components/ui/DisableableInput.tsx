@@ -62,8 +62,7 @@ export default function DisableableInput(props: DisableableInputProps) {
                 {(props.keyToUpdate != 'email' && props.keyToUpdate != 'password' && props.keyToUpdate != 'newPassword') && <input ref={props.inputRef} type={props.type || 'text'} className='w-full' placeholder={`Insert ${props.placeholder || props.keyToUpdate}`} disabled={props.values.disabled} value={props.values.inputValue} onChange={(e) => { handleInput(e) }} />}
 
                 {props.keyToUpdate == 'email' && <EmailInput disabled={props.values.disabled} onChange={handleInput} value={props.values.inputValue} inputRef={props.inputRef} />}
-                {props.keyToUpdate == 'password' && <PasswordInput disabled={props.values.disabled} onChange={handleInput} value={props.values.inputValue} inputRef={props.inputRef} />}
-                {props.keyToUpdate == 'newPassword' && <PasswordInput disabled={props.values.disabled} onChange={handleInput} value={props.values.inputValue} inputRef={props.inputRef} placeholder='Insert new password' />}
+
 
                 {props.showToggle && <>
                     <SvgButton style={{ display: props.values.disabled ? '' : 'none' }}
