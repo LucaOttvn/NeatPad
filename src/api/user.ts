@@ -40,7 +40,6 @@ interface UpdateAuthUserParams {
 
 export async function updateUser(updatedUserInfo: UpdateAuthUserParams) {
 
-    console.log(updatedUserInfo)
     const { data, error } = await supabase.auth.updateUser(updatedUserInfo);
 
     if (error) {

@@ -15,7 +15,6 @@ export async function getNotes(userId: string){
     return null;
   }
 
-  console.log(data)
   return data;
 }
 
