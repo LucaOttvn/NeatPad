@@ -25,8 +25,9 @@ interface DisableableInputProps {
 export default function DisableableInput(props: DisableableInputProps) {
 
     const key = props.keyToUpdate
-    // handle the click on the eit/confirm button
-    function handleInputsDisable() {
+    // handle the click on the edit/confirm button
+    async function handleInputsDisable() {
+        
         props.updateData((prev: any) => {
             const currentItem = prev[key];
             const updatedItem = {

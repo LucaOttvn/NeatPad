@@ -4,8 +4,8 @@ import { useContext, useEffect, useRef, useState } from 'react';
 import './settingsModal.scss';
 import { ReactSVG } from 'react-svg';
 import DisableableInput from '../../DisableableInput';
-import { gsap, Power4 } from 'gsap'
-import PasswordInput from '../../PasswordInput';
+import { gsap, Power4 } from 'gsap';
+import { updateUser } from '@/api/user';
 
 interface SettingsModalProps { }
 
@@ -22,15 +22,22 @@ export default function SettingsModal(props: SettingsModalProps) {
     newPassword: { value: '', disabled: true }
   })
 
+  useEffect(() => {
+    if (!profileData.email.disabled) {
+      emailInputRef.current?.focus();
+    } else {
+      if (userContext?.user?.email != profileData.email.value) {
+        updateUser({ email: 'test3@gmail.com' })
+      }
+    }
+
+  }, [profileData.email.disabled]);
+
   function logout() {
     localStorage.clear();
     userContext?.setUser(null);
     modalsContext?.setSelectedModal(undefined)
   }
-
-  useEffect(() => {
-    if (!profileData.email.disabled) emailInputRef.current?.focus();
-  }, [profileData.email.disabled]);
 
   useEffect(() => {
     if (!profileData.password.disabled) passwordInputRef.current?.focus();
