@@ -135,7 +135,6 @@ export default function Home() {
         </AnimatedDiv>
       ) : (
         <Login />
-
       )}
       <GeneralModal />
     </>

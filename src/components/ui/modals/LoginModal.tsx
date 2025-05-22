@@ -1,16 +1,20 @@
 import { signIn, signUp } from '@/api/user';
+import AnimatedText from '@/components/animatedComponents/AnimatedText';
 import { ModalsContext } from '@/contexts/modalsContext';
 import { UserContext } from '@/contexts/userContext';
 import React, { useContext, useState } from 'react';
 
-interface LoginModalProps { }
+interface LoginModalProps {
+    creatingAccount: boolean
+}
 
 export default function LoginModal(props: LoginModalProps) {
+
+    console.log(props.creatingAccount)
 
     const userContext = useContext(UserContext);
     const modalsContext = useContext(ModalsContext)
     const [formData, setFormData] = useState({ email: "", password: "" });
-    const [creatingAccount, setCreatingAccount] = useState(false);
 
     function handleChange(e: React.ChangeEvent<HTMLInputElement>) {
         setFormData((prev) => ({
@@ -28,7 +32,7 @@ export default function LoginModal(props: LoginModalProps) {
 
     async function handleSubmit() {
         modalsContext?.setSelectedModal(undefined)
-        const user = creatingAccount
+        const user = props.creatingAccount
             ? await signUp(formData.email, formData.password)
             : await signIn(formData.email, formData.password);
         if (user) {
@@ -40,7 +44,10 @@ export default function LoginModal(props: LoginModalProps) {
     return (
         <div className="loginModal w-full h-full center flex-col gap-8">
             <h1 className="title">
-                {creatingAccount ? "Create account" : "Login"}
+                {props.creatingAccount ? <div className="flex flex-col items-start">
+                    <span className="">Create</span>
+                    <span className="ms-3">Account</span>
+                </div> : "Login"}
             </h1>
             <div className="flex flex-col gap-4">
                 <input
@@ -64,7 +71,7 @@ export default function LoginModal(props: LoginModalProps) {
                     handleSubmit();
                 }}
             >
-                {creatingAccount ? "Confirm" : "Login"}
+                {props.creatingAccount ? "Confirm" : "Login"}
             </button>
         </div>
     );
