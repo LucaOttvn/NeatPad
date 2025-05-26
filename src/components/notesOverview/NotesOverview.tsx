@@ -44,27 +44,21 @@ export default function NotesOverview() {
   // get notes and folders
   async function fetchData() {
     setLoading(true)
-    setTimeout(async () => {
-      try {
-        const [notes, folders] = await Promise.all([getNotes(userContext?.user!.id!), getFolders()]);
+    try {
+      const [notes, folders] = await Promise.all([getNotes(userContext?.user!.id!), getFolders()]);
 
-        if (notes) {
-          setNotesToShow(notes);
-          notesContext?.setNotes(notes);
-        }
-        if (folders) {
-          foldersContext?.setFolders(folders);
-        }
-      } catch (err) {
-        console.error("Error fetching initial data", err);
+      if (notes) {
+        setNotesToShow(notes);
+        notesContext?.setNotes(notes);
       }
-      setLoading(false)
-    }, 2000);
+      if (folders) {
+        foldersContext?.setFolders(folders);
+      }
+    } catch (err) {
+      console.error("Error fetching initial data", err);
+    }
+    setLoading(false)
   }
-
-  useEffect(() => {
-    console.log(loading)
-  }, [loading]);
 
   return (
     <div className="notesOverviewContainer">
@@ -76,9 +70,9 @@ export default function NotesOverview() {
           <AnimatedText className="title" text="My" />
           <AnimatedText className="title ms-5" text="Notes" />
         </div>}
-        <div className="w-full end">
+        <div className="w-full flex items-end pl-10 pb-4">
           <AnimatedDiv>
-            <button className="mainBtn w-full end gap-1" style={{ padding: '0.7rem' }} onClick={() => {fetchData()}}>
+            <button className="mainBtn w-full end gap-1" style={{ padding: '0.6rem' }} onClick={() => { fetchData() }}>
               <ReactSVG src={`/icons/refresh.svg`} className="icon" style={{ scale: 1.2 }} />
             </button>
           </AnimatedDiv>
