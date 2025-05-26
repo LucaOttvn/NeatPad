@@ -1,7 +1,7 @@
 import { useContext, useEffect, useRef } from "react";
 import "../../componentsStyle.scss";
 import { ModalsContext } from "@/contexts/modalsContext";
-import { ModalsNames } from "@/utils/interfaces";
+import { modalsList, ModalsNames } from "@/utils/interfaces";
 import GeneralModalHeader from "./modalsHeaders/GeneralModalHeader";
 import NoteEditorModalHeader from "./modalsHeaders/NoteEditorModalHeader";
 import { NotesContext } from "@/contexts/notesContext";
@@ -10,20 +10,16 @@ import LoginModal from "./LoginModal";
 import FolderHandler from "./FolderHandler";
 import { FoldersContext } from "@/contexts/foldersContext";
 import SettingsModal from "./settings/SettingsModal";
+1
 
-interface GeneralModalProps {
-  width?: number;
-  height?: number;
-}
-
-export default function GeneralModal(props: GeneralModalProps) {
+export default function GeneralModal() {
   const modalsContext = useContext(ModalsContext)
   const notesContext = useContext(NotesContext)
   const foldersContext = useContext(FoldersContext)
-  const width = props.width ? props.width + "%" : '';
-  const height = props.height + "%";
 
   const generalModalRef = useRef<HTMLDivElement>(null)
+
+  const modalStyle = modalsList.find(el => el.name == modalsContext?.selectedModal)
 
   useEffect(() => {
     generalModalRef.current?.focus();
@@ -52,11 +48,11 @@ export default function GeneralModal(props: GeneralModalProps) {
     >
       <div
         className="generalModal"
-        style={{ width, height }}
         ref={generalModalRef}
         onClick={(e) => {
           e.stopPropagation();
         }}
+        style={{ width: modalStyle?.width, height: modalStyle?.height }}
         // this allows the generalModalRef to automatically focus itself on open, since this condition is necessary to detect the ESC key press
         tabIndex={0}
         onKeyDown={(e) => {
@@ -82,7 +78,7 @@ export default function GeneralModal(props: GeneralModalProps) {
 
         {(modalsContext?.selectedModal == ModalsNames.login || modalsContext?.selectedModal == ModalsNames.createAccount) && <>
           <GeneralModalHeader modalId={ModalsNames.login} className="loginModalHeader" />
-          <LoginModal creatingAccount={modalsContext?.selectedModal == ModalsNames.createAccount}/>
+          <LoginModal creatingAccount={modalsContext?.selectedModal == ModalsNames.createAccount} />
         </>}
 
         {modalsContext?.selectedModal == ModalsNames.settings && <>
