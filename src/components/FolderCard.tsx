@@ -2,11 +2,10 @@ import { colors, Folder, ModalsNames } from "@/utils/interfaces";
 import "./componentsStyle.scss";
 import { useContext, useRef } from "react";
 import { FoldersContext } from "@/contexts/foldersContext";
-import { ScreenSizeContext } from "@/contexts/screenSizeContext";
 import { NotesContext } from "@/contexts/notesContext";
 import { ModalsContext } from "@/contexts/modalsContext";
 import gsap from 'gsap';
-import { selectedSideMenu } from "@/utils/signals";
+import { isMobile, selectedSideMenu } from "@/utils/signals";
 
 interface FolderProps {
   folder: Folder;
@@ -18,7 +17,6 @@ export default function   FolderCard(props: FolderProps) {
     (item) => item.color == props.folder.color
   )?.text || "White"
 
-  const screenSizeContext = useContext(ScreenSizeContext)
   const foldersContext = useContext(FoldersContext)
   const modalsContext = useContext(ModalsContext)
   const notesContext = useContext(NotesContext)
@@ -50,8 +48,10 @@ export default function   FolderCard(props: FolderProps) {
 
   function handleClick() {
     foldersContext?.setSelectedFolder(props.folder.id)
+
+    console.log(isMobile)
     // only on mobile, close the side menu on folder selection
-    if (screenSizeContext) selectedSideMenu.value = undefined
+    if (isMobile.value) selectedSideMenu.value = undefined
   }
 
   return (

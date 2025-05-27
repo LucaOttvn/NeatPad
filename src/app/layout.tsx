@@ -1,7 +1,6 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.scss";
-import { ScreenSizeProvider } from "@/contexts/screenSizeContext";
 import { UserProvider } from "@/contexts/userContext";
 import { FolderProvider } from "@/contexts/foldersContext";
 import { NotesProvider } from "@/contexts/notesContext";
@@ -35,9 +34,7 @@ export default function RootLayout({
         <ModalsProvider>
           <NotesProvider>
             <FolderProvider>
-              <ScreenSizeProvider>
                 <UserProvider>{children}</UserProvider>
-              </ScreenSizeProvider>
             </FolderProvider>
           </NotesProvider>
         </ModalsProvider>
