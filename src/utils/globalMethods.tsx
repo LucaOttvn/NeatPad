@@ -13,7 +13,7 @@ export function handleModal(
   });
 }
 
-export function handleSideMenu(target?: string) {
+export function handleSideMenu(target: string | null) {
   gsap.to((target ? "#" : '.') + (target || 'generalSideMenu'), {
     width: target ? '100%' : 0,
     duration: 0.2,

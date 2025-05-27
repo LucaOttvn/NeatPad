@@ -5,12 +5,12 @@ import FolderCard from "../FolderCard";
 import gsap from 'gsap';
 import { ModalsContext } from "@/contexts/modalsContext";
 import { ModalsNames, SideMenusNames } from "@/utils/interfaces";
-import { SideMenusContext } from "@/contexts/sideMenusContext";
+import { selectedSideMenu } from "@/utils/signals";
+
 
 export default function GeneralSideMenu() {
   const foldersContext = useContext(FoldersContext);
   const modalsContext = useContext(ModalsContext);
-  const sideMenusContext = useContext(SideMenusContext);
   const foldersListRef = useRef<HTMLDivElement | null>(null);
 
   // this hook is needed because the folder cards list has to be fully rendered before being manipulated
@@ -64,7 +64,7 @@ export default function GeneralSideMenu() {
           className="sideMenuBtn"
           onClick={() => {
             foldersContext?.setSelectedFolder(undefined);
-            sideMenusContext?.setSelectedSideMenu(undefined)
+            selectedSideMenu.value = undefined
           }}
         >
           <SvgButton fileName="home" onClick={() => { }} />
