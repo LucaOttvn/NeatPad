@@ -1,8 +1,8 @@
 import { useContext } from "react";
 import SvgButton from "../../SvgButton";
-import { ModalsContext } from "@/contexts/modalsContext";
 import { FoldersContext } from "@/contexts/foldersContext";
 import { ModalsNames } from "@/utils/interfaces";
+import { selectedModal } from "@/utils/signals";
 
 interface BasicComponentProps {
   modalId: string
@@ -11,15 +11,15 @@ interface BasicComponentProps {
 
 export default function GeneralModalHeader(props: BasicComponentProps) {
 
-  const modalsContext = useContext(ModalsContext)
+   
   const foldersContext = useContext(FoldersContext)
   return (
     <header className={`end p-5 ${props.className}`}>
       <SvgButton
         fileName="close"
         onClick={() => {
-          if (modalsContext?.selectedModal == ModalsNames.folderHandler) { foldersContext?.setUpdatingFolder(undefined) }
-          modalsContext?.setSelectedModal(undefined)
+          if (selectedModal.value == ModalsNames.folderHandler) foldersContext?.setUpdatingFolder(undefined)
+          selectedModal.value = undefined
         }}
       />
     </header>

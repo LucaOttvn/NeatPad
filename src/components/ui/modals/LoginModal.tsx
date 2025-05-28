@@ -1,6 +1,7 @@
 import { signIn, signUp } from '@/api/user';
-import { ModalsContext } from '@/contexts/modalsContext';
+ 
 import { UserContext } from '@/contexts/userContext';
+import { selectedModal } from '@/utils/signals';
 import React, { useContext, useState } from 'react';
 
 interface LoginModalProps {
@@ -10,7 +11,7 @@ interface LoginModalProps {
 export default function LoginModal(props: LoginModalProps) {
 
     const userContext = useContext(UserContext);
-    const modalsContext = useContext(ModalsContext)
+     
     const [formData, setFormData] = useState({ email: "", password: "" });
 
     function handleChange(e: React.ChangeEvent<HTMLInputElement>) {
@@ -28,7 +29,7 @@ export default function LoginModal(props: LoginModalProps) {
     }
 
     async function handleSubmit() {
-        modalsContext?.setSelectedModal(undefined)
+        selectedModal.value = undefined
         const user = props.creatingAccount
             ? await signUp(formData.email, formData.password)
             : await signIn(formData.email, formData.password);

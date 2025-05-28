@@ -10,7 +10,6 @@ import { ModalsNames, Note } from "@/utils/interfaces";
 import { UserContext } from "@/contexts/userContext";
 import GeneralSideMenu from "@/components/ui/SideMenu";
 import Login from "@/components/Login";
-import { ModalsContext } from "@/contexts/modalsContext";
 import GeneralModal from "@/components/ui/modals/GeneralModal";
 import { createNote, deleteNote } from "@/api/notes";
 import { NotesContext } from "@/contexts/notesContext";
@@ -18,13 +17,13 @@ import { flushSync } from "react-dom";
 import gsap from 'gsap';
 import { animateDivUnmount } from "@/utils/globalMethods";
 import { useSignals } from "@preact/signals-react/runtime";
+import { selectedModal } from "@/utils/signals";
 
 export default function Home() {
   useSignals()
 
   const userContext = useContext(UserContext);
   const notesContext = useContext(NotesContext);
-  const modalsContext = useContext(ModalsContext);
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
@@ -83,7 +82,7 @@ export default function Home() {
         notesContext.setNotes(arr)
         notesContext.setSelectedNote(newNoteFromDB.id)
       })
-      modalsContext!.setSelectedModal(ModalsNames.newNote)
+      selectedModal.value = ModalsNames.newNote
     }
   }
 

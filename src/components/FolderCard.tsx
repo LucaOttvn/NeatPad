@@ -3,9 +3,8 @@ import "./componentsStyle.scss";
 import { useContext, useRef } from "react";
 import { FoldersContext } from "@/contexts/foldersContext";
 import { NotesContext } from "@/contexts/notesContext";
-import { ModalsContext } from "@/contexts/modalsContext";
 import gsap from 'gsap';
-import { isMobile, selectedSideMenu } from "@/utils/signals";
+import { isMobile, selectedModal, selectedSideMenu } from "@/utils/signals";
 
 interface FolderProps {
   folder: Folder;
@@ -18,7 +17,6 @@ export default function   FolderCard(props: FolderProps) {
   )?.text || "White"
 
   const foldersContext = useContext(FoldersContext)
-  const modalsContext = useContext(ModalsContext)
   const notesContext = useContext(NotesContext)
 
   const timerRef = useRef<any>(null)
@@ -32,7 +30,7 @@ export default function   FolderCard(props: FolderProps) {
     if (!notesContext?.deleteMode.active) {
       timerRef.current = setTimeout(() => {
         foldersContext?.setUpdatingFolder(props.folder.id)
-        modalsContext?.setSelectedModal(ModalsNames.folderHandler)
+        selectedModal.value = ModalsNames.folderHandler
       }, 500);
     }
   }

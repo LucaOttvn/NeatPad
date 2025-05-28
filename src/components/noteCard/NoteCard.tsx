@@ -4,9 +4,9 @@ import AnimatedDiv from "../animatedComponents/AnimatedDiv";
 import { FoldersContext } from "@/contexts/foldersContext";
 import { useContext, useEffect, useRef } from "react";
 import { NotesContext } from "@/contexts/notesContext";
-import { ModalsContext } from "@/contexts/modalsContext";
 import gsap from 'gsap';
 import { ReactSVG } from "react-svg";
+import { selectedModal } from "@/utils/signals";
 
 interface NoteCardProps {
   note: Note;
@@ -15,7 +15,6 @@ interface NoteCardProps {
 export default function NoteCard(props: NoteCardProps) {
   const foldersContext = useContext(FoldersContext);
   const notesContext = useContext(NotesContext);
-  const modalsContext = useContext(ModalsContext);
   const timerRef = useRef<any>(null);
 
   const foundParentFolder = foldersContext?.folders.find((folder) => folder.id == props.note.folder);
@@ -78,7 +77,7 @@ export default function NoteCard(props: NoteCardProps) {
     else {
       // show the clicked note
       notesContext?.setSelectedNote(props.note.id);
-      modalsContext?.setSelectedModal(ModalsNames.updateNote)
+      selectedModal.value = ModalsNames.updateNote
     }
   }
 

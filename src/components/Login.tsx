@@ -1,12 +1,9 @@
-import { useContext } from "react";
 import "./componentsStyle.scss";
 import { ModalsNames } from "@/utils/interfaces";
 import AnimatedDiv from "./animatedComponents/AnimatedDiv";
-import { ModalsContext } from "@/contexts/modalsContext";
+import { selectedModal } from "@/utils/signals";
 
 export default function Login() {
-
-  const modalsContext = useContext(ModalsContext);
 
   return (
     <AnimatedDiv className="loginContainer">
@@ -15,7 +12,7 @@ export default function Login() {
         <button
           className="mainBtn"
           onClick={() => {
-            modalsContext?.setSelectedModal(ModalsNames.login)
+            selectedModal.value = ModalsNames.login
           }}
         >
           Login
@@ -24,7 +21,7 @@ export default function Login() {
         <button
           className="mainBtn"
           onClick={() => {
-            modalsContext?.setSelectedModal(ModalsNames.createAccount)
+            selectedModal.value = ModalsNames.createAccount
           }}
         >
           Create new account

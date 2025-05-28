@@ -5,12 +5,10 @@ import { FoldersContext } from "@/contexts/foldersContext";
 import { Folder } from "@/utils/interfaces";
 import { UserContext } from "@/contexts/userContext";
 import { createFolder, deleteFolder, updateFolder } from "@/api/folders";
-import { ModalsContext } from "@/contexts/modalsContext";
 
 export default function FolderHandler() {
   const foldersContext = useContext(FoldersContext);
   const userContext = useContext(UserContext);
-  const modalsContext = useContext(ModalsContext);
 
   const [folderName, setFolderName] = useState("");
 
@@ -55,7 +53,7 @@ export default function FolderHandler() {
     }
     // close the modal at the end
     foldersContext?.setUpdatingFolder(undefined)
-    modalsContext?.setSelectedModal(undefined)
+    selectedModal.value = undefined
   }
 
   return (
@@ -105,7 +103,7 @@ export default function FolderHandler() {
             onClick={() => {
               foldersContext?.setFolders(prev => prev.filter(folder => folder.id != foundFolder.current?.id))
               if (foundFolder.current && foundFolder.current.id) deleteFolder(foundFolder.current?.id)
-              modalsContext?.setSelectedModal(undefined)
+            selectedModal.value = undefined
               foldersContext.setUpdatingFolder(undefined)
             }}
           >

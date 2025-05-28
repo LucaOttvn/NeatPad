@@ -1,10 +1,12 @@
 
 import { gsap, Power4 } from "gsap";
+import { ModalsNames } from "./interfaces";
 
 
 export function handleModal(
-  target: string | undefined,
+  target: ModalsNames | undefined,
 ) {
+  console.log(document.getElementById(target || ''))
   // if target is undefined close the generalBackdrop that stays behind each modal, in this way every modal in the app gets closed even without having a specific id to point to
   gsap.to((target ? "#" : '.') + (target || 'generalModalBackdrop'), {
     scale: target != undefined ? 1 : 0,
