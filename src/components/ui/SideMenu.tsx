@@ -5,12 +5,12 @@ import FolderCard from "../FolderCard";
 import { gsap } from 'gsap';
 import { ModalsNames } from "@/utils/interfaces";
 import { selectedModal, selectedSideMenu } from "@/utils/signals";
+import { handleSideMenu } from "@/utils/globalMethods";
 
 
 export default function GeneralSideMenu() {
   const foldersContext = useContext(FoldersContext);
   const foldersListRef = useRef<HTMLDivElement | null>(null);
-  const sideMenuRef = useRef(null) 
 
   // this hook is needed because the folder cards list has to be fully rendered before being manipulated
   useLayoutEffect(() => {
@@ -53,6 +53,11 @@ export default function GeneralSideMenu() {
       foldersList.removeEventListener('scroll', calcScrollScaling);
     };
   }, [foldersContext?.folders]);
+
+  // check README.md > ## SIDE EFFECTS FOR DOM SIGNALS for details
+  useLayoutEffect(()=>{
+    handleSideMenu(selectedSideMenu.value)
+  }, [selectedSideMenu.value])
 
   return (
     <div id={selectedSideMenu.value} className="generalSideMenu">
