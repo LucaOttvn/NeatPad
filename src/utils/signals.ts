@@ -4,8 +4,22 @@ import { handleModal, handleSideMenu } from "./globalMethods";
 
 export const selectedSideMenu = signal<SideMenusNames | undefined>(undefined);
 effect(() => {
-    handleSideMenu(selectedSideMenu.value || null);
+    const id = selectedSideMenu.value;
+    // schedule the GSAP call on the next paint tick:
+    requestAnimationFrame(() => {
+        handleSideMenu(id);
+    });
 });
+
+export const selectedModal = signal<ModalsNames | undefined>();
+effect(() => {
+    const id = selectedModal.value;
+    // schedule the GSAP call on the next paint tick:
+    requestAnimationFrame(() => {
+        handleModal(id);
+    });
+
+})
 
 
 export const isMobile = signal(false);
@@ -16,11 +30,4 @@ effect(() => {
 
     window.addEventListener("resize", checkScreenSize);
     return () => window.removeEventListener("resize", checkScreenSize);
-})
-
-
-export const selectedModal = signal<ModalsNames | undefined>();
-effect(() => {
-    console.log(selectedModal.value)
-    handleModal(selectedModal.value);
 })
