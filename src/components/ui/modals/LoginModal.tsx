@@ -2,6 +2,7 @@ import { UserContext } from '@/contexts/userContext';
 import { selectedModal } from '@/utils/signals';
 import { useRouter } from 'next/navigation';
 import React, { useContext, useState } from 'react';
+import PasswordInput from '../PasswordInput';
 
 interface LoginModalProps {
     creatingAccount: boolean
@@ -16,6 +17,7 @@ export default function LoginModal(props: LoginModalProps) {
     const [formData, setFormData] = useState({ email: "", password: "" });
 
     function handleChange(e: React.ChangeEvent<HTMLInputElement>) {
+        console.log(e.target.name)
         setFormData((prev) => ({
             ...prev,
             [e.target.name]: e.target.value,
@@ -68,7 +70,7 @@ export default function LoginModal(props: LoginModalProps) {
                     <span className="ms-3">Account</span>
                 </div> : "Login"}
             </h1>
-            <div className="flex flex-col gap-4">
+            <div className="flex flex-col gap-4" onKeyDown={handleKeyDown}>
                 <input
                     onChange={handleChange}
                     type="text"
@@ -76,13 +78,14 @@ export default function LoginModal(props: LoginModalProps) {
                     name="email"
                     placeholder="Email"
                 />
-                <input
+                <PasswordInput disabled={false} onChange={handleChange} value={formData.password} />
+                {/* <input
                     onChange={handleChange}
                     type="password"
                     onKeyDown={handleKeyDown}
                     name="password"
                     placeholder="Password"
-                />
+                /> */}
             </div>
             <button
                 className="mainBtn"
