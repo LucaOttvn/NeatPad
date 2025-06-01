@@ -4,6 +4,7 @@ import './settingsModal.scss';
 import { ReactSVG } from 'react-svg';
 import ResetPasswordForm from '../../ResetPasswordForm';
 import { selectedModal } from '@/utils/signals';
+import { deleteUser } from '@/api/user';
 
 interface SettingsModalProps { }
 
@@ -16,10 +17,10 @@ export default function SettingsModal(props: SettingsModalProps) {
     selectedModal.value = undefined
   }
 
-  function handleDeleteSupabaseUser() {
+  async function handleDeleteSupabaseUser() {
     if (confirm('Do you really want to delete this account?')) {
       if (userContext?.user) {
-        // deleteUserAccount(userContext.user.id)
+        await deleteUser(userContext.user.id!)
         logout()
       }
     }
