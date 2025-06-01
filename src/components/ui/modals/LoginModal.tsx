@@ -43,10 +43,8 @@ export default function LoginModal(props: LoginModalProps) {
             });
 
             if (response.ok) {
-                const newUser = await response.json()
-
-                console.log(newUser)
-                userContext?.setUser(newUser);
+                const JSONRes = await response.json()
+                userContext?.setUser(JSONRes.user);
 
             } else {
                 if (response.status == 409) {
