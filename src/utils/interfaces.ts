@@ -11,6 +11,7 @@ export interface Note {
 export interface User {
     id?: number
     email: string
+    password: string
 }
 
 export enum ModalsNames {

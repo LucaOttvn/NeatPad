@@ -1,10 +1,11 @@
-import { Dispatch, SetStateAction, useState } from 'react';
+import { useContext, useState } from 'react';
 import PasswordInput from './PasswordInput';
-import { supabase } from '@/api/supabaseClient';
 import { validatePassword } from '@/utils/globalMethods';
+import { UserContext } from '@/contexts/userContext';
 
 export default function ResetPasswordForm() {
 
+    const userContext = useContext(UserContext)
     const [passwords, setPasswords] = useState({
         currentPassword: '',
         newPassword: ''
@@ -15,22 +16,38 @@ export default function ResetPasswordForm() {
     }
 
     async function changePassword() {
-        if (passwords.currentPassword == passwords.newPassword) {
-            const validatedPassword = validatePassword(passwords.newPassword)
-            if (validatedPassword.isValid) {
-                const { data, error } = await supabase.auth.updateUser({
-                    password: passwords.newPassword
-                });
-                if (error) alert(error)
-            } else {
-                alert(validatedPassword.errors[0])
-            }
+        const validatedPassword = validatePassword(passwords.newPassword);
+        if (!validatedPassword.isValid) {
+            alert(validatedPassword.errors[0]);
+            return;
         }
-        else {
-            alert('The two passwords must be the same')
+
+        try {
+            const response = await fetch('/api/changePassword', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    id: userContext?.user?.id,
+                    currentPassword: passwords.currentPassword,
+                    newPassword: passwords.newPassword,
+                }),
+            });
+
+            const data = await response.json();
+
+            if (response.ok) {
+                alert(data.message);
+            } else {
+                alert(data.error || 'Failed to update password.');
+            }
+
+        } catch (error) {
+            console.error('Error changing password:', error);
+            alert('An unexpected error occurred.');
         }
     }
-
     return (
         <div className='flex flex-col items-center gap-5'>
             <PasswordInput onChange={(e) => { handleInput(e, 'currentPassword') }} value={passwords.currentPassword} placeholder={'Insert current password'} disabled={false} />
