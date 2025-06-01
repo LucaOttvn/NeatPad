@@ -69,7 +69,7 @@ export interface Folder {
     id?: number
     name: string
     color?: string
-    user: string
+    user: number
 }
 
 export const colors = [

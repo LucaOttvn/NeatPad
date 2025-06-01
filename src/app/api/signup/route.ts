@@ -2,7 +2,7 @@ import { supabase } from '@/api/supabaseClient';
 import bcrypt from 'bcrypt';
 import { NextResponse } from 'next/server';
 
-export async function hashPassword(password: string) {
+async function hashPassword(password: string) {
     const saltRounds = 10; // Higher number means more secure but slower
     const hashedPassword = await bcrypt.hash(password, saltRounds);
     return hashedPassword;
