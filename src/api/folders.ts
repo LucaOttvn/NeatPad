@@ -2,11 +2,12 @@ import { Folder } from '@/utils/interfaces';
 import { supabase } from './supabaseClient';
 
 
-export async function getFolders(): Promise<Folder[] | null> {
+export async function getFolders(userId: number): Promise<Folder[] | null> {
 
     const { data, error } = await supabase
         .from('folders')
         .select('*')
+        .eq('user', userId)
 
 
     if (error) {
@@ -17,19 +18,19 @@ export async function getFolders(): Promise<Folder[] | null> {
     return data;
 }
 
-export async function createFolder(folder: Folder){
-  const { data, error } = await supabase
-    .from("folders")
-    .insert(folder)
-    .select()      
-    .single();     
+export async function createFolder(folder: Folder) {
+    const { data, error } = await supabase
+        .from("folders")
+        .insert(folder)
+        .select()
+        .single();
 
-  if (error) {
-    console.error("Error inserting folder:", error);
-    return null;
-  }
+    if (error) {
+        console.error("Error inserting folder:", error);
+        return null;
+    }
 
-  return data;       
+    return data;
 }
 
 

@@ -3,6 +3,8 @@ import { selectedModal } from '@/utils/signals';
 import { useRouter } from 'next/navigation';
 import React, { useContext, useState } from 'react';
 import PasswordInput from '../PasswordInput';
+import { supabase } from '@/api/supabaseClient';
+import { getUserByEmail } from '@/api/user';
 
 interface LoginModalProps {
     creatingAccount: boolean
@@ -50,15 +52,40 @@ export default function LoginModal(props: LoginModalProps) {
                 userContext?.setUser(JSONRes.user);
 
             } else {
-                if (response.status == 409) {
-                    alert('This user already exists')
-                }
+                if (response.status == 409) alert('This user already exists')
                 else {
                     alert('Something went wrong, retry')
                 }
             }
         } catch (error: any) {
             console.error('Error during signup:', error);
+        }
+    }
+
+    async function handleForgotPassword() {
+        if (!formData.email) {
+            alert("Please insert a valid email")
+            return
+        }
+
+        const user = await getUserByEmail(formData.email)
+
+        if (!user) {
+            alert("No user found with this email")
+            return
+        }
+        supabase.auth.resetPasswordForEmail(formData.email, {
+            redirectTo: 'http://localhost:3001/recover-password'
+        })
+
+        const { data, error } = await supabase.auth.resetPasswordForEmail(formData.email, {
+            redirectTo: 'http://localhost:3001/recover-password'
+        });
+
+        if (error) {
+            alert("Something went wrong")
+        } else {
+            alert('Password reset link sent to your email.');
         }
     }
 
@@ -79,13 +106,9 @@ export default function LoginModal(props: LoginModalProps) {
                     placeholder="Email"
                 />
                 <PasswordInput disabled={false} onChange={handleChange} value={formData.password} />
-                {/* <input
-                    onChange={handleChange}
-                    type="password"
-                    onKeyDown={handleKeyDown}
-                    name="password"
-                    placeholder="Password"
-                /> */}
+                {!props.creatingAccount && <div className='w-full center'>
+                    <button className='mainBtn w-full center' style={{ fontSize: '90%', background: 'transparent', color: 'var(--White)' }} onClick={handleForgotPassword}>Forgot password?</button>
+                </div>}
             </div>
             <button
                 className="mainBtn"
