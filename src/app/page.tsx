@@ -10,14 +10,14 @@ import { UserContext } from "@/contexts/userContext";
 import GeneralSideMenu from "@/components/ui/SideMenu";
 import Login from "@/components/Login";
 import GeneralModal from "@/components/ui/modals/GeneralModal";
-import { createNote, deleteNote } from "@/api/notes";
+import { createNote, deleteNote } from "@/db/notes";
 import { NotesContext } from "@/contexts/notesContext";
 import { flushSync } from "react-dom";
 import gsap from 'gsap';
 import { animateDivUnmount } from "@/utils/globalMethods";
 import { useSignals } from "@preact/signals-react/runtime";
 import { isMobile, selectedModal } from "@/utils/signals";
-import { getUserById } from "@/api/user";
+import { getUserById } from "@/db/user";
 
 export default function Home() {
   useSignals()

@@ -1,4 +1,4 @@
-import { supabase } from '@/api/supabaseClient';
+import { supabase } from '@/db/supabaseClient';
 import bcrypt from 'bcrypt';
 import { NextResponse } from 'next/server';
 import jwt from 'jsonwebtoken';

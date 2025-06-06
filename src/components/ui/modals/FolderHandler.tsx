@@ -4,7 +4,7 @@ import ColorPicker from "../ColorPicker";
 import { FoldersContext } from "@/contexts/foldersContext";
 import { Folder } from "@/utils/interfaces";
 import { UserContext } from "@/contexts/userContext";
-import { createFolder, deleteFolder, updateFolder } from "@/api/folders";
+import { createFolder, deleteFolder, updateFolder } from "@/db/folders";
 import { selectedModal } from "@/utils/signals";
 
 export default function FolderHandler() {

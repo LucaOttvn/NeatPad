@@ -4,7 +4,7 @@ import './settingsModal.scss';
 import { ReactSVG } from 'react-svg';
 import ResetPasswordForm from '../../ResetPasswordForm';
 import { selectedModal } from '@/utils/signals';
-import { deleteUser } from '@/api/user';
+import { deleteUser } from '@/db/user';
 
 interface SettingsModalProps { }
 
