@@ -46,8 +46,6 @@ export default function   FolderCard(props: FolderProps) {
 
   function handleClick() {
     foldersContext?.setSelectedFolder(props.folder.id)
-
-    console.log(isMobile)
     // only on mobile, close the side menu on folder selection
     if (isMobile.value) selectedSideMenu.value = undefined
   }

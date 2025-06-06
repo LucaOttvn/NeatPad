@@ -41,8 +41,6 @@ export default function ResetPasswordForm(props: ResetPasswordFormProps) {
             newPassword: passwords.newPassword,
         }
 
-        console.log(requestBody)
-
         // if the user is in the forgot password 
         if (!props.forgotPassword) requestBody.currentPassword = passwords.currentPassword
 
@@ -62,9 +60,7 @@ export default function ResetPasswordForm(props: ResetPasswordFormProps) {
 
         // remove the token from the db when used
         if (props.forgotPassword) {
-            const urlParams = new URLSearchParams(window.location.search);
-            const token = urlParams.get('token');
-            if (token) await deleteToken(token)
+           await deleteToken(userContext?.user?.id!)
         }
     }
 
