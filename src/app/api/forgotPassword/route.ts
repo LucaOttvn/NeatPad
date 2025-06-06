@@ -7,6 +7,7 @@ async function hashPassword(password: string): Promise<string> {
     return await bcrypt.hash(password, saltRounds);
 }
 
+// update password
 export async function POST(request: Request) {
     try {
         const requestJSON = await request.json();

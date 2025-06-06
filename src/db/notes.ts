@@ -2,7 +2,7 @@ import { Note } from '@/utils/interfaces';
 import { supabase } from './supabaseClient';
 
 
-export async function getNotes(userId: number){
+export async function getNotesByUserId(userId: number){
 
   const { data, error } = await supabase
     .from('notes')

@@ -1,6 +1,5 @@
 import { UserContext } from '@/contexts/userContext';
 import { selectedModal } from '@/utils/signals';
-import { useRouter } from 'next/navigation';
 import React, { useContext, useState } from 'react';
 import PasswordInput from '../PasswordInput';
 import { getUserByEmail } from '@/db/user';
@@ -11,8 +10,6 @@ interface LoginModalProps {
 }
 
 export default function LoginModal(props: LoginModalProps) {
-
-    const router = useRouter()
 
     const userContext = useContext(UserContext);
 
@@ -32,49 +29,37 @@ export default function LoginModal(props: LoginModalProps) {
         }
     }
 
-
+    // handle signin/signup
     async function handleSubmit() {
         selectedModal.value = undefined
 
-        try {
-            const response = await fetch(`/api/${props.creatingAccount ? 'signup' : 'signin'}`, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({ email: formData.email, password: formData.password }),
-            });
+        const response = await fetch(`/api/${props.creatingAccount ? 'signup' : 'signin'}`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ email: formData.email, password: formData.password }),
+        });
 
-            if (response.ok) {
-                const JSONRes = await response.json()
-                localStorage.setItem('JWT', JSONRes.token)
-                userContext?.setUser(JSONRes.user);
-
-            } else {
-                if (response.status == 409) alert('This user already exists')
-                else {
-                    alert('Something went wrong, retry')
-                }
-            }
-        } catch (error: any) {
-            console.error('Error during signup:', error);
+        if (!response.ok) {
+            if (response.status == 409) return alert('This user already exists')
+            return alert('Something went wrong, retry')
         }
+
+        const JSONRes = await response.json()
+        localStorage.setItem('JWT', JSONRes.token)
+        userContext?.setUser(JSONRes.user);
     }
 
     async function handleForgotPassword() {
-        if (!formData.email) {
-            alert("Please insert a valid email")
-            return
-        }
+        if (!formData.email) return alert("Please insert a valid email")
 
         const user = await getUserByEmail(formData.email)
 
-        if (!user) {
-            alert("No user found with this email")
-            return
-        }
+        if (!user) return alert("No user found with this email")
+            
         const token = crypto.randomUUID()
-
+        
         await saveToken(token, user.id)
 
         const response = await fetch(`/api/sendEmail`, {
@@ -85,9 +70,11 @@ export default function LoginModal(props: LoginModalProps) {
             body: JSON.stringify({ email: formData.email, resetLink: `https://neat-pad.vercel.app/recover-password?token=${token}` }),
         });
 
+        console.log(response)
+
         if (!response.ok) return alert('Something went wrong, retry')
 
-        alert('A recovery email has been sent to your account')
+        return alert('A recovery email has been sent to your account')
     }
 
     return (

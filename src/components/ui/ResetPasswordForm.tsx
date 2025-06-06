@@ -23,7 +23,7 @@ export default function ResetPasswordForm(props: ResetPasswordFormProps) {
             if (props.token) tokenData = await getTokenData(props.token)
             userContext?.setUser(tokenData.user)
         }
-        handleToken()
+        if (props.forgotPassword && props.token) handleToken()
     }, []);
 
     async function changePassword() {
