@@ -1,8 +1,8 @@
-import { useContext, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import PasswordInput from './PasswordInput';
 import { validatePassword } from '@/utils/globalMethods';
 import { UserContext } from '@/contexts/userContext';
-import { deleteToken } from '@/db/resetPasswordTokens';
+import { deleteToken, getTokenData } from '@/db/resetPasswordTokens';
 
 interface ResetPasswordFormProps {
     forgotPassword?: boolean
@@ -11,14 +11,20 @@ interface ResetPasswordFormProps {
 export default function ResetPasswordForm(props: ResetPasswordFormProps) {
 
     const userContext = useContext(UserContext)
+    const [email, setEmail] = useState('')
     const [passwords, setPasswords] = useState({
         currentPassword: '',
         newPassword: ''
     })
 
-    function handleInput(e: React.ChangeEvent<HTMLInputElement>, key: string) {
-        setPasswords((prev: any) => ({ ...prev, [key]: e.target.value }))
+    async function handleToken() {
+        const tokenData = await getTokenData(email)
+        userContext?.setUser(tokenData.user)
     }
+
+    useEffect(() => {
+        if (userContext?.user?.id) changePassword()
+    }, [userContext?.user]);
 
     async function changePassword() {
 
@@ -34,6 +40,8 @@ export default function ResetPasswordForm(props: ResetPasswordFormProps) {
             currentPassword: undefined,
             newPassword: passwords.newPassword,
         }
+
+        console.log(requestBody)
 
         // if the user is in the forgot password 
         if (!props.forgotPassword) requestBody.currentPassword = passwords.currentPassword
@@ -60,14 +68,21 @@ export default function ResetPasswordForm(props: ResetPasswordFormProps) {
         }
     }
 
+    function handleInput(e: React.ChangeEvent<HTMLInputElement>, key: string) {
+        setPasswords((prev: any) => ({ ...prev, [key]: e.target.value }))
+    }
+
     return (
         <div className='flex flex-col items-center gap-5'>
+
+            {props.forgotPassword && <input type="email" placeholder="Insert email" className='w-full' value={email} onChange={(e) => { setEmail(e.target.value) }} />}
+
             {!props.forgotPassword && <PasswordInput onChange={(e) => { handleInput(e, 'currentPassword') }} value={passwords.currentPassword} placeholder={'Insert current password'} disabled={false} />}
 
             <PasswordInput onChange={(e) => { handleInput(e, 'newPassword') }} value={passwords.newPassword} placeholder={'Insert new password'} disabled={false} />
 
             <button className='mainBtn mt-3' onClick={() => {
-                changePassword()
+                handleToken()
             }}>Confirm</button>
         </div>
     );
