@@ -1,14 +1,12 @@
 import { supabase } from "./supabaseClient";
 import { getUserByEmail } from "./user";
 
-export async function getTokenData(userEmail: string) {
-
-    const user = await getUserByEmail(userEmail)
+export async function getTokenData(token: string) {
 
     const { data, error } = await supabase
         .from('resetPasswordTokens')
         .select('*, user(*)') // select all from resetPasswordTokens and all from related user
-        .eq('user', user.id)
+        .eq('token', token)
         .single()
 
     if (error) {

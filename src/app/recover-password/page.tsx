@@ -1,7 +1,17 @@
 'use client';
 import ResetPasswordForm from "@/components/ui/ResetPasswordForm";
+import { useEffect, useState } from "react";
 
+// this is the page that gets reached by the reset password email link that the user receives whenever it clicks on forgot password button
 export default function RecoverPasswordPage() {
+
+    const [token, setToken] = useState<string | undefined>()
+
+    useEffect(() => {
+        const urlParams = new URLSearchParams(window.location.search);
+        const token = urlParams.get('token')
+        if (token) setToken(token)
+    }, []);
 
     return (
         <div className="w-full h-full flex-col center gap-10">
@@ -10,7 +20,7 @@ export default function RecoverPasswordPage() {
                 <span className="title ms-4">**ssw*rd</span>
             </div>
             <div className="w-1/3">
-                <ResetPasswordForm forgotPassword={true} />
+                {token ? <ResetPasswordForm forgotPassword={true} token={token} /> : <span>No user available</span>}
             </div>
         </div>
     );
