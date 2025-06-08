@@ -36,8 +36,17 @@ export default function GeneralModal() {
     }
   }
 
+
+  function handleBackdropClick() {
+    // handle the note saving/deleting when the user clicks on the modals's backdrop to close it
+    if (selectedModal.value == ModalsNames.newNote || selectedModal.value == ModalsNames.updateNote) {
+      notesContext?.handleNoteEditorClose()
+    }
+    selectedModal.value = undefined
+  }
+
   // check README.md > ## SIDE EFFECTS FOR DOM SIGNALS for details
-  useLayoutEffect(()=>{
+  useLayoutEffect(() => {
     handleModal(selectedModal.value)
   }, [selectedModal.value])
 
@@ -46,13 +55,14 @@ export default function GeneralModal() {
       id={selectedModal.value}
       className="generalModalBackdrop"
       onClick={() => {
-        selectedModal.value = undefined
+        handleBackdropClick()
       }}
     >
       <div
         className="generalModal"
         ref={generalModalRef}
         onClick={(e) => {
+          // avoid the modal closure on modal's body click because of the parent div onclick event trigger
           e.stopPropagation();
         }}
         style={{ width: modalStyle?.width, height: modalStyle?.height }}
@@ -62,11 +72,13 @@ export default function GeneralModal() {
           handleKeyDown(e)
         }}
       >
+        {/* folder handler */}
         {selectedModal.value == ModalsNames.folderHandler && <div className="w-full h-full"><GeneralModalHeader
           modalId={ModalsNames.folderHandler}
         />
           <FolderHandler /></div>}
 
+        {/* note editor */}
         {(selectedModal.value == ModalsNames.newNote || selectedModal.value == ModalsNames.updateNote) && <>
           <NoteEditorModalHeader
             note={notesContext?.notes.find(
@@ -78,12 +90,14 @@ export default function GeneralModal() {
             (el) => el.id === notesContext.selectedNote
           )} /></>}
 
-
+        {/* login/create account */}
         {(selectedModal.value == ModalsNames.login || selectedModal.value == ModalsNames.createAccount) && <>
           <GeneralModalHeader modalId={ModalsNames.login} className="loginModalHeader" />
           <LoginModal creatingAccount={selectedModal.value == ModalsNames.createAccount} />
         </>}
 
+
+        {/* settings */}
         {selectedModal.value == ModalsNames.settings && <>
           <GeneralModalHeader modalId={ModalsNames.login} className="loginModalHeader" />
           <SettingsModal />
