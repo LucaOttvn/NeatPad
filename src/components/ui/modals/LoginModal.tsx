@@ -1,5 +1,5 @@
 import { UserContext } from '@/contexts/userContext';
-import { selectedModal } from '@/utils/signals';
+import { loading, selectedModal } from '@/utils/signals';
 import React, { useContext, useState } from 'react';
 import PasswordInput from '../PasswordInput';
 import { getUserByEmail } from '@/db/user';
@@ -31,6 +31,8 @@ export default function LoginModal(props: LoginModalProps) {
 
     // handle signin/signup
     async function handleSubmit() {
+
+        loading.value = true
         selectedModal.value = undefined
 
         const response = await fetch(`/api/${props.creatingAccount ? 'signup' : 'signin'}`, {
@@ -42,6 +44,7 @@ export default function LoginModal(props: LoginModalProps) {
         });
 
         if (!response.ok) {
+            loading.value = false
             if (response.status == 409) return alert('This user already exists')
             return alert('Something went wrong, retry')
         }
@@ -49,6 +52,8 @@ export default function LoginModal(props: LoginModalProps) {
         const JSONRes = await response.json()
         localStorage.setItem('JWT', JSONRes.token)
         userContext?.setUser(JSONRes.user);
+
+        loading.value = false
     }
 
     async function handleForgotPassword() {
@@ -57,9 +62,9 @@ export default function LoginModal(props: LoginModalProps) {
         const user = await getUserByEmail(formData.email)
 
         if (!user) return alert("No user found with this email")
-            
+
         const token = crypto.randomUUID()
-        
+
         await saveToken(token, user.id)
 
         const response = await fetch(`/api/sendEmail`, {

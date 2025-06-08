@@ -112,7 +112,6 @@ export default function Home() {
     }
   }
 
-
   return (
     <>
       {loading.value && <div className="loader">
