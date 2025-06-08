@@ -1,10 +1,11 @@
 import { gsap, Power4 } from "gsap";
 import { ModalsNames } from "./interfaces";
+import { isMobile } from "./signals";
 
 export function handleModal(
   target: ModalsNames | undefined,
 ) {
-  // if target is undefined close the generalBackdrop that stays behind each modal, in this way every modal in the app gets closed even without having a specific id to point to
+  // if target is undefined close the generalBackdrop that stays behind each modal, in this way every modal in the app gets closed even without having a specific id to point at
   gsap.to((target ? "#" : '.') + (target || 'generalModalBackdrop'), {
     scale: target != undefined ? 1 : 0,
     duration: 0.2,
@@ -14,7 +15,7 @@ export function handleModal(
 
 export function handleSideMenu(target: string | undefined) {
   gsap.to((target ? "#" : '.') + (target || 'generalSideMenu'), {
-    width: target ? '100%' : 0,
+    width: target ? (isMobile.value ? '100%' : '35vw') : 0,
     duration: 0.2,
     ease: Power4.easeOut,
   });

@@ -10,9 +10,9 @@ import NotesSection from "../ui/NotesSection";
 import { UserContext } from "@/contexts/userContext";
 import { ReactSVG } from "react-svg";
 import AnimatedDiv from "../animatedComponents/AnimatedDiv";
-import Loader from "../ui/Loader";
 import { getFoldersByUserId } from "@/db/folders";
 import { getNotesByUserId } from "@/db/notes";
+import { loading } from "@/utils/signals";
 
 export default function NotesOverview() {
   const notesContext = useContext(NotesContext);
@@ -20,7 +20,6 @@ export default function NotesOverview() {
   const userContext = useContext(UserContext);
 
   const [notesToShow, setNotesToShow] = useState<Note[]>([])
-  const [loading, setLoading] = useState(false)
 
   // if there's a selected folder set it
   const foundSelectedFolderData = foldersContext?.selectedFolder ? foldersContext?.folders.find(
@@ -28,6 +27,7 @@ export default function NotesOverview() {
   ) : undefined;
 
   useEffect(() => {
+    loading.value = true
     fetchData();
   }, []);
 
@@ -45,7 +45,6 @@ export default function NotesOverview() {
 
   // get notes and folders
   async function fetchData() {
-    setLoading(true)
     try {
       const [notes, folders] = await Promise.all([getNotesByUserId(userContext?.user!.id!), getFoldersByUserId(userContext?.user?.id!)]);
 
@@ -59,14 +58,11 @@ export default function NotesOverview() {
     } catch (err) {
       console.error("Error fetching initial data", err);
     }
-    setLoading(false)
+    loading.value = false
   }
 
   return (
     <div className="notesOverviewContainer">
-
-      {loading && <Loader />}
-
       <div className="w-full flex pe-3">
         {foldersContext?.selectedFolder ? <AnimatedText className="title" text={foundSelectedFolderData?.name.toUpperCase()!} color={foundSelectedFolderData?.color} /> : <div className="flex flex-col items-start">
           <AnimatedText className="title" text="My" />

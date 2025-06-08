@@ -1,7 +1,7 @@
 "use client";;
 import TopBar from "@/components/ui/TopBar";
 import Image from "next/image";
-import { useContext, useEffect, useLayoutEffect, useState } from "react";
+import { useContext, useEffect, useLayoutEffect } from "react";
 import { ScaleLoader } from "react-spinners";
 import AnimatedDiv from "@/components/animatedComponents/AnimatedDiv";
 import NotesOverview from "@/components/notesOverview/NotesOverview";
@@ -16,7 +16,7 @@ import { flushSync } from "react-dom";
 import gsap from 'gsap';
 import { animateDivUnmount } from "@/utils/globalMethods";
 import { useSignals } from "@preact/signals-react/runtime";
-import { isMobile, selectedModal } from "@/utils/signals";
+import { isMobile, loading, selectedModal } from "@/utils/signals";
 import { getUserById } from "@/db/user";
 
 export default function Home() {
@@ -24,7 +24,6 @@ export default function Home() {
 
   const userContext = useContext(UserContext);
   const notesContext = useContext(NotesContext);
-  const [isLoading, setIsLoading] = useState(true);
 
   useLayoutEffect(() => {
     function checkScreenSize() {
@@ -35,9 +34,9 @@ export default function Home() {
   }, [isMobile.value])
 
   useEffect(() => {
+    loading.value = true
     const token = localStorage.getItem('JWT');
 
-    setIsLoading(true)
 
     if (token) {
       async function verifyToken() {
@@ -68,7 +67,7 @@ export default function Home() {
       userContext?.setUser(undefined);
     }
 
-    setIsLoading(false)
+    loading.value = false
   }, []);
 
 
@@ -90,14 +89,6 @@ export default function Home() {
       }
     })
   }, [notesContext?.deleteMode.active]);
-
-  if (isLoading) {
-    return (
-      <div className="loader">
-        <ScaleLoader color={"white"} loading={true} />
-      </div>
-    );
-  }
 
   // when the user clicks on the plus button, the createNote() gets triggered, this happens because the NoteEditor component needs a note with an already existing id because it's supposed to edit notes, not creating new ones (as you can guess from the name)
   async function openNewNoteModal() {
@@ -124,6 +115,10 @@ export default function Home() {
 
   return (
     <>
+      {loading.value && <div className="loader">
+        <ScaleLoader color={"white"} loading={true} />
+      </div>}
+
       {userContext?.user ? (
         <AnimatedDiv className="appContainer w-full h-full flex start">
           <TopBar />
@@ -175,6 +170,8 @@ export default function Home() {
         <Login />
       )}
       <GeneralModal />
+
+
     </>
   );
 }

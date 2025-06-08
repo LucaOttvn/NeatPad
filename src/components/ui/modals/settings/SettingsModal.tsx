@@ -29,7 +29,7 @@ export default function SettingsModal(props: SettingsModalProps) {
   return (
     <div className='settingsModal'>
       <span className='title'>Settings</span>
-      <div className='w-full h-full flex flex-col justify-between mt-20'>
+      <div className='w-full h-full flex flex-col justify-between items-center mt-10'>
         <section className='profileSection'>
           <h1 className='w-full center' style={{ fontSize: '140%' }}>Change password</h1>
           <ResetPasswordForm />
