@@ -3,7 +3,6 @@ import "./noteEditor.scss";
 import { ChangeEvent, useContext, useEffect, useRef, useState } from "react";
 import { NotesContext } from "@/contexts/notesContext";
 import { Note } from "@/utils/interfaces";
-import { updateNote } from "@/db/notes";
 
 interface NoteEditorProps {
   note: Note | undefined
@@ -35,32 +34,19 @@ export default function NoteEditor(props: NoteEditorProps) {
           [keyToUpdate]: e.target.value,
         };
       });
-
-      // clear any existing timer to reset the debounce countdown
-      if (debounceTimerRef.current) {
-        clearTimeout(debounceTimerRef.current);
-      }
-
-      // set a new timer to call saveNote after a delay
-      debounceTimerRef.current = setTimeout(() => {
-        alert('Note updated')
-        callUpdateNote()
-      }, 500);
     }
   }
 
-  async function callUpdateNote() {
-    if (!currentNote) return
-
-    notesContext?.updateNoteState(currentNote)
-    await updateNote(currentNote)
-  }
-
-  // this keeps the context's state up to date with the new local changes on each keystroke 
   useEffect(() => {
-    if (currentNote) {
-      notesContext?.updateNoteState(currentNote)
+    // clear any existing timer to reset the debounce countdown
+    if (debounceTimerRef.current) {
+      clearTimeout(debounceTimerRef.current);
     }
+
+    // set a new timer to call saveNote after a delay
+    if (currentNote) debounceTimerRef.current = setTimeout(() => {
+      notesContext?.updateNoteState(currentNote)
+    }, 500);
   }, [currentNote]);
 
   return (
