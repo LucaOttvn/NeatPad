@@ -11,7 +11,6 @@ import { FoldersContext } from "@/contexts/foldersContext";
 import SettingsModal from "./settings/SettingsModal";
 import { selectedModal } from "@/utils/signals";
 import { handleModal } from "@/utils/globalMethods";
-import { App } from '@capacitor/app';
 
 export default function GeneralModal() {
   const notesContext = useContext(NotesContext)
