@@ -12,8 +12,12 @@ import { getFoldersByUserId } from "@/db/folders";
 import { getNotesByUserId } from "@/db/notes";
 import { loading } from "@/utils/signals";
 import SearchBar from "../ui/searchBar/SearchBar";
-import { compareStrings } from "@/utils/globalMethods";
 
+interface NotesCompareParams {
+  noteText: string
+  noteTitle: string
+  searchParam: string
+}
 
 export default function NotesOverview() {
   const notesContext = useContext(NotesContext);
@@ -45,14 +49,6 @@ export default function NotesOverview() {
     }
   }, [foldersContext?.selectedFolder, notesContext?.notes]);
 
-  useEffect(() => {
-    filterNotesToShow()
-  }, [notesToShow]);
-
-  function filterNotesToShow() {
-
-  }
-
   // get notes and folders
   async function fetchData() {
     try {
@@ -72,14 +68,22 @@ export default function NotesOverview() {
   }
 
   // when the user searches for something, check if the search param is included somewhere in the title or in the text of any note and, if it is, show it. Check on the pinned param too
-  function filterNotes(notes: Note[], searchParam: string, pinned: boolean) {
+  function filterNotesToShow(notes: Note[], searchParam: string, pinned: boolean) {
     return notes.filter(el =>
       (pinned ? el.pinned : !el.pinned) &&
-      compareStrings({ noteText: el.text, noteTitle: el.title, searchParam })
+      findSearchedNote({ noteText: el.text, noteTitle: el.title, searchParam })
     );
   };
 
-  const pinnedFilteredNotes = filterNotes(notesToShow, search, true);
+  // check if the note's text and title contain the search string
+  function findSearchedNote(stringsToCompare: NotesCompareParams) {
+    const noteTextIncludesSearchParam = stringsToCompare.noteText.toLowerCase().includes(stringsToCompare.searchParam.toLowerCase())
+    const noteTitleIncludesSearchParam = stringsToCompare.noteTitle.toLowerCase().includes(stringsToCompare.searchParam.toLowerCase())
+    if (!noteTextIncludesSearchParam && !noteTitleIncludesSearchParam) return false
+    return true
+  }
+
+  const pinnedFilteredNotes = filterNotesToShow(notesToShow, search, true);
 
   return (
     <div className="notesOverviewContainer">
@@ -106,7 +110,7 @@ export default function NotesOverview() {
 
       {/* non-pinned notes section */}
       {notesToShow.length > 0 ? <NotesSection
-        notes={filterNotes(notesToShow, search, false)}
+        notes={filterNotesToShow(notesToShow, search, false)}
         title="Others"
       /> : <div className="w-full h-full center">
         You haven't saved any notes yet

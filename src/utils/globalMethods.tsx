@@ -87,24 +87,3 @@ export function validatePassword(password: string): PasswordValidationResult {
     errors: errors,
   };
 }
-
-
-interface NotesCompareParams {
-  noteText: string
-  noteTitle: string
-  searchParam: string
-}
-
-export function filterNotesToShow(stringsToCompare: NotesCompareParams, notes: Note[], pinned: boolean) {
-
-
-
-  // return notes.filter(note => pinned ? note.pinned : !note.pinned && noteTextIncludesSearchParam)
-}
-
-export function compareStrings(stringsToCompare: NotesCompareParams) {
-  const noteTextIncludesSearchParam = stringsToCompare.noteText.toLowerCase().includes(stringsToCompare.searchParam.toLowerCase())
-  const noteTitleIncludesSearchParam = stringsToCompare.noteTitle.toLowerCase().includes(stringsToCompare.searchParam.toLowerCase())
-  if (!noteTextIncludesSearchParam && !noteTitleIncludesSearchParam) return false
-  return true
-}
