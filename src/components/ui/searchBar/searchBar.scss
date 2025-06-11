@@ -1,0 +1,16 @@
+.searchBarContainer {
+    background-color: var(--darkGrey);
+    border-radius: var(--mainBorderRadius);
+    height: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-left: 0.7rem;
+    input {
+        height: inherit;
+        border: none !important;
+    }
+    svg {
+        scale: 0.9;
+    }
+}
