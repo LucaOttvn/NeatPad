@@ -5,7 +5,7 @@ import { FoldersContext } from "@/contexts/foldersContext";
 import { Folder } from "@/utils/interfaces";
 import { UserContext } from "@/contexts/userContext";
 import { createFolder, deleteFolder, updateFolder } from "@/db/folders";
-import { selectedModal } from "@/utils/signals";
+import { selectedModal, selectedSideMenu } from "@/utils/signals";
 
 export default function FolderHandler() {
   const foldersContext = useContext(FoldersContext);
@@ -64,6 +64,20 @@ export default function FolderHandler() {
     selectedModal.value = undefined;
   }
 
+  async function handleDeleteFolder() {
+
+    if (!foldersContext) return
+
+    // update folders state
+    foldersContext?.setFolders(prev => prev.filter(folder => folder.id != foundFolder.current?.id))
+    if (foundFolder.current && foundFolder.current.id) await deleteFolder(foundFolder.current?.id)
+    selectedModal.value = undefined
+    foldersContext.setUpdatingFolder(undefined)
+
+    foldersContext.setSelectedFolder(undefined)
+    selectedSideMenu.value = undefined
+  }
+
   return (
     <AnimatedDiv className="folderHandler">
       {/* form + color picker section */}
@@ -110,12 +124,7 @@ export default function FolderHandler() {
           <button
             className="mainBtn createFolderBtn"
             style={{ background: 'var(--Red)' }}
-            onClick={() => {
-              foldersContext?.setFolders(prev => prev.filter(folder => folder.id != foundFolder.current?.id))
-              if (foundFolder.current && foundFolder.current.id) deleteFolder(foundFolder.current?.id)
-              selectedModal.value = undefined
-              foldersContext.setUpdatingFolder(undefined)
-            }}
+            onClick={handleDeleteFolder}
           >
             Delete folder
           </button>
