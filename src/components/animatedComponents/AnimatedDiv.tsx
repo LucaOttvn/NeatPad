@@ -11,6 +11,7 @@ interface AnimatedDivProps {
   onTouchStart?: () => void;
   onTouchEnd?: () => void;
   onTouchMove?: () => void;
+  onContextMenu?: (e: React.MouseEvent) => void;
 }
 
 export default function AnimatedDiv(props: AnimatedDivProps) {
@@ -38,6 +39,9 @@ export default function AnimatedDiv(props: AnimatedDivProps) {
       }}
       onTouchMove={() => {
         if (props.onTouchMove) props.onTouchMove()
+      }}
+      onContextMenu={(e) => {
+        if (props.onContextMenu) props.onContextMenu(e)
       }}
     >
       {props.children}
