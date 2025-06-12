@@ -52,8 +52,8 @@ export const modalsList: Modal[] = [
     },
     {
         name: ModalsNames.folderHandler,
-        width: '80%',
-        height: '80%'
+        width: '50%',
+        height: '60%'
     },
     {
         name: ModalsNames.settings,
