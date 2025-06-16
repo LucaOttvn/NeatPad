@@ -1,4 +1,6 @@
-A neat approach to note-taking
+![Alt text for the image](/src/app/favicon.ico)
+
+### A neat approach to note-taking
 
 ## About
 
