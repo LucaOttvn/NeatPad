@@ -1,6 +1,6 @@
 # Neat Pad
 
-A neat approach to note-taking
+### A neat approach to note-taking
 
 ## About
 
