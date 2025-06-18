@@ -2,7 +2,9 @@
 ### A neat approach to note-taking
 
  - [Features](#features)
- - [About](#neatpad)
+ - [About](#about)
+ - [Run the project](#run-the-project)
+ - [Capacitor integration](#capacitor-integration)
 
 ## Features
 - Notes creation
@@ -13,7 +15,23 @@
 This is essentially a Google Keep inspired notepad with a little more ahestetic touch (for my personal taste at least).
 This app was born from a need of a clean UX free of fancy or confusing extra features. While Google Keep already does a pretty good job I aimed to create something slightly more customized on my personal needs. 
 
-The app is available both in web and mobile version, the latter is made with [Capacitor](https://github.com/ionic-team/capacitor).
+The app is available both in web and mobile version, the latter is made with [Capacitor](https://github.com/ionic-team/capacitor), check [Capacitor integration](#capacitor-integration).
+
+## Run the project
+The db in use is Supabase, to connect your own you have to:
+1. Create an account on [Supabase](https://supabase.com)
+2. Create a .env in the project's root and create these variables:
+   * `NEXT_PUBLIC_SUPABASE_URL`: Supabase Dashboard > Project settings > Configuration > Data API > Project URL
+   * `NEXT_PUBLIC_SUPABASE_KEY`: Supabase Dashboard > Project settings > API Keys > Copy the "anon" "public" marked key
+   * `NEXT_PUBLIC_SUPABASE_SERVICE_ROLE_KEY`: Supabase Dashboard > Project settings > API Keys > Copy the "service role" "secret" marked key
+   * `JWT_SECRET`: Supabase Dashboard > Project settings > Configuration > Data API > JWT Settings > Copy the JWT Secret key
+3. Create an account on [Resend](https://resend.com)
+4. Add in the the .env this `EMAIL_API_KEY`, you can find it in Resend Dashboard > API Keys
+5. Run `npm install` & `npm run dev`
+
+## Capacitor integration
+
+
 
 ### Side effects for DOM signals
 Some of the signals defined in signals.ts file have side effects that directly interact with the DOM. One example of this is the selectedModal signal where a gsap animation is triggered.
