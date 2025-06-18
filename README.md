@@ -5,7 +5,8 @@ A neat approach to note-taking
  - [About](#about)
  - [Run the project](#run-the-project)
  - [Capacitor integration](#capacitor-integration)
- - [Side effects for DOM signals](#side-effects-for-dom-signals)
+ - [Project details](#project-details)
+   - [Side effects for DOM signals](#side-effects-for-dom-signals)
 
 ## Features
 - Notes creation
@@ -34,7 +35,14 @@ The db in use is Supabase, to connect your own you have to:
 The capacitor integration in this project is nothing follows the [Capacitor guide](https://capacitorjs.com/solution/react).  
 In the `capacitor.config.ts` you have to put the server url that points to the hosted web version of the app, the original one is: `https://neat-pad.vercel.app/` but it's obviously going to change based on your hosted version's link.
 
-## Side effects for DOM signals
+## Project details
+### Recover password page
+This page is a separate one because it gotta be included in the reset-password email as a link
+
+### API folder
+These are pieces of logic that use server side methods that cannot be used in the client components
+
+### Side effects for DOM signals
 Some of the signals defined in `signals.ts` file have side effects that directly interact with the DOM. One example of this is the `selectedModal` signal where a [GSAP](https://gsap.com) animation is triggered.
 Since the `signals.ts` file it's not part of the components tree, sideEffects like effect(()=>{}) are triggered immediately on the signal's value change; this is a problem because GSAP needs the DOM to be fully updated to perform animations correctly, so putting something like:
 ```javascript
