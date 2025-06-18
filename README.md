@@ -6,6 +6,8 @@ A neat approach to note-taking
  - [Run the project](#run-the-project)
  - [Capacitor integration](#capacitor-integration)
  - [Project details](#project-details)
+   - [Recover password page](#recover-password-page)
+   - [API folder](#api-folder)
    - [Side effects for DOM signals](#side-effects-for-dom-signals)
 
 ## Features
