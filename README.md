@@ -1,10 +1,11 @@
 # NeatPad
-### A neat approach to note-taking
+A neat approach to note-taking
 
  - [Features](#features)
  - [About](#about)
  - [Run the project](#run-the-project)
  - [Capacitor integration](#capacitor-integration)
+ - [Side effects for DOM signals](#side-effects-for-dom-signals)
 
 ## Features
 - Notes creation
