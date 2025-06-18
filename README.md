@@ -1,4 +1,8 @@
+# NeatPad
 ### A neat approach to note-taking
+
+ - [Features](#features)
+ - [About](#neatpad)
 
 ## Features
 - Notes creation
