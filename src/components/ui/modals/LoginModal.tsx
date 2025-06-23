@@ -83,7 +83,7 @@ export default function LoginModal(props: LoginModalProps) {
     }
 
     return (
-        <div className="loginModal w-full h-full center flex-col gap-8">
+        <div className="loginModal">
             <h1 className="title">
                 {props.creatingAccount ? <div className="flex flex-col items-start">
                     <span className="">Create</span>

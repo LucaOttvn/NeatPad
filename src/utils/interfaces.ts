@@ -43,12 +43,12 @@ export const modalsList: Modal[] = [
     {
         name: ModalsNames.login,
         width: '30%',
-        height: '60%'
+        height: 'auto'
     },
     {
         name: ModalsNames.createAccount,
         width: '30%',
-        height: '60%'
+        height: 'auto'
     },
     {
         name: ModalsNames.folderHandler,

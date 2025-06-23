@@ -8,6 +8,7 @@ export function handleModal(
   gsap.to((target ? "#" : '.') + (target || 'generalModalBackdrop'), {
     scale: target != undefined ? 1 : 0,
     duration: 0.2,
+    bottom: target != undefined ? 0 : '-100%' ,
     ease: Power4.easeOut,
   });
 }
