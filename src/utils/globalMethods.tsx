@@ -1,15 +1,32 @@
-import { gsap, Power4 } from "gsap";
-import { ModalsNames, Note } from "./interfaces";
+import { gsap } from "gsap";
+import { ModalsNames } from "./interfaces";
+import { isMobile, selectedModal } from "./signals";
+
+let modalAnimation: gsap.core.Tween | undefined
 
 export function handleModal(
   target: ModalsNames | undefined,
 ) {
+  // avoid triggering multiple animations when the user rapidly clicks on buttons
+  if (modalAnimation && modalAnimation.isActive()) return
+
+  const openingModal = target != undefined
+  const animationEase = {
+    direction: openingModal ? 'out' : 'in',
+    // on desktops the effect is a bit less visible, so set a bigger depth
+    depth: isMobile.value ? 0.7 : 1
+  }
+
   // if target is undefined close the generalBackdrop that stays behind each modal, in this way every modal in the app gets closed even without having a specific id to point at
-  gsap.to((target ? "#" : '.') + (target || 'generalModalBackdrop'), {
-    scale: target != undefined ? 1 : 0,
-    duration: 0.2,
-    bottom: target != undefined ? 0 : '-100%' ,
-    ease: Power4.easeOut,
+  modalAnimation = gsap.to((target ? "#" : '.') + (target || 'generalModalBackdrop'), {
+    scale: openingModal ? 1 : 0,
+    duration: openingModal ? 0.25 : 0.4,
+    bottom: openingModal ? 0 : '-100%',
+    ease: `back.${animationEase.direction}(${animationEase.depth})`,
+    delay: 0.1,
+    onComplete: () => {
+      if (target == undefined) selectedModal.value = undefined
+    }
   });
 }
 

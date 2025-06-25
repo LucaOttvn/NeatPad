@@ -1,5 +1,5 @@
 import { UserContext } from '@/contexts/userContext';
-import { loading, selectedModal } from '@/utils/signals';
+import { loading } from '@/utils/signals';
 import React, { useContext, useState } from 'react';
 import PasswordInput from '../PasswordInput';
 import { getUserByEmail } from '@/db/user';
@@ -33,7 +33,7 @@ export default function LoginModal(props: LoginModalProps) {
     async function handleSubmit() {
 
         loading.value = true
-        selectedModal.value = undefined
+        handleModal(undefined)
 
         const response = await fetch(`/api/${props.creatingAccount ? 'signup' : 'signin'}`, {
             method: 'POST',
