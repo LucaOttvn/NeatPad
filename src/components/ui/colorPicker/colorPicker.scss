@@ -1,0 +1,14 @@
+.colorPicker {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1rem;
+  padding: 1rem;
+
+  .colorSelector {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    transition: 0.2s;
+    border: solid 3px transparent;
+  }
+}

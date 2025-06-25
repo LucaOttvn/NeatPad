@@ -6,13 +6,13 @@ import AnimatedDiv from "@/components/animatedComponents/AnimatedDiv";
 import NotesOverview from "@/components/notesOverview/NotesOverview";
 import { User } from "@/utils/interfaces";
 import { UserContext } from "@/contexts/userContext";
-import GeneralSideMenu from "@/components/ui/SideMenu";
 import Login from "@/components/Login";
 import GeneralModal from "@/components/ui/modals/GeneralModal";
 import { useSignals } from "@preact/signals-react/runtime";
 import { isMobile, loading } from "@/utils/signals";
 import { getUserById } from "@/db/user";
 import NewNoteButton from "@/components/ui/NewNoteButton";
+import GeneralSideMenu from "@/components/ui/SideMenu";
 
 export default function Home() {
   useSignals()

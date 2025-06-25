@@ -1,0 +1,34 @@
+.folderHandler {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  gap: 3rem;
+  padding: 5rem;
+  padding-top: 0;
+  overflow-y: scroll;
+
+  * {
+    user-select: none;
+  }
+
+  .wrapper {
+    display: flex;
+    gap: 1.5rem;
+    justify-content: center;
+    align-items: center;
+
+    .heading {
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+    }
+
+    .createFolderBtn {
+      width: 100%;
+      height: 5rem;
+    }
+  }
+}

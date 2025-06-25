@@ -1,10 +1,11 @@
 import { UserContext } from '@/contexts/userContext';
 import { loading } from '@/utils/signals';
 import React, { useContext, useState } from 'react';
-import PasswordInput from '../PasswordInput';
+import PasswordInput from '../../PasswordInput';
 import { getUserByEmail } from '@/db/user';
 import { saveToken } from '@/db/resetPasswordTokens';
 import { handleModal } from '@/utils/globalMethods';
+import './loginModal.scss'
 
 interface LoginModalProps {
     creatingAccount: boolean
