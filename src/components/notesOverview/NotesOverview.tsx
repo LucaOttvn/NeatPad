@@ -99,7 +99,7 @@ export default function NotesOverview() {
           <AnimatedText className="title" text="My" />
           <AnimatedText className="title ms-5" text="Notes" />
         </div>}
-        <AnimatedDiv className="w-full flex gap-5 start">
+        <AnimatedDiv className="w-full flex flex-wrap gap-5 start">
           <button className="mainBtn w-full end gap-2" style={{ padding: '0.6rem 0.8rem' }} onClick={() => { fetchNotesAndFolders() }}>
             <ReactSVG src={`/icons/refresh.svg`} className="icon" style={{ scale: 1.2 }} />
           </button>
