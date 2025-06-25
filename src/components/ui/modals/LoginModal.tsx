@@ -4,6 +4,7 @@ import React, { useContext, useState } from 'react';
 import PasswordInput from '../PasswordInput';
 import { getUserByEmail } from '@/db/user';
 import { saveToken } from '@/db/resetPasswordTokens';
+import { handleModal } from '@/utils/globalMethods';
 
 interface LoginModalProps {
     creatingAccount: boolean
@@ -43,13 +44,13 @@ export default function LoginModal(props: LoginModalProps) {
             body: JSON.stringify({ email: formData.email, password: formData.password }),
         });
 
+        const JSONRes = await response.json()
         if (!response.ok) {
             loading.value = false
             if (response.status == 409) return alert('This user already exists')
-            return alert('Something went wrong, retry')
+            return alert(JSONRes.error)
         }
 
-        const JSONRes = await response.json()
         localStorage.setItem('JWT', JSONRes.token)
         userContext?.setUser(JSONRes.user);
 

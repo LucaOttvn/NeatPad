@@ -20,7 +20,7 @@ export function handleModal(
   // if target is undefined close the generalBackdrop that stays behind each modal, in this way every modal in the app gets closed even without having a specific id to point at
   modalAnimation = gsap.to((target ? "#" : '.') + (target || 'generalModalBackdrop'), {
     scale: openingModal ? 1 : 0,
-    duration: openingModal ? 0.25 : 0.4,
+    duration: openingModal ? 0.3 : 0.4,
     bottom: openingModal ? 0 : '-100%',
     ease: `back.${animationEase.direction}(${animationEase.depth})`,
     delay: 0.1,
@@ -34,7 +34,7 @@ export function handleSideMenu(target: string | undefined, isMobile: boolean) {
   gsap.to((target ? "#" : '.') + (target || 'generalSideMenu'), {
     width: target ? (isMobile ? '100%' : '35vw') : 0,
     duration: 0.2,
-    ease: Power4.easeOut,
+    ease: 'power4.out'
   });
 }
 
@@ -47,7 +47,7 @@ export function animateDivUnmount(ids: string[], onComplete: () => void) {
     tl.to("#" + id, {
       opacity: 0,
       duration: 0.2,
-      ease: Power4.easeOut
+      ease: 'power4.out'
     }, 0); // all animations start at the same time
   });
 }

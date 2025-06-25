@@ -12,6 +12,7 @@ async function hashPassword(password: string) {
 const JWT_SECRET = process.env.JWT_SECRET!;
 
 export async function POST(request: Request) {
+
     try {
         const { email, password } = await request.json();
 
