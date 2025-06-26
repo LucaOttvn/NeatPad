@@ -91,7 +91,7 @@ export default function NoteEditorModalHeader(props: BasicComponentProps) {
               // folder card
               <div
                 key={"folder" + index}
-                className="folderCard gap-3"
+                className="folderCardSelector gap-3"
                 onClick={()=>{
                   handleFolderSelection(folder)
                 }}
