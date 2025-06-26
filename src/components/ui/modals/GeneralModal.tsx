@@ -20,7 +20,6 @@ export default function GeneralModal() {
 
   const modalStyle = modalsList.find(el => el.name == selectedModal.value)
 
-
   useEffect(() => {
     // this allows the ESC button to be detected even if the user doesn't click on the modal before
     generalModalRef.current?.focus();
