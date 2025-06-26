@@ -27,38 +27,45 @@ interface Modal {
     name: string
     width: string
     height: string
+    maxWidth: string
 }
 
 export const modalsList: Modal[] = [
     {
         name: ModalsNames.newNote,
         width: '80%',
-        height: '80%'
+        height: '80%',
+        maxWidth: ''
     },
     {
         name: ModalsNames.updateNote,
         width: '80%',
-        height: '80%'
+        height: '80%',
+        maxWidth: ''
     },
     {
         name: ModalsNames.login,
         width: '30%',
-        height: 'auto'
+        height: 'auto',
+        maxWidth: '355px'
     },
     {
         name: ModalsNames.createAccount,
         width: '30%',
-        height: 'auto'
+        height: 'auto',
+        maxWidth: '400px'
     },
     {
         name: ModalsNames.folderHandler,
         width: '70%',
-        height: '70%'
+        height: '60%',
+        maxWidth: '700px'
     },
     {
         name: ModalsNames.settings,
         width: '60%',
-        height: '90%'
+        height: '90%',
+        maxWidth: '600px'
     },
 ]
 
