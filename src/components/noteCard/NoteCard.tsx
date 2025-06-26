@@ -101,7 +101,7 @@ export default function NoteCard(props: NoteCardProps) {
       style={{
         background: foundParentFolder?.color
           ? `var(--${foundParentFolder?.color})`
-          : "var(--lightBlack)",
+          : "var(--darkGrey)",
       }}
     >
       <div className="overflow-hidden">
@@ -120,7 +120,7 @@ export default function NoteCard(props: NoteCardProps) {
           <span style={{ color: "var(--Grey)" }}>No text</span>
         )}
       </div>
-      {foldersContext?.folders.some((folder) => folder.id == props.note.folder) && <div className="folderName" style={{ background: 'var(--lightBlack)' }}>
+      {foldersContext?.folders.some((folder) => folder.id == props.note.folder) && <div className="folderName" style={{ background: 'var(--darkGrey)' }}>
         <ReactSVG src={`/icons/folder.svg`} className="icon" />
         <span style={{ fontSize: '80%' }} className="font-bold">
           {foldersContext?.folders.find((folder) => folder.id == props.note.folder)?.name}

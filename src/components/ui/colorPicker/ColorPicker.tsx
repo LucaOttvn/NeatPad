@@ -1,7 +1,7 @@
 import React from "react";
 import AnimatedDiv from "../../animatedComponents/AnimatedDiv";
 import { colors } from "@/utils/interfaces";
-import './colorPicker.scss'
+import './colorPicker.scss';
 
 interface ColorPickerProps {
   setSelectedColor: React.Dispatch<React.SetStateAction<string | undefined>>;
@@ -12,7 +12,7 @@ export default function ColorPicker(props: ColorPickerProps) {
   return (
     <AnimatedDiv className="colorPicker">
       {colors.map((color, index) => {
-        if (color.color != "lightBlack")
+        if (color.color != "darkGrey")
           return (
             <div
               key={"color" + index}

@@ -86,7 +86,7 @@ export const colors = [
         text: 'Black'
     },
     {
-        color: "lightBlack",
+        color: "darkGrey",
         text: 'White'
     },
     {
