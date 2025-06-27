@@ -28,7 +28,7 @@ export default function SettingsModal(props: SettingsModalProps) {
 
   return (
     <div className='settingsModal'>
-      <span className='title pb-3'>Settings</span>
+      <span className='title'>Settings</span>
       <div className='w-full h-full flex flex-col justify-between items-center mt-10'>
         <section className='profileSection'>
           <span className='w-full center gap-2 p-2' style={{ fontSize: '110%', background: '#101010', borderRadius: 'var(--mainBorderRadius)' }}>Email: <b>{userContext?.user?.email}</b></span>
@@ -37,7 +37,7 @@ export default function SettingsModal(props: SettingsModalProps) {
             <ResetPasswordForm />
           </div>
         </section>
-        <div className='flex flex-col items-center gap-5'>
+        <div className='flex items-center gap-5'>
           <button className='mainBtn center gap-2' style={{ background: 'var(--Grey)' }} onClick={logout}><ReactSVG src={'/icons/logout.svg'} className="icon" />Logout</button>
           <button className='mainBtn' style={{ background: 'var(--Red)' }} onClick={() => { handleDeleteSupabaseUser() }}>Delete account</button>
         </div>
