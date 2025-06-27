@@ -88,7 +88,8 @@ export default function GeneralModal() {
           />
           <NoteEditor note={notesContext?.notes.find(
             (el) => el.id === notesContext.selectedNote
-          )} /></>}
+          )} /></>
+          }
 
         {/* login/create account */}
         {(selectedModal.value == ModalsNames.login || selectedModal.value == ModalsNames.createAccount) && <>

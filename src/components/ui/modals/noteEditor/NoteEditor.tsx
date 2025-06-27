@@ -8,6 +8,7 @@ import { Note } from "@/utils/interfaces";
 import MDEditor, { commands } from "@uiw/react-md-editor";
 import gsap from 'gsap';
 import { updateNote } from '@/db/notes';
+import MarkdownToolbar from './MarkdownToolbar';
 
 interface NoteEditorProps {
   note: Note | undefined
@@ -83,7 +84,7 @@ export default function NoteEditor(props: NoteEditorProps) {
 
   return (
     <div className="noteEditorContainer">
-      <header>
+      <div className='titleSection'>
         <input
           type="text"
           placeholder="Insert title"
@@ -92,17 +93,9 @@ export default function NoteEditor(props: NoteEditorProps) {
             handleInput('title', e)
           }}
         />
-      </header>
-
-
-      <div className='useMarkdownToggle'>
-        <div className='md' onClick={() => {
-          setUseMarkdown(true)
-        }}>Markdown</div>
-        <div className='txt' onClick={() => {
-          setUseMarkdown(false)
-        }}>Text</div>
       </div>
+
+      <MarkdownToolbar setUseMarkdown={setUseMarkdown}/>
 
       {
         useMarkdown && <MDEditor
@@ -118,6 +111,7 @@ export default function NoteEditor(props: NoteEditorProps) {
           ]}
           extraCommands={[commands.codeEdit, commands.codePreview, commands.codeLive]}
           preview='edit'
+          hideToolbar={true}
         />
       }
       {
