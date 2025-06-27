@@ -6,6 +6,7 @@ import { ChangeEvent, useContext, useEffect, useRef, useState } from "react";
 import { NotesContext } from "@/contexts/notesContext";
 import { Note } from "@/utils/interfaces";
 import MDEditor, { commands } from "@uiw/react-md-editor";
+import gsap from 'gsap';
 
 interface NoteEditorProps {
   note: Note | undefined
@@ -13,19 +14,12 @@ interface NoteEditorProps {
 
 export default function NoteEditor(props: NoteEditorProps) {
   const notesContext = useContext(NotesContext);
-  const textareaRef = useRef(null)
 
   const [currentNote, setCurrentNote] = useState<Note | undefined>(props.note)
+  const [useMarkdown, setUseMarkdown] = useState(true)
 
   const debounceTimerRef = useRef<NodeJS.Timeout | null>(null);
 
-  const handleSelection = () => {
-    if (textareaRef.current) {
-      const { selectionStart, selectionEnd, value } = textareaRef.current;
-      const selectedText = (value as string).substring(selectionStart, selectionEnd);
-      console.log(selectedText);
-    }
-  };
 
   useEffect(() => {
     return () => {
@@ -37,12 +31,16 @@ export default function NoteEditor(props: NoteEditorProps) {
 
   const handleInput = (keyToUpdate: 'title' | 'text', e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement> | string) => {
 
+    // if the user is typing in markdown mode, the type of e is different from the one that comes from the input field for the title or for the normal textarea
+    const usingMarkdown = (keyToUpdate == 'text' && useMarkdown)
+    let inputValue: string = usingMarkdown ? e as string : (e as ChangeEvent<HTMLInputElement | HTMLTextAreaElement>).target.value
+
     if (currentNote) {
       setCurrentNote(prev => {
         if (!prev) return prev;
         return {
           ...prev,
-          [keyToUpdate]: keyToUpdate == 'title' ? (e as ChangeEvent<HTMLInputElement | HTMLTextAreaElement>).target.value : e,
+          [keyToUpdate]: inputValue
         };
       });
     }
@@ -60,6 +58,21 @@ export default function NoteEditor(props: NoteEditorProps) {
     }, 500);
   }, [currentNote]);
 
+  useEffect(() => {
+    gsap.to('.md', {
+      background: useMarkdown ? 'var(--Green)' : 'var(--darkGrey)',
+      color: useMarkdown ? 'var(--Black)' : 'var(--White)',
+      duration: 0.2,
+      ease: 'power4.out'
+    })
+    gsap.to('.txt', {
+      background: useMarkdown ? 'var(--darkGrey)' : 'var(--Green)',
+      color: useMarkdown ? 'var(--White)' : 'var(--Black)',
+      duration: 0.2,
+      ease: 'power4.out'
+    })
+  }, [useMarkdown]);
+
   return (
     <div className="noteEditorContainer">
       <header>
@@ -72,33 +85,45 @@ export default function NoteEditor(props: NoteEditorProps) {
           }}
         />
       </header>
-      <MDEditor
-        className="markdownEditor"
-        height={'100%'}
-        visibleDragbar={false}
-        value={currentNote ? currentNote.text : ''}
-        onChange={(e) => {
-          handleInput('text', e || '')
-        }}
-        commands={[
-          commands.bold, commands.italic, commands.codeBlock
-        ]}
-        extraCommands={[commands.codeEdit, commands.codePreview, commands.codeLive]}
-        preview='preview'
-      />
-    </div>
+
+
+      <div className='useMarkdownToggle'>
+        <div className='md' onClick={() => {
+          setUseMarkdown(true)
+        }}>Markdown</div>
+        <div className='txt' onClick={() => {
+          setUseMarkdown(false)
+        }}>Text</div>
+      </div>
+      
+      {
+        useMarkdown && <MDEditor
+          className="markdownEditor"
+          height={'100%'}
+          visibleDragbar={false}
+          value={currentNote ? currentNote.text : ''}
+          onChange={(e) => {
+            handleInput('text', e || '')
+          }}
+          commands={[
+            commands.bold, commands.italic, commands.codeBlock
+          ]}
+          extraCommands={[commands.codeEdit, commands.codePreview, commands.codeLive]}
+          preview='edit'
+        />
+      }
+      {
+        !useMarkdown && <textarea
+          className="noteEditorInputField"
+          placeholder="Insert your note..."
+          data-placeholder="Insert your note..."
+          value={currentNote ? currentNote.text : ''}
+          onChange={(e) => {
+            handleInput('text', e)
+          }}
+        ></textarea>
+      }
+    </div >
   );
 }
 
-{/* <textarea
-        ref={textareaRef}
-        className="noteEditorInputField"
-        placeholder="Insert your note..."
-        data-placeholder="Insert your note..."
-        value={currentNote ? currentNote.text : ''}
-        onMouseUp={handleSelection}
-        onKeyUp={handleSelection}
-        onChange={(e) => {
-          handleInput('text', e)
-        }}
-      ></textarea> */}
