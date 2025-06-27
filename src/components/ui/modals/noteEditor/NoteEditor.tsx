@@ -72,10 +72,12 @@ export default function NoteEditor(props: NoteEditorProps) {
       ease: 'power4.out'
     })
 
-    let noteToUpdate = props.note
-    if (!noteToUpdate) return
-    noteToUpdate.markdownByDefault = useMarkdown
-    updateNote(noteToUpdate)
+    if (!props.note) return
+    const updatedNote = {
+      ...props.note,
+      markdownByDefault: useMarkdown
+    };
+    updateNote(updatedNote);
   }, [useMarkdown]);
 
   return (
