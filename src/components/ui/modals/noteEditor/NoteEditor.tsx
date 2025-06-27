@@ -17,7 +17,7 @@ export default function NoteEditor(props: NoteEditorProps) {
   const notesContext = useContext(NotesContext);
 
   const [currentNote, setCurrentNote] = useState<Note | undefined>(props.note)
-  const [useMarkdown, setUseMarkdown] = useState<boolean>(props.note?.markdownByDefault || false)
+  const [useMarkdown, setUseMarkdown] = useState<boolean>(props.note ? props.note?.markdownByDefault : false)
 
   const debounceTimerRef = useRef<NodeJS.Timeout | null>(null);
 
@@ -59,6 +59,14 @@ export default function NoteEditor(props: NoteEditorProps) {
   }, [currentNote]);
 
   useEffect(() => {
+
+    if (!props.note) return
+    const updatedNote = {
+      ...props.note,
+      markdownByDefault: useMarkdown
+    };
+    notesContext?.updateNoteState(updatedNote);
+
     gsap.to('.md', {
       background: useMarkdown ? 'var(--Green)' : 'var(--darkGrey)',
       color: useMarkdown ? 'var(--Black)' : 'var(--White)',
@@ -71,13 +79,6 @@ export default function NoteEditor(props: NoteEditorProps) {
       duration: 0.2,
       ease: 'power4.out'
     })
-
-    if (!props.note) return
-    const updatedNote = {
-      ...props.note,
-      markdownByDefault: useMarkdown
-    };
-    updateNote(updatedNote);
   }, [useMarkdown]);
 
   return (

@@ -88,9 +88,24 @@
     box-shadow: none;
 
     * {
-      font-size: 20px !important;
+      font-size: 17px !important;
       line-height: 30px !important;
     }
+
+    // .w-md-editor-input {
+    //   position: relative;
+
+    //   &::before {
+    //     content: "Insert your note...";
+    //     position: absolute;
+    //     top: 0;
+    //     left: 0;
+    //     padding: 10px;
+    //     color: #aaa;
+    //     pointer-events: none;
+    //     z-index: 1;
+    //   }
+    // }
 
 
     .w-md-editor-preview {
@@ -122,12 +137,4 @@
       }
     }
   }
-}
-
-.markdownEditor .wmde-markdown {
-  color: white !important
-}
-
-.markdownEditor .wmde-markdown a {
-  color: #007bff;
 }
