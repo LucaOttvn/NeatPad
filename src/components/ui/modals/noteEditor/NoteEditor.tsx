@@ -7,6 +7,7 @@ import { NotesContext } from "@/contexts/notesContext";
 import { Note } from "@/utils/interfaces";
 import MDEditor, { commands } from "@uiw/react-md-editor";
 import gsap from 'gsap';
+import { updateNote } from '@/db/notes';
 
 interface NoteEditorProps {
   note: Note | undefined
@@ -16,10 +17,9 @@ export default function NoteEditor(props: NoteEditorProps) {
   const notesContext = useContext(NotesContext);
 
   const [currentNote, setCurrentNote] = useState<Note | undefined>(props.note)
-  const [useMarkdown, setUseMarkdown] = useState(true)
+  const [useMarkdown, setUseMarkdown] = useState<boolean>(props.note?.markdownByDefault || false)
 
   const debounceTimerRef = useRef<NodeJS.Timeout | null>(null);
-
 
   useEffect(() => {
     return () => {
@@ -71,6 +71,11 @@ export default function NoteEditor(props: NoteEditorProps) {
       duration: 0.2,
       ease: 'power4.out'
     })
+
+    let noteToUpdate = props.note
+    if (!noteToUpdate) return
+    noteToUpdate.markdownByDefault = useMarkdown
+    updateNote(noteToUpdate)
   }, [useMarkdown]);
 
   return (
@@ -95,7 +100,7 @@ export default function NoteEditor(props: NoteEditorProps) {
           setUseMarkdown(false)
         }}>Text</div>
       </div>
-      
+
       {
         useMarkdown && <MDEditor
           className="markdownEditor"

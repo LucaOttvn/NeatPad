@@ -6,6 +6,7 @@ export interface Note {
     last_update: Date
     pinned: boolean
     folder: number | null
+    markdownByDefault: boolean
 }
 
 export interface User {
