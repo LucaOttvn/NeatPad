@@ -2,12 +2,15 @@ import "./componentsStyle.scss";
 import { ModalsNames } from "@/utils/interfaces";
 import AnimatedDiv from "./animatedComponents/AnimatedDiv";
 import { selectedModal } from "@/utils/signals";
+import AnimatedText from "./animatedComponents/AnimatedText";
 
 export default function Login() {
 
   return (
     <AnimatedDiv className="loginContainer">
-      <h1 className="title">NeatPad</h1>
+
+      <AnimatedText className="title" text="NeatPad" />
+
       <div className="center flex-col gap-3">
         <button
           className="mainBtn"
