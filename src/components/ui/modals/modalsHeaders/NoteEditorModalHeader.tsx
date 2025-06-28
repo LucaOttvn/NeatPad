@@ -84,7 +84,7 @@ export default function NoteEditorModalHeader(props: BasicComponentProps) {
       </header>
       {/* collapsable section for folder selection */}
       <section className="addNoteToFolder">
-        <span className="font-bold">Add note to folder</span>
+        <span className="font-bold ml-5 mt-5">Add to folder</span>
         <div className="foldersList">
           {foldersContext?.folders.map((folder, index) => {
             return (
