@@ -7,7 +7,7 @@ import { Note, ModalsNames } from '@/utils/interfaces';
 import { selectedModal } from '@/utils/signals';
 import { flushSync } from 'react-dom';
 import { UserContext } from '@/contexts/userContext';
-import gsap from 'gsap'
+import gsap from 'gsap';
 
 interface NewNoteButtonProps { }
 
@@ -25,7 +25,6 @@ export default function NewNoteButton(props: NewNoteButtonProps) {
             last_update: new Date(),
             pinned: false,
             folder: null,
-            markdownByDefault: false
         }
         let newNoteFromDB = await createNote(newNote)
         if (newNoteFromDB) {
