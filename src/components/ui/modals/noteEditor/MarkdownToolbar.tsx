@@ -9,12 +9,12 @@ export default function MarkdownToolbar(props: MarkdownToolbarProps) {
     return (
         <div className='markdownToolbar'>
             <div className='useMarkdownToggle'>
-                <div className='md' onClick={() => {
-                    props.setUseMarkdown(true)
-                }}>Markdown</div>
-                <div className='txt' onClick={() => {
+                <div className='edit' onClick={() => {
                     props.setUseMarkdown(false)
-                }}>Text</div>
+                }}>Edit</div>
+                <div className='view' onClick={() => {
+                    props.setUseMarkdown(true)
+                }}>View</div>
             </div>
         </div>
     );
