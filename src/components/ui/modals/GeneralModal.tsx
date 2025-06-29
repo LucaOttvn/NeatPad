@@ -2,7 +2,7 @@ import { useContext, useEffect, useLayoutEffect, useRef } from "react";
 import "../../componentsStyle.scss";
 import { modalsList, ModalsNames } from "@/utils/interfaces";
 import GeneralModalHeader from "./modalsHeaders/GeneralModalHeader";
-import NoteEditorModalHeader from "./modalsHeaders/NoteEditorModalHeader";
+import NoteEditorModalHeader from "./modalsHeaders/noteEditorHeader/NoteEditorModalHeader";
 import { NotesContext } from "@/contexts/notesContext";
 import NoteEditor from "./noteEditor/NoteEditor";
 import LoginModal from "./login/LoginModal";
