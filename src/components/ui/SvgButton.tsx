@@ -7,6 +7,7 @@ interface SvgButtonProps {
   className?: string
   style?: CSSProperties
   onClick: () => void;
+  color?: string
 }
 
 export default function SvgButton(props: SvgButtonProps) {
@@ -19,7 +20,9 @@ export default function SvgButton(props: SvgButtonProps) {
         props.onClick();
       }}
     >
-      <ReactSVG src={`/icons/${props.fileName}.svg`} className="icon" />
+      <ReactSVG src={`/icons/${props.fileName}.svg`} className="icon" beforeInjection={(svg) => {
+        svg.setAttribute("fill", props.color ? `var(--${props.color})` : 'var(--White)');
+      }} />
     </button>
   );
 }
