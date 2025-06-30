@@ -1,6 +1,7 @@
 import React, { Dispatch, SetStateAction, useEffect } from 'react';
 import gsap from 'gsap'
 import './noteEditorHeader.scss';
+import SvgButton from '@/components/ui/SvgButton';
 
 interface CollaboratorsSectionProps {
     collaboratorsSectionOpen: boolean
@@ -19,7 +20,7 @@ export default function CollaboratorsSection(props: CollaboratorsSectionProps) {
 
     return (
         <section className="collaboratorsSection">
-            <span className="font-bold mx-5 mt-5">Collaborators</span>
+            <span className="w-full start font-bold px-5 pt-5">Collaborators</span>
             <div className="collaboratorsList">
                 {['test1@gmail.com', 'test2@gmail.com', 'test3@gmail.com', 'test4@gmail.com', 'test5@gmail.com', 'test6@gmail.com'].map((email) => {
                     return <div key={email} className="emailBox">
@@ -27,7 +28,20 @@ export default function CollaboratorsSection(props: CollaboratorsSectionProps) {
                     </div>
                 })}
             </div>
-            <div className="footer">ciao</div>
+            <div className="footer">
+                <SvgButton
+                    fileName="trash"
+                    onClick={() => {
+
+                    }}
+                />
+                <SvgButton
+                    fileName="plus"
+                    onClick={() => {
+
+                    }}
+                />
+            </div>
         </section>
     );
 }
