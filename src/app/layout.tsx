@@ -27,7 +27,12 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <head><link rel="icon" type="image/png" href="/images/logo.png" /></head>
+      <head>
+        <meta
+          name="viewport"
+          content="viewport-fit=cover, width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no"
+        />
+        <link rel="icon" type="image/png" href="/images/logo.png" /></head>
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >

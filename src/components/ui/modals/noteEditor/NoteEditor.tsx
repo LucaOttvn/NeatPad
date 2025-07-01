@@ -18,7 +18,7 @@ export default function NoteEditor(props: NoteEditorProps) {
   const notesContext = useContext(NotesContext);
 
   const [currentNote, setCurrentNote] = useState<Note | undefined>(props.note)
-  const [useMarkdown, setUseMarkdown] = useState<boolean>(false)
+  const [useMarkdown, setUseMarkdown] = useState<boolean>(true)
 
   const debounceTimerRef = useRef<NodeJS.Timeout | null>(null);
 
