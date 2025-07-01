@@ -4,7 +4,7 @@ export interface Note {
     text: string
     last_update: Date
     pinned: boolean
-    folder: number | null
+    folders: number[]
     user: number
     collaborators: string[]
 }
