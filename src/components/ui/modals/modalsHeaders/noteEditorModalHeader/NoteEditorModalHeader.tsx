@@ -9,12 +9,13 @@ import { ReactSVG } from "react-svg";
 import { handleModal } from "@/utils/globalMethods";
 import CollaboratorsSection from "./CollaboratorsSection";
 
-interface BasicComponentProps {
+interface NoteEditorModalHeaderProps {
   modalId: string;
   note: Note | undefined;
 }
+
 // this is the header of the note editor, it has its own set of methods to handle notes creation/update
-export default function NoteEditorModalHeader(props: BasicComponentProps) {
+export default function NoteEditorModalHeader(props: NoteEditorModalHeaderProps) {
   const foldersContext = useContext(FoldersContext);
   const notesContext = useContext(NotesContext);
 
@@ -109,7 +110,7 @@ export default function NoteEditorModalHeader(props: BasicComponentProps) {
         </div>
       </section>
 
-      <CollaboratorsSection collaboratorsSectionOpen={collaboratorsSectionOpened}/>
+      <CollaboratorsSection collaboratorsSectionOpen={collaboratorsSectionOpened} note={props.note}/>
     </header>
   );
 }

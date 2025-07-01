@@ -68,13 +68,12 @@
                 }
 
                 &:disabled {
-                    opacity: 50%;
+                    filter: brightness(50%);
                     &:hover {
                         scale: 1;
                         cursor: not-allowed;
                     }
                 }
-
             }
         }
 

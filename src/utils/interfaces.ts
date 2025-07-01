@@ -6,7 +6,7 @@ export interface Note {
     pinned: boolean
     folder: number | null
     user: number
-    collaborators: number[]
+    collaborators: string[]
 }
 
 export interface User {

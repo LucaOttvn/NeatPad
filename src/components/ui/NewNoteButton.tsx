@@ -25,6 +25,7 @@ export default function NewNoteButton(props: NewNoteButtonProps) {
             last_update: new Date(),
             pinned: false,
             folder: null,
+            collaborators: []
         }
         let newNoteFromDB = await createNote(newNote)
         if (newNoteFromDB) {

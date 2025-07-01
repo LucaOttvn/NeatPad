@@ -1,7 +1,6 @@
 import { User } from "@/utils/interfaces";
 import { supabase } from "./supabaseClient";
 
-
 export async function getUserById(userId: number) {
     const { data, error } = await supabase
         .from('users')
@@ -16,6 +15,7 @@ export async function getUserById(userId: number) {
 
     return data;
 }
+
 export async function getUserByEmail(email: string) {
     const { data, error } = await supabase
         .from('users')
@@ -48,8 +48,6 @@ export async function updateUser(updatedUser: User) {
     return data;
 }
 
-
-
 export async function deleteUser(id: number) {
     const { data, error } = await supabase
         .from("users")
@@ -64,4 +62,21 @@ export async function deleteUser(id: number) {
     }
 
     return data;
+}
+
+export async function getUsersEmails() {
+    const { data, error } = await supabase
+        .from('users')
+        .select('email');
+
+    if (error) {
+        console.error('Error fetching users:', error.message);
+        return null;
+    }
+
+    const emails = data.map(item => {
+        return item.email
+    })
+
+    return emails as string[]
 }
