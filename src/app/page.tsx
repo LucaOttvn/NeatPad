@@ -10,7 +10,7 @@ import Login from "@/components/Login";
 import GeneralModal from "@/components/ui/modals/GeneralModal";
 import { useSignals } from "@preact/signals-react/runtime";
 import { isMobile, loading } from "@/utils/signals";
-import { getUserById, getUsersEmails } from "@/db/user";
+import { getUserById } from "@/db/user";
 import NewNoteButton from "@/components/ui/NewNoteButton";
 import GeneralSideMenu from "@/components/ui/SideMenu";
 
@@ -18,15 +18,6 @@ export default function Home() {
   useSignals()
 
   const userContext = useContext(UserContext);
-
-  const fetchUsers = async () => {
-    const usersEmails = await getUsersEmails() || []
-    userContext?.setUsersEmails(usersEmails)
-  }
-
-  useEffect(() => {
-    fetchUsers()
-  }, []);
 
   useLayoutEffect(() => {
     function checkScreenSize() {

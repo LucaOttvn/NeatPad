@@ -9,7 +9,7 @@ import { UserContext } from "@/contexts/userContext";
 import { ReactSVG } from "react-svg";
 import AnimatedDiv from "../animatedComponents/AnimatedDiv";
 import { getFoldersByUserId } from "@/db/folders";
-import { getNotesByUserId } from "@/db/notes";
+import { getNotesByUserEmail } from "@/db/notes";
 import { loading, selectedModal } from "@/utils/signals";
 import SearchBar from "../ui/searchBar/SearchBar";
 
@@ -52,7 +52,9 @@ export default function NotesOverview() {
   // get notes and folders
   async function fetchNotesAndFolders() {
     try {
-      const [notes, folders] = await Promise.all([getNotesByUserId(userContext?.user!.id!), getFoldersByUserId(userContext?.user?.id!)]);
+
+      if (!userContext || !userContext.user || !userContext.user.id || !userContext.user.email) return
+      const [notes, folders] = await Promise.all([getNotesByUserEmail(userContext.user.id, userContext.user.email), getFoldersByUserId(userContext?.user?.id!)]);
 
       if (notes) {
         setNotesToShow(notes);

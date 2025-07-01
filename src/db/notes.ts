@@ -2,13 +2,14 @@ import { Note } from '@/utils/interfaces';
 import { supabase } from './supabaseClient';
 
 
-export async function getNotesByUserId(userId: number){
-
+export async function getNotesByUserEmail(userId: number, userEmail: string) {
   const { data, error } = await supabase
     .from('notes')
     .select('*')
-    .eq('user', userId)
+    .or(`user.eq.${userId},collaborators.cs.{${userEmail}}`) // check if user matches OR collaborators contains userEmail
     .order('last_update', { ascending: false });
+
+    console.log(data)
 
   if (error) {
     console.error("Error fetching data:", error);
@@ -17,7 +18,6 @@ export async function getNotesByUserId(userId: number){
 
   return data;
 }
-
 
 export async function createNote(newNote: Note){
 

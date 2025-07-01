@@ -1,9 +1,12 @@
-import { useEffect, useRef, useState } from 'react';
+import { useContext, useEffect, useRef, useState } from 'react';
 import gsap from 'gsap';
 import './noteEditorModalHeader.scss';
 import SvgButton from '@/components/ui/SvgButton';
 import { ReactSVG } from 'react-svg';
 import { Note } from '@/utils/interfaces';
+import { validateEmail } from '@/utils/globalMethods';
+import { getUserByEmail } from '@/db/user';
+import { NotesContext } from '@/contexts/notesContext';
 
 interface CollaboratorsSectionProps {
     collaboratorsSectionOpen: boolean
@@ -12,6 +15,7 @@ interface CollaboratorsSectionProps {
 
 export default function CollaboratorsSection(props: CollaboratorsSectionProps) {
 
+    const notesContext = useContext(NotesContext)
     const [selectedCollaborators, setSelectedCollaborators] = useState<string[]>([])
     const emailInputRef = useRef(null)
 
@@ -35,15 +39,28 @@ export default function CollaboratorsSection(props: CollaboratorsSectionProps) {
         });
     }
 
-    const addCollaborator = () => {
-        if (!props.note) return
+    const addCollaborator = async () => {
+        if (!props.note || !emailInputRef.current) return
 
-        const collaborators = [...props.note.collaborators]
-        console.log(collaborators)
+        const inputValue = (emailInputRef.current as HTMLInputElement).value
 
-        // collaborators.push(emailInputRef.current)
+        const emailValidation = validateEmail(inputValue)
 
-        // const updatedNote: Note = {...props.note, collaborators: [...props.note.collaborators, emailInputRef.current]}
+        if (!emailValidation.isValid) return alert(emailValidation.error)
+
+        const alreadyInsertedEmail = props.note.collaborators.some(item => item == inputValue)
+        
+        if (alreadyInsertedEmail) return alert(`${inputValue} is already a collaborator for this note`)
+
+        const foundUser = await getUserByEmail(inputValue)
+
+        if (!foundUser) return alert('No user found with this email')
+
+        let updatedCollaborators = [...props.note.collaborators, inputValue]
+
+        const updatedNote: Note = { ...props.note, collaborators: updatedCollaborators }
+
+        notesContext?.updateNoteState(updatedNote)
     }
 
     return (
