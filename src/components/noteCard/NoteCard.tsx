@@ -105,27 +105,28 @@ export default function NoteCard(props: NoteCardProps) {
       }}
     >
       <div className="overflow-hidden">
-        {props.note.title ? (
+        {props.note.title && (
           <h1 style={{ color: textColor ? `var(--${textColor})` : "auto" }}>
             {props.note.title}
           </h1>
-        ) : (
-          <h1 style={{ color: "var(--Grey)" }}>No title</h1>
         )}
-        {props.note.text ? (
+        {!props.note.title && <h1 style={{ color: "var(--Grey)" }}>No title</h1>}
+
+        {props.note.text && (
           <span style={{ color: textColor ? `var(--${textColor})` : "auto" }}>
             {props.note.text}
           </span>
-        ) : (
-          <span style={{ color: "var(--Grey)" }}>No text</span>
         )}
+        {!props.note.text && <span style={{ color: "var(--Grey)" }}>No text</span>}
       </div>
-      {foldersContext?.folders.some((folder) => folder.id == props.note.folder) && <div className="folderName" style={{ background: 'var(--darkGrey)' }}>
+      {foldersContext?.folders.some((folder) => folder.id == props.note.folder) && <div className="folderName">
         <ReactSVG src={`/icons/folder.svg`} className="icon" />
         <span style={{ fontSize: '80%' }} className="font-bold">
           {foldersContext?.folders.find((folder) => folder.id == props.note.folder)?.name}
         </span>
       </div>}
+
+      {props.note.collaborators.length > 0 && <ReactSVG src={`/icons/people.svg`} className="icon collaboratorIcon" />}
 
     </AnimatedDiv>
   );
