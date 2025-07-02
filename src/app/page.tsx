@@ -25,13 +25,13 @@ export default function Home() {
 
   const initSafeArea = async () => {
     SafeArea.getSafeAreaInsets().then(({ insets }) => {
-      alert(insets);
+      // alert(insets);
     });
 
     SafeArea.setImmersiveNavigationBar()
 
     SafeArea.getStatusBarHeight().then(({ statusBarHeight }) => {
-      alert(statusBarHeight);
+      // alert(statusBarHeight);
     });
 
     await SafeArea.removeAllListeners();
