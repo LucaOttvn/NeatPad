@@ -18,6 +18,7 @@
     "@supabase/supabase-js": "^2.49.1",
     "@uiw/react-md-editor": "^4.0.7",
     "bcrypt": "^6.0.0",
+    "capacitor-plugin-safe-area": "^4.0.0",
     "dotenv": "^16.4.7",
     "gsap": "^3.12.7",
     "jsonwebtoken": "^9.0.2",
