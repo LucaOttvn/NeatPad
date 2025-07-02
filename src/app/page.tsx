@@ -28,6 +28,8 @@ export default function Home() {
       alert(insets);
     });
 
+    SafeArea.setImmersiveNavigationBar()
+
     SafeArea.getStatusBarHeight().then(({ statusBarHeight }) => {
       alert(statusBarHeight);
     });
