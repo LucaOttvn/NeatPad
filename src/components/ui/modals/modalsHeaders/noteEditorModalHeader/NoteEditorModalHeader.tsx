@@ -43,13 +43,29 @@ export default function NoteEditorModalHeader(props: NoteEditorModalHeaderProps)
     });
   }, [foldersListOpened]);
 
-  function handleFolderSelection(folder: Folder) {
-    const updatedNote = props.note
-    if (updatedNote) {
-      // if the folder is already selected, remove the selection, otherwise set it as the current one
-      updatedNote.folder = updatedNote.folder == folder.id ? null : folder.id!
-      notesContext?.updateNoteState(updatedNote)
+  function handleFolderSelection(clickedFolder: Folder) {
+    const updatedNote = { ...props.note } as Note
+    if (!updatedNote || !clickedFolder.id) return
+    // if the clicked folder is already selected remove the selection, otherwise set it as the current one
+    const alreadySelectedFolder = updatedNote.folders.find(folder => folder == clickedFolder.id)
+
+    if (alreadySelectedFolder) {
+      // remove the clicked folder if it's already selected
+      updatedNote.folders = updatedNote.folders.filter(folder => folder != clickedFolder.id)
     }
+    else {
+      // the relation between folder and note is one-to-many, so one folder can have many notes but a note can only be assigned to a single folder
+      // this is why it's necessary to check whether the user has already set the current note to one of their folders and, if it did, remove the previous one before adding the new one
+
+      // get the ids from the context notes array
+      const contextFolderIds = foldersContext?.folders.map(f => f.id);
+
+      // remove every folder that is included in contextFolders
+      updatedNote.folders = updatedNote.folders.filter(id => !contextFolderIds?.includes(id));
+
+      updatedNote.folders.push(clickedFolder.id!)
+    }
+    notesContext?.updateNoteState(updatedNote)
   }
 
   return (
@@ -98,9 +114,9 @@ export default function NoteEditorModalHeader(props: NoteEditorModalHeaderProps)
                 onClick={() => {
                   handleFolderSelection(folder)
                 }}
-                style={{ border: `${props.note?.folder == folder.id ? 4 : 1}px solid var(--${folder.color})` }}
+                style={{ border: `${props.note?.folders.find(id => id == folder.id) ? 4 : 1}px solid var(--${folder.color})` }}
               >
-                {props.note?.folder == folder.id && <ReactSVG src={`/icons/folder.svg`} className="icon" beforeInjection={(svg) => {
+                {props.note?.folders.find(id => id == folder.id) && <ReactSVG src={`/icons/folder.svg`} className="icon" beforeInjection={(svg) => {
                   svg.setAttribute("fill", `var(--${folder.color})`);
                 }} />}
                 <span className="font-bold" style={{ color: `var(--${folder.color})` }}>{folder.name}</span>
@@ -110,7 +126,7 @@ export default function NoteEditorModalHeader(props: NoteEditorModalHeaderProps)
         </div>
       </section>
 
-      <CollaboratorsSection collaboratorsSectionOpen={collaboratorsSectionOpened} note={props.note}/>
+      <CollaboratorsSection collaboratorsSectionOpen={collaboratorsSectionOpened} note={props.note} />
     </header>
   );
 }
