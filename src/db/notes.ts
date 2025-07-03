@@ -34,11 +34,13 @@ export async function createNote(newNote: Note){
 }
 
 export async function updateNote(note: Note) {
+
+  const lastUpdateNote: Note = {...note, last_update: new Date()}
   
   const { data, error } = await supabase
     .from('notes')
-    .update(note)
-    .eq('id', note.id)
+    .update(lastUpdateNote)
+    .eq('id', lastUpdateNote.id)
     .select()
 
   if (error) {

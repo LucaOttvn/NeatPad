@@ -22,10 +22,8 @@ export default function Home() {
 
   const setupStatusBar = async () => {
     if (Capacitor.isNativePlatform()) {
+      console.log(StatusBar.getInfo())
       await StatusBar.setOverlaysWebView({ overlay: false });
-      // You can also set style and background color if desired
-      // await StatusBar.setStyle({ style: Style.Dark }); 
-      // await StatusBar.setBackgroundColor({ color: '#FF0000' });
     }
   };
 
