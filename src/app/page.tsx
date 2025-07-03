@@ -19,34 +19,6 @@ import { SafeArea } from 'capacitor-plugin-safe-area';
 export default function Home() {
   useSignals()
   
-  useEffect(() => {
-    initSafeArea()
-  }, []);
-
-  const initSafeArea = async () => {
-    SafeArea.getSafeAreaInsets().then(({ insets }) => {
-      // alert(insets);
-    });
-
-    SafeArea.setImmersiveNavigationBar()
-
-    SafeArea.getStatusBarHeight().then(({ statusBarHeight }) => {
-      // alert(statusBarHeight);
-    });
-
-    await SafeArea.removeAllListeners();
-
-    // when safe-area changed
-    await SafeArea.addListener('safeAreaChanged', data => {
-      const { insets } = data;
-      for (const [key, value] of Object.entries(insets)) {
-        document.documentElement.style.setProperty(
-          `--safe-area-inset-${key}`,
-          `${value}px`,
-        );
-      }
-    });
-  }
   const userContext = useContext(UserContext);
 
   useLayoutEffect(() => {
