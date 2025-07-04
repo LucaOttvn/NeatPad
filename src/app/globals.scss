@@ -74,24 +74,24 @@
   &:focus {
     outline: none;
   }
+}
 
-  &::-webkit-scrollbar {
-    width: 5px;
-  }
+::-webkit-scrollbar {
 
-  &::-webkit-scrollbar-track {
-    background: var(--darkGrey);
-  }
+}
 
-  &::-webkit-scrollbar-thumb {
-    background: var(--Grey);
-    border-radius: 10px;
-  }
+::-webkit-scrollbar-track {
+  background: var(--darkGrey);
+}
 
-  &::-webkit-scrollbar-thumb:hover {
-    cursor: pointer;
-    background: var(--lightGrey);
-  }
+::-webkit-scrollbar-thumb {
+  background: var(--Grey);
+  border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  cursor: pointer;
+  background: var(--lightGrey);
 }
 
 .center {
