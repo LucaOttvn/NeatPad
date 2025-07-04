@@ -26,9 +26,10 @@ export default function Home() {
   useSignals()
 
   const touchStartX = useRef(0);
-  const swipeRef = useRef(null);
+  const swipeRef = useRef<HTMLDivElement>(null);
 
   const foldersContext = useContext(FoldersContext)
+  const userContext = useContext(UserContext);
 
   const setupStatusBar = async () => {
     if (Capacitor.isNativePlatform()) {
@@ -43,12 +44,17 @@ export default function Home() {
   useEffect(() => {
     setupStatusBar()
 
-    const element: any = swipeRef.current;
-    console.log(element)
-    if (!element) return;
+    // if the user clicks on the native back button close the current modal (if there's one) 
+    App.addListener('backButton', () => {
+      if (!selectedModal.value) return
+      handleModal(undefined, closeModal)
+    });
+
+
+    // handle the swipe gesture to open the side menu
+    if (!swipeRef.current) return;
 
     const handleTouchStart = (e: any) => {
-      console.log('test')
       touchStartX.current = e.changedTouches[0].clientX;
     };
 
@@ -63,21 +69,16 @@ export default function Home() {
       }
     };
 
-    element.addEventListener('touchstart', handleTouchStart);
-    element.addEventListener('touchend', handleTouchEnd);
-
-    App.addListener('backButton', () => {
-      if (!selectedModal.value) return
-      handleModal(undefined, closeModal)
-    });
+    swipeRef.current.addEventListener('touchstart', handleTouchStart);
+    swipeRef.current.addEventListener('touchend', handleTouchEnd);
 
     return () => {
-      element.removeEventListener('touchstart', handleTouchStart);
-      element.removeEventListener('touchend', handleTouchEnd);
+      if (!swipeRef.current) return
+      swipeRef.current.removeEventListener('touchstart', handleTouchStart);
+      swipeRef.current.removeEventListener('touchend', handleTouchEnd);
     };
-  }, []);
+  }, [swipeRef.current]);
 
-  const userContext = useContext(UserContext);
 
   useLayoutEffect(() => {
     function checkScreenSize() {
