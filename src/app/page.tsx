@@ -5,21 +5,25 @@ import { useContext, useEffect, useLayoutEffect } from "react";
 import { ScaleLoader } from "react-spinners";
 import AnimatedDiv from "@/components/animatedComponents/AnimatedDiv";
 import NotesOverview from "@/components/notesOverview/NotesOverview";
-import { User } from "@/utils/interfaces";
+import { ModalsNames, User } from "@/utils/interfaces";
 import { UserContext } from "@/contexts/userContext";
 import Login from "@/components/Login";
 import GeneralModal from "@/components/ui/modals/GeneralModal";
 import { useSignals } from "@preact/signals-react/runtime";
-import { isMobile, loading } from "@/utils/signals";
+import { isMobile, loading, selectedModal } from "@/utils/signals";
 import { getUserById } from "@/db/user";
 import NewNoteButton from "@/components/ui/NewNoteButton";
 import GeneralSideMenu from "@/components/ui/SideMenu";
 import { Capacitor } from "@capacitor/core";
 import { StatusBar } from "@capacitor/status-bar";
 import { App } from '@capacitor/app';
+import { handleModal } from "@/utils/globalMethods";
+import { FoldersContext } from "@/contexts/foldersContext";
 
 export default function Home() {
   useSignals()
+
+  const foldersContext = useContext(FoldersContext)
 
   const setupStatusBar = async () => {
     if (Capacitor.isNativePlatform()) {
@@ -27,30 +31,17 @@ export default function Home() {
     }
   };
 
+  const closeModal = () => {
+    if (selectedModal.value == ModalsNames.folderHandler) foldersContext?.setUpdatingFolder(undefined)
+  }
+
   useEffect(() => {
     setupStatusBar()
 
-    App.addListener('backButton', ({ canGoBack }) => {
+    App.addListener('backButton', () => {
       alert('Back button pressed!');
+      handleModal(undefined, closeModal)
 
-      // 'canGoBack' indicates if there's a history entry to go back to in the webview
-      // This is useful if you want to navigate back in your internal app history
-      // rather than letting the webview handle it, or exit the app.
-
-      if (canGoBack) {
-        // If there's webview history, you might want to navigate back
-        // or handle it according to your app's navigation logic.
-        // window.history.back(); // This would go back in the webview history
-        alert('Can go back in webview history.');
-      } else {
-        // If there's no webview history, this might be the last page,
-        // so you could confirm exit or perform another action.
-        alert('Cannot go back in webview history. Considering app exit or custom action.');
-        // Example: Confirm app exit
-        if (confirm('Are you sure you want to exit the app?')) {
-          App.exitApp();
-        }
-      }
     });
   }, []);
 
