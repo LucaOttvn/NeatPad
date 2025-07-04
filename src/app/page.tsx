@@ -1,16 +1,16 @@
 
 "use client";;
 import TopBar from "@/components/ui/TopBar";
-import { useContext, useEffect, useLayoutEffect } from "react";
+import { useContext, useEffect, useLayoutEffect, useRef } from "react";
 import { ScaleLoader } from "react-spinners";
 import AnimatedDiv from "@/components/animatedComponents/AnimatedDiv";
 import NotesOverview from "@/components/notesOverview/NotesOverview";
-import { ModalsNames, User } from "@/utils/interfaces";
+import { ModalsNames, SideMenusNames, User } from "@/utils/interfaces";
 import { UserContext } from "@/contexts/userContext";
 import Login from "@/components/Login";
 import GeneralModal from "@/components/ui/modals/GeneralModal";
 import { useSignals } from "@preact/signals-react/runtime";
-import { isMobile, loading, selectedModal } from "@/utils/signals";
+import { isMobile, loading, selectedModal, selectedSideMenu } from "@/utils/signals";
 import { getUserById } from "@/db/user";
 import NewNoteButton from "@/components/ui/NewNoteButton";
 import GeneralSideMenu from "@/components/ui/SideMenu";
@@ -20,8 +20,13 @@ import { App } from '@capacitor/app';
 import { handleModal } from "@/utils/globalMethods";
 import { FoldersContext } from "@/contexts/foldersContext";
 
+const minSwipeDistance = 50
+
 export default function Home() {
   useSignals()
+
+  const touchStartX = useRef(0);
+  const swipeRef = useRef(null);
 
   const foldersContext = useContext(FoldersContext)
 
@@ -38,9 +43,38 @@ export default function Home() {
   useEffect(() => {
     setupStatusBar()
 
+    const element: any = swipeRef.current;
+    console.log(element)
+    if (!element) return;
+
+    const handleTouchStart = (e: any) => {
+      console.log('test')
+      touchStartX.current = e.changedTouches[0].clientX;
+    };
+
+    const handleTouchEnd = (e: any) => {
+      const touchEndX = e.changedTouches[0].clientX;
+      const swipeDistance = touchEndX - touchStartX.current;
+
+      if (swipeDistance > minSwipeDistance && !selectedSideMenu.value) {
+        selectedSideMenu.value = SideMenusNames.folders
+      } else if (swipeDistance < -minSwipeDistance && selectedSideMenu.value == SideMenusNames.folders) {
+        selectedSideMenu.value = undefined
+      }
+    };
+
+    element.addEventListener('touchstart', handleTouchStart);
+    element.addEventListener('touchend', handleTouchEnd);
+
     App.addListener('backButton', () => {
-      if (selectedModal.value) handleModal(undefined, closeModal)
+      if (!selectedModal.value) return
+      handleModal(undefined, closeModal)
     });
+
+    return () => {
+      element.removeEventListener('touchstart', handleTouchStart);
+      element.removeEventListener('touchend', handleTouchEnd);
+    };
   }, []);
 
   const userContext = useContext(UserContext);
@@ -99,7 +133,7 @@ export default function Home() {
       {userContext?.user &&
         <AnimatedDiv className="appContainer w-full h-full flex start">
           <TopBar />
-          <div className="w-full h-full flex" style={{ marginTop: "8rem" }}>
+          <div className="w-full h-full flex" style={{ marginTop: "8rem" }} ref={swipeRef}>
             <GeneralSideMenu />
             <NotesOverview />
           </div>
