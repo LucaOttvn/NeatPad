@@ -74,7 +74,7 @@ export default function ResetPasswordForm(props: ResetPasswordFormProps) {
     }
 
     return (
-        <div className='flex flex-col items-center gap-5'>
+        <div className='w-full flex flex-col items-center gap-5'>
 
             {!props.forgotPassword && <PasswordInput onChange={(e) => { handleInput(e, 'currentPassword') }} value={passwords.currentPassword} placeholder={'Insert current password'} disabled={false} />}
 
