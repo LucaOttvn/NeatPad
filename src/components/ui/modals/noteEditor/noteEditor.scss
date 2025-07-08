@@ -87,6 +87,33 @@
       text-decoration: underline;
     }
 
+    code {
+      background-color: #f0f0f0;
+      padding: 0.2em 0.4em;
+      border-radius: 3px;
+      font-family: 'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, Courier, monospace;
+      font-size: 85%;
+      color: #333;
+    }
+
+    // pre targets preformatted text (preserves white spaces, tabs and new lines)
+    pre {
+      background-color: var(--lightBlack);
+      padding: 1em;
+      border-radius: var(--mainBorderRadius);
+      overflow-x: auto;
+      margin-bottom: 1em;
+    }
+
+    pre code {
+      background-color: transparent;
+      padding: 0;
+      border-radius: 0;
+      font-size: 95%;
+      color: #f8f8f2;
+      display: block;
+    }
+
     ul {
       list-style: disc outside none;
       padding-left: 1em;
