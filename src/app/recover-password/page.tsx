@@ -20,8 +20,9 @@ export default function RecoverPasswordPage() {
                 <span className="title">Reset</span>
                 <span className="title ms-4">**ssw*rd</span>
             </div>
-            <div className="w-1/3">
-                {token ? <ResetPasswordForm forgotPassword={true} token={token} /> : <span>No user available</span>}
+            <div className="w-full px-3" style={{maxWidth: 500}}>
+                {/* {token ? <ResetPasswordForm forgotPassword={true} token={token} /> : <span className="w-full center">No user available</span>} */}
+                <ResetPasswordForm forgotPassword={true} token={token} />
             </div>
         </div>
     );
