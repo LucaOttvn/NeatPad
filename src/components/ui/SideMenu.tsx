@@ -6,7 +6,6 @@ import { ModalsNames } from "@/utils/interfaces";
 import { isMobile, selectedModal, selectedSideMenu } from "@/utils/signals";
 import { handleSideMenu } from "@/utils/globalMethods";
 
-
 export default function GeneralSideMenu() {
   const foldersContext = useContext(FoldersContext);
   const foldersListRef = useRef<HTMLDivElement | null>(null);
