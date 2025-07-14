@@ -37,6 +37,8 @@ export function handleModal(
   });
 }
 
+
+
 export function handleSideMenu(target: string | undefined, isMobile: boolean) {
   gsap.to((target ? "#" : '.') + (target || 'generalSideMenu'), {
     width: target ? (isMobile ? '100%' : '35vw') : 0,
