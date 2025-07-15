@@ -1,5 +1,6 @@
-import { User } from "@/utils/interfaces";
-import { supabase } from "./supabaseClient";
+'use server'
+import { supabase } from "@/utils/supabaseClient";
+import { User } from "@supabase/supabase-js";
 
 export async function getUserById(userId: number) {
     const { data, error } = await supabase

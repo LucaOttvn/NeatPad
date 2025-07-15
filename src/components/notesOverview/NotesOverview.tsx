@@ -8,10 +8,11 @@ import NotesSection from "../ui/NotesSection";
 import { UserContext } from "@/contexts/userContext";
 import { ReactSVG } from "react-svg";
 import AnimatedDiv from "../animatedComponents/AnimatedDiv";
-import { getFoldersByUserId } from "@/db/folders";
-import { getNotesByUserEmail } from "@/db/notes";
+
 import { loading, notesToShow, selectedModal } from "@/utils/signals";
 import SearchBar from "../ui/searchBar/SearchBar";
+import { getNotesByUserEmail } from "@/serverActions/notesActions";
+import { getFoldersByUserId } from "@/serverActions/foldersActions";
 
 interface NotesCompareParams {
   noteText: string
@@ -54,7 +55,10 @@ export default function NotesOverview() {
   async function fetchNotesAndFolders() {
     try {
       if (!userContext || !userContext.user || !userContext.user.id || !userContext.user.email) return
-      const [notes, folders] = await Promise.all([getNotesByUserEmail(userContext.user.id, userContext.user.email), getFoldersByUserId(userContext?.user?.id!)]);
+      // const [notes, folders] = await Promise.all([getNotesByUserEmail(userContext.user.id, userContext.user.email), getFoldersByUserId(userContext?.user?.id!)]);
+
+      const notes: Note[] = await getNotesByUserEmail(userContext.user.id, userContext.user.email) || []
+      const folders = await getFoldersByUserId(userContext?.user?.id!)
 
       if (notes) {
         notesToShow.value = notes

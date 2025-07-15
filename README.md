@@ -14,7 +14,8 @@ A neat approach to note-taking
 - Notes creation
 - Folders to organize notes
 - Markdown capabilities
-- Future feature: shared notes
+- [Notes encryption](#notes-encryption)
+- Shared notes
 
 ## About
 This is essentially a Google Keep inspired notepad with a little more ahestetic touch (for my personal taste at least).
@@ -39,6 +40,9 @@ The capacitor integration in this project is nothing follows the [Capacitor guid
 In the `capacitor.config.ts` you have to put the server url that points to the hosted web version of the app, the original one is: `https://neat-pad.vercel.app/` but it's obviously going to change based on your hosted version's link.
 
 ## Project details
+
+### Notes Encryption
+Your notes are **encrypted at rest** in the database. This means no one, not even with direct database access, can read their content without logging into the app as the associated user or collaborator. Your data remains private and secure.
 
 ### Recover password page
 This page is a separate one because it gotta be included in the reset-password email as a link

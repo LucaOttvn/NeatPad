@@ -1,6 +1,7 @@
-import { Folder } from '@/utils/interfaces';
-import { supabase } from './supabaseClient';
+'use server'
 
+import { supabase } from "@/utils/supabaseClient";
+import { Folder } from "@/utils/interfaces";
 
 export async function getFoldersByUserId(userId: number) {
 

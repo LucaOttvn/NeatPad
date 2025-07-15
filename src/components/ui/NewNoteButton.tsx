@@ -1,13 +1,13 @@
 import { useContext, useEffect } from 'react';
 import Image from "next/image";
 import { NotesContext } from '@/contexts/notesContext';
-import { createNote, deleteNote } from '@/db/notes';
 import { animateDivUnmount } from '@/utils/globalMethods';
 import { Note, ModalsNames } from '@/utils/interfaces';
 import { selectedModal } from '@/utils/signals';
 import { flushSync } from 'react-dom';
 import { UserContext } from '@/contexts/userContext';
 import gsap from 'gsap';
+import { createNote, deleteNote } from '@/serverActions/notesActions';
 
 interface NewNoteButtonProps { }
 

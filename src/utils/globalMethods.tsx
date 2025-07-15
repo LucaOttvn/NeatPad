@@ -114,3 +114,23 @@ export function validatePassword(password: string): PasswordValidationResult {
     errors: errors,
   };
 }
+
+export function isEncrypted(text: string): boolean {
+    const parts = text.split(':');
+    if (parts.length !== 2) {
+        return false;
+    }
+    const [ivHex, encryptedDataHex] = parts;
+
+    // Check if IV part is 32 hex characters long
+    if (!/^[0-9a-fA-F]{32}$/.test(ivHex)) {
+        return false;
+    }
+
+    // Check if encrypted data part contains only hex characters
+    if (!/^[0-9a-fA-F]+$/.test(encryptedDataHex)) {
+        return false;
+    }
+
+    return true;
+}

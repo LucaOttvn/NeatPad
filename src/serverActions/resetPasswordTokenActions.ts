@@ -1,5 +1,6 @@
-import { supabase } from "./supabaseClient";
-import { getUserByEmail } from "./user";
+'use server'
+
+import { supabase } from "@/utils/supabaseClient";
 
 export async function getTokenData(token: string) {
 

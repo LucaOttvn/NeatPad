@@ -1,5 +1,5 @@
 "use client";
-import { deleteNote, updateNote } from "@/db/notes";
+import { deleteNote, updateNote } from "@/serverActions/notesActions";
 import { Note } from "@/utils/interfaces";
 import { createContext, ReactNode, useState } from "react";
 

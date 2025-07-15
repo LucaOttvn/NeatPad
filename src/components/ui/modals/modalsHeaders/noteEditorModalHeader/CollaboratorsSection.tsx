@@ -5,10 +5,10 @@ import SvgButton from '@/components/ui/SvgButton';
 import { ReactSVG } from 'react-svg';
 import { Note, User } from '@/utils/interfaces';
 import { handleModal, validateEmail } from '@/utils/globalMethods';
-import { getUserByEmail, getUserById } from '@/db/user';
 import { NotesContext } from '@/contexts/notesContext';
 import { UserContext } from '@/contexts/userContext';
 import { notesToShow } from '@/utils/signals';
+import { getUserByEmail, getUserById } from '@/serverActions/usersActions';
 
 interface CollaboratorsSectionProps {
     collaboratorsSectionOpen: boolean

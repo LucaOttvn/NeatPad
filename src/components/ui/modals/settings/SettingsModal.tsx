@@ -3,8 +3,8 @@ import { useContext } from 'react';
 import './settingsModal.scss';
 import { ReactSVG } from 'react-svg';
 import ResetPasswordForm from '../../ResetPasswordForm';
-import { deleteUser } from '@/db/user';
 import { handleModal } from '@/utils/globalMethods';
+import { deleteUser } from '@/serverActions/usersActions';
 
 interface SettingsModalProps { }
 

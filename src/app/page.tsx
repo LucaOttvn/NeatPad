@@ -1,5 +1,5 @@
 
-"use client";;
+"use client";
 import TopBar from "@/components/ui/TopBar";
 import { useContext, useEffect, useLayoutEffect, useRef } from "react";
 import { ScaleLoader } from "react-spinners";
@@ -11,7 +11,6 @@ import Login from "@/components/Login";
 import GeneralModal from "@/components/ui/modals/GeneralModal";
 import { useSignals } from "@preact/signals-react/runtime";
 import { isMobile, loading, selectedModal, selectedSideMenu } from "@/utils/signals";
-import { getUserById } from "@/db/user";
 import NewNoteButton from "@/components/ui/NewNoteButton";
 import GeneralSideMenu from "@/components/ui/SideMenu";
 import { Capacitor } from "@capacitor/core";
@@ -19,6 +18,8 @@ import { StatusBar } from "@capacitor/status-bar";
 import { App } from '@capacitor/app';
 import { handleModal } from "@/utils/globalMethods";
 import { FoldersContext } from "@/contexts/foldersContext";
+import { getUserById } from "@/serverActions/usersActions";
+
 
 const minSwipeDistance = 50
 

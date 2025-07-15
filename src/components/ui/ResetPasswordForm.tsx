@@ -2,7 +2,7 @@ import { useContext, useEffect, useState } from 'react';
 import PasswordInput from './PasswordInput';
 import { validatePassword } from '@/utils/globalMethods';
 import { UserContext } from '@/contexts/userContext';
-import { deleteToken, getTokenData } from '@/db/resetPasswordTokens';
+import { deleteToken, getTokenData } from '@/serverActions/resetPasswordTokenActions';
 
 interface ResetPasswordFormProps {
     forgotPassword?: boolean
