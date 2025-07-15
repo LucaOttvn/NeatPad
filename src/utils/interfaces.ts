@@ -15,6 +15,13 @@ export interface User {
     password: string
 }
 
+export interface Folder {
+    id?: number
+    name: string
+    color?: string
+    user: number
+}
+
 export enum ModalsNames {
     newNote = "newNoteModal",
     updateNote = "updateNoteModal",
@@ -74,12 +81,7 @@ export enum SideMenusNames {
     folders = "foldersSideMenu",
 }
 
-export interface Folder {
-    id?: number
-    name: string
-    color?: string
-    user: number
-}
+
 
 export const colors = [
     {

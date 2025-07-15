@@ -22,6 +22,8 @@ export default function NoteEditor(props: NoteEditorProps) {
 
   const debounceTimerRef = useRef<NodeJS.Timeout | null>(null);
 
+  const textareaRef = useRef(null)
+
   useEffect(() => {
     return () => {
       if (debounceTimerRef.current) {
@@ -29,6 +31,61 @@ export default function NoteEditor(props: NoteEditorProps) {
       }
     };
   }, []);
+
+  const handleKeyDown = (event: React.KeyboardEvent<HTMLTextAreaElement>) => {
+    if (event.key === 'Enter') {
+      const { selectionStart: cursorPosition } = event.target as HTMLTextAreaElement;
+
+      const txtToUpdate = currentNote?.text || '';
+      const textBeforeCursor = txtToUpdate.substring(0, cursorPosition);
+      const textAfterCursor = txtToUpdate.substring(cursorPosition);
+
+      // find the beginning of the current line
+      // if there's a newline character before the cursor, that marks the end of the previous line and the beginning of the current one
+      const lastNewlineIndex = textBeforeCursor.lastIndexOf('\n');
+      // lastNewlineIndex !== -1 checks if a newline char was found in textBeforeCursor
+      // textBeforeCursor.substring(lastNewlineIndex + 1) gets all the text from the beginning of the line apart from the /n, otherwise return the full standard string
+      const currentLine = lastNewlineIndex !== -1
+        ? textBeforeCursor.substring(lastNewlineIndex + 1)
+        : textBeforeCursor;
+
+      const optionsToCheck: RegExp[] = [/^\s*-/]
+
+      let detectedCase
+      optionsToCheck.find((el) => {
+        const foundMatches = el.exec(currentLine)
+        if (!foundMatches) return false
+        detectedCase = foundMatches[0]
+        return true
+      })
+
+      // when a user is on a list item and presses enter, create a new list item
+      if (detectedCase) {
+        event.preventDefault();
+
+        const newContent = textBeforeCursor + `\n${detectedCase} ` + textAfterCursor;
+        // update the cursor position because by default the cursor goes to the bottom of the textarea on its update
+        const newCursorPosition = cursorPosition + `\n${detectedCase} `.length;
+
+        setCurrentNote(prev => {
+          if (!prev) return prev;
+          return {
+            ...prev,
+            text: newContent
+          };
+        });
+
+        // Set the cursor position after the state update
+        // Use setTimeout to ensure the DOM is updated before setting the cursor
+        setTimeout(() => {
+          if (textareaRef.current) {
+            (textareaRef.current as HTMLTextAreaElement).selectionStart = newCursorPosition;
+            (textareaRef.current as HTMLTextAreaElement).selectionEnd = newCursorPosition;
+          }
+        }, 0);
+      }
+    }
+  };
 
   const handleInput = (keyToUpdate: 'title' | 'text', e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement> | string) => {
     // if the user is typing in markdown mode, the type of e is different from the one that comes from the input field for the title or for the normal textarea
@@ -98,9 +155,11 @@ export default function NoteEditor(props: NoteEditorProps) {
           placeholder="Insert your note..."
           data-placeholder="Insert your note..."
           value={currentNote ? currentNote.text : ''}
+          ref={textareaRef}
           onChange={(e) => {
             handleInput('text', e)
           }}
+          onKeyDown={handleKeyDown}
         ></textarea>
       }
     </div >
