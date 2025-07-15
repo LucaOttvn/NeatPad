@@ -1,7 +1,7 @@
-import { supabase } from '@/db/supabaseClient';
 import bcrypt from 'bcrypt';
 import { NextResponse } from 'next/server';
 import jwt from 'jsonwebtoken';
+import { supabase } from '@/utils/supabaseClient';
 
 async function hashPassword(password: string) {
     const saltRounds = 10;

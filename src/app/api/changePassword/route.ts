@@ -1,6 +1,6 @@
 import { NextResponse } from 'next/server';
 import bcrypt from 'bcrypt';
-import { getUserById, updateUser } from '@/db/user';
+import { getUserById, updateUser } from '@/serverActions/usersActions';
 
 // since the change password needs the bcrypt hash and compare methods and they are server-side-only, this function is declared as an api route
 async function hashPassword(password: string): Promise<string> {

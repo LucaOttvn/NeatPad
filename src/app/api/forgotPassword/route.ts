@@ -1,6 +1,6 @@
 import { NextResponse } from 'next/server';
 import bcrypt from 'bcrypt';
-import { getUserById, updateUser } from '@/db/user';
+import { getUserById, updateUser } from '@/serverActions/usersActions';
 
 async function hashPassword(password: string): Promise<string> {
     const saltRounds = 10;
