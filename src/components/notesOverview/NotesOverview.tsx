@@ -42,7 +42,6 @@ export default function NotesOverview() {
     // if there's a selected folder, filter the notes by it, otherwise show them all
     if (foldersContext?.selectedFolder) {
       const filteredNotes = notesContext?.notes.filter(note => note.folders.some(el=> el == foldersContext?.selectedFolder))
-      console.log(filteredNotes)
       if (filteredNotes) notesToShow.value = filteredNotes
     }
     else {
