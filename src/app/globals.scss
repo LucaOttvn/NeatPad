@@ -101,6 +101,10 @@
   align-items: center;
 }
 
+html {
+  padding-top: var(--safe-area-inset-top);
+}
+
 body {
   font-family: "Inter", sans-serif;
   background-color: var(--Black);
@@ -108,7 +112,6 @@ body {
   display: flex;
   flex-direction: column;
   overflow-y: hidden;
-  padding-top: var(--safe-area-inset-top);
 }
 
 .mainBtn {
