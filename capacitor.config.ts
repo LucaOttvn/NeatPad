@@ -1,4 +1,3 @@
-// capacitor.config.ts
 import type { CapacitorConfig } from '@capacitor/cli';
 
 const config: CapacitorConfig = {
@@ -7,7 +6,20 @@ const config: CapacitorConfig = {
   webDir: 'out',
   server: {
     url: 'https://www.neatpad.eu'
-  }
+    // url: 'http://192.168.1.79:3000'
+  },
+  plugins: {
+    SafeArea: {
+      enabled: true,
+      customColorsForSystemBars: true,
+      statusBarColor: '#ff2d00',
+      statusBarContent: 'light',
+      navigationBarColor: '#ff2d00',
+      navigationBarContent: 'light',
+      offset: 100,
+      inset: 100
+    },
+  },
 };
 
 export default config;

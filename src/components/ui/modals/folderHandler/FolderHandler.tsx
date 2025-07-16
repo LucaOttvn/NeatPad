@@ -9,6 +9,7 @@ import { handleModal } from "@/utils/globalMethods";
 import './folderHandler.scss';
 import { updateFolder, createFolder, deleteFolder } from "@/serverActions/foldersActions";
 
+// modal to create/update/delete a folder
 export default function FolderHandler() {
   const foldersContext = useContext(FoldersContext);
   const userContext = useContext(UserContext);

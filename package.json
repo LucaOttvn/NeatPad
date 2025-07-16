@@ -11,6 +11,7 @@
     "and": "npm run build && npx cap sync android && npx cap open android"
   },
   "dependencies": {
+    "@capacitor-community/safe-area": "^7.0.0-alpha.1",
     "@capacitor/android": "^7.2.0",
     "@capacitor/app": "^7.0.1",
     "@capacitor/core": "^7.2.0",
@@ -19,7 +20,6 @@
     "@supabase/supabase-js": "^2.49.1",
     "@uiw/react-md-editor": "^4.0.7",
     "bcrypt": "^6.0.0",
-    "capacitor-plugin-safe-area": "^4.0.0",
     "dotenv": "^16.4.7",
     "gsap": "^3.12.7",
     "jsonwebtoken": "^9.0.2",

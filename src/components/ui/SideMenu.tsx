@@ -15,28 +15,19 @@ export default function GeneralSideMenu() {
     handleSideMenu(selectedSideMenu.value, isMobile.value)
   }, [selectedSideMenu.value])
 
-  // useEffect(() => {
-  //   const foundIndex = foldersContext?.folders.findIndex(el => el.id == foldersContext.selectedFolder);
-  //   const target = document.getElementById('folder' + foundIndex);
+  useEffect(() => {
+    const foundIndex = foldersContext?.folders.findIndex(el => el.id == foldersContext.selectedFolder);
+    const target = document.getElementById('folder' + foundIndex);
 
-  //   if (!foldersListRef.current || !target) return
-    
-  //   // get the position of the target element relative to the viewport
-  //   const targetRect = target.getBoundingClientRect();
-
-  //   // get the position of the scrollable container relative to the viewport
-  //   const containerRect = foldersListRef.current.getBoundingClientRect();
-
-  //   // calculate the scroll amount needed within the container
-  //   // this is the difference between the target's top and the container's top + the container's current scroll position.
-  //   const scrollAmount = targetRect.top - containerRect.top + (foldersListRef.current.clientTop / 2);
-
-  //   foldersListRef.current.scrollTo({
-  //     top: scrollAmount,
-  //     behavior: 'smooth'
-  //   });
-
-  // }, [foldersContext?.selectedFolder]);
+    if (target) {
+      target.scrollIntoView({
+        behavior: 'smooth',
+        block: 'center'
+      });
+    } else {
+      console.warn(`Element 'folder${foundIndex}' not found. Ensure it's rendered and the ID is correct.`);
+    }
+  }, [foldersContext?.selectedFolder]);
 
   return (
     <div id={selectedSideMenu.value} className="generalSideMenu">

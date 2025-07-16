@@ -3,7 +3,7 @@ import { loading } from '@/utils/signals';
 import React, { useContext, useState } from 'react';
 import PasswordInput from '../../PasswordInput';
 import { handleModal } from '@/utils/globalMethods';
-import './loginModal.scss'
+import './loginModal.scss';
 import { saveToken } from '@/serverActions/resetPasswordTokenActions';
 import { getUserByEmail } from '@/serverActions/usersActions';
 
@@ -76,8 +76,6 @@ export default function LoginModal(props: LoginModalProps) {
             },
             body: JSON.stringify({ email: formData.email, resetLink: `https://www.neatpad.eu/recover-password?token=${token}` }),
         });
-
-        console.log(response)
 
         if (!response.ok) return alert('Something went wrong, retry')
 

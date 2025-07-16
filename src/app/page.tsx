@@ -1,4 +1,3 @@
-
 "use client";
 import TopBar from "@/components/ui/TopBar";
 import { useContext, useEffect, useLayoutEffect, useRef } from "react";
@@ -19,7 +18,6 @@ import { App } from '@capacitor/app';
 import { handleModal } from "@/utils/globalMethods";
 import { FoldersContext } from "@/contexts/foldersContext";
 import { getUserById } from "@/serverActions/usersActions";
-
 
 const minSwipeDistance = 50
 
@@ -50,7 +48,6 @@ export default function Home() {
       if (!selectedModal.value) return
       handleModal(undefined, closeModal)
     });
-
 
     // handle the swipe gesture to open the side menu
     if (!swipeRef.current) return;
@@ -133,9 +130,9 @@ export default function Home() {
       </div>}
 
       {userContext?.user &&
-        <AnimatedDiv className="appContainer w-full h-full flex start">
+        <AnimatedDiv className="w-full h-full flex start">
           <TopBar />
-          <div className="w-full h-full flex" style={{ marginTop: "8rem" }} ref={swipeRef}>
+          <div className="w-full h-full flex" style={{ paddingTop: "4rem" }} ref={swipeRef}>
             <GeneralSideMenu />
             <NotesOverview />
           </div>

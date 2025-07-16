@@ -3,7 +3,7 @@ import Image from "next/image";
 import { NotesContext } from '@/contexts/notesContext';
 import { animateDivUnmount } from '@/utils/globalMethods';
 import { Note, ModalsNames } from '@/utils/interfaces';
-import { selectedModal } from '@/utils/signals';
+import { loading, selectedModal } from '@/utils/signals';
 import { flushSync } from 'react-dom';
 import { UserContext } from '@/contexts/userContext';
 import gsap from 'gsap';
@@ -20,6 +20,7 @@ export default function NewNoteButton(props: NewNoteButtonProps) {
 
     // when the user clicks on the plus button, the createNote() gets triggered, this has to happen because the NoteEditor component needs a note with an already existing id since it's supposed to edit notes, not creating new ones
     async function openNewNoteModal() {
+        loading.value = true
         const newNote: Note = {
             user: userContext!.user!.id!,
             title: '',
@@ -41,6 +42,7 @@ export default function NewNoteButton(props: NewNoteButtonProps) {
             })
             selectedModal.value = ModalsNames.newNote
         }
+        loading.value = false
     }
 
     // delete mode animation for the add/delete note button

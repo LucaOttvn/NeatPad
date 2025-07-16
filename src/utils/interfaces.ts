@@ -81,8 +81,6 @@ export enum SideMenusNames {
     folders = "foldersSideMenu",
 }
 
-
-
 export const colors = [
     {
         color: "White",
@@ -117,11 +115,11 @@ export const colors = [
         text: 'Black'
     },
     {
-        color: "FlameRed",
-        text: 'Black'
+        color: "Indigo",
+        text: 'White'
     },
     {
-        color: "Red",
+        color: "Brown",
         text: 'White'
     },
     {
