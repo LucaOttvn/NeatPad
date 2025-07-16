@@ -108,6 +108,7 @@ body {
   display: flex;
   flex-direction: column;
   overflow-y: hidden;
+  padding-top: var(--safe-area-inset-top);
 }
 
 .mainBtn {

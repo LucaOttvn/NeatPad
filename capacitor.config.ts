@@ -16,8 +16,7 @@ const config: CapacitorConfig = {
       statusBarContent: 'light',
       navigationBarColor: '#ff2d00',
       navigationBarContent: 'light',
-      offset: 1000,
-      inset: 2000
+      offset: 1000
     },
   },
 };
