@@ -22,7 +22,7 @@ export default function GeneralModal() {
 
   useEffect(() => {
     generalModalRef.current?.focus();
-  }, [notesContext?.selectedNote]);
+  }, [selectedModal.value]);
 
   function handleKeyDown(e: React.KeyboardEvent<HTMLDivElement>) {
     if (e.key === "Escape") {
@@ -35,7 +35,6 @@ export default function GeneralModal() {
       selectedModal.value = undefined
     }
   }
-
 
   function handleBackdropClick() {
     // handle the note saving/deleting when the user clicks on the modals's backdrop to close it
