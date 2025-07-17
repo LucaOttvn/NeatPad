@@ -1,9 +1,9 @@
-import { colors, Folder, ModalsNames, Note } from "@/utils/interfaces";
+import { colors, ModalsNames, Note } from "@/utils/interfaces";
 import "./noteCard.scss";
 import AnimatedDiv from "../animatedComponents/AnimatedDiv";
 import { handleModal } from "@/utils/globalMethods";
 import { FoldersContext } from "@/contexts/foldersContext";
-import { useContext, useEffect, useState } from "react";
+import { useContext } from "react";
 import { NotesContext } from "@/contexts/notesContext";
 
 interface NoteCardProps {
@@ -11,30 +11,16 @@ interface NoteCardProps {
 }
 
 export default function NoteCard(props: NoteCardProps) {
-  const [selectedFolderData, setSelectedFolderData] = useState<Folder | undefined>(
-    undefined
-  );
-  const [textColor, setTextColor] = useState<string | undefined>(undefined);
-
   const foldersContext = useContext(FoldersContext);
   const notesContext = useContext(NotesContext);
 
-  useEffect(() => {
-    setSelectedFolderData(
-      foldersContext?.folders.find((el) => el.id == foldersContext.selectedFolder)
-    );
-  }, [foldersContext?.selectedFolder]);
+  const foundSelectedFolderData = foldersContext?.folders.find(
+    (el) => el.id == foldersContext.selectedFolder
+  );
 
-  useEffect(() => {
-    if (selectedFolderData) {
-      const foundColor = colors.find(
-        (item) => item.color == selectedFolderData?.color
-      );
-      setTextColor(foundColor ? foundColor.text : "White");
-
-      console.log(selectedFolderData);
-    }
-  }, [selectedFolderData]);
+  const textColor = colors.find(
+    (item) => item.color == foundSelectedFolderData?.color
+  )?.text || "White"
 
   return (
     <AnimatedDiv
@@ -47,16 +33,16 @@ export default function NoteCard(props: NoteCardProps) {
       <div
         className="cornerRounder1"
         style={{
-          background: selectedFolderData?.color
-            ? `var(--${selectedFolderData?.color})`
+          background: foundSelectedFolderData?.color
+            ? `var(--${foundSelectedFolderData?.color})`
             : "var(--lightBlack)",
         }}
       ></div>
       <div
         className="cornerRounder2"
         style={{
-          background: selectedFolderData?.color
-            ? `var(--${selectedFolderData?.color})`
+          background: foundSelectedFolderData?.color
+            ? `var(--${foundSelectedFolderData?.color})`
             : "var(--lightBlack)",
         }}
       ></div>
