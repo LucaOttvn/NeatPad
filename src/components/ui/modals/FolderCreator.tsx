@@ -7,9 +7,7 @@ import { UserContext } from "@/contexts/userContext";
 import { createFolder } from "@/api/folders";
 import { handleModal } from "@/utils/globalMethods";
 
-interface FolderCreatorProps {}
-
-export default function FolderCreator(props: FolderCreatorProps) {
+export default function FolderCreator() {
   const folderContext = useContext(FolderContext);
   const userContext = useContext(UserContext);
 
@@ -24,23 +22,23 @@ export default function FolderCreator(props: FolderCreatorProps) {
   }, [folderName]);
 
   return (
-    <AnimatedDiv className="w-full h-full flex items-center justify-start flex-col gap-20 mt-">
-      <span className="title start gap-3">
-        Create new 
-        <span
+    <AnimatedDiv className="w-full h-full flex items-center justify-start flex-col gap-20">
+      <span className="title w-full ps-10 flex flex-col items-start justify-start">
+        <span>Create</span>
+        <span className="ms-3">New</span>
+        <b
+        className="ms-6"
           style={{
             color: `var(--${selectedColor})` || "auto",
             transition: "0.2s",
           }}
         >
-          folder
-        </span>
+          Folder
+        </b>
       </span>
       <input
         type="text"
-        className="mainInput"
         placeholder="Folder name"
-        style={{ color: "var(--Black)" }}
         onChange={(e) => {
           setFolderName(e.target.value);
         }}
@@ -49,7 +47,7 @@ export default function FolderCreator(props: FolderCreatorProps) {
       <button
         className="mainBtn"
         onClick={async () => {
-          let newFolder: Folder = {
+          const newFolder: Folder = {
             name: folderName,
             notes: [],
             color: selectedColor,

@@ -3,10 +3,8 @@ import SvgButton from "../../SvgButton";
 import { handleModal } from "@/utils/globalMethods";
 import { Note } from "@/utils/interfaces";
 import { gsap, Power4 } from "gsap";
-import FolderCard from "@/components/FolderCard";
 import { FolderContext } from "@/contexts/foldersContext";
 import { ReactSVG } from "react-svg";
-import { updateNote } from "@/api/notes";
 
 interface BasicComponentProps {
   onCloseCallback?: () => void;
@@ -67,14 +65,9 @@ export default function NoteEditorModalHeader(props: BasicComponentProps) {
       </div>
       <div className="addNoteToFolder">
         <div className="w-full start flex-wrap gap-5 p-5">
-          {foldersContext?.folders.map((folder) => {
+          {foldersContext?.folders.map((folder, index) => {
             return (
-              <div
-                className="start gap-1"
-                onClick={() => {
-                  
-                }}
-              >
+              <div key={'folder' + index} className="start gap-1" onClick={() => {}}>
                 <ReactSVG src={`/icons/folder.svg`} className="icon" />
                 <span>{folder.name}</span>
               </div>

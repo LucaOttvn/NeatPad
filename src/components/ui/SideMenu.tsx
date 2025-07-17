@@ -1,5 +1,5 @@
-import { Folder, ModalsNames } from "@/utils/interfaces";
-import { useContext, useEffect, useState } from "react";
+import { ModalsNames } from "@/utils/interfaces";
+import { useContext, useEffect } from "react";
 import FolderCard from "../FolderCard";
 import { getFolders } from "@/api/folders";
 import { handleModal } from "@/utils/globalMethods";
