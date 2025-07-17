@@ -14,6 +14,7 @@ export default function NoteEditor() {
   );
 
   useEffect(() => {
+    console.log(foundNote)
     // initially set title and text based on the selected note
     if (foundNote) {
       setTitle(foundNote.title);

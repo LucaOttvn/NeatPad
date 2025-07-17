@@ -3,7 +3,7 @@ import "./noteCard.scss";
 import AnimatedDiv from "../animatedComponents/AnimatedDiv";
 import { handleModal } from "@/utils/globalMethods";
 import { FoldersContext } from "@/contexts/foldersContext";
-import { useContext } from "react";
+import { useContext, useEffect } from "react";
 import { NotesContext } from "@/contexts/notesContext";
 import { ModalsContext } from "@/contexts/modalsContext";
 
@@ -23,7 +23,6 @@ export default function NoteCard(props: NoteCardProps) {
   const textColor =
     colors.find((item) => item.color == foundParentFolder?.color)?.text ||
     "White";
-
 
   return (
     <AnimatedDiv

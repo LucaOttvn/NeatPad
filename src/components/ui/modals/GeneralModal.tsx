@@ -62,7 +62,7 @@ export default function GeneralModal(props: GeneralModalProps) {
         {(modalsContext?.selectedModal == ModalsNames.newNote || modalsContext?.selectedModal == ModalsNames.updateNote) && <>
           <NoteEditorModalHeader
             note={notesContext?.notes.find(
-              (n) => n.id === notesContext.selectedNote
+              (el) => el.id === notesContext.selectedNote
             )}
             modalId={modalsContext?.selectedModal == ModalsNames.newNote ? ModalsNames.newNote : ModalsNames.updateNote}
             onCloseCallback={() => {
