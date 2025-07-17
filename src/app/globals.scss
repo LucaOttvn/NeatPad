@@ -23,6 +23,23 @@
 
 * {
   color: var(--white);
+  &:focus {
+    outline: none;
+  }
+  &::-webkit-scrollbar {
+    width: 13px;
+  }
+  &::-webkit-scrollbar-track {
+    background: var(--darkGrey);
+  }
+  &::-webkit-scrollbar-thumb {
+    background: var(--grey);
+    border-radius: 10px;
+  }
+  &::-webkit-scrollbar-thumb:hover {
+    cursor: pointer;
+    background: var(--lightGrey);
+  }
 }
 
 .center {
@@ -46,7 +63,7 @@
 body {
   font-family: "Inter", sans-serif;
   background-color: var(--black);
-  height: 100dvh;
+  height: 100svh;
   display: flex;
   flex-direction: column;
 }
@@ -60,7 +77,8 @@ body {
 
 .mainBtn,
 .addBtn,
-.iconBtn, .noteCard {
+.iconBtn,
+.noteCard {
   cursor: pointer;
   -webkit-user-drag: none;
   transition: 0.2s;
@@ -76,7 +94,8 @@ body {
 }
 
 input[type="text"],
-input[type="password"], textarea {
+input[type="password"],
+textarea {
   cursor: pointer;
   -webkit-user-drag: none;
   transition: 0.2s;
@@ -163,5 +182,15 @@ input[type="password"] {
   border-radius: var(--mainBorderRadius);
   &:focus {
     outline: none;
+  }
+}
+
+// tablet && smartphones
+@media (max-width: 768px) {
+  // remove hover effect on buttons
+  .iconBtn {
+    &:hover {
+      background-color: transparent;
+    }
   }
 }

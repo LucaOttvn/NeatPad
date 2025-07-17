@@ -1,5 +1,4 @@
-"use client";;
-import GeneralSideMenu from "@/components/ui/SideMenu";
+"use client";
 import TopBar from "@/components/ui/TopBar";
 import { handleModal } from "@/utils/globalMethods";
 import Image from "next/image";
@@ -11,6 +10,8 @@ import AnimatedDiv from "@/components/animatedComponents/AnimatedDiv";
 import NotesOverview from "@/components/notesOverview/NotesOverview";
 import { ModalsNames } from "@/utils/interfaces";
 import { UserContext } from "@/contexts/userContext";
+import { createNote } from "@/api/notes";
+import GeneralSideMenu from "@/components/ui/SideMenu";
 
 export default function Home() {
   const userContext = useContext(UserContext);
@@ -37,18 +38,18 @@ export default function Home() {
   return (
     <>
       {userContext?.user ? (
-        <AnimatedDiv className="w-full h-full">
+        <AnimatedDiv className="w-full h-full flex start">
           <TopBar />
-          <div className="w-full h-full flex justify-start items-start">
+          <div className="w-full h-full flex" style={{ marginTop: "6rem" }}>
             <GeneralSideMenu />
             <NotesOverview />
           </div>
-          
+
           <button
             className="addBtn"
             style={{ borderRadius: "50%" }}
             onClick={() => {
-              // createNote(userContext!.user!.id)
+              createNote(userContext!.user!.id);
               handleModal(true, ModalsNames.newNote);
             }}
           >

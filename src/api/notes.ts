@@ -6,7 +6,9 @@ export async function getNotes(): Promise<Note[] | null> {
 
     const { data, error } = await supabase
         .from('notes')
-        .select('*');
+        .select('*')
+        .order('last_update', { ascending: false }); // Sort by latest first
+
 
     if (error) {
         console.error("Error fetching data:", error);
@@ -20,10 +22,11 @@ export async function getNotes(): Promise<Note[] | null> {
 export async function createNote(userId: string) {
 
     const note: Note = {
-        title: 'Test insert 2',
-        text: 'Test txt 2',
+        title: 'New',
+        text: 'New',
         state: 0,
-        user: userId
+        user: userId,
+        last_update: new Date()
     }
     // Insert the new note into the "notes" table
     const { data, error } = await supabase
