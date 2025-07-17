@@ -19,15 +19,12 @@ export default function NoteEditor(props: NoteEditorProps) {
           }}
         />
       </header>
-      <textarea
+      <div
         className="noteEditorInputField"
         contentEditable
-        onInput={() => {
-          console.log("test");
-        }}
-        placeholder="Insert your note..."
+        data-placeholder="Insert your note..."
       >
-      </textarea>
+      </div>
     </div>
   );
 }
