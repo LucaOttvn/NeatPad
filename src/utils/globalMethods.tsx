@@ -6,6 +6,7 @@ let modalAnimation: gsap.core.Tween | undefined
 
 export function handleModal(
   target: ModalsNames | undefined,
+  callback?: () => void
 ) {
   // avoid triggering multiple animations when the user rapidly clicks on buttons
   if (modalAnimation && modalAnimation.isActive()) return
@@ -16,7 +17,7 @@ export function handleModal(
     // on desktops the effect is a bit less visible, so set a bigger depth
     depth: isMobile.value ? 0.7 : 1
   }
-  
+
   // prevent the user from scrolling the body when a modal is open
   gsap.set('body', {
     overflowY: openingModal ? 'hidden' : ''
@@ -30,6 +31,7 @@ export function handleModal(
     ease: `back.${animationEase.direction}(${animationEase.depth})`,
     delay: 0.1,
     onComplete: () => {
+      if (callback) callback()
       if (target == undefined) selectedModal.value = undefined
     }
   });
