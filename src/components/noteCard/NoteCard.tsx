@@ -1,6 +1,7 @@
 import { ModalsNames, Note } from "@/utils/interfaces";
 import "./noteCard.scss";
 import { handleModal } from "@/utils/globalMethods";
+import AnimatedDiv from "../animatedComponents/AnimatedDiv";
 
 interface NoteCardProps {
   note: Note;
@@ -10,7 +11,7 @@ interface NoteCardProps {
 export default function NoteCard(props: NoteCardProps) {
   
   return (
-    <div
+    <AnimatedDiv
       className="noteCard"
       onClick={() => {
         props.setSelectedNote(props.note.id)
@@ -19,6 +20,6 @@ export default function NoteCard(props: NoteCardProps) {
     >
       {props.note.title ? <h1>{props.note.title}</h1> : <h1 style={{color: 'var(--grey)'}}>No title</h1>}
       {props.note.text ? <span>{props.note.text}</span> : <span style={{color: 'var(--grey)'}}>No text</span>}
-    </div>
+    </AnimatedDiv>
   );
 }

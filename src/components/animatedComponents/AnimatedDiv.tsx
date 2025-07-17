@@ -5,9 +5,10 @@ import "./animatedStyle.scss";
 interface AnimatedDivProps {
   children: ReactNode;
   className?: string;
+  onClick?: ()=> void
 }
 
-export default function AnimatedDiv({ children, className = "" }: AnimatedDivProps) {
+export default function AnimatedDiv(props: AnimatedDivProps) {
   useEffect(() => {
     gsap.to(".animatedDiv", {
       opacity: 1,
@@ -16,5 +17,7 @@ export default function AnimatedDiv({ children, className = "" }: AnimatedDivPro
     });
   }, []);
 
-  return <div className={`animatedDiv ${className}`}>{children}</div>;
+  return <div className={`animatedDiv ${props.className || ''}`} onClick={()=>{
+    if (props.onClick) props.onClick()
+  }}>{props.children}</div>;
 }
