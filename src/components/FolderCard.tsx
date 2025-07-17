@@ -3,6 +3,8 @@ import { ReactSVG } from "react-svg";
 import "./componentsStyle.scss";
 import { useContext, useEffect, useState } from "react";
 import { FoldersContext } from "@/contexts/foldersContext";
+import { handleSideMenu } from "@/utils/globalMethods";
+import { ScreenSizeContext } from "@/contexts/screenSizeContext";
 interface FolderProps {
   folder: Folder;
 }
@@ -13,6 +15,7 @@ export default function FolderCard(props: FolderProps) {
     (item) => item.color == props.folder.color
   )?.text || "White"
 
+  const screenSizeContext = useContext(ScreenSizeContext)
   const foldersContext = useContext(FoldersContext)
 
   return (
@@ -20,6 +23,7 @@ export default function FolderCard(props: FolderProps) {
       className="folderCard"
       onClick={()=>{
         foldersContext?.setSelectedFolder(props.folder.id)
+        if (screenSizeContext) handleSideMenu(false)
       }}
       style={{
         backgroundColor: props.folder.color
