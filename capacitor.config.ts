@@ -11,11 +11,6 @@ const config: CapacitorConfig = {
   plugins: {
     SafeArea: {
       enabled: true,
-      customColorsForSystemBars: true,
-      statusBarColor: '#ff2d00',
-      statusBarContent: 'light',
-      navigationBarColor: '#ff2d00',
-      navigationBarContent: 'light',
     },
   },
 };
