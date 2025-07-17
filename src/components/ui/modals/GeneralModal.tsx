@@ -44,7 +44,6 @@ export default function GeneralModal(props: GeneralModalProps) {
       onClick={() => {
         if (props.onCloseCallback) props.onCloseCallback();
         modalsContext?.setSelectedModal(undefined)
-
       }}
     >
       <div
@@ -56,7 +55,7 @@ export default function GeneralModal(props: GeneralModalProps) {
       >
         {modalsContext?.selectedModal == ModalsNames.createFolder && <><GeneralModalHeader
           modalId={ModalsNames.createFolder}
-        ></GeneralModalHeader>
+        />
           <FolderCreator /></>}
 
         {(modalsContext?.selectedModal == ModalsNames.newNote || modalsContext?.selectedModal == ModalsNames.updateNote) && <>
@@ -73,9 +72,9 @@ export default function GeneralModal(props: GeneralModalProps) {
 
 
         {modalsContext?.selectedModal == ModalsNames.login && <>
-          <GeneralModalHeader modalId={ModalsNames.login} className="loginModalHeader"/>
-          <LoginModal/>
-          </>}
+          <GeneralModalHeader modalId={ModalsNames.login} className="loginModalHeader" />
+          <LoginModal />
+        </>}
       </div>
     </div>
   );
