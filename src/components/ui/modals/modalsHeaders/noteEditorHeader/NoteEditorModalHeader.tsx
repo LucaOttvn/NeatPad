@@ -1,12 +1,13 @@
 import { useContext, useEffect, useState } from "react";
-import SvgButton from "../../SvgButton";
+import SvgButton from "../../../SvgButton";
 import { Folder, Note } from "@/utils/interfaces";
-import { gsap, Power4 } from "gsap";
+import { gsap } from "gsap";
 import { FoldersContext } from "@/contexts/foldersContext";
 import { NotesContext } from "@/contexts/notesContext";
-import './modalHeaders.scss';
+import './noteEditorHeader.scss';
 import { ReactSVG } from "react-svg";
 import { handleModal } from "@/utils/globalMethods";
+import CollaboratorsSection from "./CollaboratorsSection";
 
 interface BasicComponentProps {
   modalId: string;
@@ -15,11 +16,11 @@ interface BasicComponentProps {
 // this is the header of the note editor, it has its own set of methods to handle notes creation/update
 export default function NoteEditorModalHeader(props: BasicComponentProps) {
   const foldersContext = useContext(FoldersContext);
-   ;
   const notesContext = useContext(NotesContext);
 
   const [pinned, setPinned] = useState(props.note ? props.note.pinned : false);
   const [foldersListOpened, setFoldersListOpened] = useState(false);
+  const [collaboratorsSectionOpened, setCollaboratorsSectionOpened] = useState(false);
 
   // note pinning handling
   useEffect(() => {
@@ -37,14 +38,8 @@ export default function NoteEditorModalHeader(props: BasicComponentProps) {
       height: foldersListOpened ? "auto" : 0,
       marginBottom: foldersListOpened ? '1rem' : 0,
       duration: 0.2,
-      ease: Power4.easeOut,
+      ease: 'power4.out',
     });
-    gsap.to('#foldersListOpener', {
-      rotateX: foldersListOpened ? '180deg' : 0,
-      scale: foldersListOpened ? 1.2 : 1,
-      duration: 0.2,
-      ease: Power4.easeOut,
-    })
   }, [foldersListOpened]);
 
   function handleFolderSelection(folder: Folder) {
@@ -68,9 +63,16 @@ export default function NoteEditorModalHeader(props: BasicComponentProps) {
           />
           <SvgButton
             id='foldersListOpener'
-            fileName="arrowDown"
+            fileName={foldersListOpened ? "folderFill" : "folder"}
             onClick={() => {
-              setFoldersListOpened(!foldersListOpened);
+              setFoldersListOpened(prev => !prev);
+            }}
+          />
+          <SvgButton
+            id='collaboratorsListOpener'
+            fileName={collaboratorsSectionOpened ? "personAddFill" : "personAdd"}
+            onClick={() => {
+              setCollaboratorsSectionOpened(prev => !prev)
             }}
           />
         </div>
@@ -84,7 +86,7 @@ export default function NoteEditorModalHeader(props: BasicComponentProps) {
       </header>
       {/* collapsable section for folder selection */}
       <section className="addNoteToFolder">
-        <span className="font-bold ml-5 mt-5">Add to folder</span>
+        <span className="font-bold mx-5 mt-5">Add to folder</span>
         <div className="foldersList">
           {foldersContext?.folders.map((folder, index) => {
             return (
@@ -92,7 +94,7 @@ export default function NoteEditorModalHeader(props: BasicComponentProps) {
               <div
                 key={"folder" + index}
                 className="folderCardSelector gap-3"
-                onClick={()=>{
+                onClick={() => {
                   handleFolderSelection(folder)
                 }}
                 style={{ border: `${props.note?.folder == folder.id ? 4 : 1}px solid var(--${folder.color})` }}
@@ -106,6 +108,8 @@ export default function NoteEditorModalHeader(props: BasicComponentProps) {
           })}
         </div>
       </section>
+
+      <CollaboratorsSection collaboratorsSectionOpen={collaboratorsSectionOpened}/>
     </header>
   );
 }
