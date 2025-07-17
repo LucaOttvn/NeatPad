@@ -5,6 +5,8 @@ import AnimatedText from "../animatedComponents/AnimatedText";
 import { NotesContext } from "@/contexts/notesContext";
 import { FoldersContext } from "@/contexts/foldersContext";
 import NotesSection from "../ui/NotesSection";
+import { getNotes } from "@/api/notes";
+import { getFolders } from "@/api/folders";
 
 export default function NotesOverview() {
   const notesContext = useContext(NotesContext);
@@ -16,6 +18,45 @@ export default function NotesOverview() {
   const foundSelectedFolderData = foldersContext?.selectedFolder ? foldersContext?.folders.find(
     (el) => el.id == foldersContext.selectedFolder
   ) : undefined;
+
+
+  // when the app mounts fetch notes
+  useEffect(() => {
+    (async () => {
+      const fetchedNotes = await getNotes();
+      if (fetchedNotes) {
+        setNotesToShow(fetchedNotes)
+        notesContext?.setNotes(fetchedNotes);
+      }
+      const fetchedfolders = await getFolders();
+      if (fetchedfolders) {
+        foldersContext?.setFolders(fetchedfolders)
+      }
+    })();
+  }, [])
+
+  useEffect(() => {
+
+    // get notes and folders
+    async function fetchData() {
+      try {
+        const [notes, folders] = await Promise.all([getNotes(), getFolders()]);
+
+        if (notes) {
+          setNotesToShow(notes);
+          notesContext?.setNotes(notes);
+        }
+        if (folders) {
+          foldersContext?.setFolders(folders);
+        }
+      } catch (err) {
+        console.error("Error fetching initial data", err);
+      }
+    }
+
+    fetchData();
+  }, []);
+
 
   // if there's a selected folder, filter the notes by it, otherwise show them all
   useEffect(() => {
@@ -30,23 +71,22 @@ export default function NotesOverview() {
 
   return (
     <div className="notesOverviewContainer">
-
       {foldersContext?.selectedFolder ? <AnimatedText className="title" text={foundSelectedFolderData?.name.toUpperCase()!} color={foundSelectedFolderData?.color} /> : <div className="flex flex-col items-start">
         <div className="blur"></div>
         <AnimatedText className="title" text="My" />
         <AnimatedText className="title ms-5" text="Notes" />
       </div>}
       {/* pinnedSection (show it only if there's at least one pinned note) */}
-      {(foldersContext?.selectedFolder ? notesToShow : notesContext!.notes).some((el) => el.pinned) && (
+      {notesToShow.some((el) => el.pinned) && (
         <NotesSection
-          notes={(foldersContext?.selectedFolder ? notesToShow : notesContext!.notes).filter((el) => el.pinned)}
+          notes={notesToShow.filter((el) => el.pinned)}
           title="Pinned"
         />
       )}
 
       {/* non-pinned notes section */}
       <NotesSection
-        notes={(foldersContext?.selectedFolder ? notesToShow : notesContext!.notes).filter((el) => !el.pinned)}
+        notes={notesToShow.filter((el) => !el.pinned)}
         title="Others"
       />
     </div>

@@ -38,15 +38,7 @@ export function NotesProvider({ children }: { children: ReactNode }) {
     active: false, notes: []
   });
 
-  // when the app mounts fetch notes
-  useEffect(() => {
-    (async () => {
-      const fetchedNotes = await getNotes();
-      if (fetchedNotes) {
-        setNotes(fetchedNotes);
-      }
-    })();
-  }, [])
+
 
   // in the noteEditor modal, this updates the local notes array but the real db update happens when the user closes the create/update modal in order to avoid tons of api calls on each key press
   function updateNoteState(note: Note) {
