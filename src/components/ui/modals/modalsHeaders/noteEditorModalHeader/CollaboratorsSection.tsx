@@ -21,7 +21,7 @@ export default function CollaboratorsSection(props: CollaboratorsSectionProps) {
     const userContext = useContext(UserContext)
     const [selectedCollaborators, setSelectedCollaborators] = useState<string[]>([])
     const [noteOwnerEmail, setNoteOwnerEmail] = useState<string>('')
-    const emailInputRef = useRef(null)
+    const emailInputRef = useRef<HTMLInputElement>(null)
 
     const getNoteOwnerEmail = async () => {
         if (!props.note || !props.note.user) return
@@ -58,7 +58,7 @@ export default function CollaboratorsSection(props: CollaboratorsSectionProps) {
     const addCollaborator = async () => {
         if (!props.note || !emailInputRef.current) return
 
-        const inputValue = (emailInputRef.current as HTMLInputElement).value
+        const inputValue = emailInputRef.current.value
 
         const emailValidation = validateEmail(inputValue)
 
@@ -77,6 +77,8 @@ export default function CollaboratorsSection(props: CollaboratorsSectionProps) {
         const updatedNote: Note = { ...props.note, collaborators: updatedCollaborators }
 
         notesContext?.updateNoteState(updatedNote)
+        
+        emailInputRef.current.value = ''
     }
 
     const stopCollaborating = () => {
@@ -91,13 +93,27 @@ export default function CollaboratorsSection(props: CollaboratorsSectionProps) {
         notesContext!.updateNoteState(updatedNote)
 
         // remove the note from the array of notesToShow
-        const notes = [...notesContext?.notes || []].filter(note => note.id != updatedNote.id)
+        const notes = [...(notesContext?.notes || [])].filter(note => note.id != updatedNote.id)
 
         notesContext?.setNotes(notes)
 
         notesToShow.value = notes
 
         handleModal(undefined)
+    }
+
+    const deleteSelectedCollaborators = () => {
+        if (!props.note) return
+        
+        let collaborators = [...(props.note?.collaborators || [])]
+        
+        const updatedCollaborators = collaborators.filter(collaborator => !selectedCollaborators.some(el => el == collaborator))
+        
+        const note: Note = { ...props.note, collaborators: updatedCollaborators }
+        
+        notesContext?.updateNoteState(note)
+
+        setSelectedCollaborators([])
     }
 
     return (
@@ -120,7 +136,9 @@ export default function CollaboratorsSection(props: CollaboratorsSectionProps) {
 
                     {props.note?.collaborators.length == 0 && <span style={{ color: 'var(--Grey)' }}>There are no collaborators</span>}
 
-                    {userContext?.user?.id == props.note?.user && <button className="trashBtn" disabled={selectedCollaborators.length == 0}>
+                    {userContext?.user?.id == props.note?.user && <button className="trashBtn" disabled={selectedCollaborators.length == 0} onClick={() => {
+                        deleteSelectedCollaborators()
+                    }}>
                         <ReactSVG src={`/icons/trash.svg`} className="icon" />
                     </button>}
                 </div>
