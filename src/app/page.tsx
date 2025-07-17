@@ -13,33 +13,26 @@ import Login from "@/components/login/Login";
 import AnimatedDiv from "@/components/animatedComponents/AnimatedDiv";
 import NotesOverview from "@/components/notesOverview/NotesOverview";
 import { ModalsNames, Note } from "@/utils/interfaces";
+import { getNotes } from "@/api/notes";
 
 export default function Home() {
   const userContext = useContext(UserContext);
   const [isLoading, setIsLoading] = useState(true);
-  const [notes, setNotes] = useState<Note[]>([
-    {
-      id: 12735,
-      state: 0,
-      text: "Uova, latte, cereali, pasta, pane",
-      title: "Lista spesa",
-    },
-    { id: 43525, state: 0, text: "Test text2", title: "Test title2" },
-    { id: 34255, state: 0, text: "Test text3", title: "Test title3" },
-    { id: 23535, state: 0, text: "Test text4", title: "Test title4" },
-  ]);
+  const [notes, setNotes] = useState<Note[]>([]);
 
 
   useEffect(() => {
     (async () => {
       const user = await getUser();
-      await getUser();
+      const notes = await getNotes()
+      if (notes) setNotes(notes)
       setIsLoading(false);
       if (userContext) {
         userContext.setUser(user);
       }
     })();
-  });
+
+  }, []);
 
   if (isLoading) {
     return (
@@ -61,7 +54,7 @@ export default function Home() {
           <GeneralModal id={ModalsNames.newNote} width={80} height={80}>
             <NoteEditor
               setNotes={setNotes}
-              note={notes[1]}
+              note={undefined}
             />
           </GeneralModal>
           <button

@@ -4,6 +4,7 @@ import NoteCard from "../noteCard/NoteCard";
 import NoteEditor from "../noteEditor/NoteEditor";
 import GeneralModal from "../ui/GeneralModal";
 import { useEffect, useState } from "react";
+import { getNotes } from "@/api/notes";
 
 interface NotesOverviewProps {
   notes: Note[];
@@ -16,15 +17,14 @@ export default function NotesOverview(props: NotesOverviewProps) {
   );
 
   useEffect(() => {
-    if (selectedNote) {
-      console.log(selectedNote)
-    }
-  }, [selectedNote]);
+    getNotes();
+  }, []);
 
   return (
     <div className="notesOverviewContainer">
       <GeneralModal id={ModalsNames.updateNote} width={80} height={80}>
         <NoteEditor
+          setSelectedNote={setSelectedNote}
           setNotes={props.setNotes}
           note={props.notes.find((n) => n.id == selectedNote)}
         />
