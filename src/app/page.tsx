@@ -1,8 +1,8 @@
-"use client";
+"use client";;
 import TopBar from "@/components/ui/TopBar";
 import Image from "next/image";
 import { getUser } from "@/api/user";
-import { useContext, useEffect, useState } from "react";
+import { useContext, useEffect, useLayoutEffect, useState } from "react";
 import { ScaleLoader } from "react-spinners";
 import AnimatedDiv from "@/components/animatedComponents/AnimatedDiv";
 import NotesOverview from "@/components/notesOverview/NotesOverview";
@@ -17,7 +17,7 @@ import { flushSync } from "react-dom";
 import gsap from 'gsap';
 import { animateDivUnmount } from "@/utils/globalMethods";
 import { useSignals } from "@preact/signals-react/runtime";
-import { selectedModal } from "@/utils/signals";
+import { isMobile, selectedModal } from "@/utils/signals";
 
 export default function Home() {
   useSignals()
@@ -25,6 +25,14 @@ export default function Home() {
   const userContext = useContext(UserContext);
   const notesContext = useContext(NotesContext);
   const [isLoading, setIsLoading] = useState(true);
+
+  useLayoutEffect(() => {
+    function checkScreenSize() {
+      isMobile.value = window.innerWidth < 768
+    }
+    window.addEventListener("resize", checkScreenSize);
+    return () => window.removeEventListener("resize", checkScreenSize);
+  }, [isMobile.value])
 
   useEffect(() => {
     (async () => {
@@ -85,6 +93,7 @@ export default function Home() {
       selectedModal.value = ModalsNames.newNote
     }
   }
+
 
   return (
     <>

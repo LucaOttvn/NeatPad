@@ -1,4 +1,4 @@
-import { useContext, useEffect, useRef } from "react";
+import { useContext, useEffect, useLayoutEffect, useRef } from "react";
 import "../../componentsStyle.scss";
 import { modalsList, ModalsNames } from "@/utils/interfaces";
 import GeneralModalHeader from "./modalsHeaders/GeneralModalHeader";
@@ -10,6 +10,7 @@ import FolderHandler from "./FolderHandler";
 import { FoldersContext } from "@/contexts/foldersContext";
 import SettingsModal from "./settings/SettingsModal";
 import { selectedModal } from "@/utils/signals";
+import { handleModal } from "@/utils/globalMethods";
 
 export default function GeneralModal() {
   const notesContext = useContext(NotesContext)
@@ -34,6 +35,11 @@ export default function GeneralModal() {
       selectedModal.value = undefined
     }
   }
+
+  // check README.md > ## SIDE EFFECTS FOR DOM SIGNALS for details
+  useLayoutEffect(()=>{
+    handleModal(selectedModal.value)
+  }, [selectedModal.value])
 
   return (
     <div
