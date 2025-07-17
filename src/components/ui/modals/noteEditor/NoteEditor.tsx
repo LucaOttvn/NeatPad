@@ -9,6 +9,8 @@ import MDEditor, { commands } from "@uiw/react-md-editor";
 import gsap from 'gsap';
 import { updateNote } from '@/db/notes';
 import MarkdownToolbar from './MarkdownToolbar';
+import ReactMarkdown from 'react-markdown';
+
 
 interface NoteEditorProps {
   note: Note | undefined
@@ -68,13 +70,13 @@ export default function NoteEditor(props: NoteEditorProps) {
     };
     notesContext?.updateNoteState(updatedNote);
 
-    gsap.to('.md', {
+    gsap.to('.view', {
       background: useMarkdown ? 'var(--Green)' : 'var(--darkGrey)',
       color: useMarkdown ? 'var(--Black)' : 'var(--White)',
       duration: 0.2,
       ease: 'power4.out'
     })
-    gsap.to('.txt', {
+    gsap.to('.edit', {
       background: useMarkdown ? 'var(--darkGrey)' : 'var(--Green)',
       color: useMarkdown ? 'var(--White)' : 'var(--Black)',
       duration: 0.2,
@@ -95,25 +97,11 @@ export default function NoteEditor(props: NoteEditorProps) {
         />
       </div>
 
-      <MarkdownToolbar setUseMarkdown={setUseMarkdown}/>
+      <MarkdownToolbar setUseMarkdown={setUseMarkdown} />
 
-      {
-        useMarkdown && <MDEditor
-          className="markdownEditor"
-          height={'100%'}
-          visibleDragbar={false}
-          value={currentNote ? currentNote.text : ''}
-          onChange={(e) => {
-            handleInput('text', e || '')
-          }}
-          commands={[
-            commands.bold, commands.italic, commands.codeBlock
-          ]}
-          extraCommands={[commands.codeEdit, commands.codePreview, commands.codeLive]}
-          preview='edit'
-          hideToolbar={true}
-        />
-      }
+      {useMarkdown && <div className='markdownContainer'>
+        <ReactMarkdown>{currentNote?.text}</ReactMarkdown>
+      </div>}
       {
         !useMarkdown && <textarea
           className="noteEditorInputField"
