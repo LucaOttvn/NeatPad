@@ -74,10 +74,10 @@ export default function GeneralModal() {
         }}
       >
         {/* folder handler */}
-        {selectedModal.value == ModalsNames.folderHandler && <div className="w-full h-full"><GeneralModalHeader
+        {selectedModal.value == ModalsNames.folderHandler && <><GeneralModalHeader
           modalId={ModalsNames.folderHandler}
         />
-          <FolderHandler /></div>}
+          <FolderHandler /></>}
 
         {/* note editor */}
         {(selectedModal.value == ModalsNames.newNote || selectedModal.value == ModalsNames.updateNote) && <>

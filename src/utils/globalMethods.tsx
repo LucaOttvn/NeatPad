@@ -10,12 +10,17 @@ export function handleModal(
   // avoid triggering multiple animations when the user rapidly clicks on buttons
   if (modalAnimation && modalAnimation.isActive()) return
 
+  
   const openingModal = target != undefined
   const animationEase = {
     direction: openingModal ? 'out' : 'in',
     // on desktops the effect is a bit less visible, so set a bigger depth
     depth: isMobile.value ? 0.7 : 1
   }
+  
+  gsap.set('body', {
+    overflowY: openingModal ? 'hidden' : ''
+  })
 
   // if target is undefined close the generalBackdrop that stays behind each modal, in this way every modal in the app gets closed even without having a specific id to point at
   modalAnimation = gsap.to((target ? "#" : '.') + (target || 'generalModalBackdrop'), {
