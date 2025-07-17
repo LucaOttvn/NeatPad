@@ -10,7 +10,7 @@
   z-index: 0;
   position: relative;
 
-  animation: appear 2s ease;
+  animation: onNoteCardMount 2s ease;
 
   .folderName {
     width: fit-content;
@@ -75,7 +75,7 @@
   }
 }
 
-@keyframes appear {
+@keyframes onNoteCardMount {
   0% {
     opacity: 0;
   }
