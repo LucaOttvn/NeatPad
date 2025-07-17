@@ -3,8 +3,9 @@ import { selectedModal } from '@/utils/signals';
 import { useRouter } from 'next/navigation';
 import React, { useContext, useState } from 'react';
 import PasswordInput from '../PasswordInput';
-import { supabase } from '@/api/supabaseClient';
-import { getUserByEmail } from '@/api/user';
+import { supabase } from '@/db/supabaseClient';
+import { getUserByEmail } from '@/db/user';
+import { saveToken } from '@/db/resetPasswordTokens';
 
 interface LoginModalProps {
     creatingAccount: boolean
@@ -74,12 +75,12 @@ export default function LoginModal(props: LoginModalProps) {
             alert("No user found with this email")
             return
         }
-        supabase.auth.resetPasswordForEmail(formData.email, {
-            redirectTo: 'http://localhost:3001/recover-password'
-        })
+        const token = crypto.randomUUID()
+
+        await saveToken(token, user.id)
 
         const { data, error } = await supabase.auth.resetPasswordForEmail(formData.email, {
-            redirectTo: 'http://localhost:3001/recover-password'
+            redirectTo: `http://localhost:3000/recover-password?token=${token}`
         });
 
         if (error) {

@@ -1,7 +1,5 @@
-
 import { gsap, Power4 } from "gsap";
 import { ModalsNames } from "./interfaces";
-
 
 export function handleModal(
   target: ModalsNames | undefined,

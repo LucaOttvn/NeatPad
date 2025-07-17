@@ -1,8 +1,8 @@
-// src/app/api/change-password/route.ts
 import { NextResponse } from 'next/server';
 import bcrypt from 'bcrypt';
-import { supabase } from '@/api/supabaseClient';
+import { supabase } from '@/db/supabaseClient';
 
+// since the change password needs the bcrypt hash and compare methods and this is server-side-only, these functions are declared as an api route
 async function hashPassword(password: string): Promise<string> {
     const saltRounds = 10;
     return await bcrypt.hash(password, saltRounds);

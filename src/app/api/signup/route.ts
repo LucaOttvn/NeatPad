@@ -1,10 +1,10 @@
-import { supabase } from '@/api/supabaseClient';
+import { supabase } from '@/db/supabaseClient';
 import bcrypt from 'bcrypt';
 import { NextResponse } from 'next/server';
 import jwt from 'jsonwebtoken';
 
 async function hashPassword(password: string) {
-    const saltRounds = 10; // Higher number means more secure but slower
+    const saltRounds = 10;
     const hashedPassword = await bcrypt.hash(password, saltRounds);
     return hashedPassword;
 }
