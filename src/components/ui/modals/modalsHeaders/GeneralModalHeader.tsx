@@ -18,7 +18,7 @@ export default function GeneralModalHeader(props: BasicComponentProps) {
       <SvgButton
         fileName="close"
         onClick={() => {
-          if (modalsContext?.selectedModal == ModalsNames.folderHandler) foldersContext?.setUpdatingFolder(undefined)
+          if (modalsContext?.selectedModal == ModalsNames.folderHandler) { foldersContext?.setUpdatingFolder(undefined) }
           modalsContext?.setSelectedModal(undefined)
         }}
       />
