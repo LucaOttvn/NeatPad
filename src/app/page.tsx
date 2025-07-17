@@ -1,6 +1,5 @@
 "use client";;
 import TopBar from "@/components/ui/TopBar";
-import { handleModal } from "@/utils/globalMethods";
 import Image from "next/image";
 import { getUser } from "@/api/user";
 import { useContext, useEffect, useState } from "react";
@@ -16,6 +15,7 @@ import GeneralModal from "@/components/ui/modals/GeneralModal";
 import { createNote } from "@/api/notes";
 import { NotesContext } from "@/contexts/notesContext";
 import { flushSync } from "react-dom";
+import gsap from 'gsap';
 
 export default function Home() {
   const userContext = useContext(UserContext);
@@ -32,6 +32,24 @@ export default function Home() {
       }
     })();
   }, []);
+
+  useEffect(() => {
+    gsap.to('#newNoteBtn', {
+      rotateY: notesContext?.deleteMode.active ? '180deg' : '0deg',
+      background: notesContext?.deleteMode.active ? 'var(--Red)' : '',
+      duration: 0.2,
+      onComplete: ()=> {
+        gsap.to('#trashBtn', {
+          scale: notesContext?.deleteMode.active ? 1 : 0,
+          duration: 0.2
+        })
+        gsap.to('#plusBtn', {
+          scale: notesContext?.deleteMode.active ? 0 : 1,
+          duration: 0.2
+        })
+      }
+    })
+  }, [notesContext?.deleteMode.active]);
 
   if (isLoading) {
     return (
@@ -73,6 +91,7 @@ export default function Home() {
           </div>
 
           <button
+            id="newNoteBtn"
             className="addBtn"
             style={{ borderRadius: "50%" }}
             onClick={() => {
@@ -80,6 +99,15 @@ export default function Home() {
             }}
           >
             <Image
+              id="trashBtn"
+              src="/icons/trash.svg"
+              width={25}
+              height={25}
+              alt=""
+              draggable={false}
+            />
+            <Image
+              id="plusBtn"
               src="/icons/plus.svg"
               width={25}
               height={25}
@@ -89,7 +117,8 @@ export default function Home() {
           </button>
         </AnimatedDiv>
       ) : (
-        <Login></Login>
+        <Login />
+
       )}
       <GeneralModal />
     </>
