@@ -22,7 +22,6 @@ export async function createFolder(folder: Folder) {
 
     const newFolder: Folder = {
         name: folder.name,
-        notes: folder.notes,
         color: folder.color,
         user: folder.user
     }
