@@ -28,7 +28,6 @@ export default function GeneralSideMenu() {
     if (foldersList) {
 
       folderCards.forEach((folder) => {
-
         const folderCenter = folder.getBoundingClientRect().top + (folder.getBoundingClientRect().height / 2)
         const foldersListRect = foldersList.getBoundingClientRect()
         const distanceFromTop = folderCenter - foldersListRect.top
@@ -39,11 +38,13 @@ export default function GeneralSideMenu() {
         if (scaleFactor <= 0.5) {
           gsap.to('#' + folder.id, {
             scale: scaleFactor / 0.5,
+            opacity: scaleFactor / 0.5,
             duration: 0.2
           })
         } else {
           gsap.to('#' + folder.id, {
             scale: Math.abs(((scaleFactor - 0.5) / 0.5) - 1),
+            opacity: Math.abs(((scaleFactor - 0.5) / 0.5) - 1),
             duration: 0.2
           })
         }

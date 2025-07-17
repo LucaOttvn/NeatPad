@@ -3,6 +3,7 @@ import "./componentsStyle.scss";
 import { useContext } from "react";
 import { FoldersContext } from "@/contexts/foldersContext";
 import { ScreenSizeContext } from "@/contexts/screenSizeContext";
+import { handleSideMenu } from "@/utils/globalMethods";
 
 interface FolderProps {
   folder: Folder;
@@ -23,14 +24,14 @@ export default function FolderCard(props: FolderProps) {
       className="folderCard"
       onClick={() => {
         foldersContext?.setSelectedFolder(props.folder.id)
-        // if (screenSizeContext) handleSideMenu(false)
+        if (screenSizeContext) handleSideMenu(false)
       }}
     >
-      <div className="flex items-start justify-start flex-col">
-        <span style={{ color: `var(--${props.folder.color})` }} className="title ellipsis-multi">
+      <div className="flex items-start justify-center flex-col">
+        <span style={{ color: `var(--${props.folder.color})` }} className="w-full center title ellipsis-multi">
           {props.folder.name.toUpperCase()}
         </span>
-        <span style={{ color: `var(--${props.folder.color})` }} className="notesCounter">
+        <span style={{ color: `var(--${props.folder.color})` }} className="w-full center">
           {props.folder.notes.length} notes
         </span>
       </div>
