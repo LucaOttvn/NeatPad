@@ -3,36 +3,36 @@ import "./notesOverview.scss";
 import NoteCard from "../noteCard/NoteCard";
 import NoteEditor from "../ui/modals/noteEditor/NoteEditor";
 import GeneralModal from "../ui/modals/GeneralModal";
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { getNotes, updateNote } from "@/api/notes";
 import NoteEditorModalHeader from "../ui/modals/modalsHeaders/NoteEditorModalHeader";
 import AnimatedText from "../animatedComponents/AnimatedText";
-
 import GeneralModalHeader from "../ui/modals/modalsHeaders/GeneralModalHeader";
 import FolderCreator from "../ui/modals/FolderCreator";
+import { NotesContext } from "@/contexts/notesContext";
 
 export default function NotesOverview() {
   const [selectedNote, setSelectedNote] = useState<number | undefined>(
     undefined
   );
-  const [notes, setNotes] = useState<Note[]>([]);
+
+  const notesContext = useContext(NotesContext);
 
   useEffect(() => {
     (async () => {
       const fetchedNotes = await getNotes();
-      if (fetchedNotes) setNotes(fetchedNotes);
+      if (fetchedNotes) {
+        notesContext?.setNotes(fetchedNotes);
+        notesContext?.setNotesToShow(fetchedNotes);
+      }
     })();
   }, []);
 
-  function updateNoteLocally(updatedNote: Note) {
-    console.log(updatedNote);
-    setNotes((prevNotes) =>
-      prevNotes.map((note) => (note.id === updatedNote.id ? updatedNote : note))
-    );
-  }
 
   function updateNoteOnModalClose() {
-    const selectedNoteData = notes.find((n) => n.id === selectedNote);
+    const selectedNoteData = notesContext?.notes.find(
+      (n) => n.id === selectedNote
+    );
     if (selectedNoteData) {
       selectedNoteData.last_update = new Date();
       updateNote(
@@ -57,16 +57,14 @@ export default function NotesOverview() {
         }}
       >
         <NoteEditorModalHeader
-          updateNoteLocally={updateNoteLocally}
-          note={notes.find((n) => n.id === selectedNote)}
+          note={notesContext?.notes.find((n) => n.id === selectedNote)}
           modalId={ModalsNames.updateNote}
           onCloseCallback={() => {
             updateNoteOnModalClose();
           }}
         />
         <NoteEditor
-          updateNoteLocally={updateNoteLocally}
-          note={notes.find((n) => n.id === selectedNote)}
+          note={notesContext?.notes.find((n) => n.id === selectedNote)}
         />
       </GeneralModal>
 
@@ -86,22 +84,21 @@ export default function NotesOverview() {
         }}
       >
         <NoteEditorModalHeader
-          updateNoteLocally={updateNoteLocally}
-          note={notes.find((n) => n.id === selectedNote)}
+          note={notesContext?.notes.find((n) => n.id === selectedNote)}
           modalId={ModalsNames.newNote}
           onCloseCallback={() => {
             updateNoteOnModalClose();
           }}
         />
-        <NoteEditor updateNoteLocally={updateNoteLocally} note={undefined} />
+        <NoteEditor note={undefined} />
       </GeneralModal>
 
       {/* pinnedSection */}
-      {notes.some((el) => el.pinned) && (
+      {notesContext?.notesToShow.some((el) => el.pinned) && (
         <section className="notesSection">
           <AnimatedText className="title ms-2" text="Pinned" />
           <div className="notes">
-            {notes
+            {notesContext?.notesToShow
               .filter((el) => el.pinned)
               .map((note: Note) => {
                 return (
@@ -122,7 +119,7 @@ export default function NotesOverview() {
           <AnimatedText className="title ms-2" text="Notes" />
         </div>
         <div className="notes">
-          {notes
+          {notesContext?.notesToShow
             .filter((el) => el.pinned == false)
             .map((note: Note) => {
               return (

@@ -18,6 +18,9 @@
   align-items: center;
   flex-direction: column;
   gap: 3rem;
+  * {
+    user-select: none;
+  }
   .wrapper {
     display: flex;
     gap: 4rem;
@@ -26,7 +29,7 @@
     .heading {
       display: flex;
       flex-direction: column;
-      gap: 2rem
+      gap: 2rem;
     }
     .createFolderBtn {
       width: 100%;
@@ -76,8 +79,7 @@
     height: 85%;
     z-index: -1;
     // background-color: red !important;
-    border-radius: 0 0 var(--mainBorderRadius)
-      var(--mainBorderRadius);
+    border-radius: 0 0 var(--mainBorderRadius) var(--mainBorderRadius);
   }
   .cornerRounder3 {
     position: absolute;
