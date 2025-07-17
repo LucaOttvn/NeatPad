@@ -83,18 +83,37 @@
 
     .folderCard {
       width: 100%;
-      min-height: 7rem;
+      min-height: 8rem;
       display: flex;
       justify-content: center;
       align-items: center;
       scroll-snap-align: center;
       user-select: none;
+      animation: appear 5s linear;
+      animation-timeline: view();
     }
 
     &::-webkit-scrollbar {
       display: none;
       text-overflow: ellipsis;
     }
+  }
+}
+
+@keyframes appear {
+  0% {
+    opacity: 0;
+    scale: 0;
+  }
+
+  50% {
+    opacity: 1;
+    scale: 1;
+  }
+
+  100% {
+    opacity: 0;
+    scale: 0;
   }
 }
 
