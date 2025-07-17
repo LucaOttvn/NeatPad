@@ -1,6 +1,5 @@
 import { ModalsNames } from "@/utils/interfaces";
 import { useContext, useEffect } from "react";
-
 import { handleModal, handleSideMenu } from "@/utils/globalMethods";
 import { FoldersContext } from "@/contexts/foldersContext";
 import SvgButton from "./SvgButton";
@@ -15,39 +14,42 @@ export default function GeneralSideMenu() {
     setTimeout(() => {
       const foldersList = document.querySelector('.foldersList')
       const folderCards = document.querySelectorAll('.folderCard')
-      if (foldersList) {
-
-        const foldersListMiddleY = (foldersList.getBoundingClientRect().bottom - foldersList.getBoundingClientRect().top) / 2
-
-        folderCards.forEach((folder, folderIndex) => {
-
-          const folderMiddlePoint = (folder.getBoundingClientRect().bottom - folder.getBoundingClientRect().top) / 2
-
-          
-          let distanceFromCenter
-          if (folderMiddlePoint > foldersListMiddleY) {
-            
-            // (foldersList.getBoundingClientRect().height / 2 ) Math.round(distanceFromCenter)
-          } else {
-            distanceFromCenter = folderMiddlePoint - foldersListMiddleY
-            const pxScaleFactor = 100 / folderMiddlePoint
-            console.log(distanceFromCenter * pxScaleFactor)
-            gsap.set('#' + folder.id, {
-              scale: distanceFromCenter * pxScaleFactor
-              // top: `calc(8rem * ${folderIndex})`,
-              // scale: 
-              // opacity: ''
-            });
-            distanceFromCenter = foldersListMiddleY - folderMiddlePoint
-          }
-
-
-
-
-        })
+      if (foldersList && folderCards) {
+        calcScrollScaling(foldersList, folderCards)
+        foldersList.addEventListener('scroll', () => {
+          calcScrollScaling(foldersList, folderCards)
+        });
       }
     }, 1000);
   }, []);
+
+  function calcScrollScaling(foldersList: Element, folderCards: NodeListOf<Element>) {
+
+    if (foldersList) {
+
+      folderCards.forEach((folder) => {
+
+        const folderCenter = folder.getBoundingClientRect().top + (folder.getBoundingClientRect().height / 2)
+        const foldersListRect = foldersList.getBoundingClientRect()
+        const distanceFromTop = folderCenter - foldersListRect.top
+        const containerHeight = foldersListRect.bottom - foldersListRect.top
+
+        let scaleFactor = Number((distanceFromTop / containerHeight).toFixed(4))
+
+        if (scaleFactor <= 0.5) {
+          gsap.to('#' + folder.id, {
+            scale: scaleFactor / 0.5,
+            duration: 0.2
+          })
+        } else {
+          gsap.to('#' + folder.id, {
+            scale: Math.abs(((scaleFactor - 0.5) / 0.5) - 1),
+            duration: 0.2
+          })
+        }
+      })
+    }
+  }
 
   return (
     <div className="generalSideMenu">
