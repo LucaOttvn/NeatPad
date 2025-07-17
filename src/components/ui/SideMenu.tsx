@@ -71,7 +71,7 @@ export default function GeneralSideMenu() {
         <div
           className="sideMenuBtn"
           onClick={() => {
-            modalsContext?.setSelectedModal(ModalsNames.createFolder)
+            modalsContext?.setSelectedModal(ModalsNames.folderHandler)
           }}
         >
           <SvgButton fileName="plus" onClick={() => { }} />

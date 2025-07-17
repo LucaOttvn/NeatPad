@@ -1,13 +1,13 @@
-import { useContext, useEffect, useLayoutEffect, useRef } from "react";
+import { useContext, useEffect, useRef } from "react";
 import "../../componentsStyle.scss";
 import { ModalsContext } from "@/contexts/modalsContext";
 import { ModalsNames } from "@/utils/interfaces";
 import GeneralModalHeader from "./modalsHeaders/GeneralModalHeader";
-import FolderCreator from "./FolderCreator";
 import NoteEditorModalHeader from "./modalsHeaders/NoteEditorModalHeader";
 import { NotesContext } from "@/contexts/notesContext";
 import NoteEditor from "./noteEditor/NoteEditor";
 import LoginModal from "./LoginModal";
+import FolderHandler from "./FolderHandler";
 
 interface GeneralModalProps {
   width?: number;
@@ -61,10 +61,10 @@ export default function GeneralModal(props: GeneralModalProps) {
           handleKeyDown(e)
         }}
       >
-        {modalsContext?.selectedModal == ModalsNames.createFolder && <><GeneralModalHeader
-          modalId={ModalsNames.createFolder}
+        {modalsContext?.selectedModal == ModalsNames.folderHandler && <><GeneralModalHeader
+          modalId={ModalsNames.folderHandler}
         />
-          <FolderCreator /></>}
+          <FolderHandler /></>}
 
         {(modalsContext?.selectedModal == ModalsNames.newNote || modalsContext?.selectedModal == ModalsNames.updateNote) && <>
           <NoteEditorModalHeader

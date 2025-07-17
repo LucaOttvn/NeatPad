@@ -20,20 +20,33 @@ export async function getFolders(): Promise<Folder[] | null> {
 
 export async function createFolder(folder: Folder) {
 
-    const newFolder: Folder = {
-        name: folder.name,
-        color: folder.color,
-        user: folder.user
-    }
-    // Insert the new note into the "notes" table
     const { data, error } = await supabase
         .from('folders')
         .insert([
-            newFolder
+            folder
         ]);
 
     if (error) {
         console.error("Error inserting folder:", error);
+        return null;
+    }
+
+    return data;
+}
+
+export async function updateFolder(
+    id: number,
+    updates: Partial<Folder>
+) {
+    const { data, error } = await supabase
+        .from("folders")
+        .update(updates)
+        .eq("id", id)
+        .select()
+        .single();
+
+    if (error) {
+        console.error("Error updating folder:", error);
         return null;
     }
 

@@ -1,10 +1,11 @@
-import { colors, Folder } from "@/utils/interfaces";
+import { colors, Folder, ModalsNames } from "@/utils/interfaces";
 import "./componentsStyle.scss";
-import { useContext } from "react";
+import { useContext, useRef } from "react";
 import { FoldersContext } from "@/contexts/foldersContext";
 import { ScreenSizeContext } from "@/contexts/screenSizeContext";
 import { handleSideMenu } from "@/utils/globalMethods";
 import { NotesContext } from "@/contexts/notesContext";
+import { ModalsContext } from "@/contexts/modalsContext";
 
 interface FolderProps {
   folder: Folder;
@@ -18,17 +19,40 @@ export default function FolderCard(props: FolderProps) {
 
   const screenSizeContext = useContext(ScreenSizeContext)
   const foldersContext = useContext(FoldersContext)
+  const modalsContext = useContext(ModalsContext)
   const notesContext = useContext(NotesContext)
-  
+
+  const timerRef = useRef<any>(null)
+
+  // start the timer to detect long presses
+  function handleTouchStart() {
+    if (!notesContext?.deleteMode.active) {
+      timerRef.current = setTimeout(() => {
+        foldersContext?.setUpdatingFolder(props.folder.id)
+        modalsContext?.setSelectedModal(ModalsNames.folderHandler)
+      }, 500);
+    }
+  }
+
+  // if the user removes the finger from the screen before the end of the timeout, clear the timer so no card selection animation gets triggered
+  function handleTouchEnd() {
+    clearTimeout(timerRef.current);
+  }
+
+  function handleClick() {
+    foldersContext?.setSelectedFolder(props.folder.id)
+    // only on mobile, close the side menu on folder selection
+    if (screenSizeContext) handleSideMenu(false)
+  }
+
   return (
     <div
       id={'folder' + props.index}
       className="folderCard"
-      onClick={() => {
-        foldersContext?.setSelectedFolder(props.folder.id)
-        // only on mobile, close the side menu on folder selection
-        if (screenSizeContext) handleSideMenu(false)
-      }}
+      onClick={handleClick}
+      onTouchStart={handleTouchStart}
+      onTouchEnd={handleTouchEnd}
+      onTouchMove={handleTouchEnd}
     >
       <div className="flex items-start justify-center flex-col">
         <span style={{ color: `var(--${props.folder.color})` }} className="w-full center title ellipsis-multi">
