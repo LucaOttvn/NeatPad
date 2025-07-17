@@ -4,7 +4,8 @@ import { useContext } from 'react';
 import './settingsModal.scss';
 import { ReactSVG } from 'react-svg';
 import ResetPasswordForm from '../../ResetPasswordForm';
-import { deleteSupabaseUser } from '@/serverActions/authActions';
+import { deleteUserAccount } from '@/serverActions/authActions';
+
 
 interface SettingsModalProps { }
 
@@ -21,7 +22,7 @@ export default function SettingsModal(props: SettingsModalProps) {
   function handleDeleteSupabaseUser() {
     if (confirm('Do you really want to delete this account?')) {
       if (userContext?.user) {
-        deleteSupabaseUser(userContext.user.id)
+        deleteUserAccount(userContext.user.id)
         logout()
       }
     }
