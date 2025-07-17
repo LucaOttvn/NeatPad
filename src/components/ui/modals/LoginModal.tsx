@@ -3,7 +3,6 @@ import { selectedModal } from '@/utils/signals';
 import { useRouter } from 'next/navigation';
 import React, { useContext, useState } from 'react';
 import PasswordInput from '../PasswordInput';
-import { supabase } from '@/db/supabaseClient';
 import { getUserByEmail } from '@/db/user';
 import { saveToken } from '@/db/resetPasswordTokens';
 
@@ -78,15 +77,17 @@ export default function LoginModal(props: LoginModalProps) {
 
         await saveToken(token, user.id)
 
-        const { data, error } = await supabase.auth.resetPasswordForEmail(formData.email, {
-            redirectTo: `https://neat-pad.vercel.app/recover-password`,
+        const response = await fetch(`/api/sendEmail`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ email: formData.email, resetLink: `https://neat-pad.vercel.app/recover-password?token=${token}` }),
         });
 
-        if (error) {
-            alert("Something went wrong")
-        } else {
-            alert('Password reset link sent to your email.');
-        }
+        if (!response.ok) return alert('Something went wrong, retry')
+
+        alert('A recovery email has been sent to your account')
     }
 
     return (

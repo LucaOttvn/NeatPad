@@ -6,29 +6,32 @@ import { deleteToken, getTokenData } from '@/db/resetPasswordTokens';
 
 interface ResetPasswordFormProps {
     forgotPassword?: boolean
+    token?: string
 }
 
 export default function ResetPasswordForm(props: ResetPasswordFormProps) {
 
     const userContext = useContext(UserContext)
-    const [email, setEmail] = useState('')
     const [passwords, setPasswords] = useState({
         currentPassword: '',
         newPassword: ''
     })
 
-    async function handleToken() {
-        const tokenData = await getTokenData(email)
-        userContext?.setUser(tokenData.user)
-    }
-
     useEffect(() => {
-        if (userContext?.user?.id) changePassword()
-    }, [userContext?.user]);
+        async function handleToken() {
+            let tokenData
+            if (props.token) tokenData = await getTokenData(props.token)
+            userContext?.setUser(tokenData.user)
+        }
+        handleToken()
+    }, []);
 
     async function changePassword() {
 
+        if (!userContext?.user) return alert('Missing user')
+
         const validatedPassword = validatePassword(passwords.newPassword);
+        // return the first error in the errors array
         if (!validatedPassword.isValid) return alert(validatedPassword.errors[0])
 
         let requestBody: {
@@ -41,9 +44,10 @@ export default function ResetPasswordForm(props: ResetPasswordFormProps) {
             newPassword: passwords.newPassword,
         }
 
-        // if the user is in the forgot password 
+        // the current password field only exists in the change password screen, so leave it undefined otherwise
         if (!props.forgotPassword) requestBody.currentPassword = passwords.currentPassword
 
+        // check which api to call based on forgotPassword mode true or false
         const response = await fetch(`/api/${props.forgotPassword ? 'forgotPassword' : 'changePassword'}`, {
             method: 'POST',
             headers: {
@@ -56,11 +60,12 @@ export default function ResetPasswordForm(props: ResetPasswordFormProps) {
 
         if (!response.ok) return alert(data.error || 'Failed to update password.')
 
+        // alert the success message
         alert(data.message);
 
         // remove the token from the db when used
         if (props.forgotPassword) {
-           await deleteToken(userContext?.user?.id!)
+            await deleteToken(userContext?.user?.id!)
         }
     }
 
@@ -71,14 +76,12 @@ export default function ResetPasswordForm(props: ResetPasswordFormProps) {
     return (
         <div className='flex flex-col items-center gap-5'>
 
-            {props.forgotPassword && <input type="email" placeholder="Insert email" className='w-full' value={email} onChange={(e) => { setEmail(e.target.value) }} />}
-
             {!props.forgotPassword && <PasswordInput onChange={(e) => { handleInput(e, 'currentPassword') }} value={passwords.currentPassword} placeholder={'Insert current password'} disabled={false} />}
 
             <PasswordInput onChange={(e) => { handleInput(e, 'newPassword') }} value={passwords.newPassword} placeholder={'Insert new password'} disabled={false} />
 
             <button className='mainBtn mt-3' onClick={() => {
-                handleToken()
+                changePassword()
             }}>Confirm</button>
         </div>
     );
