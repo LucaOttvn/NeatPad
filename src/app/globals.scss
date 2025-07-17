@@ -140,6 +140,22 @@ body {
   }
 }
 
+.loader {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 5;
+  backdrop-filter: blur(10px);
+  // avoid the user to interact with the underlying page
+  pointer-events: auto;
+  touch-action: none;
+}
+
 input[type="text"],
 input[type="email"],
 input[type="password"],
@@ -149,6 +165,7 @@ textarea {
   transition: 0.2s;
   padding: 0.5rem 1rem;
   background-color: transparent;
+
   &:disabled {
     background-color: var(--Grey);
     border-radius: var(--mainBorderRadius);
@@ -250,6 +267,7 @@ h1 {
 
 // desktop
 @media (min-width: 1000px) {
+
   .mainBtn,
   .addBtn,
   .iconBtn,
