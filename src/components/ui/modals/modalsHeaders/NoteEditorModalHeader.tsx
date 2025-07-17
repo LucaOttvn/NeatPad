@@ -6,6 +6,7 @@ import { FoldersContext } from "@/contexts/foldersContext";
 import { NotesContext } from "@/contexts/notesContext";
 import './modalHeaders.scss';
 import { ReactSVG } from "react-svg";
+import { handleModal } from "@/utils/globalMethods";
 
 interface BasicComponentProps {
   modalId: string;

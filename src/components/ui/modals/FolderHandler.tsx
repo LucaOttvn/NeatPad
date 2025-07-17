@@ -6,6 +6,7 @@ import { Folder } from "@/utils/interfaces";
 import { UserContext } from "@/contexts/userContext";
 import { createFolder, deleteFolder, updateFolder } from "@/db/folders";
 import { selectedSideMenu } from "@/utils/signals";
+import { handleModal } from "@/utils/globalMethods";
 
 export default function FolderHandler() {
   const foldersContext = useContext(FoldersContext);
