@@ -1,4 +1,4 @@
-"use client";;
+"use client";
 import GeneralModal from "@/components/ui/GeneralModal";
 import NoteEditor from "@/components/NoteEditor";
 import GeneralSideMenu from "@/components/ui/SideMenu";
@@ -8,8 +8,8 @@ import Image from "next/image";
 import { getUser } from "@/api/user";
 import { useContext, useEffect, useState } from "react";
 import { UserContext } from "@/utils/contexts";
-
-import { PropagateLoader, ScaleLoader } from "react-spinners";
+import { ScaleLoader } from "react-spinners";
+import AnimatedDiv from "@/components/animated/AnimatedDiv";
 
 export default function Home() {
   const userContext = useContext(UserContext);
@@ -18,17 +18,6 @@ export default function Home() {
   useEffect(() => {
     (async () => {
       const user = await getUser();
-      await getUser();
-      await getUser();
-      await getUser();
-      await getUser();
-      await getUser();
-      await getUser();
-      await getUser();
-      await getUser();
-      await getUser();
-      await getUser();
-      await getUser();
       await getUser();
       setIsLoading(false);
       if (userContext) {
@@ -40,11 +29,7 @@ export default function Home() {
   if (isLoading) {
     return (
       <div className="loader">
-        <ScaleLoader
-          color={"white"}
-          loading={true}
-
-        />
+        <ScaleLoader color={"white"} loading={true} />
       </div>
     );
   }
