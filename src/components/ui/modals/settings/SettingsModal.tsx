@@ -3,10 +3,10 @@ import { UserContext } from '@/contexts/userContext';
 import { useContext, useEffect, useRef, useState } from 'react';
 import './settingsModal.scss';
 import { ReactSVG } from 'react-svg';
-import DisableableInput from '../../DisableableInput';
 import { gsap, Power4 } from 'gsap';
 import { updateUser } from '@/api/user';
 import { supabase } from '@/api/supabaseClient';
+import ResetPasswordForm from '../../ResetPasswordForm';
 
 interface SettingsModalProps { }
 
@@ -23,6 +23,8 @@ export default function SettingsModal(props: SettingsModalProps) {
     newPassword: { value: '', disabled: true }
   })
 
+ 
+
   useEffect(() => {
     if (!profileData.email.disabled) {
       emailInputRef.current?.focus();
@@ -33,19 +35,7 @@ export default function SettingsModal(props: SettingsModalProps) {
     }
   }, [profileData.email.disabled]);
 
-  async function changePassword () {
-    const { data, error } = await supabase.auth.updateUser({
-      password: profileData.newPassword.value,
-    });
-
-    console.log(data)
-  }
-
-  useEffect(() => {
-    if (profileData.password.disabled && profileData.newPassword.value != '' && profileData.newPassword.value == profileData.password.value) {
-      changePassword()
-    } 
-  }, [profileData.password.disabled]);
+  
 
   function logout() {
     localStorage.clear();
@@ -68,15 +58,8 @@ export default function SettingsModal(props: SettingsModalProps) {
       <span className='title'>Settings</span>
       <div className='w-full h-full flex flex-col justify-between mt-20'>
         <section className='profileSection'>
-          <h1 className='w-full center' style={{ fontSize: '140%' }}>Update profile</h1>
-          {/* email and password input fields with modify/confirm button */}
-          <DisableableInput keyToUpdate='email' updateData={setProfileData} values={{ inputValue: profileData.email.value, disabled: profileData.email.disabled }} inputRef={emailInputRef} showToggle={true} />
-          <DisableableInput keyToUpdate='password' updateData={setProfileData} values={{ inputValue: profileData.password.value, disabled: profileData.password.disabled }} inputRef={passwordInputRef} placeholder='current password' type='password' showToggle={true} />
-          {/* this div is necessary for the expandable input section */}
-          <div className='newPassword'>
-            <DisableableInput keyToUpdate='newPassword' updateData={setProfileData} values={{ inputValue: profileData.newPassword.value, disabled: false }} inputRef={newPasswordInputRef} placeholder='new password' type='password' />
-          </div>
-
+          <h1 className='w-full center' style={{ fontSize: '140%' }}>Change password</h1>
+          <ResetPasswordForm/>
         </section>
         <div className='flex flex-col items-center gap-5'>
           <button className='mainBtn center gap-2' style={{ background: 'var(--darkGrey)' }} onClick={logout}><ReactSVG src={'/icons/logout.svg'} className="icon" />Logout</button>

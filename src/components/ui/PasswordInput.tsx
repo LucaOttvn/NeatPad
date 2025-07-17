@@ -34,7 +34,7 @@ export default function PasswordInput(props: PasswordInputProps) {
                         }} />
                 </>}
             </div>
-            {!props.disabled && <span className='mt-1' style={{ color: 'var(--Red)', fontSize: '80%' }}>{validatePassword(props.value).errors[0] || ''}</span>}
+            {props.value.length > 0 && <span className='mt-1' style={{ color: 'var(--Red)', fontSize: '80%' }}>{validatePassword(props.value).errors[0] || ''}</span>}
         </div>
     );
 }
