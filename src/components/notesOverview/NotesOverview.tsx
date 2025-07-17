@@ -10,7 +10,7 @@ import { ReactSVG } from "react-svg";
 import AnimatedDiv from "../animatedComponents/AnimatedDiv";
 import { getFoldersByUserId } from "@/db/folders";
 import { getNotesByUserEmail } from "@/db/notes";
-import { loading, selectedModal } from "@/utils/signals";
+import { loading, notesToShow, selectedModal } from "@/utils/signals";
 import SearchBar from "../ui/searchBar/SearchBar";
 
 interface NotesCompareParams {
@@ -24,7 +24,6 @@ export default function NotesOverview() {
   const foldersContext = useContext(FoldersContext);
   const userContext = useContext(UserContext);
 
-  const [notesToShow, setNotesToShow] = useState<Note[]>([])
   const [search, setSearch] = useState('')
 
   // if there's a selected folder set it
@@ -42,27 +41,25 @@ export default function NotesOverview() {
     // if there's a selected folder, filter the notes by it, otherwise show them all
     if (foldersContext?.selectedFolder) {
       const filteredNotes = notesContext?.notes.filter(note => note.folder == foldersContext?.selectedFolder)
-      if (filteredNotes) setNotesToShow(filteredNotes)
+      if (filteredNotes) notesToShow.value = filteredNotes
     }
     else {
-      if (notesContext) setNotesToShow(notesContext.notes)
+      if (!notesContext) return
+      notesToShow.value = notesContext.notes
     }
   }, [foldersContext?.selectedFolder, notesContext?.notes]);
 
   // get notes and folders
   async function fetchNotesAndFolders() {
     try {
-
       if (!userContext || !userContext.user || !userContext.user.id || !userContext.user.email) return
       const [notes, folders] = await Promise.all([getNotesByUserEmail(userContext.user.id, userContext.user.email), getFoldersByUserId(userContext?.user?.id!)]);
 
       if (notes) {
-        setNotesToShow(notes);
+        notesToShow.value = notes
         notesContext?.setNotes(notes);
       }
-      if (folders) {
-        foldersContext?.setFolders(folders);
-      }
+      if (folders) foldersContext?.setFolders(folders);
     } catch (err) {
       console.error("Error fetching initial data", err);
     }
@@ -85,7 +82,7 @@ export default function NotesOverview() {
     return true
   }
 
-  const pinnedFilteredNotes = filterNotesToShow(notesToShow, search, true);
+  const pinnedFilteredNotes = filterNotesToShow(notesToShow.value, search, true);
 
   function setEditingFolder() {
     foldersContext?.setUpdatingFolder(foldersContext.selectedFolder)
@@ -121,8 +118,8 @@ export default function NotesOverview() {
       )}
 
       {/* non-pinned notes section */}
-      {notesToShow.length > 0 ? <NotesSection
-        notes={filterNotesToShow(notesToShow, search, false)}
+      {notesToShow.value.length > 0 ? <NotesSection
+        notes={filterNotesToShow(notesToShow.value, search, false)}
         title="Others"
       /> : <div className="w-full h-full center">
         You haven't saved any notes yet

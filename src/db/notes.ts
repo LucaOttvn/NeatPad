@@ -9,8 +9,6 @@ export async function getNotesByUserEmail(userId: number, userEmail: string) {
     .or(`user.eq.${userId},collaborators.cs.{${userEmail}}`) // check if user matches OR collaborators contains userEmail
     .order('last_update', { ascending: false });
 
-    console.log(data)
-
   if (error) {
     console.error("Error fetching data:", error);
     return null;

@@ -67,6 +67,7 @@ export default function NoteCard(props: NoteCardProps) {
     // if in delete mode
     if (notesContext!.deleteMode.active) {
 
+      // if the user isn't the note's owner
       if (props.note.user != userContext?.user?.id) return alert('Collaborators cannot delete notes. To remove this note from your view, please remove your email from its collaborators list.')
       let notesToDeleteUpdated: number[] = []
 
