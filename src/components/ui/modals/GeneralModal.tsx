@@ -1,6 +1,5 @@
 import { useContext, useEffect, useRef } from "react";
 import "../../componentsStyle.scss";
-import { ModalsContext } from "@/contexts/modalsContext";
 import { modalsList, ModalsNames } from "@/utils/interfaces";
 import GeneralModalHeader from "./modalsHeaders/GeneralModalHeader";
 import NoteEditorModalHeader from "./modalsHeaders/NoteEditorModalHeader";
@@ -10,40 +9,38 @@ import LoginModal from "./LoginModal";
 import FolderHandler from "./FolderHandler";
 import { FoldersContext } from "@/contexts/foldersContext";
 import SettingsModal from "./settings/SettingsModal";
-1
+import { selectedModal } from "@/utils/signals";
 
 export default function GeneralModal() {
-  const modalsContext = useContext(ModalsContext)
   const notesContext = useContext(NotesContext)
   const foldersContext = useContext(FoldersContext)
 
   const generalModalRef = useRef<HTMLDivElement>(null)
 
-  const modalStyle = modalsList.find(el => el.name == modalsContext?.selectedModal)
+  const modalStyle = modalsList.find(el => el.name == selectedModal.value)
 
   useEffect(() => {
     generalModalRef.current?.focus();
   }, [notesContext?.selectedNote]);
 
-
   function handleKeyDown(e: React.KeyboardEvent<HTMLDivElement>) {
     if (e.key === "Escape") {
       // this removes the automatic browser's focus on the button when esc is pressed
       if (document.activeElement instanceof HTMLElement) document.activeElement.blur()
-      if (modalsContext?.selectedModal == ModalsNames.newNote || modalsContext?.selectedModal == ModalsNames.updateNote) {
+      if (selectedModal.value == ModalsNames.newNote || selectedModal.value == ModalsNames.updateNote) {
         notesContext?.handleNoteEditorClose()
       }
-      if (modalsContext?.selectedModal == ModalsNames.folderHandler) { foldersContext?.setUpdatingFolder(undefined) }
-      modalsContext?.setSelectedModal(undefined)
+      if (selectedModal.value == ModalsNames.folderHandler) { foldersContext?.setUpdatingFolder(undefined) }
+      selectedModal.value = undefined
     }
   }
 
   return (
     <div
-      id={modalsContext?.selectedModal}
+      id={selectedModal.value}
       className="generalModalBackdrop"
       onClick={() => {
-        modalsContext?.setSelectedModal(undefined)
+        selectedModal.value = undefined
       }}
     >
       <div
@@ -59,29 +56,29 @@ export default function GeneralModal() {
           handleKeyDown(e)
         }}
       >
-        {modalsContext?.selectedModal == ModalsNames.folderHandler && <div className="w-full h-full"><GeneralModalHeader
+        {selectedModal.value == ModalsNames.folderHandler && <div className="w-full h-full"><GeneralModalHeader
           modalId={ModalsNames.folderHandler}
         />
           <FolderHandler /></div>}
 
-        {(modalsContext?.selectedModal == ModalsNames.newNote || modalsContext?.selectedModal == ModalsNames.updateNote) && <>
+        {(selectedModal.value == ModalsNames.newNote || selectedModal.value == ModalsNames.updateNote) && <>
           <NoteEditorModalHeader
             note={notesContext?.notes.find(
               (el) => el.id === notesContext.selectedNote
             )}
-            modalId={modalsContext?.selectedModal == ModalsNames.newNote ? ModalsNames.newNote : ModalsNames.updateNote}
+            modalId={selectedModal.value == ModalsNames.newNote ? ModalsNames.newNote : ModalsNames.updateNote}
           />
           <NoteEditor note={notesContext?.notes.find(
             (el) => el.id === notesContext.selectedNote
           )} /></>}
 
 
-        {(modalsContext?.selectedModal == ModalsNames.login || modalsContext?.selectedModal == ModalsNames.createAccount) && <>
+        {(selectedModal.value == ModalsNames.login || selectedModal.value == ModalsNames.createAccount) && <>
           <GeneralModalHeader modalId={ModalsNames.login} className="loginModalHeader" />
-          <LoginModal creatingAccount={modalsContext?.selectedModal == ModalsNames.createAccount} />
+          <LoginModal creatingAccount={selectedModal.value == ModalsNames.createAccount} />
         </>}
 
-        {modalsContext?.selectedModal == ModalsNames.settings && <>
+        {selectedModal.value == ModalsNames.settings && <>
           <GeneralModalHeader modalId={ModalsNames.login} className="loginModalHeader" />
           <SettingsModal />
         </>}

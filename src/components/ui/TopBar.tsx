@@ -1,17 +1,10 @@
-import { useContext } from "react";
 import "../componentsStyle.scss";
 import SvgButton from "./SvgButton";
 import { ModalsNames, SideMenusNames } from "@/utils/interfaces";
-import { ModalsContext } from "@/contexts/modalsContext";
-import { effect, signal } from "@preact/signals-react";
-import { handleSideMenu } from "@/utils/globalMethods";
-import { selectedSideMenu } from "@/utils/signals";
+import { selectedModal, selectedSideMenu } from "@/utils/signals";
 
 
 export default function TopBar() {
-  const modalsContext = useContext(ModalsContext);
-
-
   return (
     <div className="topBar">
 
@@ -36,7 +29,7 @@ export default function TopBar() {
       <SvgButton
         fileName="settings"
         onClick={() => {
-          modalsContext?.setSelectedModal(ModalsNames.settings);
+          selectedModal.value = ModalsNames.settings
         }}
       />
     </div>

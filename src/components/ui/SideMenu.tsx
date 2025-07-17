@@ -3,14 +3,13 @@ import { FoldersContext } from "@/contexts/foldersContext";
 import SvgButton from "./SvgButton";
 import FolderCard from "../FolderCard";
 import gsap from 'gsap';
-import { ModalsContext } from "@/contexts/modalsContext";
 import { ModalsNames, SideMenusNames } from "@/utils/interfaces";
-import { selectedSideMenu } from "@/utils/signals";
+import { selectedModal, selectedSideMenu } from "@/utils/signals";
+import { effect } from "@preact/signals-react";
 
 
 export default function GeneralSideMenu() {
   const foldersContext = useContext(FoldersContext);
-  const modalsContext = useContext(ModalsContext);
   const foldersListRef = useRef<HTMLDivElement | null>(null);
 
   // this hook is needed because the folder cards list has to be fully rendered before being manipulated
@@ -55,8 +54,14 @@ export default function GeneralSideMenu() {
     };
   }, [foldersContext?.folders]);
 
+  let test
+  effect(()=>{
+    test = selectedSideMenu.value
+    console.log(test)
+  })
+
   return (
-    <div id={SideMenusNames.folders} className="generalSideMenu">
+    <div id={test} className="generalSideMenu">
       <span className="title" style={{ fontSize: '380%' }}>Folders</span>
 
       <div className="center gap-10 pt-20 pb-10">
@@ -72,7 +77,7 @@ export default function GeneralSideMenu() {
         <div
           className="sideMenuBtn"
           onClick={() => {
-            modalsContext?.setSelectedModal(ModalsNames.folderHandler)
+            selectedModal.value = ModalsNames.folderHandler
           }}
         >
           <SvgButton fileName="plus" onClick={() => { }} />

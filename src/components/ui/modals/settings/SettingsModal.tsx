@@ -1,22 +1,20 @@
-import { ModalsContext } from '@/contexts/modalsContext';
 import { UserContext } from '@/contexts/userContext';
 import { useContext } from 'react';
 import './settingsModal.scss';
 import { ReactSVG } from 'react-svg';
 import ResetPasswordForm from '../../ResetPasswordForm';
 import { deleteUserAccount } from '@/serverActions/authActions';
-
+import { selectedModal } from '@/utils/signals';
 
 interface SettingsModalProps { }
 
 export default function SettingsModal(props: SettingsModalProps) {
   const userContext = useContext(UserContext)
-  const modalsContext = useContext(ModalsContext)
 
   function logout() {
     localStorage.clear();
     userContext?.setUser(null);
-    modalsContext?.setSelectedModal(undefined)
+    selectedModal.value = undefined
   }
 
   function handleDeleteSupabaseUser() {

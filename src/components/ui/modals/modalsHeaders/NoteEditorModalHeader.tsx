@@ -5,7 +5,6 @@ import { gsap, Power4 } from "gsap";
 import { FoldersContext } from "@/contexts/foldersContext";
 import { NotesContext } from "@/contexts/notesContext";
 import './modalHeaders.scss';
-import { ModalsContext } from "@/contexts/modalsContext";
 import { ReactSVG } from "react-svg";
 
 interface BasicComponentProps {
@@ -15,7 +14,7 @@ interface BasicComponentProps {
 // this is the header of the note editor, it has its own set of methods to handle notes creation/update
 export default function NoteEditorModalHeader(props: BasicComponentProps) {
   const foldersContext = useContext(FoldersContext);
-  const modalsContext = useContext(ModalsContext);
+   ;
   const notesContext = useContext(NotesContext);
 
   const [pinned, setPinned] = useState(props.note ? props.note.pinned : false);
@@ -78,7 +77,7 @@ export default function NoteEditorModalHeader(props: BasicComponentProps) {
           fileName="close"
           onClick={() => {
             notesContext?.handleNoteEditorClose()
-            modalsContext?.setSelectedModal(undefined)
+            selectedModal.value = undefined
           }}
         />
       </header>
