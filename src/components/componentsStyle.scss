@@ -22,20 +22,10 @@
   margin-top: -10px;
   box-shadow: var(--bigBoxShadow);
   transform: perspective(800px) rotateX(-10deg);
-  .icon {
-    svg {
-      color: var(--Black) !important;
-      fill: var(--Black) !important;
-    }
-  }
-  span {
-    color: var(--Black) !important;
-  }
   z-index: 0;
   &:hover {
     cursor: pointer;
     scale: 0.95;
-    // background-color: var(--Grey);
   }
   .notesCounter {
     font-size: 80%;
