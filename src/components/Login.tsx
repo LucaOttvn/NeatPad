@@ -1,12 +1,13 @@
 import React, { useContext, useEffect, useState } from "react";
-import "./login.scss";
+import "./componentsStyle.scss";
 import { signIn, signUp } from "@/api/user";
-import AnimatedDiv from "../animatedComponents/AnimatedDiv";
-import GeneralModal from "../ui/modals/GeneralModal";
+
 import { handleModal } from "@/utils/globalMethods";
 import { ModalsNames } from "@/utils/interfaces";
 import { getNotes } from "@/api/notes";
 import { UserContext } from "@/contexts/userContext";
+import AnimatedDiv from "./animatedComponents/AnimatedDiv";
+import GeneralModal from "./ui/modals/GeneralModal";
 
 export default function Login() {
   const [formData, setFormData] = useState({ email: "", password: "" });

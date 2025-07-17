@@ -1,3 +1,4 @@
+
 import { gsap, Power4 } from "gsap";
 
 let isSideMenuOpen = false;
