@@ -5,7 +5,7 @@ import { FoldersContext } from "@/contexts/foldersContext";
 import { Folder } from "@/utils/interfaces";
 import { UserContext } from "@/contexts/userContext";
 import { createFolder, deleteFolder, updateFolder } from "@/db/folders";
-import { selectedModal, selectedSideMenu } from "@/utils/signals";
+import { selectedSideMenu } from "@/utils/signals";
 
 export default function FolderHandler() {
   const foldersContext = useContext(FoldersContext);
@@ -61,7 +61,7 @@ export default function FolderHandler() {
     }
     // close the modal at the end
     foldersContext?.setUpdatingFolder(undefined);
-    selectedModal.value = undefined;
+    handleModal(undefined);
   }
 
   async function handleDeleteFolder() {
@@ -71,7 +71,7 @@ export default function FolderHandler() {
     // update folders state
     foldersContext?.setFolders(prev => prev.filter(folder => folder.id != foundFolder.current?.id))
     if (foundFolder.current && foundFolder.current.id) await deleteFolder(foundFolder.current?.id)
-    selectedModal.value = undefined
+    handleModal(undefined)
     foldersContext.setUpdatingFolder(undefined)
 
     foldersContext.setSelectedFolder(undefined)

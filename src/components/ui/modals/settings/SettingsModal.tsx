@@ -3,7 +3,6 @@ import { useContext } from 'react';
 import './settingsModal.scss';
 import { ReactSVG } from 'react-svg';
 import ResetPasswordForm from '../../ResetPasswordForm';
-import { selectedModal } from '@/utils/signals';
 import { deleteUser } from '@/db/user';
 
 interface SettingsModalProps { }
@@ -14,7 +13,7 @@ export default function SettingsModal(props: SettingsModalProps) {
   function logout() {
     localStorage.clear();
     userContext?.setUser(undefined);
-    selectedModal.value = undefined
+    handleModal(undefined)
   }
 
   async function handleDeleteSupabaseUser() {

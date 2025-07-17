@@ -20,7 +20,9 @@ export default function GeneralModal() {
 
   const modalStyle = modalsList.find(el => el.name == selectedModal.value)
 
+
   useEffect(() => {
+    // this allows the ESC button to be detected even if the user doesn't click on the modal before
     generalModalRef.current?.focus();
   }, [selectedModal.value]);
 
@@ -32,7 +34,7 @@ export default function GeneralModal() {
         notesContext?.handleNoteEditorClose()
       }
       if (selectedModal.value == ModalsNames.folderHandler) { foldersContext?.setUpdatingFolder(undefined) }
-      selectedModal.value = undefined
+      handleModal(undefined)
     }
   }
 
@@ -41,12 +43,12 @@ export default function GeneralModal() {
     if (selectedModal.value == ModalsNames.newNote || selectedModal.value == ModalsNames.updateNote) {
       notesContext?.handleNoteEditorClose()
     }
-    selectedModal.value = undefined
+    handleModal(undefined)
   }
 
-  // check README.md > ## SIDE EFFECTS FOR DOM SIGNALS for details
+  // check README > ## SIDE EFFECTS FOR DOM SIGNALS for details
   useLayoutEffect(() => {
-    handleModal(selectedModal.value)
+    if (selectedModal.value) handleModal(selectedModal.value)
   }, [selectedModal.value])
 
   return (
