@@ -64,7 +64,7 @@ export default function FolderCard(props: FolderProps) {
         </span>
         <span style={{ color: `var(--${props.folder.color})` }} className="w-full center">
           {notesContext?.notes.filter((note) => {
-            return note.folder == props.folder.id
+            return note.folders.find(el => el == props.folder.id)
           }).length} notes
         </span>
       </div>

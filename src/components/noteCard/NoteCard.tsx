@@ -19,7 +19,7 @@ export default function NoteCard(props: NoteCardProps) {
   const notesContext = useContext(NotesContext);
   const timerRef = useRef<any>(null);
 
-  const foundParentFolder = foldersContext?.folders.find((folder) => folder.id == props.note.folder);
+  const foundParentFolder = foldersContext?.folders.find((folder) => props.note.folders.find(el => el == folder.id));
 
   const textColor =
     colors.find((item) => item.color == foundParentFolder?.color)?.text ||
@@ -126,10 +126,10 @@ export default function NoteCard(props: NoteCardProps) {
         )}
         {!props.note.text && <span style={{ color: "var(--Grey)" }}>No text</span>}
       </div>
-      {foldersContext?.folders.some((folder) => folder.id == props.note.folder) && <div className="folderName">
+      {foundParentFolder && <div className="folderName">
         <ReactSVG src={`/icons/folder.svg`} className="icon" />
         <span style={{ fontSize: '80%' }} className="font-bold">
-          {foldersContext?.folders.find((folder) => folder.id == props.note.folder)?.name}
+          {foundParentFolder.name}
         </span>
       </div>}
 
