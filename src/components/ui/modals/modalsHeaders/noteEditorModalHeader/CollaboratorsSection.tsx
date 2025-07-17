@@ -3,10 +3,11 @@ import gsap from 'gsap';
 import './noteEditorModalHeader.scss';
 import SvgButton from '@/components/ui/SvgButton';
 import { ReactSVG } from 'react-svg';
-import { Note } from '@/utils/interfaces';
+import { Note, User } from '@/utils/interfaces';
 import { validateEmail } from '@/utils/globalMethods';
-import { getUserByEmail } from '@/db/user';
+import { getUserByEmail, getUserById } from '@/db/user';
 import { NotesContext } from '@/contexts/notesContext';
+import { UserContext } from '@/contexts/userContext';
 
 interface CollaboratorsSectionProps {
     collaboratorsSectionOpen: boolean
@@ -16,8 +17,22 @@ interface CollaboratorsSectionProps {
 export default function CollaboratorsSection(props: CollaboratorsSectionProps) {
 
     const notesContext = useContext(NotesContext)
+    const userContext = useContext(UserContext)
     const [selectedCollaborators, setSelectedCollaborators] = useState<string[]>([])
+    const [noteOwnerEmail, setNoteOwnerEmail] = useState<string>('')
     const emailInputRef = useRef(null)
+
+    const getNoteOwnerEmail = async () => {
+        if (!props.note || !props.note.user) return
+        const user: User = await getUserById(props.note?.user)
+        const isUserOwner = props.note?.user == userContext?.user?.id
+        const foundOwner = isUserOwner ? 'you' : user.email
+        setNoteOwnerEmail(foundOwner)
+    }
+
+    useEffect(() => {
+        getNoteOwnerEmail()
+    }, []);
 
     useEffect(() => {
         // open / close the collaborators section
@@ -49,7 +64,7 @@ export default function CollaboratorsSection(props: CollaboratorsSectionProps) {
         if (!emailValidation.isValid) return alert(emailValidation.error)
 
         const alreadyInsertedEmail = props.note.collaborators.some(item => item == inputValue)
-        
+
         if (alreadyInsertedEmail) return alert(`${inputValue} is already a collaborator for this note`)
 
         const foundUser = await getUserByEmail(inputValue)
@@ -65,21 +80,26 @@ export default function CollaboratorsSection(props: CollaboratorsSectionProps) {
 
     return (
         <section className="collaboratorsSection">
-            <span className="font-bold mx-5 mt-5" style={{ fontSize: '110%' }}>Collaborators</span>
-            <div className="collaboratorsList">
-                {props.note?.collaborators.map((email) => {
-                    return <div key={email} className="emailBox" style={{ border: selectedCollaborators.some(el => el == email) ? 'solid 2px var(--Red)' : '' }} onClick={() => {
-                        handleCollaboratorsSelection(email)
-                    }}>
-                        <span>{email}</span>
-                    </div>
-                })}
+            <div className='mt-5 pb-5' style={{ borderBottom: "solid 1px var(--Grey)" }}>
+                <span className="font-bold mx-5" style={{ fontSize: '110%' }}>Note owner: {noteOwnerEmail}</span>
+            </div>
+            <div className='mt-5'>
+                <span className="font-bold mx-5" style={{ fontSize: '110%' }}>Collaborators</span>
+                <div className="collaboratorsList">
+                    {props.note?.collaborators.map((email) => {
+                        return <div key={email} className="emailBox" style={{ border: selectedCollaborators.some(el => el == email) ? 'solid 2px var(--Red)' : '' }} onClick={() => {
+                            handleCollaboratorsSelection(email)
+                        }}>
+                            <span>{email}</span>
+                        </div>
+                    })}
 
-                {props.note?.collaborators.length == 0 && <span style={{ color: 'var(--Grey)' }}>There are no collaborators</span>}
+                    {props.note?.collaborators.length == 0 && <span style={{ color: 'var(--Grey)' }}>There are no collaborators</span>}
 
-                <button className="trashBtn" disabled={selectedCollaborators.length == 0}>
-                    <ReactSVG src={`/icons/trash.svg`} className="icon" />
-                </button>
+                    <button className="trashBtn" disabled={selectedCollaborators.length == 0}>
+                        <ReactSVG src={`/icons/trash.svg`} className="icon" />
+                    </button>
+                </div>
             </div>
             <div className="footer">
                 <span className="font-bold" style={{ fontSize: '110%' }}>Add collaborator</span>
