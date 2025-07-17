@@ -7,6 +7,7 @@ interface GeneralModalProps {
   id: string;
   width: number;
   height: number;
+  onCloseCallback?: ()=> void
 }
 
 export default function GeneralModal(props: GeneralModalProps) {
@@ -17,7 +18,7 @@ export default function GeneralModal(props: GeneralModalProps) {
       id={props.id}
       className="generalModalBackdrop"
       onClick={() => {
-        handleModal(false, props.id);
+        handleModal(false, props.id, props.onCloseCallback);
       }}
     >
       <div
