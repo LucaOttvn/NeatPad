@@ -74,6 +74,7 @@ export default function Home() {
       if (!notesContext) return null
       let arr = [...notesContext.notes, newNoteFromDB]
       flushSync(() => {
+        console.log(arr)
         notesContext.setNotes(arr)
         notesContext.setSelectedNote(newNoteFromDB.id)
       })

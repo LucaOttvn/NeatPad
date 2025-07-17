@@ -1,5 +1,5 @@
 "use client";
-import { getNotes, updateNote } from "@/api/notes";
+import { deleteNote, getNotes, updateNote } from "@/api/notes";
 import { Note } from "@/utils/interfaces";
 import { createContext, ReactNode, useEffect, useState } from "react";
 
@@ -11,6 +11,7 @@ interface NotesContextType {
   updateNoteState: (note: Note) => void
   deleteMode: DeleteMode
   setDeleteMode: (notes: DeleteMode) => void
+  handleNoteEditorClose: () => void
 }
 
 export interface DeleteMode {
@@ -45,23 +46,39 @@ export function NotesProvider({ children }: { children: ReactNode }) {
         setNotes(fetchedNotes);
       }
     })();
-  }, []);
+  }, [])
 
-
-  // this updates the local notes array but the real db update happens when the user closes the create/update modal in order to avoid tons of api calls on each key press
+  // in the noteEditor modal, this updates the local notes array but the real db update happens when the user closes the create/update modal in order to avoid tons of api calls on each key press
   function updateNoteState(note: Note) {
     setNotes(prevState =>
       prevState.map((el) =>
         el.id === note.id
-          ? { ...el, title: note.title, text: note.text, last_update: note.last_update }
+          ? { ...el, title: note.title, text: note.text, last_update: note.last_update, pinned: note.pinned }
           : el
       )
     );
   }
 
+  // this method handles the note's saving and, if it's empty, it deletes it
+  function handleNoteEditorClose() {
+
+    const currentNote = notes.find((note) => note.id == selectedNote)
+
+    if (currentNote) {
+      if (currentNote.title === '' && currentNote.text === '') {
+        let updatedNotes = notes.filter(note => note.id != currentNote?.id)
+        setNotes(updatedNotes)
+        deleteNote(currentNote.id!)
+      }
+      else {
+        updateNote(currentNote)
+      }
+    }
+  }
+
   return (
     <NotesContext.Provider
-      value={{ notes, setNotes, selectedNote, setSelectedNote, updateNoteState, deleteMode, setDeleteMode }}
+      value={{ notes, setNotes, selectedNote, setSelectedNote, updateNoteState, deleteMode, setDeleteMode, handleNoteEditorClose }}
     >
       {children}
     </NotesContext.Provider>
