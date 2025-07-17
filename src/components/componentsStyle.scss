@@ -93,6 +93,7 @@
   .folderCard {
     &:hover {
       // background-color: transparent;
+      scale: 1;
     }
     &:active {
       scale: 0.95;

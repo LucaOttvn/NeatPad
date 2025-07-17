@@ -17,5 +17,6 @@ export enum ModalsNames {
 export interface Folder {
     id?: number
     name: string
-    color: string
+    color?: string
+    notes: number[]
 }
