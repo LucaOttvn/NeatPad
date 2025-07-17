@@ -8,17 +8,13 @@ interface FolderProps {
 }
 
 export default function FolderCard(props: FolderProps) {
-  const [textColor, setTextColor] = useState("");
+
+  const textColor = colors.find(
+    (item) => item.color == props.folder.color
+  )?.text || "White"
 
   const foldersContext = useContext(FoldersContext)
 
-  useEffect(() => {
-    let foundColor = colors.find((el) => el.color === props.folder.color);
-    if (foundColor) {
-      setTextColor(foundColor.text);
-    }
-  }, [props.folder.color]);
-  
   return (
     <div
       className="folderCard"

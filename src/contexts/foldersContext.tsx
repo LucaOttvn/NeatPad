@@ -6,8 +6,8 @@ import { createContext, ReactNode, useEffect, useState } from "react";
 interface FoldersContextType {
   folders: Folder[];
   setFolders: React.Dispatch<React.SetStateAction<Folder[]>>;
-  selectedFolder: Folder | undefined;
-  setSelectedFolder: React.Dispatch<React.SetStateAction<Folder | undefined>>;
+  selectedFolder: number | undefined;
+  setSelectedFolder: React.Dispatch<React.SetStateAction<number | undefined>>;
 }
 
 export const FoldersContext = createContext<FoldersContextType | undefined>(
@@ -16,7 +16,7 @@ export const FoldersContext = createContext<FoldersContextType | undefined>(
 
 export function FolderProvider({ children }: { children: ReactNode }) {
   const [folders, setFolders] = useState<Folder[]>([]);
-  const [selectedFolder, setSelectedFolder] = useState<Folder | undefined>(
+  const [selectedFolder, setSelectedFolder] = useState<number | undefined>(
     undefined
   );
 
