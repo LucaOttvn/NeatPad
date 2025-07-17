@@ -1,10 +1,18 @@
 import { supabase } from "./supabaseClient";
 import { User } from "@supabase/supabase-js";
+import bcrypt from 'bcrypt';
+
+
 
 export async function getUser(): Promise<User | null> {
     const { data, error } = await supabase.auth.getUser()
     if (error) return null
     return data.user
+}
+
+export async function newSignIn(email: string, password: string) {
+    email = 'testEnail'
+    password = 'testPswd'
 }
 
 export async function signIn(email: string, password: string) {

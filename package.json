@@ -8,13 +8,14 @@
     "start": "next start",
     "lint": "next lint",
     "static": "next build && next export",
-    "and": "npm run build && npx cap sync && npx cap open android"
+    "and": "npm run build && npx cap sync android && npx cap open android"
   },
   "dependencies": {
-    "@capacitor/android": "^7.0.1",
-    "@capacitor/core": "^7.0.1",
+    "@capacitor/android": "^7.2.0",
+    "@capacitor/core": "^7.2.0",
     "@preact/signals-react": "^3.1.1",
     "@supabase/supabase-js": "^2.49.1",
+    "bcrypt": "^6.0.0",
     "dotenv": "^16.4.7",
     "gsap": "^3.12.7",
     "next": "15.1.7",
@@ -25,8 +26,9 @@
     "sass": "^1.89.0"
   },
   "devDependencies": {
-    "@capacitor/cli": "^7.0.1",
+    "@capacitor/cli": "^7.2.0",
     "@eslint/eslintrc": "^3",
+    "@types/bcrypt": "^5.0.2",
     "@types/node": "^20",
     "@types/react": "^19",
     "@types/react-dom": "^19",
