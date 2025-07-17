@@ -24,12 +24,23 @@ export interface Folder {
 }
 
 export const colors = [
+    "Pink",
+    "FrenchPurple",
+    "SlateRed",
+    "Magenta",
+    
     "Yellow",
     "Orange",
+    "FlameRed",
     "Red",
-    "Pink",
-    "Blue",
-    "Purple",
-    "Brown",
+    
+    "Turquoise",
     "Green",
+    "ShamrockGreen",
+    "PersianGreen",
+    
+    "Cyan",
+    "GreyishBlue",
+    "SlateBlue",
+    "Blue",
 ];
