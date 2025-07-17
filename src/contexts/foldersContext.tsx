@@ -1,7 +1,6 @@
-"use client";
-import { getFolders } from "@/api/folders";
+"use client";;
 import { Folder } from "@/utils/interfaces";
-import { createContext, ReactNode, useEffect, useState } from "react";
+import { createContext, ReactNode, useState } from "react";
 
 interface FoldersContextType {
   folders: Folder[];

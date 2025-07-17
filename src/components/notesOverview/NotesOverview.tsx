@@ -45,7 +45,7 @@ export default function NotesOverview() {
   async function fetchData() {
     setLoading(true)
     try {
-      const [notes, folders] = await Promise.all([getNotes(userContext?.user!.id!), getFolders()]);
+      const [notes, folders] = await Promise.all([getNotes(userContext?.user!.id!), getFolders(userContext?.user?.id!)]);
 
       if (notes) {
         setNotesToShow(notes);

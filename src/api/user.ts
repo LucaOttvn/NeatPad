@@ -23,7 +23,20 @@ export async function getUserById(userId: number) {
         .eq('id', userId)
         .single();
 
-    console.log(data);
+    if (error) {
+        console.error("Error fetching user:", error);
+        return null;
+    }
+
+    return data;
+}
+export async function getUserByEmail(email: string) {
+    const { data, error } = await supabase
+        .from('users')
+        .select('*')
+        .eq('email', email)
+        .single();
+
     if (error) {
         console.error("Error fetching user:", error);
         return null;
