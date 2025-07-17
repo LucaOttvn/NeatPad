@@ -22,3 +22,13 @@ export function handleSideMenu(isMobile: boolean) {
   });
   isSideMenuOpen = !isSideMenuOpen;
 }
+
+
+export function animateDivUnmount (id: string) {
+  gsap.to("#" + id, {
+    // opacity: 0.2,
+    border: 'solid 3px blue',
+    duration: 0.2,
+    ease: Power4.easeOut,
+  });
+}
