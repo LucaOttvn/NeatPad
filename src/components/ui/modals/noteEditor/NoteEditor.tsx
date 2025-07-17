@@ -1,13 +1,11 @@
-"use client";
+"use client";;
 import '@uiw/react-md-editor/markdown-editor.css';
 import '@uiw/react-markdown-preview/markdown.css';
 import "./noteEditor.scss";
 import { ChangeEvent, useContext, useEffect, useRef, useState } from "react";
 import { NotesContext } from "@/contexts/notesContext";
 import { Note } from "@/utils/interfaces";
-import MDEditor, { commands } from "@uiw/react-md-editor";
 import gsap from 'gsap';
-import { updateNote } from '@/db/notes';
 import MarkdownToolbar from './MarkdownToolbar';
 import ReactMarkdown from 'react-markdown';
 
@@ -33,7 +31,6 @@ export default function NoteEditor(props: NoteEditorProps) {
   }, []);
 
   const handleInput = (keyToUpdate: 'title' | 'text', e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement> | string) => {
-
     // if the user is typing in markdown mode, the type of e is different from the one that comes from the input field for the title or for the normal textarea
     const usingMarkdown = (keyToUpdate == 'text' && useMarkdown)
     let inputValue: string = usingMarkdown ? e as string : (e as ChangeEvent<HTMLInputElement | HTMLTextAreaElement>).target.value
@@ -62,14 +59,6 @@ export default function NoteEditor(props: NoteEditorProps) {
   }, [currentNote]);
 
   useEffect(() => {
-
-    if (!props.note) return
-    const updatedNote = {
-      ...props.note,
-      markdownByDefault: useMarkdown
-    };
-    notesContext?.updateNoteState(updatedNote);
-
     gsap.to('.view', {
       background: useMarkdown ? 'var(--Green)' : 'var(--darkGrey)',
       color: useMarkdown ? 'var(--Black)' : 'var(--White)',

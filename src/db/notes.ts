@@ -35,12 +35,12 @@ export async function createNote(newNote: Note){
   return data;
 }
 
-export async function updateNote(updatedNote: Note) {
+export async function updateNote(note: Note) {
   
   const { data, error } = await supabase
     .from('notes')
-    .update(updatedNote)
-    .eq('id', updatedNote.id)
+    .update(note)
+    .eq('id', note.id)
     .select()
 
   if (error) {
