@@ -16,7 +16,7 @@ interface BasicComponentProps {
 
 export default function NoteEditorModalHeader(props: BasicComponentProps) {
   const foldersContext = useContext(FoldersContext);
-  
+
   const [pinned, setPinned] = useState(false);
   const [foldersListOpened, setFoldersListOpened] = useState(true);
 
@@ -72,16 +72,20 @@ export default function NoteEditorModalHeader(props: BasicComponentProps) {
         />
       </div>
       <div className="addNoteToFolder">
-        <div className="w-full h-full start flex-wrap gap-5 p-5">
+        <span className="ps-6 pt-5">Add to a folder</span>
+        <div className="foldersList">
           {foldersContext?.folders.map((folder, index) => {
             return (
               <div
                 key={"folder" + index}
-                className="start gap-1"
-                onClick={() => {}}
+                className="folderCard"
+                onClick={() => { }}
+                style={{ border: `2px solid var(--${folder.color})` }}
               >
-                <ReactSVG src={`/icons/folder.svg`} className="icon" />
-                <span>{folder.name}</span>
+                {/* <ReactSVG src={`/icons/folder.svg`} className="icon" beforeInjection={(svg) => {
+                    svg.setAttribute("fill", `var(--${folder.color})`);
+                  }} /> */}
+                <span className="font-bold" style={{ color: `var(--${folder.color})` }}>{folder.name}</span>
               </div>
             );
           })}

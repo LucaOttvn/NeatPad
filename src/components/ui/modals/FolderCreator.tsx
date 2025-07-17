@@ -54,7 +54,7 @@ export default function FolderCreator() {
           const newFolder: Folder = {
             name: folderName,
             notes: [],
-            color: selectedColor,
+            color: selectedColor || 'White',
             user: userContext!.user!.id,
           };
           await createFolder(newFolder);
