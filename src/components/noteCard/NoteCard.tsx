@@ -24,13 +24,13 @@ export default function NoteCard(props: NoteCardProps) {
     "White";
 
   useEffect(() => {
-    
+
     return () => {
       clearTimeout(timerRef.current);
     };
 
   }, []);
-  
+
   useEffect(() => {
     let noteToDelete = notesContext?.deleteMode.notes.find(noteId => noteId == props.note.id)
 
@@ -81,6 +81,13 @@ export default function NoteCard(props: NoteCardProps) {
     }
   }
 
+  // handle right click on noteCard
+  function handleContextMenu(e: React.MouseEvent) {
+    e.preventDefault()
+    let notesToDeleteUpdated: number[] = [...notesContext!.deleteMode.notes, props.note.id!]
+    notesContext?.setDeleteMode({ active: true, notes: notesToDeleteUpdated })
+  }
+
   return (
     <AnimatedDiv
       id={'noteCard' + props.note.id}
@@ -90,6 +97,7 @@ export default function NoteCard(props: NoteCardProps) {
       onTouchStart={handleTouchStart}
       onTouchEnd={handleTouchEnd}
       onClick={handleClick}
+      onContextMenu={(e) => { handleContextMenu(e) }}
       style={{
         background: foundParentFolder?.color
           ? `var(--${foundParentFolder?.color})`
@@ -112,13 +120,13 @@ export default function NoteCard(props: NoteCardProps) {
           <span style={{ color: "var(--Grey)" }}>No text</span>
         )}
       </div>
-      {foldersContext?.folders.some((folder) => folder.id == props.note.folder) && <div className="folderName" style={{background: 'var(--lightBlack)'}}>
+      {foldersContext?.folders.some((folder) => folder.id == props.note.folder) && <div className="folderName" style={{ background: 'var(--lightBlack)' }}>
         <ReactSVG src={`/icons/folder.svg`} className="icon" />
-        <span style={{ fontSize: '80%'}} className="font-bold">
+        <span style={{ fontSize: '80%' }} className="font-bold">
           {foldersContext?.folders.find((folder) => folder.id == props.note.folder)?.name}
         </span>
       </div>}
-    
+
     </AnimatedDiv>
   );
 }
