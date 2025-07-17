@@ -39,9 +39,7 @@ export default function Home() {
     setupStatusBar()
 
     App.addListener('backButton', () => {
-      alert('Back button pressed!');
-      handleModal(undefined, closeModal)
-
+      if (selectedModal.value) handleModal(undefined, closeModal)
     });
   }, []);
 
