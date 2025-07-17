@@ -3,12 +3,6 @@ import bcrypt from 'bcrypt';
 import { NextResponse } from 'next/server';
 import jwt from 'jsonwebtoken';
 
-
-export async function comparePassword(plainTextPassword: string, hashedPassword: string) {
-    const match = await bcrypt.compare(plainTextPassword, hashedPassword);
-    return match;
-}
-
 const JWT_SECRET = process.env.JWT_SECRET!;
 
 export async function POST(request: Request) {

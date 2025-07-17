@@ -42,7 +42,7 @@ export default function FolderHandler() {
       const newFolder: Folder = {
         name: folderName,
         color: selectedColor || 'White',
-        user: userContext!.user!.id,
+        user: userContext!.user!.id!,
       };
       // insert the folder in the db
       let folderWithId = await createFolder(newFolder);
