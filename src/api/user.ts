@@ -1,4 +1,5 @@
 import { supabase } from "./supabaseClient";
+import { User } from "@supabase/supabase-js";
 
 export async function login() {
     const { data, error } = await supabase.auth.signInWithPassword({
@@ -15,8 +16,8 @@ export async function login() {
 }
 
 
-export async function getUser() {
+export async function getUser(): Promise<User | null> {
     const { data, error } = await supabase.auth.getUser()
-    if (error) return error
+    if (error) return null
     return data.user
 }
