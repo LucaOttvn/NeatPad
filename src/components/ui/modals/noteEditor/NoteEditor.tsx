@@ -8,7 +8,7 @@ import { Note } from "@/utils/interfaces";
 import gsap from 'gsap';
 import MarkdownToolbar from './MarkdownToolbar';
 import ReactMarkdown from 'react-markdown';
-
+import remarkBreaks from 'remark-breaks';
 
 interface NoteEditorProps {
   note: Note | undefined
@@ -89,7 +89,8 @@ export default function NoteEditor(props: NoteEditorProps) {
       <MarkdownToolbar setUseMarkdown={setUseMarkdown} />
 
       {useMarkdown && <div className='markdownContainer'>
-        <ReactMarkdown>{currentNote?.text == '' ? 'No text' : currentNote?.text}</ReactMarkdown>
+        {/* remarkBreaks is to put the text on a new line every time the user clicks on enter on the keyboard, since the default markdown behaviour is to put it inline */}
+        <ReactMarkdown remarkPlugins={[remarkBreaks]}>{currentNote?.text == '' ? 'No text' : currentNote?.text}</ReactMarkdown>
       </div>}
       {
         !useMarkdown && <textarea
