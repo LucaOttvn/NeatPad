@@ -14,7 +14,7 @@ export default function AnimatedText(props: AnimatedTextProps) {
   const refs = useRef<(HTMLSpanElement | null)[]>([]);
 
   useEffect(() => {
-    gsap.fromTo(
+    if (text) gsap.fromTo(
       refs.current,
       { opacity: 0, y: 20 },
       { opacity: 1, y: 0, duration: 0.4, stagger: 0.1, delay: 0.3 }
@@ -23,7 +23,7 @@ export default function AnimatedText(props: AnimatedTextProps) {
 
   return (
     <span className={`animatedText ${props.className}`}>
-      {chars.map((char, i) => (
+      {chars.length > 0 && chars.map((char, i) => (
         <span
         style={{color: `var(--${props.color || 'White'})`}}
           className="animatedChar"

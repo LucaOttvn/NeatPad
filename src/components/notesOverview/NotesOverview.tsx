@@ -94,7 +94,7 @@ export default function NotesOverview() {
     <div className="notesOverviewContainer">
       {/* title & search section */}
       <div className="w-full flex flex-col gap-5">
-        {foldersContext?.selectedFolder && <AnimatedText className="title" text={foundSelectedFolderData?.name.toUpperCase()!} color={foundSelectedFolderData?.color} />}
+        {foldersContext?.selectedFolder && <AnimatedText className="title" text={foundSelectedFolderData?.name.toUpperCase() || ''} color={foundSelectedFolderData?.color} />}
         {!foldersContext?.selectedFolder && <div className="flex flex-col items-start">
           <AnimatedText className="title" text="My" />
           <AnimatedText className="title ms-5" text="Notes" />

@@ -84,9 +84,10 @@ export default function GeneralSideMenu() {
       </div>
 
       <div className="foldersList" ref={foldersListRef}>
-        {foldersContext?.folders.map((folder, index) => (
+        {foldersContext?.folders.length! > 0 && foldersContext?.folders.map((folder, index) => (
           <FolderCard key={`${folder.name}-${index}`} index={index} folder={folder} />
         ))}
+        {foldersContext?.folders.length! == 0 && <span style={{textWrap: 'nowrap'}}>You haven't created any folder yet</span>}
       </div>
     </div>
   );
