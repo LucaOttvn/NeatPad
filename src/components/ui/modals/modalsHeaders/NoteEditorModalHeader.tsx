@@ -95,7 +95,7 @@ export default function NoteEditorModalHeader(props: BasicComponentProps) {
                 onClick={()=>{
                   handleFolderSelection(folder)
                 }}
-                style={{ border: `${props.note?.folder == folder.id ? 4 : 2}px solid var(--${folder.color})` }}
+                style={{ border: `${props.note?.folder == folder.id ? 4 : 1}px solid var(--${folder.color})` }}
               >
                 {props.note?.folder == folder.id && <ReactSVG src={`/icons/folder.svg`} className="icon" beforeInjection={(svg) => {
                   svg.setAttribute("fill", `var(--${folder.color})`);
