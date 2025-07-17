@@ -4,12 +4,59 @@
   flex-direction: column;
   gap: 0.5rem;
   user-select: none;
-  background-color: var(--lightBlack);
+  background-color: #202020;
   border-radius: var(--mainBorderRadius);
   padding: 1rem;
+  z-index: 0;
+  position: relative;
+
   span {
     overflow: hidden;
     white-space: nowrap;
     text-overflow: ellipsis;
+    z-index: 1;
+  }
+  .pinBtn {
+    position: absolute;
+    right: 0;
+    top: 0;
+    border-radius: 0 0 0 var(--mainBorderRadius);
+    background-color: var(--black);
+    z-index: 0;
+
+    svg {
+      fill: var(--red);
+    }
+  }
+  .cornerRounder1 {
+    width: 82%;
+    height: 100%;
+    z-index: -1;
+    background-color: var(--lightBlack);
+    border-radius: 0 20px 0 0;
+    position: absolute;
+    left: 0;
+    top: 0;
+  }
+  .cornerRounder2 {
+    width: 100%;
+    height: 85%;
+    z-index: -1;
+    background-color: var(--lightBlack);
+    border-radius: 0;
+    position: absolute;
+    right: 0;
+    bottom: 0;
+  }
+  .cornerRounder3 {
+    width: 20%;
+    height: 30%;
+    z-index: -1;
+    background-color: #202020;
+    // background-color: red;
+    border-radius: 0 0 0 20px;
+    position: absolute;
+    right: 0;
+    top: 0;
   }
 }

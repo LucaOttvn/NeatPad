@@ -5,11 +5,12 @@ import { handleModal } from "@/utils/globalMethods";
 interface BasicComponentProps {
     onCloseCallback?: () => void;
     modalId: string
+    className?: string
 }
 
 export default function GeneralModalHeader(props: BasicComponentProps) {
   return (
-    <header>
+    <header className={`end p-5 ${props.className}`}>
       <SvgButton
         fileName="close"
         onClick={() => {

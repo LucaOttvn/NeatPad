@@ -26,8 +26,9 @@
   --lightGrey: #909090;
   --grey: #747474;
   --darkGrey: #303030;
-  --accentColor: #0c85ff;
+  --blue: #0c85ff;
   --yellow: #f9c210;
+  --red: #D62828;
 }
 
 * {
@@ -81,7 +82,7 @@ body {
   width: fit-content;
   padding: 0.4rem 1rem;
   border-radius: var(--mainBorderRadius);
-  background-color: var(--accentColor);
+  background-color: var(--blue);
 }
 
 .mainBtn,
@@ -175,7 +176,6 @@ h1 {
 
 input[type="text"],
 input[type="password"] {
-  background-color: var(--darkGrey);
   padding: 0.5rem 1rem;
   border-radius: var(--mainBorderRadius);
   &:focus {

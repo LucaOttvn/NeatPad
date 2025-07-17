@@ -2,13 +2,14 @@ import { ReactSVG } from "react-svg";
 
 interface SvgButtonProps {
   fileName: string;
+  className?: string
   onClick: () => void;
 }
 
 export default function SvgButton(props: SvgButtonProps) {
   return (
     <button
-      className="iconBtn"
+      className={`iconBtn ${props.className}`}
       onClick={() => {
         props.onClick();
       }}
