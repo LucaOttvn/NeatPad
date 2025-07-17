@@ -89,7 +89,7 @@ export default function NoteEditor(props: NoteEditorProps) {
       <MarkdownToolbar setUseMarkdown={setUseMarkdown} />
 
       {useMarkdown && <div className='markdownContainer'>
-        <ReactMarkdown>{currentNote?.text}</ReactMarkdown>
+        <ReactMarkdown>{currentNote?.text == '' ? 'No text' : currentNote?.text}</ReactMarkdown>
       </div>}
       {
         !useMarkdown && <textarea
