@@ -248,6 +248,9 @@ h1 {
 
 // tablet && smartphones
 @media (max-width: 1000px) {
+  body {
+    padding-top: 10px;
+  }
 
   // remove hover effect on buttons
   .iconBtn {
