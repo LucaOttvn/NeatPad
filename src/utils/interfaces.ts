@@ -5,6 +5,7 @@ export interface Note {
     user: string
     last_update: Date
     pinned: boolean
+    folder?: number
 }
 
 export enum ModalsNames {
@@ -18,7 +19,6 @@ export interface Folder {
     id?: number
     name: string
     color?: string
-    notes: number[]
     user: string
 }
 
