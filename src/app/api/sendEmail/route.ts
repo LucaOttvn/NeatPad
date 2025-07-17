@@ -7,7 +7,7 @@ export async function POST(request: Request) {
 
         const resend = new Resend(process.env.EMAIL_API_KEY);
         await resend.emails.send({
-            from: 'onboarding@resend.dev',
+            from: 'noreply@neatpad.eu',
             to: requestJSON.email,
             subject: 'Reset your password',
             html: `
