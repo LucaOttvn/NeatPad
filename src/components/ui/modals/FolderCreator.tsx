@@ -1,5 +1,5 @@
 import AnimatedDiv from "@/components/animatedComponents/AnimatedDiv";
-import { useContext, useEffect, useState } from "react";
+import { useContext, useState } from "react";
 import ColorPicker from "../ColorPicker";
 import { FolderContext } from "@/contexts/foldersContext";
 import { Folder, ModalsNames } from "@/utils/interfaces";
@@ -16,36 +16,39 @@ export default function FolderCreator() {
   const [selectedColor, setSelectedColor] = useState<string | undefined>(
     undefined
   );
-
-  useEffect(() => {
-    console.log(folderName);
-  }, [folderName]);
-
+  
   return (
-    <AnimatedDiv className="w-full h-full flex items-center justify-start flex-col gap-20">
-      <span className="title w-full ps-10 flex flex-col items-start justify-start">
-        <span>Create</span>
-        <span className="ms-3">New</span>
-        <b
-        className="ms-6"
-          style={{
-            color: `var(--${selectedColor})` || "auto",
-            transition: "0.2s",
-          }}
-        >
-          Folder
-        </b>
-      </span>
-      <input
-        type="text"
-        placeholder="Folder name"
-        onChange={(e) => {
-          setFolderName(e.target.value);
-        }}
-      />
-      <ColorPicker setSelectedColor={setSelectedColor} />
+    <AnimatedDiv className="folderCreator">
+      <div className="wrapper flex">
+        <div className="heading">
+          <span className="title flex flex-col items-start justify-start">
+            <span>Create</span>
+            <span className="ms-3">New</span>
+            <b
+              className="ms-6"
+              style={{
+                color: `var(--${selectedColor})` || "auto",
+                transition: "0.2s",
+              }}
+            >
+              Folder
+            </b>
+          </span>
+          <input
+            type="text"
+            placeholder="Folder name"
+            onChange={(e) => {
+              setFolderName(e.target.value);
+            }}
+          />
+        </div>
+        <div>
+          <ColorPicker setSelectedColor={setSelectedColor} />
+        </div>
+      </div>
+
       <button
-        className="mainBtn"
+        className="mainBtn createFolderBtn"
         onClick={async () => {
           const newFolder: Folder = {
             name: folderName,
@@ -57,8 +60,8 @@ export default function FolderCreator() {
           folderContext?.setFolders((prevState: Folder[]) => [
             ...prevState,
             newFolder,
-          ])
-          handleModal(false, ModalsNames.createFolder)
+          ]);
+          handleModal(false, ModalsNames.createFolder);
         }}
       >
         Confirm

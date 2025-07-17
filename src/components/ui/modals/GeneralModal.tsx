@@ -5,13 +5,13 @@ import { handleModal } from "@/utils/globalMethods";
 interface GeneralModalProps {
   children: React.ReactNode;
   id: string;
-  width: number;
-  height: number;
+  width?: number;
+  height?: number;
   onCloseCallback?: () => void;
 }
 
 export default function GeneralModal(props: GeneralModalProps) {
-  const width = props.width + "%";
+  const width = props.width ? props.width + "%" : '';
   const height = props.height + "%";
 
   function handleKeyDown(e: KeyboardEvent) {

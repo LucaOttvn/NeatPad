@@ -2,7 +2,6 @@ import { colors, Folder } from "@/utils/interfaces";
 import { ReactSVG } from "react-svg";
 import "./componentsStyle.scss";
 import { useEffect, useState } from "react";
-import gsap from "gsap";
 interface FolderProps {
   folder: Folder;
 }
