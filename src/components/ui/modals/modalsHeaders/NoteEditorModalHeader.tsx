@@ -27,7 +27,9 @@ export default function NoteEditorModalHeader(props: BasicComponentProps) {
     const updatedNote = props.note;
     if (updatedNote) {
       updatedNote.pinned = pinned
+      // update the note in the db
       updateNote(updatedNote)
+      // update the local state
       notesContext?.updateNoteState(updatedNote)
     }
   }, [pinned]);
@@ -86,6 +88,7 @@ export default function NoteEditorModalHeader(props: BasicComponentProps) {
                 onClick={() => {
                   const updatedNote = props.note
                   if (updatedNote) {
+                    // if the folder is already selected, remove the selection, otherwise set it as the current one
                     updatedNote.folder = updatedNote.folder == folder.id ? undefined : folder.id
                     notesContext?.updateNoteState(updatedNote)
                   }

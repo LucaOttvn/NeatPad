@@ -1,5 +1,5 @@
 "use client";
-import { deleteNote, getNotes, updateNote } from "@/api/notes";
+import { deleteNote, updateNote } from "@/api/notes";
 import { Note } from "@/utils/interfaces";
 import { createContext, ReactNode, useEffect, useState } from "react";
 
@@ -57,16 +57,22 @@ export function NotesProvider({ children }: { children: ReactNode }) {
     const currentNote = notes.find((note) => note.id == selectedNote)
 
     if (currentNote) {
+      // if note's title and text are empty, delete it
       if (currentNote.title === '' && currentNote.text === '') {
         let updatedNotes = notes.filter(note => note.id != currentNote?.id)
         setNotes(updatedNotes)
         deleteNote(currentNote.id!)
       }
       else {
+        updateNoteState(currentNote)
         updateNote(currentNote)
       }
     }
   }
+
+  useEffect(() => {
+    console.log(notes)
+  }, [notes]);
 
   return (
     <NotesContext.Provider

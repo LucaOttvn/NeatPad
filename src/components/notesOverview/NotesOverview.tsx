@@ -19,24 +19,7 @@ export default function NotesOverview() {
     (el) => el.id == foldersContext.selectedFolder
   ) : undefined;
 
-
-  // when the app mounts fetch notes
   useEffect(() => {
-    (async () => {
-      const fetchedNotes = await getNotes();
-      if (fetchedNotes) {
-        setNotesToShow(fetchedNotes)
-        notesContext?.setNotes(fetchedNotes);
-      }
-      const fetchedfolders = await getFolders();
-      if (fetchedfolders) {
-        foldersContext?.setFolders(fetchedfolders)
-      }
-    })();
-  }, [])
-
-  useEffect(() => {
-
     // get notes and folders
     async function fetchData() {
       try {
@@ -57,9 +40,9 @@ export default function NotesOverview() {
     fetchData();
   }, []);
 
-
-  // if there's a selected folder, filter the notes by it, otherwise show them all
+  // listen for changes in the notes array or in the current folder
   useEffect(() => {
+    // if there's a selected folder, filter the notes by it, otherwise show them all
     if (foldersContext?.selectedFolder) {
       const filteredNotes = notesContext?.notes.filter(note => note.folder == foldersContext?.selectedFolder)
       if (filteredNotes) setNotesToShow(filteredNotes)
@@ -67,7 +50,7 @@ export default function NotesOverview() {
     else {
       if (notesContext) setNotesToShow(notesContext.notes)
     }
-  }, [foldersContext?.selectedFolder]);
+  }, [foldersContext?.selectedFolder, notesContext?.notes]);
 
   return (
     <div className="notesOverviewContainer">
