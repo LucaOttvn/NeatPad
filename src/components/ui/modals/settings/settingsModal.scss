@@ -6,12 +6,12 @@
     align-items: center;
     padding: 2rem;
     .profileSection {
-        width: 100%;
+        width: 80%;
         display: flex;
         flex-direction: column;
         justify-content: center;
         background-color: var(--darkGrey);
-        padding: 2rem 1rem 1rem 1rem;
+        padding: 2rem;
         border-radius: var(--mainBorderRadius);
         gap: 1rem;
         .newPassword {
