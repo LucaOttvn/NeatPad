@@ -1,15 +1,15 @@
-"use client";
-import { User } from "@supabase/supabase-js";
-import { createContext, ReactNode, useState } from "react";
+"use client"; // This ensures the entire file is treated as client-side
 
+import { User } from "@supabase/supabase-js";
+import { createContext, useContext, ReactNode, useState, useEffect } from "react";
+
+// User Context
 interface UserContextType {
   user: User | null;
   setUser: (user: User | null) => void;
 }
 
-export const UserContext = createContext<UserContextType | undefined>(
-  undefined
-);
+export const UserContext = createContext<UserContextType | undefined>(undefined);
 
 export function UserProvider({ children }: { children: ReactNode }) {
   const [user, setUser] = useState<User | null>(null);
@@ -18,5 +18,26 @@ export function UserProvider({ children }: { children: ReactNode }) {
     <UserContext.Provider value={{ user, setUser }}>
       {children}
     </UserContext.Provider>
+  );
+}
+
+// Screen Size Context (Mobile detection)
+export const ScreenSizeContext = createContext<boolean>(false);
+
+export function ScreenSizeProvider({ children }: { children: React.ReactNode }) {
+  const [isMobile, setIsMobile] = useState(false);
+
+  useEffect(() => {
+    const checkScreenSize = () => setIsMobile(window.innerWidth < 768);
+    checkScreenSize();
+
+    window.addEventListener("resize", checkScreenSize);
+    return () => window.removeEventListener("resize", checkScreenSize);
+  }, []);
+
+  return (
+    <ScreenSizeContext.Provider value={isMobile}>
+      {children}
+    </ScreenSizeContext.Provider>
   );
 }

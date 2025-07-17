@@ -8,13 +8,14 @@ export function handleModal() {
     scale: isModalOpen ? 0 : 1,
     duration: 0.2,
     ease: Power4.easeOut,
-  })
+  });
   isModalOpen = !isModalOpen;
 }
 
-export function handleSideMenu() {
+export function handleSideMenu(isMobile: boolean) {
+
   gsap.to(".generalSideMenu", {
-    width: isSideMenuOpen ? 0 : "17rem",
+    width: isSideMenuOpen ? 0 : isMobile ? "100%" : "17rem",
     duration: 0.2,
     ease: Power4.easeOut,
   });

@@ -21,16 +21,6 @@
   }
 }
 
-// tablet && smartphones
-@media (max-width: 768px) {
-  .generalModalBackdrop {
-    .generalModal {
-      width: 100% !important;
-      height: 100% !important;
-    }
-  }
-}
-
 .topBar {
   width: 100%;
   height: 4rem;
@@ -49,4 +39,14 @@
   overflow: hidden;
   background-color: var(--lightBlack);
   box-shadow: var(--mainBoxShadow);
+}
+
+// tablet && smartphones
+@media (max-width: 768px) {
+  .generalModalBackdrop {
+    .generalModal {
+      width: 100% !important;
+      height: 100% !important;
+    }
+  }
 }
