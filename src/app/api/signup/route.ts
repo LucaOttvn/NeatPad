@@ -1,12 +1,15 @@
 import { supabase } from '@/api/supabaseClient';
 import bcrypt from 'bcrypt';
 import { NextResponse } from 'next/server';
+import jwt from 'jsonwebtoken';
 
 async function hashPassword(password: string) {
     const saltRounds = 10; // Higher number means more secure but slower
     const hashedPassword = await bcrypt.hash(password, saltRounds);
     return hashedPassword;
 }
+
+const JWT_SECRET = process.env.JWT_SECRET!;
 
 export async function POST(request: Request) {
     try {
@@ -40,7 +43,8 @@ export async function POST(request: Request) {
             return NextResponse.json({ error: `Failed to create user: ${insertError.message}` }, { status: 500 });
         }
 
-        return NextResponse.json({ message: 'User created successfully', user: createdUser }, { status: 201 });
+        const token = jwt.sign({ userId: createdUser.id, email: createdUser.email }, JWT_SECRET, { expiresIn: '7d' });
+        return NextResponse.json({ message: 'User created successfully', token, user: createdUser }, { status: 201 });
 
     } catch (error: any) {
         console.error('Signup error:', error);
