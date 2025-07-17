@@ -1,13 +1,15 @@
 import { useContext, useLayoutEffect, useRef } from "react";
-import { handleModal, handleSideMenu } from "@/utils/globalMethods";
-import { ModalsNames } from "@/utils/interfaces";
+import { handleSideMenu } from "@/utils/globalMethods";
 import { FoldersContext } from "@/contexts/foldersContext";
 import SvgButton from "./SvgButton";
 import FolderCard from "../FolderCard";
 import gsap from 'gsap';
+import { ModalsContext } from "@/contexts/modalsContext";
+import { ModalsNames } from "@/utils/interfaces";
 
 export default function GeneralSideMenu() {
   const foldersContext = useContext(FoldersContext);
+  const modalsContext = useContext(ModalsContext);
   const foldersListRef = useRef<HTMLDivElement | null>(null);
 
   // this hook is needed because the folder cards list has to be fully rendered before being manipulated
@@ -69,7 +71,7 @@ export default function GeneralSideMenu() {
         <div
           className="sideMenuBtn"
           onClick={() => {
-            handleModal(true, ModalsNames.createFolder);
+            modalsContext?.setSelectedModal(ModalsNames.createFolder)
           }}
         >
           <SvgButton fileName="plus" onClick={() => { }} />

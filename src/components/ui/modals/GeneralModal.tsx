@@ -13,6 +13,11 @@ interface GeneralModalProps {
 export default function GeneralModal(props: GeneralModalProps) {
   const width = props.width ? props.width + "%" : '';
   const height = props.height + "%";
+  
+  useEffect(() => {
+    document.addEventListener("keydown", handleKeyDown);
+    return () => document.removeEventListener("keydown", handleKeyDown);
+  }, []);
 
   function handleKeyDown(e: KeyboardEvent) {
     if (e.key === "Escape") {
@@ -21,22 +26,17 @@ export default function GeneralModal(props: GeneralModalProps) {
         document.activeElement.blur();
       }
       if (props.onCloseCallback) props.onCloseCallback();
-      handleModal(false);
+      // handleModal(false);
     }
   }
-  
-  useEffect(() => {
-    document.addEventListener("keydown", handleKeyDown);
-    return () => document.removeEventListener("keydown", handleKeyDown);
-  }, []);
-  
+
   return (
     <div
       id={props.id}
       className="generalModalBackdrop"
       onClick={() => {
         if (props.onCloseCallback) props.onCloseCallback();
-        handleModal(false, props.id);
+        // handleModal(false, props.id);
       }}
     >
       <div
