@@ -19,6 +19,7 @@ export function NotesProvider({ children }: { children: ReactNode }) {
   const [notes, setNotes] = useState<Note[]>([]);
   const [selectedNote, setSelectedNote] = useState<number | undefined>();
 
+  // when the app mounts fetch notes
   useEffect(() => {
     (async () => {
       const fetchedNotes = await getNotes();
@@ -29,7 +30,7 @@ export function NotesProvider({ children }: { children: ReactNode }) {
   }, []);
 
 
-  // this updates the local notes array but the real db update happens when the user closes the create/update modal to avoid tons of api calls on each key press
+  // this updates the local notes array but the real db update happens when the user closes the create/update modal in order to avoid tons of api calls on each key press
   function updateNoteState(note: Note) {
     setNotes(prevState =>
       prevState.map((el) =>
@@ -39,11 +40,7 @@ export function NotesProvider({ children }: { children: ReactNode }) {
       )
     );
   }
-
-  useEffect(() => {
-    console.log(notes)
-  }, [notes]);
-
+  
   return (
     <NotesContext.Provider
       value={{ notes, setNotes, selectedNote, setSelectedNote, updateNoteState }}
