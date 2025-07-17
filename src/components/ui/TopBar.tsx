@@ -2,8 +2,9 @@ import { useContext } from "react";
 import { ReactSVG } from "react-svg";
 import "./ui.scss";
 import { handleSideMenu } from "@/utils/globalMethods";
-import { ScreenSizeContext, UserContext } from "@/utils/contexts";
 import SvgButton from "./SvgButton";
+import { ScreenSizeContext } from "@/contexts/screenSizeContext";
+import { UserContext } from "@/contexts/userContext";
 
 export default function TopBar() {
   const userContext = useContext(UserContext);

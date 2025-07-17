@@ -5,8 +5,8 @@ import NoteEditor from "../noteEditor/NoteEditor";
 import GeneralModal from "../ui/modals/GeneralModal";
 import { useContext, useEffect, useState } from "react";
 import { getNotes, updateNote } from "@/api/notes";
-import { UserContext } from "@/utils/contexts";
 import NoteEditorModalHeader from "../ui/modals/modalsHeaders/NoteEditorModalHeader";
+import { UserContext } from "@/contexts/userContext";
 
 export default function NotesOverview() {
   const [selectedNote, setSelectedNote] = useState<number | undefined>(
