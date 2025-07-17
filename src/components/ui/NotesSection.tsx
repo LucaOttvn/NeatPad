@@ -6,6 +6,7 @@ interface NotesSectionProps {
   title: string;
 }
 
+// this component contains the list of notes
 export default function NotesSection(props: NotesSectionProps) {
   return (
     <div className="notesSection">

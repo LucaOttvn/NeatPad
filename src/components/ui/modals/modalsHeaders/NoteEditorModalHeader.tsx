@@ -13,16 +13,16 @@ interface BasicComponentProps {
   modalId: string;
   note: Note | undefined;
 }
-
+// this is the header of the note editor, it has its own set of methods to handle notes creation/update
 export default function NoteEditorModalHeader(props: BasicComponentProps) {
   const foldersContext = useContext(FoldersContext);
   const modalsContext = useContext(ModalsContext);
+  const notesContext = useContext(NotesContext);
 
   const [pinned, setPinned] = useState(props.note ? props.note.pinned : false);
   const [foldersListOpened, setFoldersListOpened] = useState(false);
 
-  const notesContext = useContext(NotesContext);
-
+  // note pinning handling
   useEffect(() => {
     const updatedNote = props.note;
     if (updatedNote) {
@@ -32,6 +32,7 @@ export default function NoteEditorModalHeader(props: BasicComponentProps) {
     }
   }, [pinned]);
 
+  // animations handling
   useEffect(() => {
     gsap.to(".addNoteToFolder", {
       height: foldersListOpened ? "auto" : 0,
@@ -49,7 +50,7 @@ export default function NoteEditorModalHeader(props: BasicComponentProps) {
 
   return (
     <header className="noteEditorModalHeader">
-      <div className="w-full flex justify-between px-3 pt-5 pb-5">
+      <header className="w-full flex justify-between px-3 pt-5 pb-5">
         <div className="start gap-5">
           <SvgButton
             fileName={pinned ? "pinFill" : "pin"}
@@ -72,8 +73,9 @@ export default function NoteEditorModalHeader(props: BasicComponentProps) {
             modalsContext?.setSelectedModal(undefined)
           }}
         />
-      </div>
-      <div className="addNoteToFolder">
+      </header>
+      {/* collapsable section for folder selection */}
+      <section className="addNoteToFolder">
         <span className="font-bold">Add note to folder</span>
         <div className="foldersList">
           {foldersContext?.folders.map((folder, index) => {
@@ -98,7 +100,7 @@ export default function NoteEditorModalHeader(props: BasicComponentProps) {
             );
           })}
         </div>
-      </div>
+      </section>
     </header>
   );
 }

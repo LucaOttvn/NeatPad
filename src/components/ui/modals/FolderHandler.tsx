@@ -32,7 +32,6 @@ export default function FolderHandler() {
   }, []);
 
   async function handleFolderCreation() {
-
     // if updating
     if (foldersContext?.updatingFolder) {
       const changesDetected = foundFolder.current?.name != folderName || foundFolder.current.color != selectedColor
@@ -46,10 +45,10 @@ export default function FolderHandler() {
         color: selectedColor || 'White',
         user: userContext!.user!.id,
       };
-      await createFolder(newFolder);
+      let folderWithId = await createFolder(newFolder);
       foldersContext?.setFolders((prevState: Folder[]) => [
         ...prevState,
-        newFolder,
+        folderWithId,
       ]);
     }
     // close the modal

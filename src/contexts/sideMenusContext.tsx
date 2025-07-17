@@ -15,7 +15,6 @@ export function SideMenusProvider({ children }: { children: ReactNode }) {
     const [selectedSideMenu, setSelectedSideMenu] = useState<string | undefined>(undefined);
 
     useEffect(() => {
-      console.log(selectedSideMenu)
         handleSideMenu(selectedSideMenu);
     }, [selectedSideMenu]);
 
