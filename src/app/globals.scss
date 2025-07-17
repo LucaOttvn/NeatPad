@@ -17,6 +17,7 @@
 
 :root {
   --mainBoxShadow: #151515 0px 8px 20px;
+  --bigBoxShadow: black 0px 10px 30px;
   --mainBorderRadius: 10px;
   // --lightBlack: #2b2f35;
   --lightBlack: #2b2f35;
@@ -27,8 +28,20 @@
   --grey: #747474;
   --darkGrey: #303030;
   --blue: #0c85ff;
-  --yellow: #f9c210;
-  --red: #D62828;
+  --darkBlue: #0857b5;
+
+  --yellow: #e3f503;
+  --darkYellow: #b3840c;
+  --brown: #8b5e3c;
+  --darkBrown: #604028;
+  --red: #d11a1a;
+  --darkRed: #7a0f0f;
+  --orange: #ffa500;
+  --darkOrange: #cc7a00;
+  --green: #25e679;
+  --darkGreen: #198f4a;
+  --purple: #9b4f96;
+  --darkPurple: #6b1d6c;
 }
 
 * {

@@ -16,7 +16,7 @@ export function handleModal(
 
 export function handleSideMenu(isMobile: boolean) {
   gsap.to(".generalSideMenu", {
-    width: isSideMenuOpen ? 0 : isMobile ? "100%" : "20rem",
+    width: isSideMenuOpen ? 0 : isMobile ? "100%" : "25rem",
     duration: 0.2,
     ease: Power4.easeOut,
   });
