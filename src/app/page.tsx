@@ -7,7 +7,7 @@ import { handleModal } from "@/utils/globalMethods";
 import Image from "next/image";
 import { getUser } from "@/api/user";
 import { useContext, useEffect, useState } from "react";
-import { SelectedNoteContext, UserContext } from "@/utils/contexts";
+import { UserContext } from "@/utils/contexts";
 import { ScaleLoader } from "react-spinners";
 import Login from "@/components/login/Login";
 import AnimatedDiv from "@/components/animatedComponents/AnimatedDiv";

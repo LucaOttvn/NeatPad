@@ -5,6 +5,7 @@ import AnimatedDiv from "../animatedComponents/AnimatedDiv";
 import GeneralModal from "../ui/GeneralModal";
 import { handleModal } from "@/utils/globalMethods";
 import { UserContext } from "@/utils/contexts";
+import { ModalsNames } from "@/utils/interfaces";
 
 export default function Login() {
   const [formData, setFormData] = useState({ email: "", password: "" });
@@ -62,7 +63,7 @@ export default function Login() {
         </button>
       </div>
 
-      <GeneralModal width={40} height={40}>
+      <GeneralModal id={ModalsNames.login} width={40} height={40}>
         <div className="w-full h-full center flex-col gap-8">
           <h1 className="title">
             {creatingAccount ? "Create account" : "Login"}
