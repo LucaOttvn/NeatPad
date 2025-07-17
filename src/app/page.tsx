@@ -5,10 +5,11 @@ import GeneralSideMenu from "@/components/ui/SideMenu";
 import TopBar from "@/components/ui/TopBar";
 import { handleModal } from "@/utils/globalMethods";
 import Image from "next/image";
+import { UserContext } from "@/utils/contexts";
 
 export default function Home() {
   return (
-    <>
+    <UserContext value={undefined}>
       <TopBar></TopBar>
       <GeneralModal>
         <NoteEditor />
@@ -29,6 +30,6 @@ export default function Home() {
           draggable={false}
         ></Image>
       </button>
-    </>
+    </UserContext>
   );
 }
