@@ -6,7 +6,7 @@ const config: CapacitorConfig = {
   appName: 'neat-pad',
   webDir: 'out',
   server: {
-    url: 'https://neat-pad.vercel.app/'
+    url: 'https://www.neatpad.eu'
   }
 };
 
