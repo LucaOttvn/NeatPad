@@ -17,6 +17,7 @@ import gsap from 'gsap';
 import { animateDivUnmount } from "@/utils/globalMethods";
 import { useSignals } from "@preact/signals-react/runtime";
 import { isMobile, selectedModal } from "@/utils/signals";
+import { getUserById } from "@/api/user";
 
 export default function Home() {
   useSignals()
@@ -49,8 +50,8 @@ export default function Home() {
 
           if (response.ok) {
             const data = await response.json();
-            const user: User = { id: data.userId, email: data.email }
-            userContext?.setUser(user)
+            const user: User = await getUserById(data.userId)
+            if (user) userContext?.setUser(user)
           } else {
             localStorage.removeItem('JWT');
             userContext?.setUser(undefined);
