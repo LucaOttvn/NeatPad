@@ -30,8 +30,8 @@ The db in use is Supabase, to connect your own you have to:
 5. Run `npm install` & `npm run dev`
 
 ## Capacitor integration
-
-
+The capacitor integration in this project is nothing follows the [Capacitor guide](https://capacitorjs.com/solution/react).  
+In the `capacitor.config.ts` you have to put the server url that points to the hosted web version of the app, the original one is: `https://neat-pad.vercel.app/` but it's obviously going to change based on your hosted version's link.
 
 ### Side effects for DOM signals
 Some of the signals defined in signals.ts file have side effects that directly interact with the DOM. One example of this is the selectedModal signal where a gsap animation is triggered.
