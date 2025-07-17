@@ -2,15 +2,15 @@ import { useContext, useLayoutEffect, useRef } from "react";
 import { FoldersContext } from "@/contexts/foldersContext";
 import SvgButton from "./SvgButton";
 import FolderCard from "../FolderCard";
-import gsap from 'gsap';
-import { ModalsNames, SideMenusNames } from "@/utils/interfaces";
+import { gsap } from 'gsap';
+import { ModalsNames } from "@/utils/interfaces";
 import { selectedModal, selectedSideMenu } from "@/utils/signals";
-import { effect } from "@preact/signals-react";
 
 
 export default function GeneralSideMenu() {
   const foldersContext = useContext(FoldersContext);
   const foldersListRef = useRef<HTMLDivElement | null>(null);
+  const sideMenuRef = useRef(null) 
 
   // this hook is needed because the folder cards list has to be fully rendered before being manipulated
   useLayoutEffect(() => {
@@ -54,14 +54,8 @@ export default function GeneralSideMenu() {
     };
   }, [foldersContext?.folders]);
 
-  let test
-  effect(()=>{
-    test = selectedSideMenu.value
-    console.log(test)
-  })
-
   return (
-    <div id={test} className="generalSideMenu">
+    <div id={selectedSideMenu.value} className="generalSideMenu">
       <span className="title" style={{ fontSize: '380%' }}>Folders</span>
 
       <div className="center gap-10 pt-20 pb-10">
