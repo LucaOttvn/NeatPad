@@ -18,7 +18,7 @@ export default function NoteEditorModalHeader(props: BasicComponentProps) {
   const modalsContext = useContext(ModalsContext);
 
   const [pinned, setPinned] = useState(false);
-  const [foldersListOpened, setFoldersListOpened] = useState(true);
+  const [foldersListOpened, setFoldersListOpened] = useState(false);
 
   const notesContext = useContext(NotesContext);
 
@@ -40,15 +40,22 @@ export default function NoteEditorModalHeader(props: BasicComponentProps) {
 
   useEffect(() => {
     gsap.to(".addNoteToFolder", {
-      height: foldersListOpened ? 0 : "auto",
+      height: foldersListOpened ? "auto" : 0,
+      marginBottom: foldersListOpened ? '1rem' : 0,
       duration: 0.2,
       ease: Power4.easeOut,
     });
+    gsap.to('#foldersListOpener', {
+      rotateX: foldersListOpened ? '180deg' : 0,
+      scale: foldersListOpened ? 1.2 : 1,
+      duration: 0.2,
+      ease: Power4.easeOut,
+    })
   }, [foldersListOpened]);
 
   return (
     <header className="noteEditorModalHeader">
-      <div className="w-full flex justify-between px-3 pt-5 pb-3">
+      <div className="w-full flex justify-between px-3 pt-5 pb-5">
         <div className="start gap-5">
           <SvgButton
             fileName={pinned ? "pinFill" : "pin"}
@@ -57,7 +64,8 @@ export default function NoteEditorModalHeader(props: BasicComponentProps) {
             }}
           />
           <SvgButton
-            fileName="plus"
+            id='foldersListOpener'
+            fileName="arrowDown"
             onClick={() => {
               setFoldersListOpened(!foldersListOpened);
             }}
@@ -72,24 +80,21 @@ export default function NoteEditorModalHeader(props: BasicComponentProps) {
         />
       </div>
       <div className="addNoteToFolder">
-        <span className="ps-6 pt-5">Add to a folder</span>
-        <div className="foldersList">
-          {foldersContext?.folders.map((folder, index) => {
-            return (
-              <div
-                key={"folder" + index}
-                className="folderCard"
-                onClick={() => { }}
-                style={{ border: `2px solid var(--${folder.color})` }}
-              >
-                {/* <ReactSVG src={`/icons/folder.svg`} className="icon" beforeInjection={(svg) => {
+        {foldersContext?.folders.map((folder, index) => {
+          return (
+            <div
+              key={"folder" + index}
+              className="folderCard"
+              onClick={() => { }}
+              style={{ border: `2px solid var(--${folder.color})` }}
+            >
+              {/* <ReactSVG src={`/icons/folder.svg`} className="icon" beforeInjection={(svg) => {
                     svg.setAttribute("fill", `var(--${folder.color})`);
                   }} /> */}
-                <span className="font-bold" style={{ color: `var(--${folder.color})` }}>{folder.name}</span>
-              </div>
-            );
-          })}
-        </div>
+              <span className="font-bold" style={{ color: `var(--${folder.color})` }}>{folder.name}</span>
+            </div>
+          );
+        })}
       </div>
     </header>
   );
