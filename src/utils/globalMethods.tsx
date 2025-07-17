@@ -23,12 +23,16 @@ export function handleSideMenu(isMobile: boolean) {
   isSideMenuOpen = !isSideMenuOpen;
 }
 
+export function animateDivUnmount(ids: string[], onComplete: () => void) {
 
-export function animateDivUnmount (id: string) {
-  gsap.to("#" + id, {
-    // opacity: 0.2,
-    border: 'solid 3px blue',
-    duration: 0.2,
-    ease: Power4.easeOut,
+  // this is a timeline because it can happen to animate more than one div at the same time, so wait for the whole timeline to be completed and then trigger the onComplete()
+  const tl = gsap.timeline({ onComplete });
+
+  ids.forEach((id) => {
+    tl.to("#" + id, {
+      opacity: 0,
+      duration: 0.2,
+      ease: Power4.easeOut
+    }, 0); // all animations start at the same time
   });
 }
