@@ -32,7 +32,6 @@ export async function getUserByEmail(email: string) {
 }
 
 export async function updateUser(updatedUser: User) {
-    console.log(updatedUser)
 
     const { data, error } = await supabase
         .from('users')
@@ -43,8 +42,6 @@ export async function updateUser(updatedUser: User) {
         console.error("Error updating note:", error);
         return null;
     }
-
-    console.log(data)
 
     return data;
 }

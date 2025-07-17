@@ -12,8 +12,6 @@ export async function POST(request: Request) {
     try {
         const requestJSON = await request.json();
 
-        console.log(requestJSON)
-
         const user = await getUserById(requestJSON.id)
 
         if (!user) throw new Error('No user found')
