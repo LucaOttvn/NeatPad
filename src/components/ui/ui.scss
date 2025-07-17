@@ -42,7 +42,7 @@
   justify-content: start;
   align-items: center;
   background-color: var(--black);
-  border-bottom: solid 1px var(--white);
+  // border-bottom: solid 5px var(--lightBlack);
   padding: 0 0.5rem;
   gap: 1rem;
   z-index: 2;
@@ -63,6 +63,8 @@
     .generalModal {
       width: 100% !important;
       height: 100% !important;
+      border: none;
+      border-radius: 0 !important;
     }
   }
   .generalSideMenu {
@@ -71,7 +73,12 @@
     position: fixed;
     top: 0;
     left: 0;
-    background-color: #20202092;
+    background: rgb(43, 47, 53);
+    background: linear-gradient(
+      180deg,
+      rgba(43, 47, 53, 1) 0%,
+      rgba(43, 47, 53, 0.6) 5%
+    );
     backdrop-filter: blur(10px);
   }
 }

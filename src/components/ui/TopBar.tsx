@@ -1,5 +1,4 @@
 import { useContext } from "react";
-import { ReactSVG } from "react-svg";
 import "./ui.scss";
 import { handleSideMenu } from "@/utils/globalMethods";
 import SvgButton from "./SvgButton";
