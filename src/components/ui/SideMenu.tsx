@@ -1,9 +1,10 @@
 import { ModalsNames } from "@/utils/interfaces";
 import { useContext } from "react";
-import FolderCard from "../FolderCard";
+
 import { handleModal, handleSideMenu } from "@/utils/globalMethods";
 import { FoldersContext } from "@/contexts/foldersContext";
 import SvgButton from "./SvgButton";
+import FolderCard from "../FolderCard";
 
 export default function GeneralSideMenu() {
   const foldersContext = useContext(FoldersContext);
@@ -27,10 +28,14 @@ export default function GeneralSideMenu() {
         </div>
       </div>
 
-      <div className="flex h-full justify-start flex-col mx-8 mt-5">
-        {foldersContext?.folders.map((folder, index) => {
-          return <FolderCard key={folder.name + index} folder={folder} />;
-        })}
+      <div className="foldersList">
+        <div className="shaderTop"></div>
+        <div className="shaderBottom"></div>
+        <div className="w-full h-full flex flex-col gap-5 py-8 bg-transparent overflow-y-scroll">
+          {foldersContext?.folders.map((folder, index) => {
+            return <FolderCard key={folder.name + index} folder={folder} />;
+          })}
+        </div>
       </div>
     </div>
   );
