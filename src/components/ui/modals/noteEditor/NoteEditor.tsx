@@ -3,6 +3,7 @@ import "./noteEditor.scss";
 import { ChangeEvent, useContext, useEffect, useState } from "react";
 import { NotesContext } from "@/contexts/notesContext";
 import { Note } from "@/utils/interfaces";
+import { App } from "@capacitor/app";
 
 interface NoteEditorProps {
   note: Note | undefined
@@ -24,6 +25,20 @@ export default function NoteEditor(props: NoteEditorProps) {
       });
     }
   }
+
+  async function monitorAppState() {
+    let state = await App.getState();
+    
+    App.addListener('appStateChange', (state) => { 
+      if (!state.isActive) {
+        console.log(state)
+      }
+    })
+  }
+
+  useEffect(() => {
+    monitorAppState()
+  }, []);
 
   // this keeps the context's state up to date with the new local changes on each keystroke 
   useEffect(() => {
