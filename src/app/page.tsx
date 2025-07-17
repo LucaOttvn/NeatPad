@@ -1,4 +1,4 @@
-"use client";
+"use client";;
 import GeneralModal from "@/components/ui/GeneralModal";
 import NoteEditor from "@/components/NoteEditor";
 import GeneralSideMenu from "@/components/ui/SideMenu";
@@ -9,7 +9,7 @@ import { getUser } from "@/api/user";
 import { useContext, useEffect, useState } from "react";
 import { UserContext } from "@/utils/contexts";
 import { ScaleLoader } from "react-spinners";
-import AnimatedDiv from "@/components/animated/AnimatedDiv";
+import Login from "@/components/login/Login";
 
 export default function Home() {
   const userContext = useContext(UserContext);
@@ -58,7 +58,7 @@ export default function Home() {
           </button>
         </>
       ) : (
-        <div style={{ background: "red" }}></div>
+        <Login></Login>
       )}
     </>
   );

@@ -1,10 +1,10 @@
 import { supabase } from "./supabaseClient";
 import { User } from "@supabase/supabase-js";
 
-export async function login() {
+export async function login(email: string, password: string) {
     const { data, error } = await supabase.auth.signInWithPassword({
-        email: 'lucatremila@gmail.com',
-        password: 'example-password',
+        email: email,
+        password: password,
     })
     if (error) {
         console.error("Error fetching data:", error);
