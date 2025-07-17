@@ -13,6 +13,7 @@ A neat approach to note-taking
 ## Features
 - Notes creation
 - Folders to organize notes
+- [Markdown capabilities](#markdown)
 - Future feature: shared notes
 
 ## About
@@ -38,6 +39,10 @@ The capacitor integration in this project is nothing follows the [Capacitor guid
 In the `capacitor.config.ts` you have to put the server url that points to the hosted web version of the app, the original one is: `https://neat-pad.vercel.app/` but it's obviously going to change based on your hosted version's link.
 
 ## Project details
+
+## Markdown
+In the note editor modal, the user can select the "Markdown" or "Text" toggle to choose between a minimal Markdown editing tool and a plain text input field. The default setting is "Text" (as it's likely the most common usage for the average note). However, if the user changes this to "Markdown," the application saves this preference, and the next time that specific note is opened, it will automatically default to Markdown mode.
+
 ### Recover password page
 This page is a separate one because it gotta be included in the reset-password email as a link
 
