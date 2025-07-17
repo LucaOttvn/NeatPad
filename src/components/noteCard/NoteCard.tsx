@@ -77,7 +77,6 @@ export default function NoteCard(props: NoteCardProps) {
       notesContext?.setSelectedNote(props.note.id);
       modalsContext?.setSelectedModal(ModalsNames.updateNote)
     }
-
   }
 
   return (
