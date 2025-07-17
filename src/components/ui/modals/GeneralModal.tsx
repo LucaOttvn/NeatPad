@@ -64,10 +64,10 @@ export default function GeneralModal(props: GeneralModalProps) {
           handleKeyDown(e)
         }}
       >
-        {modalsContext?.selectedModal == ModalsNames.folderHandler && <><GeneralModalHeader
+        {modalsContext?.selectedModal == ModalsNames.folderHandler && <div className="w-full h-full overflow-y-scroll"><GeneralModalHeader
           modalId={ModalsNames.folderHandler}
         />
-          <FolderHandler /></>}
+          <FolderHandler /></div>}
 
         {(modalsContext?.selectedModal == ModalsNames.newNote || modalsContext?.selectedModal == ModalsNames.updateNote) && <>
           <NoteEditorModalHeader

@@ -52,3 +52,19 @@ export async function updateFolder(
 
     return data;
 }
+
+export async function deleteFolder(id: number) {
+    const { data, error } = await supabase
+        .from("folders")
+        .delete()
+        .eq("id", id)
+        .select()
+        .single();
+
+    if (error) {
+        console.error("Error deleting folder:", error);
+        return null;
+    }
+
+    return data;
+}
