@@ -12,13 +12,15 @@
 :root {
   --mainBoxShadow: #151515 0px 8px 20px;
   --mainBorderRadius: 10px;
-  --lightBlack: #202020;
+  --lightBlack: #2b2f35;
   --black: #101010;
   --white: #f0f0f0;
+  --softWhite: #cacaca;
   --lightGrey: #909090;
   --grey: #747474;
   --darkGrey: #303030;
-  --accentColor: #0a84ff;
+  --accentColor: #0c85ff;
+  --test: #4C6274;
 }
 
 * {
@@ -27,7 +29,7 @@
     outline: none;
   }
   &::-webkit-scrollbar {
-    width: 13px;
+    width: 5px;
   }
   &::-webkit-scrollbar-track {
     background: var(--darkGrey);
@@ -102,7 +104,7 @@ textarea {
   border: solid 1px transparent;
 
   &:hover {
-    border: solid 1px var(--grey);
+    // border: solid 1px var(--grey);
   }
 }
 
@@ -110,7 +112,7 @@ textarea {
   width: 4rem;
   height: 4rem;
   border-radius: 50%;
-  background-color: var(--accentColor);
+  background-color: var(--white);
   display: flex;
   justify-content: center;
   align-items: center;
@@ -140,19 +142,6 @@ textarea {
   svg {
     width: 15px;
     height: 15px;
-  }
-}
-
-.logo {
-  padding: 0.2rem 0.6rem;
-  border-radius: var(--mainBorderRadius);
-  * {
-    user-select: none;
-  }
-  .icon {
-    svg {
-      width: 12px;
-    }
   }
 }
 
