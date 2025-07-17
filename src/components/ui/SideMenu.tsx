@@ -4,7 +4,7 @@ import SvgButton from "./SvgButton";
 import FolderCard from "../FolderCard";
 import { gsap } from 'gsap';
 import { ModalsNames } from "@/utils/interfaces";
-import { selectedModal, selectedSideMenu } from "@/utils/signals";
+import { isMobile, selectedModal, selectedSideMenu } from "@/utils/signals";
 import { handleSideMenu } from "@/utils/globalMethods";
 
 
@@ -56,7 +56,7 @@ export default function GeneralSideMenu() {
 
   // check README.md > ## SIDE EFFECTS FOR DOM SIGNALS for details
   useLayoutEffect(()=>{
-    handleSideMenu(selectedSideMenu.value)
+    handleSideMenu(selectedSideMenu.value, isMobile.value)
   }, [selectedSideMenu.value])
 
   return (

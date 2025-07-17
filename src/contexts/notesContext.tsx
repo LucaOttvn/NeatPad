@@ -39,7 +39,8 @@ export function NotesProvider({ children }: { children: ReactNode }) {
   });
 
   // in the noteEditor modal, this updates the local notes array but the real db update happens when the user closes the create/update modal in order to avoid tons of api calls on each key press
-  function updateNoteState(note: Note) {
+  async function updateNoteState(note: Note) {
+
     setNotes(prevState =>
       prevState.map((el) =>
         el.id === note.id
@@ -62,10 +63,9 @@ export function NotesProvider({ children }: { children: ReactNode }) {
         // delete the note from db
         deleteNote(currentNote.id!)
       }
-      else {
-        await updateNote(currentNote)
-        updateNoteState(currentNote)
-      }
+      // else {
+      //   updateNoteState(currentNote)
+      // }
     }
   }
 

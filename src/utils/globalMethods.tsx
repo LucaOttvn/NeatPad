@@ -1,6 +1,5 @@
 import { gsap, Power4 } from "gsap";
 import { ModalsNames } from "./interfaces";
-import { isMobile } from "./signals";
 
 export function handleModal(
   target: ModalsNames | undefined,
@@ -13,9 +12,9 @@ export function handleModal(
   });
 }
 
-export function handleSideMenu(target: string | undefined) {
+export function handleSideMenu(target: string | undefined, isMobile: boolean) {
   gsap.to((target ? "#" : '.') + (target || 'generalSideMenu'), {
-    width: target ? (isMobile.value ? '100%' : '35vw') : 0,
+    width: target ? (isMobile ? '100%' : '35vw') : 0,
     duration: 0.2,
     ease: Power4.easeOut,
   });

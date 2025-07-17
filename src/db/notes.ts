@@ -40,6 +40,7 @@ export async function updateNote(updatedNote: Note) {
     .from('notes')
     .update(updatedNote)
     .eq('id', updatedNote.id)
+    .select()
 
   if (error) {
     console.error("Error updating note:", error);

@@ -29,9 +29,10 @@ export default function Home() {
     function checkScreenSize() {
       isMobile.value = window.innerWidth < 768
     }
+    checkScreenSize()
     window.addEventListener("resize", checkScreenSize);
     return () => window.removeEventListener("resize", checkScreenSize);
-  }, [isMobile.value])
+  }, [])
 
   useEffect(() => {
     loading.value = true
