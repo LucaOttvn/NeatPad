@@ -14,11 +14,25 @@ import { isMobile, loading } from "@/utils/signals";
 import { getUserById } from "@/db/user";
 import NewNoteButton from "@/components/ui/NewNoteButton";
 import GeneralSideMenu from "@/components/ui/SideMenu";
-import { SafeArea } from 'capacitor-plugin-safe-area';
+import { Capacitor } from "@capacitor/core";
+import { StatusBar } from "@capacitor/status-bar";
 
 export default function Home() {
   useSignals()
-  
+
+  const setupStatusBar = async () => {
+    if (Capacitor.isNativePlatform()) {
+      await StatusBar.setOverlaysWebView({ overlay: false });
+      // You can also set style and background color if desired
+      // await StatusBar.setStyle({ style: Style.Dark }); 
+      // await StatusBar.setBackgroundColor({ color: '#FF0000' });
+    }
+  };
+
+  useEffect(() => {
+    setupStatusBar()
+  }, []);
+
   const userContext = useContext(UserContext);
 
   useLayoutEffect(() => {
