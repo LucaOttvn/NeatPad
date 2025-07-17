@@ -1,15 +1,13 @@
 import { gsap, Power4 } from "gsap";
 
-let isModalOpen = false;
 let isSideMenuOpen = false;
 
-export function handleModal() {
+export function handleModal(open: boolean) {
   gsap.to(".generalModalBackdrop", {
-    scale: isModalOpen ? 0 : 1,
+    scale: open ? 1 : 0,
     duration: 0.2,
     ease: Power4.easeOut,
   });
-  isModalOpen = !isModalOpen;
 }
 
 export function handleSideMenu(isMobile: boolean) {

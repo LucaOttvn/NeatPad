@@ -1,4 +1,4 @@
-"use client";;
+"use client";
 import { handleModal } from "@/utils/globalMethods";
 import "./noteEditor.scss";
 import { useEffect } from "react";
@@ -11,7 +11,7 @@ export default function NoteEditor() {
         // this removes the automatica browser's focus on the button when esc is pressed
         document.activeElement instanceof HTMLElement &&
           document.activeElement.blur();
-        handleModal();
+        handleModal(false);
       }
     }
 
@@ -23,9 +23,12 @@ export default function NoteEditor() {
     <div className="noteEditorContainer">
       <header>
         <input type="text" placeholder="Insert title" />
-        <SvgButton fileName="close" callback={()=>{
-          handleModal()
-        }}/>
+        <SvgButton
+          fileName="close"
+          callback={() => {
+            handleModal(false);
+          }}
+        />
       </header>
       <textarea
         className="noteEditorInputField"
