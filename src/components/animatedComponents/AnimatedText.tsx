@@ -1,5 +1,5 @@
 import { useEffect, useRef } from "react";
-import gsap from 'gsap'
+import gsap from "gsap";
 
 interface AnimatedTextProps {
   text: string;
@@ -16,7 +16,7 @@ export default function AnimatedText(props: AnimatedTextProps) {
     gsap.fromTo(
       refs.current,
       { opacity: 0, y: 20 },
-      { opacity: 1, y: 0, duration: 0.4, stagger: 0.1 }
+      { opacity: 1, y: 0, duration: 0.4, stagger: 0.1, delay: 0.3 }
     );
   }, []);
 
@@ -24,6 +24,7 @@ export default function AnimatedText(props: AnimatedTextProps) {
     <span className={`animatedText ${props.className}`}>
       {chars.map((char, i) => (
         <span
+          className="animatedChar"
           key={i}
           ref={(el) => {
             refs.current[i] = el;
