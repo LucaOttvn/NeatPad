@@ -21,12 +21,13 @@
   --bigBoxShadow: var(--Black) 0px 10px 30px;
   --mainBorderRadius: 10px;
 
-  --lightBlack: #1c2025;
   --Black: #000000;
+  --lightBlack: #101010;
   --White: #f0f0f0;
   --softWhite: #cacaca;
   --lightGrey: #707070;
   --Grey: #505050;
+  --darkGrey: #1c2025;
 
   --Pink: #f7a9a8;
   --darkPink: #d29190;
@@ -77,7 +78,7 @@
   }
 
   &::-webkit-scrollbar-track {
-    background: var(--lightBlack);
+    background: var(--darkGrey);
   }
 
   &::-webkit-scrollbar-thumb {
