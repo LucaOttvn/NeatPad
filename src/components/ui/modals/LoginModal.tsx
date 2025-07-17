@@ -20,7 +20,6 @@ export default function LoginModal(props: LoginModalProps) {
     const [formData, setFormData] = useState({ email: "", password: "" });
 
     function handleChange(e: React.ChangeEvent<HTMLInputElement>) {
-        console.log(e.target.name)
         setFormData((prev) => ({
             ...prev,
             [e.target.name]: e.target.value,
@@ -80,7 +79,7 @@ export default function LoginModal(props: LoginModalProps) {
         await saveToken(token, user.id)
 
         const { data, error } = await supabase.auth.resetPasswordForEmail(formData.email, {
-            redirectTo: `https://neat-pad.vercel.app/recover-password?token=${token}`
+            redirectTo: `https://neat-pad.vercel.app/recover-password`,
         });
 
         if (error) {

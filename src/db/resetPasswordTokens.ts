@@ -1,11 +1,14 @@
 import { supabase } from "./supabaseClient";
+import { getUserByEmail } from "./user";
 
-export async function getTokenData(token: string) {
+export async function getTokenData(userEmail: string) {
+
+    const user = await getUserByEmail(userEmail)
 
     const { data, error } = await supabase
         .from('resetPasswordTokens')
         .select('*, user(*)') // select all from resetPasswordTokens and all from related user
-        .eq('token', token)
+        .eq('user', user.id)
         .single()
 
     if (error) {
@@ -27,7 +30,6 @@ export async function saveToken(token: string, userId: number) {
         expiresAt: sixMinutesLater
     }
     
-    console.log(newToken)
     const { data, error } = await supabase
         .from('resetPasswordTokens')
         .insert(newToken)
