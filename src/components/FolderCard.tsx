@@ -3,11 +3,10 @@ import "./componentsStyle.scss";
 import { useContext, useRef } from "react";
 import { FoldersContext } from "@/contexts/foldersContext";
 import { ScreenSizeContext } from "@/contexts/screenSizeContext";
-import { handleSideMenu } from "@/utils/globalMethods";
 import { NotesContext } from "@/contexts/notesContext";
 import { ModalsContext } from "@/contexts/modalsContext";
-import gsap from 'gsap'
-import { SideMenusContext } from "@/contexts/sideMenusContext";
+import gsap from 'gsap';
+import { selectedSideMenu } from "@/utils/signals";
 
 interface FolderProps {
   folder: Folder;
@@ -23,7 +22,6 @@ export default function   FolderCard(props: FolderProps) {
   const foldersContext = useContext(FoldersContext)
   const modalsContext = useContext(ModalsContext)
   const notesContext = useContext(NotesContext)
-  const sideMenusContext = useContext(SideMenusContext)
 
   const timerRef = useRef<any>(null)
 
@@ -53,7 +51,7 @@ export default function   FolderCard(props: FolderProps) {
   function handleClick() {
     foldersContext?.setSelectedFolder(props.folder.id)
     // only on mobile, close the side menu on folder selection
-    if (screenSizeContext) sideMenusContext?.setSelectedSideMenu(undefined)
+    if (screenSizeContext) selectedSideMenu.value = undefined
   }
 
   return (

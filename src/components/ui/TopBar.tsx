@@ -1,40 +1,42 @@
 import { useContext } from "react";
 import "../componentsStyle.scss";
 import SvgButton from "./SvgButton";
-import { SideMenusContext } from "@/contexts/sideMenusContext";
 import { ModalsNames, SideMenusNames } from "@/utils/interfaces";
 import { ModalsContext } from "@/contexts/modalsContext";
+import { effect, signal } from "@preact/signals-react";
+import { handleSideMenu } from "@/utils/globalMethods";
+import { selectedSideMenu } from "@/utils/signals";
+
 
 export default function TopBar() {
-  const sideMenusContext = useContext(SideMenusContext);
   const modalsContext = useContext(ModalsContext);
+
 
   return (
     <div className="topBar">
+
       <SvgButton
         fileName="close"
-        style={{ display: sideMenusContext?.selectedSideMenu == SideMenusNames.folders ? '' : 'none' }}
+        style={{ display: selectedSideMenu.value == SideMenusNames.folders ? '' : 'none' }}
         onClick={() => {
-          sideMenusContext?.setSelectedSideMenu(undefined)
+          selectedSideMenu.value = undefined;
         }}
       />
       <SvgButton
         fileName="hamburgerMenu"
-        style={{ display: sideMenusContext?.selectedSideMenu == SideMenusNames.folders ? 'none' : '' }}
+        style={{ display: selectedSideMenu.value == SideMenusNames.folders ? 'none' : '' }}
         onClick={() => {
-          sideMenusContext?.setSelectedSideMenu(SideMenusNames.folders)
+          selectedSideMenu.value = SideMenusNames.folders;
         }}
       />
 
+
       <h1 style={{ letterSpacing: '1px' }}>NeatPad</h1>
-      {/* spacer */}
       <div className="w-full"></div>
       <SvgButton
         fileName="settings"
         onClick={() => {
-          modalsContext?.setSelectedModal(ModalsNames.settings)
-          // logout
-      
+          modalsContext?.setSelectedModal(ModalsNames.settings);
         }}
       />
     </div>

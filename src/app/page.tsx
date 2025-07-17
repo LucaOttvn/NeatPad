@@ -1,4 +1,4 @@
-"use client";;
+"use client";
 import TopBar from "@/components/ui/TopBar";
 import Image from "next/image";
 import { getUser } from "@/api/user";
@@ -17,8 +17,11 @@ import { NotesContext } from "@/contexts/notesContext";
 import { flushSync } from "react-dom";
 import gsap from 'gsap';
 import { animateDivUnmount } from "@/utils/globalMethods";
+import { useSignals } from "@preact/signals-react/runtime";
 
 export default function Home() {
+  useSignals()
+
   const userContext = useContext(UserContext);
   const notesContext = useContext(NotesContext);
   const modalsContext = useContext(ModalsContext);
