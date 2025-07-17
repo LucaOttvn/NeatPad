@@ -6,22 +6,20 @@ import TopBar from "@/components/ui/TopBar";
 import { handleModal } from "@/utils/globalMethods";
 import Image from "next/image";
 import { UserContext } from "@/utils/contexts";
-import { useEffect, useState } from "react";
-import { supabase } from "@/api/supabaseClient";
-import Login from "@/components/Login";
+import { useEffect } from "react";
 import { getUser, login } from "@/api/users";
 
-export default function Home(content: any) {
+export default function Home() {
+  (async () => {
+    // await login();
+    let user = await getUser();
+    if (user) {
+    }
+  })();
 
-  useEffect(() => {
-    (async () => {
-      await login()
-      let user = await getUser();
-    })();
-  }, []);
   return (
     <>
-      (
+      {
         <UserContext value={undefined}>
           <TopBar></TopBar>
           <GeneralModal>
@@ -44,7 +42,7 @@ export default function Home(content: any) {
             ></Image>
           </button>
         </UserContext>
-      )
+      }
     </>
   );
 }

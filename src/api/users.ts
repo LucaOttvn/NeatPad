@@ -18,6 +18,5 @@ export async function login() {
 export async function getUser() {
     const { data, error } = await supabase.auth.getUser()
     if (error) return error
-    console.log(data.user)
     return data.user
-  }
+}

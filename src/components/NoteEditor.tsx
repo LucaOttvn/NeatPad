@@ -1,6 +1,6 @@
 'use client'
 import { handleModal } from "@/utils/globalMethods";
-import React, { useEffect } from "react";
+import React from "react";
 import { ReactSVG } from "react-svg";
 
 export default function NoteEditor() {

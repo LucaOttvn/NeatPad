@@ -5,7 +5,7 @@ const config: CapacitorConfig = {
   appName: 'neat-pad',
   webDir: 'out',
   server: {
-    url: 'http://192.168.110.95:3000',
+    url: 'http://192.168.10.39:3000',
     cleartext: true
   }
 };
