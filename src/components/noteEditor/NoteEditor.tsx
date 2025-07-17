@@ -46,13 +46,7 @@ export default function NoteEditor(props: NoteEditorProps) {
           value={title}
           onChange={(e) => setTitle(e.target.value)}
         />
-        <SvgButton
-          fileName="close"
-          callback={() => {
-            if (props.setSelectedNote) props.setSelectedNote(undefined);
-            handleModal(false);
-          }}
-        />
+        
       </header>
       <textarea
         className="noteEditorInputField"

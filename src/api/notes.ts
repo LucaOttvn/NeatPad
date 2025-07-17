@@ -40,3 +40,6 @@ export async function createNote(userId: string) {
     console.log("New note added:", data);
     return data;
 }
+
+export async function updateNote(userId: string) {
+}

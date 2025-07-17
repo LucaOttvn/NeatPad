@@ -2,47 +2,74 @@ import { ModalsNames, Note } from "@/utils/interfaces";
 import "./notesOverview.scss";
 import NoteCard from "../noteCard/NoteCard";
 import NoteEditor from "../noteEditor/NoteEditor";
-import GeneralModal from "../ui/GeneralModal";
+import GeneralModal from "../ui/modals/GeneralModal";
 import { useContext, useEffect, useState } from "react";
-import { createNote, getNotes } from "@/api/notes";
+import { getNotes, updateNote } from "@/api/notes";
 import { UserContext } from "@/utils/contexts";
+import NoteEditorModalHeader from "../ui/modals/modalsHeaders/NoteEditorModalHeader";
 
-interface NotesOverviewProps {
-  notes: Note[];
-  setNotes: React.Dispatch<React.SetStateAction<Note[]>>;
-}
-
-export default function NotesOverview(props: NotesOverviewProps) {
+export default function NotesOverview() {
   const [selectedNote, setSelectedNote] = useState<number | undefined>(
     undefined
   );
 
-  const userContext = useContext(UserContext)
+  const [notes, setNotes] = useState<Note[]>([]);
+
+  const userContext = useContext(UserContext);
 
   useEffect(() => {
-    getNotes();
+    (async () => {
+      const notes = await getNotes();
+      if (notes) setNotes(notes);
+    })();
   }, []);
 
   return (
     <div className="notesOverviewContainer">
-      <GeneralModal id={ModalsNames.updateNote} width={80} height={80} onCloseCallback={()=>{
-        createNote(userContext!.user!.id)
-      }}>
+      <GeneralModal
+        id={ModalsNames.updateNote}
+        width={80}
+        height={80}
+        onCloseCallback={() => {
+          updateNote(userContext!.user!.id);
+        }}
+      >
+        <NoteEditorModalHeader
+          modalId={ModalsNames.updateNote}
+          onCloseCallback={() => {
+            updateNote(userContext!.user!.id);
+          }}
+        />
         <NoteEditor
           setSelectedNote={setSelectedNote}
-          setNotes={props.setNotes}
-          note={props.notes.find((n) => n.id == selectedNote)}
+          setNotes={setNotes}
+          note={notes.find((n) => n.id == selectedNote)}
         />
       </GeneralModal>
-      {/* draftsSection */}
-      <section className="notesSection"></section>
+
+      <GeneralModal
+        id={ModalsNames.newNote}
+        width={80}
+        height={80}
+        onCloseCallback={() => {
+          updateNote(userContext!.user!.id);
+        }}
+      >
+        <NoteEditorModalHeader
+          modalId={ModalsNames.newNote}
+          onCloseCallback={() => {
+            updateNote(userContext!.user!.id);
+          }}
+        />
+        <NoteEditor setNotes={setNotes} note={undefined} />
+      </GeneralModal>
       {/* pinnedSection */}
       <section className="notesSection"></section>
       {/* notesSection */}
       <section className="notesSection">
         <h1 className="title ms-2">Your notes</h1>
         <div className="notes">
-          {props.notes.map((note: Note) => {
+          {notes.map((note: Note) => {
             return (
               <NoteCard
                 key={note.id}
