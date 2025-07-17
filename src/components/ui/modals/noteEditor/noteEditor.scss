@@ -82,6 +82,11 @@
     height: 100%;
     overflow: scroll;
 
+    a {
+      color: #007bff;
+      text-decoration: underline;
+    }
+
     ul {
       list-style: disc outside none;
       padding-left: 1em;
