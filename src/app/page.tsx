@@ -25,7 +25,7 @@ export default function Home() {
         userContext.setUser(user);
       }
     })();
-  }, []);
+  });
 
   if (isLoading) {
     return (
@@ -47,7 +47,7 @@ export default function Home() {
           <button
             className="addBtn"
             style={{ borderRadius: "50%" }}
-            onClick={()=>{handleModal}}
+            onClick={()=>{handleModal()}}
           >
             <Image
               src="/icons/plus.svg"

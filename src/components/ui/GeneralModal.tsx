@@ -9,8 +9,8 @@ interface GeneralModalProps {
 }
 
 export default function GeneralModal(props: GeneralModalProps) {
-  let width = props.width + "%";
-  let height = props.height + "%";
+  const width = props.width + "%";
+  const height = props.height + "%";
   return (
     <div
       className="generalModalBackdrop"
