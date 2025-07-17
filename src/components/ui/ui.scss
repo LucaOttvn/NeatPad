@@ -21,6 +21,14 @@
     overflow: hidden;
     display: flex;
     flex-direction: column;
+    .addNoteToFolder {
+      width: 100%;
+      height: 0;
+      background-color: var(--darkGrey);
+      margin-top: 1rem;
+      overflow: hidden;
+      position: relative;
+    }
     .modalHeader {
       width: 100%;
       padding: 1rem 1rem 0 1rem;
@@ -28,6 +36,7 @@
       justify-content: space-between;
       align-items: baseline;
       gap: 4rem;
+      overflow: hidden;
     }
   }
 }
@@ -96,11 +105,6 @@
     top: 0;
     left: 0;
     background: rgba(0, 0, 0, 0.8);
-    // background: linear-gradient(
-    //   180deg,
-    //   rgba(43, 47, 53, 1) 0%,
-    //   rgba(43, 47, 53, 0.6) 5%
-    // );
     backdrop-filter: blur(10px);
   }
 }
