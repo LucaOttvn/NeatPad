@@ -5,7 +5,7 @@ export interface Note {
     user: string
     last_update: Date
     pinned: boolean
-    folder?: number
+    folder: number | null
 }
 
 export enum ModalsNames {

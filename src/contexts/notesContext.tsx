@@ -1,7 +1,7 @@
 "use client";
 import { deleteNote, updateNote } from "@/api/notes";
 import { Note } from "@/utils/interfaces";
-import { createContext, ReactNode, useEffect, useState } from "react";
+import { createContext, ReactNode, useState } from "react";
 
 interface NotesContextType {
   notes: Note[];
@@ -45,14 +45,14 @@ export function NotesProvider({ children }: { children: ReactNode }) {
     setNotes(prevState =>
       prevState.map((el) =>
         el.id === note.id
-          ? { ...el, title: note.title, text: note.text, last_update: note.last_update, pinned: note.pinned }
+          ? note
           : el
       )
     );
   }
 
   // this method handles the note's saving and, if it's empty, it deletes it
-  function handleNoteEditorClose() {
+  async function handleNoteEditorClose() {
 
     const currentNote = notes.find((note) => note.id == selectedNote)
 
@@ -61,18 +61,15 @@ export function NotesProvider({ children }: { children: ReactNode }) {
       if (currentNote.title === '' && currentNote.text === '') {
         let updatedNotes = notes.filter(note => note.id != currentNote?.id)
         setNotes(updatedNotes)
+        // delete the note from db
         deleteNote(currentNote.id!)
       }
       else {
+        await updateNote(currentNote)
         updateNoteState(currentNote)
-        updateNote(currentNote)
       }
     }
   }
-
-  useEffect(() => {
-    console.log(notes)
-  }, [notes]);
 
   return (
     <NotesContext.Provider

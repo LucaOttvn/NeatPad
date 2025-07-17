@@ -35,7 +35,7 @@ export async function createNote(newNote: Note){
 }
 
 export async function updateNote(updatedNote: Note) {
-
+  
   const { data, error } = await supabase
     .from('notes')
     .update(updatedNote)
