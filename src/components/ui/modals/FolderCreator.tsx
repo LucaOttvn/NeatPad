@@ -62,7 +62,7 @@ export default function FolderCreator() {
             ...prevState,
             newFolder,
           ]);
-          handleModal(false, ModalsNames.createFolder);
+          handleModal(ModalsNames.createFolder);
         }}
       >
         Confirm
