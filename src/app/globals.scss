@@ -13,8 +13,14 @@
   --mainBoxShadow: #151515 0px 8px 24px;
   --mainBorderRadius: 10px;
   --black: #101010;
+  --white: #f0f0f0;
   --lightBlack: #202020;
+  --grey: #747474;
   --accentColor: #0a84ff;
+}
+
+* { 
+  color: var(--white)
 }
 
 .center {
