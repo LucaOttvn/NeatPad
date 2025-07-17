@@ -18,6 +18,22 @@ export default function Login() {
     }));
   }
 
+  function handleKeyDown(e: React.KeyboardEvent) {
+    if (e.key === "Enter") {
+      e.preventDefault();
+      handleSubmit();
+    }
+  }
+
+  async function handleSubmit() {
+    const user = creatingAccount
+      ? await signUp(formData.email, formData.password)
+      : await signIn(formData.email, formData.password);
+    if (user) {
+      userContext?.setUser(user.user);
+    }
+  }
+
   return (
     <AnimatedDiv className="loginContainer">
       <h1 className="title">NeatPad</h1>
@@ -54,12 +70,14 @@ export default function Login() {
             <input
               onChange={handleChange}
               type="text"
+              onKeyDown={handleKeyDown}
               name="email"
               placeholder="Email"
             />
             <input
               onChange={handleChange}
               type="password"
+              onKeyDown={handleKeyDown}
               name="password"
               placeholder="Password"
             />
@@ -67,12 +85,7 @@ export default function Login() {
           <button
             className="mainBtn"
             onClick={async () => {
-              const user = creatingAccount
-                ? await signUp(formData.email, formData.password)
-                : await signIn(formData.email, formData.password);
-              if (user) {
-                userContext?.setUser(user.user);
-              }
+              handleSubmit();
             }}
           >
             {creatingAccount ? "Confirm" : "Login"}
