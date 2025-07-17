@@ -5,14 +5,13 @@ import AnimatedText from "../animatedComponents/AnimatedText";
 import { NotesContext } from "@/contexts/notesContext";
 import { FoldersContext } from "@/contexts/foldersContext";
 import NotesSection from "../ui/NotesSection";
-
-
 import { UserContext } from "@/contexts/userContext";
 import { ReactSVG } from "react-svg";
 import AnimatedDiv from "../animatedComponents/AnimatedDiv";
 import { getFoldersByUserId } from "@/db/folders";
 import { getNotesByUserId } from "@/db/notes";
 import { loading } from "@/utils/signals";
+import SearchBar from "../ui/searchBar/SearchBar";
 
 export default function NotesOverview() {
   const notesContext = useContext(NotesContext);
@@ -63,18 +62,18 @@ export default function NotesOverview() {
 
   return (
     <div className="notesOverviewContainer">
-      <div className="w-full flex pe-3">
-        {foldersContext?.selectedFolder ? <AnimatedText className="title" text={foundSelectedFolderData?.name.toUpperCase()!} color={foundSelectedFolderData?.color} /> : <div className="flex flex-col items-start">
+      <div className="w-full flex flex-col gap-5">
+        {foldersContext?.selectedFolder && <AnimatedText className="title" text={foundSelectedFolderData?.name.toUpperCase()!} color={foundSelectedFolderData?.color} />}
+        {!foldersContext?.selectedFolder && <div className="flex flex-col items-start">
           <AnimatedText className="title" text="My" />
           <AnimatedText className="title ms-5" text="Notes" />
         </div>}
-        <div className="w-full flex items-end pl-10 pb-4">
-          <AnimatedDiv>
-            <button className="mainBtn w-full end gap-1" style={{ padding: '0.6rem' }} onClick={() => { fetchData() }}>
-              <ReactSVG src={`/icons/refresh.svg`} className="icon" style={{ scale: 1.2 }} />
-            </button>
-          </AnimatedDiv>
-        </div>
+        <AnimatedDiv className="w-full flex gap-5 start">
+          <button className="mainBtn w-full end gap-2" style={{ padding: '0.6rem 0.8rem' }} onClick={() => { fetchData() }}>
+            <ReactSVG src={`/icons/refresh.svg`} className="icon" style={{ scale: 1.2 }} />
+          </button>
+          <SearchBar />
+        </AnimatedDiv>
       </div>
       {/* pinnedSection (show it only if there's at least one pinned note) */}
       {notesToShow.some((el) => el.pinned) && (
