@@ -7,6 +7,7 @@ import { NotesContext } from "@/contexts/notesContext";
 import gsap from 'gsap';
 import { ReactSVG } from "react-svg";
 import { selectedModal } from "@/utils/signals";
+import { UserContext } from "@/contexts/userContext";
 
 interface NoteCardProps {
   note: Note;
@@ -14,6 +15,7 @@ interface NoteCardProps {
 
 export default function NoteCard(props: NoteCardProps) {
   const foldersContext = useContext(FoldersContext);
+  const userContext = useContext(UserContext);
   const notesContext = useContext(NotesContext);
   const timerRef = useRef<any>(null);
 
@@ -64,6 +66,8 @@ export default function NoteCard(props: NoteCardProps) {
   function handleClick() {
     // if in delete mode
     if (notesContext!.deleteMode.active) {
+
+      if (props.note.user != userContext?.user?.id) return alert('Collaborators cannot delete notes. To remove this note from your view, please remove your email from its collaborators list.')
       let notesToDeleteUpdated: number[] = []
 
       // is the cliked card already selected?
@@ -84,6 +88,7 @@ export default function NoteCard(props: NoteCardProps) {
   // handle right click on noteCard
   function handleContextMenu(e: React.MouseEvent) {
     e.preventDefault()
+    if (props.note.user != userContext?.user?.id) return alert('Collaborators cannot delete notes. To remove this note from your view, please remove your email from its collaborators list.')
     let notesToDeleteUpdated: number[] = [...notesContext!.deleteMode.notes, props.note.id!]
     notesContext?.setDeleteMode({ active: true, notes: notesToDeleteUpdated })
   }
@@ -106,7 +111,8 @@ export default function NoteCard(props: NoteCardProps) {
     >
       <div className="overflow-hidden">
         {props.note.title && (
-          <h1 style={{ color: textColor ? `var(--${textColor})` : "auto" }}>
+          // when the shared icon is visible, adapt the title's width
+          <h1 style={{ color: textColor ? `var(--${textColor})` : "auto", width: props.note.collaborators.length > 0 ? 'calc(100% - 30px)' : '100%' }}>
             {props.note.title}
           </h1>
         )}
