@@ -1,11 +1,9 @@
 import { handleModal } from "@/utils/globalMethods";
-import React, { useRef } from "react";
+import React from "react";
 import { ReactSVG } from "react-svg";
 
-interface NoteEditorProps {}
-
-export default function NoteEditor(props: NoteEditorProps) {
-  const noteRef = useRef<HTMLDivElement | null>(null);
+export default function NoteEditor() {
+//   const noteRef = useRef<HTMLDivElement | null>(null);
 
   return (
     <div className="noteEditorContainer">
