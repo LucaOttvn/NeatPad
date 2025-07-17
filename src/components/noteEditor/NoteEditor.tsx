@@ -1,8 +1,8 @@
-"use client";
+"use client";;
 import { handleModal } from "@/utils/globalMethods";
-import { ReactSVG } from "react-svg";
 import "./noteEditor.scss";
 import { useEffect } from "react";
+import SvgButton from "../ui/SvgButton";
 
 export default function NoteEditor() {
   useEffect(() => {
@@ -23,13 +23,9 @@ export default function NoteEditor() {
     <div className="noteEditorContainer">
       <header>
         <input type="text" placeholder="Insert title" />
-        <ReactSVG
-          src="/icons/close.svg"
-          className="iconBtn"
-          onClick={() => {
-            handleModal();
-          }}
-        />
+        <SvgButton fileName="close" callback={()=>{
+          handleModal()
+        }}/>
       </header>
       <textarea
         className="noteEditorInputField"
