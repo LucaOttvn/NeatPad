@@ -4,6 +4,7 @@ import { handleModal } from "@/utils/globalMethods";
 
 interface GeneralModalProps {
   children: React.ReactNode;
+  id: string;
   width: number;
   height: number;
 }
@@ -13,9 +14,10 @@ export default function GeneralModal(props: GeneralModalProps) {
   const height = props.height + "%";
   return (
     <div
+      id={props.id}
       className="generalModalBackdrop"
       onClick={() => {
-        handleModal();
+        handleModal(false, props.id);
       }}
     >
       <div

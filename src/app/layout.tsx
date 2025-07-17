@@ -1,7 +1,11 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.scss";
-import { ScreenSizeProvider, UserProvider } from "@/utils/contexts";
+import {
+  NoteProvider,
+  ScreenSizeProvider,
+  UserProvider,
+} from "@/utils/contexts";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -28,9 +32,11 @@ export default function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
-        <ScreenSizeProvider>
-          <UserProvider>{children}</UserProvider>
-        </ScreenSizeProvider>
+        <NoteProvider>
+          <ScreenSizeProvider>
+            <UserProvider>{children}</UserProvider>
+          </ScreenSizeProvider>
+        </NoteProvider>
       </body>
     </html>
   );
