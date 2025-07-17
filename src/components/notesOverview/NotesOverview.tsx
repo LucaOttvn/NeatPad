@@ -1,12 +1,15 @@
 import { ModalsNames, Note } from "@/utils/interfaces";
 import "./notesOverview.scss";
 import NoteCard from "../noteCard/NoteCard";
-import NoteEditor from "../noteEditor/NoteEditor";
+import NoteEditor from "../ui/modals/noteEditor/NoteEditor";
 import GeneralModal from "../ui/modals/GeneralModal";
 import { useEffect, useState } from "react";
 import { getNotes, updateNote } from "@/api/notes";
 import NoteEditorModalHeader from "../ui/modals/modalsHeaders/NoteEditorModalHeader";
 import AnimatedText from "../animatedComponents/AnimatedText";
+
+import GeneralModalHeader from "../ui/modals/modalsHeaders/GeneralModalHeader";
+import FolderCreator from "../ui/modals/FolderCreator";
 
 export default function NotesOverview() {
   const [selectedNote, setSelectedNote] = useState<number | undefined>(
@@ -65,6 +68,13 @@ export default function NotesOverview() {
           updateNoteLocally={updateNoteLocally}
           note={notes.find((n) => n.id === selectedNote)}
         />
+      </GeneralModal>
+
+      <GeneralModal id={ModalsNames.createFolder} width={60} height={80}>
+        <GeneralModalHeader
+          modalId={ModalsNames.createFolder}
+        ></GeneralModalHeader>
+        <FolderCreator />
       </GeneralModal>
 
       <GeneralModal
