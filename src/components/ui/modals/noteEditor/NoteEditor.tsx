@@ -4,34 +4,29 @@ import { ChangeEvent, useContext, useEffect, useState } from "react";
 import { NotesContext } from "@/contexts/notesContext";
 import { Note } from "@/utils/interfaces";
 import { UserContext } from "@/contexts/userContext";
-import { createNote } from "@/api/notes";
+import { createNote, updateNote } from "@/api/notes";
 
 export default function NoteEditor() {
   const notesContext = useContext(NotesContext);
-  const userContext = useContext(UserContext);
 
-  const foundNote = notesContext?.notes?.find(
-    (el) => el.id == notesContext.selectedNote
-  );
+  const [foundNote, setFoundNote] = useState<Note | undefined>()
+
+  useEffect(() => {
+    let foundNoteTmp = notesContext?.notes?.find(
+      (el) => el.id === notesContext.selectedNote
+    );
+    setFoundNote(foundNoteTmp)
+    // when the modal closes, trigger the updateNote method
+    return () => {
+      if (foundNote) updateNote(foundNote)
+    }
+  }, []);
 
   function handleInput(keyToUpdate: 'title' | 'text', e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) {
     // if updating an existing note
     if (foundNote) {
       foundNote[keyToUpdate] = e.target.value
       notesContext?.updateNoteState(foundNote)
-    }
-    // if creating a new note
-    else {
-      const newNote: Note = {
-        user: userContext!.user!.id,
-        title: keyToUpdate == 'title' ? e.target.value : '',
-        text: keyToUpdate == 'text' ? e.target.value : '',
-        last_update: new Date(),
-        pinned: false
-      }
-      const updatedNotes = [...notesContext!.notes, newNote]
-      notesContext?.setNotes(updatedNotes)
-      createNote(newNote)
     }
   }
 

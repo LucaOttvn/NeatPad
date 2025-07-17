@@ -19,22 +19,21 @@ export async function getNotes(): Promise<Note[] | null> {
 }
 
 
-export async function createNote(newNote: Note) {
-
+export async function createNote(newNote: Note): Promise<Note|null> {
     const { data, error } = await supabase
-        .from('notes')
-        .insert([
-            newNote
-        ]);
-
+      .from('notes')
+      .insert([ newNote ])
+      .select()
+      .single();
+  
     if (error) {
-        console.error("Error inserting note:", error);
-        return null;
+      console.error("Error inserting note:", error);
+      return null;
     }
-
+  
     return data;
-}
-
+  }
+  
 export async function updateNote(updatedNote: Note) {
 
     const { data, error } = await supabase
