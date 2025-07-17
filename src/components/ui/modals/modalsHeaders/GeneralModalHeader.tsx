@@ -9,8 +9,8 @@ interface BasicComponentProps {
   className?: string
 }
 
+// this is the basic header for modals that don't needd any particular function
 export default function GeneralModalHeader(props: BasicComponentProps) {
-
    
   const foldersContext = useContext(FoldersContext)
   return (
