@@ -12,6 +12,8 @@ import { getFoldersByUserId } from "@/db/folders";
 import { getNotesByUserId } from "@/db/notes";
 import { loading } from "@/utils/signals";
 import SearchBar from "../ui/searchBar/SearchBar";
+import { compareStrings } from "@/utils/globalMethods";
+
 
 export default function NotesOverview() {
   const notesContext = useContext(NotesContext);
@@ -19,6 +21,7 @@ export default function NotesOverview() {
   const userContext = useContext(UserContext);
 
   const [notesToShow, setNotesToShow] = useState<Note[]>([])
+  const [search, setSearch] = useState('')
 
   // if there's a selected folder set it
   const foundSelectedFolderData = foldersContext?.selectedFolder ? foldersContext?.folders.find(
@@ -42,6 +45,14 @@ export default function NotesOverview() {
     }
   }, [foldersContext?.selectedFolder, notesContext?.notes]);
 
+  useEffect(() => {
+    filterNotesToShow()
+  }, [notesToShow]);
+
+  function filterNotesToShow() {
+
+  }
+
   // get notes and folders
   async function fetchData() {
     try {
@@ -60,6 +71,16 @@ export default function NotesOverview() {
     loading.value = false
   }
 
+  // when the user searches for something, check if the search param is included somewhere in the title or in the text of any note and, if it is, show it. Check on the pinned param too
+  function filterNotes(notes: Note[], searchParam: string, pinned: boolean) {
+    return notes.filter(el =>
+      (pinned ? el.pinned : !el.pinned) &&
+      compareStrings({ noteText: el.text, noteTitle: el.title, searchParam })
+    );
+  };
+
+  const pinnedFilteredNotes = filterNotes(notesToShow, search, true);
+
   return (
     <div className="notesOverviewContainer">
       <div className="w-full flex flex-col gap-5">
@@ -72,25 +93,24 @@ export default function NotesOverview() {
           <button className="mainBtn w-full end gap-2" style={{ padding: '0.6rem 0.8rem' }} onClick={() => { fetchData() }}>
             <ReactSVG src={`/icons/refresh.svg`} className="icon" style={{ scale: 1.2 }} />
           </button>
-          <SearchBar />
+          <SearchBar search={search} setSearch={setSearch} />
         </AnimatedDiv>
       </div>
       {/* pinnedSection (show it only if there's at least one pinned note) */}
-      {notesToShow.some((el) => el.pinned) && (
+      {pinnedFilteredNotes.length > 0 && (
         <NotesSection
-          notes={notesToShow.filter((el) => el.pinned)}
+          notes={pinnedFilteredNotes}
           title="Pinned"
         />
       )}
 
       {/* non-pinned notes section */}
       {notesToShow.length > 0 ? <NotesSection
-        notes={notesToShow.filter((el) => !el.pinned)}
+        notes={filterNotes(notesToShow, search, false)}
         title="Others"
       /> : <div className="w-full h-full center">
         You haven't saved any notes yet
       </div>}
-
     </div>
   );
 }
