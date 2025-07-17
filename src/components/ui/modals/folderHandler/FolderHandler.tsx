@@ -1,12 +1,13 @@
 import AnimatedDiv from "@/components/animatedComponents/AnimatedDiv";
 import { useContext, useEffect, useRef, useState } from "react";
-import ColorPicker from "../ColorPicker";
+import ColorPicker from "../../colorPicker/ColorPicker";
 import { FoldersContext } from "@/contexts/foldersContext";
 import { Folder } from "@/utils/interfaces";
 import { UserContext } from "@/contexts/userContext";
 import { createFolder, deleteFolder, updateFolder } from "@/db/folders";
 import { selectedSideMenu } from "@/utils/signals";
 import { handleModal } from "@/utils/globalMethods";
+import './folderHandler.scss';
 
 export default function FolderHandler() {
   const foldersContext = useContext(FoldersContext);

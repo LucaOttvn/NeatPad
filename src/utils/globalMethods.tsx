@@ -10,7 +10,6 @@ export function handleModal(
   // avoid triggering multiple animations when the user rapidly clicks on buttons
   if (modalAnimation && modalAnimation.isActive()) return
 
-  
   const openingModal = target != undefined
   const animationEase = {
     direction: openingModal ? 'out' : 'in',
@@ -18,6 +17,7 @@ export function handleModal(
     depth: isMobile.value ? 0.7 : 1
   }
   
+  // prevent the user from scrolling the body when a modal is open
   gsap.set('body', {
     overflowY: openingModal ? 'hidden' : ''
   })

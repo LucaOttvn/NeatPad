@@ -1,6 +1,7 @@
 import React from "react";
-import AnimatedDiv from "../animatedComponents/AnimatedDiv";
+import AnimatedDiv from "../../animatedComponents/AnimatedDiv";
 import { colors } from "@/utils/interfaces";
+import './colorPicker.scss'
 
 interface ColorPickerProps {
   setSelectedColor: React.Dispatch<React.SetStateAction<string | undefined>>;

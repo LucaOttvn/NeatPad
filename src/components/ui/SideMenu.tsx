@@ -2,7 +2,6 @@ import { useContext, useLayoutEffect, useRef } from "react";
 import { FoldersContext } from "@/contexts/foldersContext";
 import SvgButton from "./SvgButton";
 import FolderCard from "../FolderCard";
-import { gsap } from 'gsap';
 import { ModalsNames } from "@/utils/interfaces";
 import { isMobile, selectedModal, selectedSideMenu } from "@/utils/signals";
 import { handleSideMenu } from "@/utils/globalMethods";
