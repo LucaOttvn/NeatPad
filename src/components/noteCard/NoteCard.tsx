@@ -6,6 +6,7 @@ import { useContext, useEffect, useRef } from "react";
 import { NotesContext } from "@/contexts/notesContext";
 import { ModalsContext } from "@/contexts/modalsContext";
 import gsap from 'gsap';
+import { ReactSVG } from "react-svg";
 
 interface NoteCardProps {
   note: Note;
@@ -90,24 +91,29 @@ export default function NoteCard(props: NoteCardProps) {
       onClick={() => {
         handleClick()
       }}
+      style={{
+        background: foundParentFolder?.color
+          ? `var(--${foundParentFolder?.color})`
+          : "var(--lightBlack)",
+      }}
     >
-      <div
+      {/* <div
         className="cornerRounder1"
         style={{
           background: foundParentFolder?.color
             ? `var(--${foundParentFolder?.color})`
             : "var(--lightBlack)",
         }}
-      ></div>
-      <div
+      ></div> */}
+      {/* <div
         className="cornerRounder2"
         style={{
           background: foundParentFolder?.color
             ? `var(--${foundParentFolder?.color})`
             : "var(--lightBlack)",
         }}
-      ></div>
-      <div className="cornerRounder3"></div>
+      ></div> */}
+      {/* <div className="cornerRounder3"></div>       */}
       <div className="overflow-hidden">
         {props.note.title ? (
           <h1 style={{ color: textColor ? `var(--${textColor})` : "auto" }}>
@@ -124,6 +130,13 @@ export default function NoteCard(props: NoteCardProps) {
           <span style={{ color: "var(--Grey)" }}>No text</span>
         )}
       </div>
+      {foldersContext?.folders.some((folder) => folder.id == props.note.folder) && <div className="folderName" style={{background: 'var(--lightBlack)'}}>
+        <ReactSVG src={`/icons/folder.svg`} className="icon" />
+        <span style={{ fontSize: '80%'}} className="font-bold">
+          {foldersContext?.folders.find((folder) => folder.id == props.note.folder)?.name}
+        </span>
+      </div>}
+    
     </AnimatedDiv>
   );
 }
