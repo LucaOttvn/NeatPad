@@ -24,7 +24,7 @@ export default function Login() {
         <button
           className="mainBtn"
           onClick={() => {
-            modalsContext?.setSelectedModal(ModalsNames.login)
+            modalsContext?.setSelectedModal(ModalsNames.createAccount)
           }}
         >
           Create new account

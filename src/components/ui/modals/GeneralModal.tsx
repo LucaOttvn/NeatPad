@@ -80,11 +80,11 @@ export default function GeneralModal(props: GeneralModalProps) {
           )} /></>}
 
 
-        {modalsContext?.selectedModal == ModalsNames.login && <>
+        {(modalsContext?.selectedModal == ModalsNames.login || modalsContext?.selectedModal == ModalsNames.createAccount) && <>
           <GeneralModalHeader modalId={ModalsNames.login} className="loginModalHeader" />
-          <LoginModal />
+          <LoginModal creatingAccount={modalsContext?.selectedModal == ModalsNames.createAccount}/>
         </>}
-       
+
         {modalsContext?.selectedModal == ModalsNames.settings && <>
           <GeneralModalHeader modalId={ModalsNames.login} className="loginModalHeader" />
           <SettingsModal />

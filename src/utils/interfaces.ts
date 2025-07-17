@@ -11,7 +11,8 @@ export interface Note {
 export enum ModalsNames {
     newNote = "newNoteModal",
     updateNote = "updateNoteModal",
-    login = "login",
+    login = "loginModal",
+    createAccount = "createAccountModal",
     folderHandler = "folderHandlerModal",
     settings = "settingsModal",
 }

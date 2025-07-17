@@ -7,10 +7,12 @@ import { FoldersContext } from "@/contexts/foldersContext";
 import NotesSection from "../ui/NotesSection";
 import { getNotes } from "@/api/notes";
 import { getFolders } from "@/api/folders";
+import { UserContext } from "@/contexts/userContext";
 
 export default function NotesOverview() {
   const notesContext = useContext(NotesContext);
   const foldersContext = useContext(FoldersContext);
+  const userContext = useContext(UserContext);
 
   const [notesToShow, setNotesToShow] = useState<Note[]>([])
 
@@ -23,7 +25,7 @@ export default function NotesOverview() {
     // get notes and folders
     async function fetchData() {
       try {
-        const [notes, folders] = await Promise.all([getNotes(), getFolders()]);
+        const [notes, folders] = await Promise.all([getNotes(userContext?.user!.id!), getFolders()]);
 
         if (notes) {
           setNotesToShow(notes);
@@ -55,7 +57,6 @@ export default function NotesOverview() {
   return (
     <div className="notesOverviewContainer">
       {foldersContext?.selectedFolder ? <AnimatedText className="title" text={foundSelectedFolderData?.name.toUpperCase()!} color={foundSelectedFolderData?.color} /> : <div className="flex flex-col items-start">
-        <div className="blur"></div>
         <AnimatedText className="title" text="My" />
         <AnimatedText className="title ms-5" text="Notes" />
       </div>}
@@ -68,10 +69,12 @@ export default function NotesOverview() {
       )}
 
       {/* non-pinned notes section */}
-      <NotesSection
+      {notesToShow.length > 0 ? <NotesSection
         notes={notesToShow.filter((el) => !el.pinned)}
         title="Others"
-      />
+      /> : <div className="w-full h-full center">
+        You haven't saved any notes yet
+        </div>}
     </div>
   );
 }

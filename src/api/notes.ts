@@ -2,11 +2,12 @@ import { Note } from '@/utils/interfaces';
 import { supabase } from './supabaseClient';
 
 
-export async function getNotes(){
+export async function getNotes(userId: string){
 
   const { data, error } = await supabase
     .from('notes')
     .select('*')
+    .eq('user', userId)
     .order('last_update', { ascending: false });
 
   if (error) {
