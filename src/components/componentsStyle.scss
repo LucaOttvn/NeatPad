@@ -8,17 +8,17 @@
   gap: 2rem;
 }
 
-.FolderHandler {
+.folderHandler {
   width: 100%;
   height: 100%;
   display: flex;
-  padding: 5rem;
-  padding-top: 0;
   justify-content: flex-start;
   align-items: center;
   flex-direction: column;
-  gap: 2rem;
-
+  gap: 3%;
+  padding: 5rem;
+  padding-top: 0;
+  overflow-y: scroll;
 
   * {
     user-select: none;
@@ -26,14 +26,14 @@
 
   .wrapper {
     display: flex;
-    gap: 2rem;
+    gap: 1.5rem;
     justify-content: center;
     align-items: center;
 
     .heading {
       display: flex;
       flex-direction: column;
-      gap: 2rem;
+      gap: 1rem;
     }
 
     .createFolderBtn {
@@ -245,10 +245,6 @@
 .loginModalHeader {
   background-color: var(--lightBlack);
 
-  input {
-    // color: var(--Black);
-  }
-
   .mainBtn {
     color: var(--Black);
     background-color: var(--Yellow);
@@ -275,8 +271,9 @@
     left: 0;
   }
 
-  .FolderHandler {
+  .folderHandler {
     padding: 1rem;
+    padding-top: 0;
 
     .wrapper {
       width: 100%;
