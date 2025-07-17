@@ -20,8 +20,8 @@ export default function PasswordInput(props: PasswordInputProps) {
         if (visiblePassword != undefined) props.inputRef?.current?.focus()
     }, [visiblePassword]);
     return (
-        <div className='w-full flex flex-col'>
-            <div className='flex gap-1'>
+        <div className='w-full flex flex-col '>
+            <div className='w-full flex gap-1'>
                 <input ref={props.inputRef} name='password' type={visiblePassword ? 'text' : 'password'} className='w-full' placeholder={props.placeholder || 'Insert password'} disabled={props.disabled} value={props.value} onChange={(e) => { props.onChange(e) }} />
                 {!props.disabled && <>
                     <SvgButton style={{ display: visiblePassword ? '' : 'none' }}
