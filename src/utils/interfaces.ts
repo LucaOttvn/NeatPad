@@ -14,6 +14,9 @@ export enum ModalsNames {
     login = "login",
     folderHandler = "folderHandlerModal",
 }
+export enum SideMenusNames {
+    folders = "foldersSideMenu",
+}
 
 export interface Folder {
     id?: number

@@ -4,31 +4,28 @@ import { handleSideMenu } from "@/utils/globalMethods";
 import SvgButton from "./SvgButton";
 import { ScreenSizeContext } from "@/contexts/screenSizeContext";
 import { UserContext } from "@/contexts/userContext";
+import { SideMenusContext } from "@/contexts/sideMenusContext";
+import { SideMenusNames } from "@/utils/interfaces";
 
 export default function TopBar() {
   const userContext = useContext(UserContext);
   const screenSizeContext = useContext(ScreenSizeContext);
-
-  const [openingSideMenu, setOpeningSideMenu] = useState(false)
-
-  useEffect(() => {
-    handleSideMenu(openingSideMenu, screenSizeContext);
-  }, [openingSideMenu]);
+  const sideMenusContext = useContext(SideMenusContext);
 
   return (
     <div className="topBar">
       <SvgButton
         fileName="close"
-        style={{display: openingSideMenu ? '' : 'none'}}
+        style={{ display: sideMenusContext?.selectedSideMenu == SideMenusNames.folders ? '' : 'none' }}
         onClick={() => {
-          setOpeningSideMenu(!openingSideMenu)
+          sideMenusContext?.setSelectedSideMenu(undefined)
         }}
       />
       <SvgButton
         fileName="hamburgerMenu"
-        style={{display: openingSideMenu ? 'none' : ''}}
+        style={{ display: sideMenusContext?.selectedSideMenu == SideMenusNames.folders ? 'none' : '' }}
         onClick={() => {
-          setOpeningSideMenu(!openingSideMenu)
+          sideMenusContext?.setSelectedSideMenu(SideMenusNames.folders)
         }}
       />
 
