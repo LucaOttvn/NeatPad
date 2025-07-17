@@ -1,4 +1,4 @@
-import { Note } from "@/utils/interfaces";
+import { ModalsNames, Note } from "@/utils/interfaces";
 import "./notesOverview.scss";
 import { useContext, useEffect, useState } from "react";
 import AnimatedText from "../animatedComponents/AnimatedText";
@@ -10,7 +10,7 @@ import { ReactSVG } from "react-svg";
 import AnimatedDiv from "../animatedComponents/AnimatedDiv";
 import { getFoldersByUserId } from "@/db/folders";
 import { getNotesByUserId } from "@/db/notes";
-import { loading } from "@/utils/signals";
+import { loading, selectedModal } from "@/utils/signals";
 import SearchBar from "../ui/searchBar/SearchBar";
 
 interface NotesCompareParams {
@@ -34,7 +34,7 @@ export default function NotesOverview() {
 
   useEffect(() => {
     loading.value = true
-    fetchData();
+    fetchNotesAndFolders();
   }, []);
 
   // listen for changes in the notes array or in the current folder
@@ -50,7 +50,7 @@ export default function NotesOverview() {
   }, [foldersContext?.selectedFolder, notesContext?.notes]);
 
   // get notes and folders
-  async function fetchData() {
+  async function fetchNotesAndFolders() {
     try {
       const [notes, folders] = await Promise.all([getNotesByUserId(userContext?.user!.id!), getFoldersByUserId(userContext?.user?.id!)]);
 
@@ -85,8 +85,14 @@ export default function NotesOverview() {
 
   const pinnedFilteredNotes = filterNotesToShow(notesToShow, search, true);
 
+  function setEditingFolder() {
+    foldersContext?.setUpdatingFolder(foldersContext.selectedFolder)
+    selectedModal.value = ModalsNames.folderHandler
+  }
+
   return (
     <div className="notesOverviewContainer">
+      {/* title & search section */}
       <div className="w-full flex flex-col gap-5">
         {foldersContext?.selectedFolder && <AnimatedText className="title" text={foundSelectedFolderData?.name.toUpperCase()!} color={foundSelectedFolderData?.color} />}
         {!foldersContext?.selectedFolder && <div className="flex flex-col items-start">
@@ -94,9 +100,13 @@ export default function NotesOverview() {
           <AnimatedText className="title ms-5" text="Notes" />
         </div>}
         <AnimatedDiv className="w-full flex gap-5 start">
-          <button className="mainBtn w-full end gap-2" style={{ padding: '0.6rem 0.8rem' }} onClick={() => { fetchData() }}>
+          <button className="mainBtn w-full end gap-2" style={{ padding: '0.6rem 0.8rem' }} onClick={() => { fetchNotesAndFolders() }}>
             <ReactSVG src={`/icons/refresh.svg`} className="icon" style={{ scale: 1.2 }} />
           </button>
+          {/* if there's a selected folder, show the edit folder button */}
+          {foldersContext?.selectedFolder && <button className="mainBtn w-full end gap-2" style={{ padding: '0.6rem 0.8rem', background: 'var(--Orange)' }} onClick={() => { setEditingFolder() }}>
+            <ReactSVG src={`/icons/edit.svg`} className="icon" style={{ scale: 1.2 }} />
+          </button>}
           <SearchBar search={search} setSearch={setSearch} />
         </AnimatedDiv>
       </div>

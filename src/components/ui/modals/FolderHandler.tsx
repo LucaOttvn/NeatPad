@@ -29,23 +29,30 @@ export default function FolderHandler() {
   }, []);
 
   async function handleFolderCreation() {
+    const isUpdating = foldersContext?.updatingFolder;
+    const folder = foundFolder.current;
+    const changesDetected = folder?.name !== folderName || folder?.color !== selectedColor;
+
     // if the user's updating the folder (so it's not a new one) and there are some actual updates
-    if (foldersContext?.updatingFolder) {
-      const changesDetected = foundFolder.current?.name != folderName || foundFolder.current.color != selectedColor
-      if (changesDetected && foundFolder.current) {
-        await updateFolder(foundFolder.current.id!, { name: folderName, color: selectedColor })
-        foldersContext.updateFolderState(foundFolder.current.id!, { name: folderName, color: foundFolder.current.color })
-      }
-    } 
+    if (isUpdating && folder && changesDetected) {
+      await updateFolder(folder.id!, {
+        name: folderName,
+        color: selectedColor,
+      });
+      foldersContext.updateFolderState(folder.id!, {
+        name: folderName,
+        color: selectedColor,
+      });
+    }
     // if it's a new folder create a new Folder object and save it
-    else {
+    if (!isUpdating) {
       const newFolder: Folder = {
         name: folderName,
         color: selectedColor || 'White',
         user: userContext!.user!.id!,
       };
       // insert the folder in the db
-      let folderWithId = await createFolder(newFolder);
+      const folderWithId = await createFolder(newFolder);
       // update the local state
       foldersContext?.setFolders((prevState: Folder[]) => [
         ...prevState,
@@ -53,12 +60,13 @@ export default function FolderHandler() {
       ]);
     }
     // close the modal at the end
-    foldersContext?.setUpdatingFolder(undefined)
-    selectedModal.value = undefined
+    foldersContext?.setUpdatingFolder(undefined);
+    selectedModal.value = undefined;
   }
 
   return (
     <AnimatedDiv className="folderHandler">
+      {/* form + color picker section */}
       <div className="wrapper flex">
         <div className="heading">
           <div className="title flex flex-col items-start justify-start">
@@ -86,6 +94,7 @@ export default function FolderHandler() {
         <ColorPicker selectedColor={selectedColor} setSelectedColor={setSelectedColor} />
       </div>
 
+      {/* confirm/delete buttons section */}
       <div className="flex items-center gap-3 pb-5">
         <button
           className="mainBtn createFolderBtn"
@@ -104,7 +113,7 @@ export default function FolderHandler() {
             onClick={() => {
               foldersContext?.setFolders(prev => prev.filter(folder => folder.id != foundFolder.current?.id))
               if (foundFolder.current && foundFolder.current.id) deleteFolder(foundFolder.current?.id)
-            selectedModal.value = undefined
+              selectedModal.value = undefined
               foldersContext.setUpdatingFolder(undefined)
             }}
           >

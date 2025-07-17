@@ -1,4 +1,4 @@
-import { colors, Folder, ModalsNames } from "@/utils/interfaces";
+import { Folder, ModalsNames } from "@/utils/interfaces";
 import "./componentsStyle.scss";
 import { useContext, useRef } from "react";
 import { FoldersContext } from "@/contexts/foldersContext";
@@ -11,10 +11,7 @@ interface FolderProps {
   index: number
 }
 
-export default function   FolderCard(props: FolderProps) {
-  const textColor = colors.find(
-    (item) => item.color == props.folder.color
-  )?.text || "White"
+export default function FolderCard(props: FolderProps) {
 
   const foldersContext = useContext(FoldersContext)
   const notesContext = useContext(NotesContext)
@@ -27,12 +24,14 @@ export default function   FolderCard(props: FolderProps) {
       scale: 0.9,
       duration: 0.2
     })
-    if (!notesContext?.deleteMode.active) {
-      timerRef.current = setTimeout(() => {
-        foldersContext?.setUpdatingFolder(props.folder.id)
-        selectedModal.value = ModalsNames.folderHandler
-      }, 500);
-    }
+
+    // in delete mode there's no action to trigger on long press, so don't handle it
+    if (notesContext?.deleteMode.active) return
+
+    timerRef.current = setTimeout(() => {
+      foldersContext?.setUpdatingFolder(props.folder.id)
+      selectedModal.value = ModalsNames.folderHandler
+    }, 500);
   }
 
   // if the user removes the finger from the screen before the end of the timeout, clear the timer so no card selection animation gets triggered
