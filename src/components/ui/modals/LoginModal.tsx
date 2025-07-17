@@ -80,7 +80,7 @@ export default function LoginModal(props: LoginModalProps) {
         await saveToken(token, user.id)
 
         const { data, error } = await supabase.auth.resetPasswordForEmail(formData.email, {
-            redirectTo: `http://localhost:3000/recover-password?token=${token}`
+            redirectTo: `https://neat-pad.vercel.app/recover-password?token=${token}`
         });
 
         if (error) {
