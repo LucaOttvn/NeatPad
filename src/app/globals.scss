@@ -76,9 +76,7 @@
   }
 }
 
-::-webkit-scrollbar {
-
-}
+::-webkit-scrollbar {}
 
 ::-webkit-scrollbar-track {
   background: var(--darkGrey);
@@ -242,8 +240,12 @@ h1 {
   // font-family: "Poppins", 'sans-serif';
   font-size: 300%;
   font-weight: bold;
-
   letter-spacing: 4px;
+  text-wrap: wrap;
+  text-overflow: ellipsis;
+  word-break: break-all;
+  width: 100%;
+  overflow: hidden;
 }
 
 // tablet && smartphones

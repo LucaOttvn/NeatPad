@@ -18,7 +18,7 @@ export default function GeneralSideMenu() {
 
   return (
     <div id={selectedSideMenu.value} className="generalSideMenu">
-      <span className="title" style={{ fontSize: '380%' }}>Folders</span>
+      <span className="title center" style={{ fontSize: '380%' }}>Folders</span>
 
       <div className="center gap-10 pt-20 pb-10">
         <div
