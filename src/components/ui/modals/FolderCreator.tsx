@@ -49,6 +49,7 @@ export default function FolderCreator() {
 
       <button
         className="mainBtn createFolderBtn"
+        disabled={folderName == ''}
         onClick={async () => {
           const newFolder: Folder = {
             name: folderName,

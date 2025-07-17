@@ -9,10 +9,7 @@ export default function GeneralSideMenu() {
 
   return (
     <div className="generalSideMenu">
-      <div className="flex flex-col items-start ms-5">
-        <span className="title">My</span>
-        <span className="title">Folders</span>
-      </div>
+      <span className="title ms-5">Folders</span>
       <button
         className="mainBtn mb-5 ms-5"
         onClick={() => {
