@@ -1,13 +1,9 @@
-import { ModalsNames, Note } from "@/utils/interfaces";
+import { Note } from "@/utils/interfaces";
 import "./notesOverview.scss";
-import NoteEditor from "../ui/modals/noteEditor/NoteEditor";
 import GeneralModal from "../ui/modals/GeneralModal";
-import { useContext } from "react";
+import { useContext, useEffect } from "react";
 import { updateNote } from "@/api/notes";
-import NoteEditorModalHeader from "../ui/modals/modalsHeaders/NoteEditorModalHeader";
 import AnimatedText from "../animatedComponents/AnimatedText";
-import GeneralModalHeader from "../ui/modals/modalsHeaders/GeneralModalHeader";
-import FolderCreator from "../ui/modals/FolderCreator";
 import { NotesContext } from "@/contexts/notesContext";
 import { FoldersContext } from "@/contexts/foldersContext";
 import NotesSection from "../ui/NotesSection";
@@ -56,6 +52,10 @@ export default function NotesOverview() {
     notesContext?.setSelectedNote(undefined);
   }
 
+  useEffect(() => {
+    console.log(notesToShow)
+  }, [notesToShow]);
+
   return (
     <div className="notesOverviewContainer">
 
@@ -77,8 +77,6 @@ export default function NotesOverview() {
         notes={notesToShow.filter((el) => !el.pinned)}
         title="Others"
       />
-
-      <GeneralModal></GeneralModal>
     </div>
   );
 }
