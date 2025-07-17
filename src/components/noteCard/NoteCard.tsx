@@ -23,12 +23,12 @@ export default function NoteCard(props: NoteCardProps) {
         {props.note.title ? (
           <h1>{props.note.title}</h1>
         ) : (
-          <h1 style={{ color: "var(--grey)" }}>No title</h1>
+          <h1 style={{ color: "var(--Grey)" }}>No title</h1>
         )}
         {props.note.text ? (
           <span>{props.note.text}</span>
         ) : (
-          <span style={{ color: "var(--grey)" }}>No text</span>
+          <span style={{ color: "var(--Grey)" }}>No text</span>
         )}
       </div>
     </AnimatedDiv>
