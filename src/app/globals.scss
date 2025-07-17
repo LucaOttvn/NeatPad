@@ -76,20 +76,8 @@
   }
 }
 
-::-webkit-scrollbar {}
-
-::-webkit-scrollbar-track {
-  background: var(--darkGrey);
-}
-
-::-webkit-scrollbar-thumb {
-  background: var(--Grey);
-  border-radius: 10px;
-}
-
-::-webkit-scrollbar-thumb:hover {
-  cursor: pointer;
-  background: var(--lightGrey);
+::-webkit-scrollbar {
+  display: none;
 }
 
 .center {
