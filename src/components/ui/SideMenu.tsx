@@ -16,29 +16,35 @@ export default function GeneralSideMenu() {
       const foldersList = document.querySelector('.foldersList')
       const folderCards = document.querySelectorAll('.folderCard')
       if (foldersList) {
+
+        const foldersListMiddleY = (foldersList.getBoundingClientRect().bottom - foldersList.getBoundingClientRect().top) / 2
+
         folderCards.forEach((folder, folderIndex) => {
-          const folderTop = folder.getBoundingClientRect().top
-          const folderH = folder.getBoundingClientRect().height
 
-          const distanceFromTop = folderTop - foldersList.getBoundingClientRect().top
-          console.log(folderH)
+          const folderMiddlePoint = (folder.getBoundingClientRect().bottom - folder.getBoundingClientRect().top) / 2
 
-          // const windowBottom = window.innerHeight + window.scrollY;
-          // const foldersListMiddlePoint = (windowBottom - foldersList.getBoundingClientRect().height) / 2
-          // console.log(foldersListMiddlePoint);
+          
+          let distanceFromCenter
+          if (folderMiddlePoint > foldersListMiddleY) {
+            
+            // (foldersList.getBoundingClientRect().height / 2 ) Math.round(distanceFromCenter)
+          } else {
+            distanceFromCenter = folderMiddlePoint - foldersListMiddleY
+            const pxScaleFactor = 100 / folderMiddlePoint
+            console.log(distanceFromCenter * pxScaleFactor)
+            gsap.set('#' + folder.id, {
+              scale: distanceFromCenter * pxScaleFactor
+              // top: `calc(8rem * ${folderIndex})`,
+              // scale: 
+              // opacity: ''
+            });
+            distanceFromCenter = foldersListMiddleY - folderMiddlePoint
+          }
 
-          gsap.set('#' + folder.id, {
-            // scale: folderH
-            // top: `calc(8rem * ${folderIndex})`,
-            // scale: 
-            opacity: ''
-          });
+
+
+
         })
-        // foldersList.addEventListener('scroll', () => {
-        //   folderCards.forEach((folder, folderIndex) => {
-        //     const folderCardMiddleYPoint = folder.getBoundingClientRect().top + folder.getBoundingClientRect().height / 2;
-        //   })
-        // })
       }
     }, 1000);
   }, []);
