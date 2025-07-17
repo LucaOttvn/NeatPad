@@ -1,89 +1,96 @@
 import { ModalsNames, Note } from "@/utils/interfaces";
 import "./notesOverview.scss";
-import NoteCard from "../noteCard/NoteCard";
 import NoteEditor from "../ui/modals/noteEditor/NoteEditor";
 import GeneralModal from "../ui/modals/GeneralModal";
-import { useContext, useEffect, useState } from "react";
-import { getNotes, updateNote } from "@/api/notes";
+import { useContext } from "react";
+import { updateNote } from "@/api/notes";
 import NoteEditorModalHeader from "../ui/modals/modalsHeaders/NoteEditorModalHeader";
 import AnimatedText from "../animatedComponents/AnimatedText";
 import GeneralModalHeader from "../ui/modals/modalsHeaders/GeneralModalHeader";
 import FolderCreator from "../ui/modals/FolderCreator";
 import { NotesContext } from "@/contexts/notesContext";
-import { FolderContext } from "@/contexts/foldersContext";
+import { FoldersContext } from "@/contexts/foldersContext";
+import NotesSection from "../ui/NotesSection";
 
 export default function NotesOverview() {
-  const [selectedNote, setSelectedNote] = useState<number | undefined>(
-    undefined
+  const notesContext = useContext(NotesContext);
+  const foldersContext = useContext(FoldersContext);
+
+  const selectedNoteData = notesContext?.notes.find(
+    (n) => n.id === notesContext.selectedNote
   );
 
-  const [notesToShow, setNotesToShow] = useState<Note[]>([]);
+  const foundSelectedFolderData = foldersContext?.folders.find(
+    (el) => el.id == foldersContext.selectedFolder
+  );
 
-  const notesContext = useContext(NotesContext);
-  const folderContext = useContext(FolderContext);
+  let notesToShow: Note[] = [];
+  if (foundSelectedFolderData) {
+    notesToShow =
+      foundSelectedFolderData?.notes.flatMap(
+        (noteId) => notesContext?.notes.find((note) => note.id === noteId) ?? []
+      ) || [];
+  } else {
+    notesToShow = notesContext!.notes;
+  }
 
-  useEffect(() => {
-    (async () => {
-      const fetchedNotes = await getNotes();
-      if (fetchedNotes) {
-        notesContext?.setNotes(fetchedNotes);
-      }
-    })();
-  }, []);
-
-  useEffect(() => {
-    // find the notes contained in the currently selected folder
-    const foundSelectedFolderData = folderContext?.folders.find(
-      (el) => el.id == folderContext.selectedFolder
-    );
-
-    // get the array of notes from the ids of the "notes" array in the current folder and push it
-    const notesToShow: Note[] = [];
-    foundSelectedFolderData?.notes.map((noteId) => {
-      let foundNote = notesContext?.notes.find((el) => el.id == noteId);
-      if (foundNote) notesToShow.push(foundNote);
-    });
-
-    setNotesToShow(notesToShow);
-  }, [folderContext?.selectedFolder]);
-
-  function updateNoteOnModalClose() {
-    const selectedNoteData = notesContext?.notes.find(
-      (n) => n.id === selectedNote
-    );
+  function handleNoteOnModalClose(newNote?: Note) {
     if (selectedNoteData) {
       selectedNoteData.last_update = new Date();
-      updateNote(
-        selectedNoteData.id!,
-        selectedNoteData.title,
-        selectedNoteData.text,
-        selectedNoteData.last_update,
-        selectedNoteData.pinned
-      );
+      updateNote(selectedNoteData);
     }
-    setSelectedNote(undefined);
+    if (newNote) {
+      console.log(newNote);
+    }
+    notesContext?.setSelectedNote(undefined);
   }
 
   return (
     <div className="notesOverviewContainer">
+      {/* pinnedSection */}
+      {notesToShow.some((el) => el.pinned) && (
+        <NotesSection notes={notesToShow.filter((el) => el.pinned)}>
+          <AnimatedText className="title ms-2" text="Pinned" />
+        </NotesSection>
+      )}
+
+      {/* non-pinned notes section */}
+      <NotesSection notes={notesToShow.filter((el) => !el.pinned)}>
+        {foldersContext?.selectedFolder ? (
+          <AnimatedText
+            className="title ms-2"
+            text={
+              foldersContext.folders.find(
+                (el) => el.id == foldersContext.selectedFolder
+              )?.name || "No name"
+            }
+          />
+        ) : (
+          <div className="flex flex-col items-start">
+            <AnimatedText className="title ms-2" text="My" />
+            <AnimatedText className="title ms-2" text="Notes" />
+          </div>
+        )}
+      </NotesSection>
+
       <GeneralModal
         id={ModalsNames.updateNote}
         width={80}
         height={80}
         onCloseCallback={() => {
-          updateNoteOnModalClose();
+          handleNoteOnModalClose();
         }}
       >
         <NoteEditorModalHeader
-          note={notesContext?.notes.find((n) => n.id === selectedNote)}
+          note={notesContext?.notes.find(
+            (n) => n.id === notesContext.selectedNote
+          )}
           modalId={ModalsNames.updateNote}
           onCloseCallback={() => {
-            updateNoteOnModalClose();
+            handleNoteOnModalClose();
           }}
         />
-        <NoteEditor
-          note={notesContext?.notes.find((n) => n.id === selectedNote)}
-        />
+        <NoteEditor />
       </GeneralModal>
 
       <GeneralModal id={ModalsNames.createFolder} height={50}>
@@ -98,59 +105,20 @@ export default function NotesOverview() {
         width={80}
         height={80}
         onCloseCallback={() => {
-          updateNoteOnModalClose();
+          handleNoteOnModalClose();
         }}
       >
         <NoteEditorModalHeader
-          note={notesContext?.notes.find((n) => n.id === selectedNote)}
+          note={notesContext?.notes.find(
+            (n) => n.id === notesContext.selectedNote
+          )}
           modalId={ModalsNames.newNote}
           onCloseCallback={() => {
-            updateNoteOnModalClose();
+            handleNoteOnModalClose();
           }}
         />
-        <NoteEditor note={undefined} />
+        <NoteEditor />
       </GeneralModal>
-
-      {/* pinnedSection */}
-      {notesContext?.notes.some((el) => el.pinned) && (
-        <section className="notesSection">
-          <AnimatedText className="title ms-2" text="Pinned" />
-          <div className="notes">
-            {notesContext?.notes
-              .filter((el) => el.pinned)
-              .map((note: Note) => {
-                return (
-                  <NoteCard
-                    key={note.id}
-                    note={note}
-                    setSelectedNote={setSelectedNote}
-                  />
-                );
-              })}
-          </div>
-        </section>
-      )}
-      {/* notesSection */}
-      <section className="notesSection">
-        {folderContext?.selectedFolder ? <AnimatedText className="title ms-2" text={folderContext.folders.find(el => el.id == folderContext.selectedFolder)?.name || 'No name'} /> : <div className="flex flex-col items-start">
-          <AnimatedText className="title ms-2" text="My" />
-          <AnimatedText className="title ms-2" text="Notes" />
-        </div>}
-        <div className="notes">
-          {(folderContext?.selectedFolder
-            ? notesToShow.filter((el) => el.pinned == false)
-            : notesContext?.notes!
-          ).map((note: Note) => {
-            return (
-              <NoteCard
-                key={note.id}
-                note={note}
-                setSelectedNote={setSelectedNote}
-              />
-            );
-          })}
-        </div>
-      </section>
     </div>
   );
 }

@@ -3,7 +3,7 @@ import SvgButton from "../../SvgButton";
 import { handleModal } from "@/utils/globalMethods";
 import { Note } from "@/utils/interfaces";
 import { gsap, Power4 } from "gsap";
-import { FolderContext } from "@/contexts/foldersContext";
+import { FoldersContext } from "@/contexts/foldersContext";
 import { ReactSVG } from "react-svg";
 import { NotesContext } from "@/contexts/notesContext";
 
@@ -14,7 +14,8 @@ interface BasicComponentProps {
 }
 
 export default function NoteEditorModalHeader(props: BasicComponentProps) {
-  const foldersContext = useContext(FolderContext);
+  const foldersContext = useContext(FoldersContext);
+  
   const [pinned, setPinned] = useState(false);
   const [foldersListOpened, setFoldersListOpened] = useState(true);
 

@@ -1,30 +1,37 @@
 "use client";
 import "./noteEditor.scss";
 import { useContext, useEffect, useState } from "react";
-import { Note } from "@/utils/interfaces";
 import { NotesContext } from "@/contexts/notesContext";
+import { Note } from "@/utils/interfaces";
 
-interface NoteEditorProps {
-  note: Note | undefined;
-}
+export default function NoteEditor() {
+  const notesContext = useContext(NotesContext);
 
-export default function NoteEditor(props: NoteEditorProps) {
+  const [selectedNoteData, setSelectedNoteData] = useState<Note | undefined>(
+    undefined
+  );
+
   const [title, setTitle] = useState<string>("");
   const [text, setText] = useState<string>("");
 
-  const notesContext = useContext(NotesContext);
+  useEffect(() => {
+    const foundNote = notesContext?.notes?.find(
+      (el) => el.id == notesContext.selectedNote
+    );
+    if (foundNote) setSelectedNoteData(foundNote);
+  }, [notesContext?.selectedNote]);
 
   useEffect(() => {
     // initially set title and text based on the selected note
-    if (props.note) {
-      setTitle(props.note.title);
-      setText(props.note.text);
+    if (selectedNoteData) {
+      setTitle(selectedNoteData.title);
+      setText(selectedNoteData.text);
     }
-  }, [props.note]);
+  }, [selectedNoteData]);
 
   useEffect(() => {
-    if (props.note) {
-      const updatedNote = props.note;
+    if (selectedNoteData) {
+      const updatedNote = selectedNoteData;
       updatedNote.title = title;
       updatedNote.text = text;
       notesContext?.setNotes(

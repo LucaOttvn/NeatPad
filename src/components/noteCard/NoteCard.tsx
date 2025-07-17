@@ -2,65 +2,66 @@ import { colors, Folder, ModalsNames, Note } from "@/utils/interfaces";
 import "./noteCard.scss";
 import AnimatedDiv from "../animatedComponents/AnimatedDiv";
 import { handleModal } from "@/utils/globalMethods";
-import { FolderContext } from "@/contexts/foldersContext";
+import { FoldersContext } from "@/contexts/foldersContext";
 import { useContext, useEffect, useState } from "react";
+import { NotesContext } from "@/contexts/notesContext";
 
 interface NoteCardProps {
   note: Note;
-  setSelectedNote: React.Dispatch<React.SetStateAction<number | undefined>>;
 }
 
 export default function NoteCard(props: NoteCardProps) {
-  const [selectedFolder, setSelectedFolder] = useState<Folder | undefined>(
+  const [selectedFolderData, setSelectedFolderData] = useState<Folder | undefined>(
     undefined
   );
   const [textColor, setTextColor] = useState<string | undefined>(undefined);
 
-  const folderContext = useContext(FolderContext);
+  const foldersContext = useContext(FoldersContext);
+  const notesContext = useContext(NotesContext);
 
   useEffect(() => {
-    setSelectedFolder(
-      folderContext?.folders.find((el) => el.id == folderContext.selectedFolder)
+    setSelectedFolderData(
+      foldersContext?.folders.find((el) => el.id == foldersContext.selectedFolder)
     );
-  }, [folderContext?.selectedFolder]);
+  }, [foldersContext?.selectedFolder]);
 
   useEffect(() => {
-    if (selectedFolder) {
+    if (selectedFolderData) {
       const foundColor = colors.find(
-        (item) => item.color == selectedFolder?.color
+        (item) => item.color == selectedFolderData?.color
       );
       setTextColor(foundColor ? foundColor.text : "White");
 
-      console.log(selectedFolder);
+      console.log(selectedFolderData);
     }
-  }, [selectedFolder]);
+  }, [selectedFolderData]);
 
   return (
-    <AnimatedDiv className="noteCard">
+    <AnimatedDiv
+      className="noteCard"
+      onClick={() => {
+        notesContext?.setSelectedNote(props.note.id);
+        handleModal(true, ModalsNames.updateNote);
+      }}
+    >
       <div
         className="cornerRounder1"
         style={{
-          background: selectedFolder?.color
-            ? `var(--${selectedFolder?.color})`
+          background: selectedFolderData?.color
+            ? `var(--${selectedFolderData?.color})`
             : "var(--lightBlack)",
         }}
       ></div>
       <div
         className="cornerRounder2"
         style={{
-          background: selectedFolder?.color
-            ? `var(--${selectedFolder?.color})`
+          background: selectedFolderData?.color
+            ? `var(--${selectedFolderData?.color})`
             : "var(--lightBlack)",
         }}
       ></div>
       <div className="cornerRounder3"></div>
-      <div
-        className="overflow-hidden"
-        onClick={() => {
-          props.setSelectedNote(props.note.id);
-          handleModal(true, ModalsNames.updateNote);
-        }}
-      >
+      <div className="overflow-hidden">
         {props.note.title ? (
           <h1 style={{ color: textColor ? `var(--${textColor})` : "auto" }}>
             {props.note.title}
