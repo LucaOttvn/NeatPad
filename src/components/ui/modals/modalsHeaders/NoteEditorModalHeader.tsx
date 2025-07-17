@@ -6,6 +6,7 @@ import { gsap, Power4 } from "gsap";
 import { FoldersContext } from "@/contexts/foldersContext";
 import { ReactSVG } from "react-svg";
 import { NotesContext } from "@/contexts/notesContext";
+import './modalHeaders.scss';
 
 interface BasicComponentProps {
   onCloseCallback?: () => void;
@@ -39,15 +40,15 @@ export default function NoteEditorModalHeader(props: BasicComponentProps) {
 
   useEffect(() => {
     gsap.to(".addNoteToFolder", {
-      height: foldersListOpened ? 0 : "100%",
+      height: foldersListOpened ? 0 : "auto",
       duration: 0.2,
       ease: Power4.easeOut,
     });
   }, [foldersListOpened]);
 
   return (
-    <header className="flex start flex-col">
-      <div className="modalHeader">
+    <header className="noteEditorModalHeader">
+      <div className="w-full flex justify-between px-3 pt-5 pb-3">
         <div className="start gap-5">
           <SvgButton
             fileName={pinned ? "pinFill" : "pin"}
@@ -71,7 +72,7 @@ export default function NoteEditorModalHeader(props: BasicComponentProps) {
         />
       </div>
       <div className="addNoteToFolder">
-        <div className="w-full start flex-wrap gap-5 p-5">
+        <div className="w-full h-full start flex-wrap gap-5 p-5">
           {foldersContext?.folders.map((folder, index) => {
             return (
               <div
