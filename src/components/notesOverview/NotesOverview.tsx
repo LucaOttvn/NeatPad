@@ -5,12 +5,14 @@ import AnimatedText from "../animatedComponents/AnimatedText";
 import { NotesContext } from "@/contexts/notesContext";
 import { FoldersContext } from "@/contexts/foldersContext";
 import NotesSection from "../ui/NotesSection";
-import { getNotes } from "@/db/notes";
-import { getFolders } from "@/db/folders";
+
+
 import { UserContext } from "@/contexts/userContext";
 import { ReactSVG } from "react-svg";
 import AnimatedDiv from "../animatedComponents/AnimatedDiv";
 import Loader from "../ui/Loader";
+import { getFoldersByUserId } from "@/db/folders";
+import { getNotesByUserId } from "@/db/notes";
 
 export default function NotesOverview() {
   const notesContext = useContext(NotesContext);
@@ -45,7 +47,7 @@ export default function NotesOverview() {
   async function fetchData() {
     setLoading(true)
     try {
-      const [notes, folders] = await Promise.all([getNotes(userContext?.user!.id!), getFolders(userContext?.user?.id!)]);
+      const [notes, folders] = await Promise.all([getNotesByUserId(userContext?.user!.id!), getFoldersByUserId(userContext?.user?.id!)]);
 
       if (notes) {
         setNotesToShow(notes);

@@ -7,6 +7,7 @@ export default function RecoverPasswordPage() {
 
     const [token, setToken] = useState<string | undefined>()
 
+    // get the token from the url and pass it to the reset password form as a prop
     useEffect(() => {
         const urlParams = new URLSearchParams(window.location.search);
         const token = urlParams.get('token')

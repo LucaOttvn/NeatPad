@@ -37,9 +37,11 @@ export async function updateUser(updatedUser: User) {
         .from('users')
         .update(updatedUser)
         .eq('id', updatedUser.id)
+        .select()
+        .single()
 
     if (error) {
-        console.error("Error updating note:", error);
+        console.error("Error updating user:", error);
         return null;
     }
 
