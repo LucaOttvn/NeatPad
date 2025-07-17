@@ -116,6 +116,7 @@ body {
   height: 100dvh;
   display: flex;
   flex-direction: column;
+  overflow-y: hidden;
 }
 
 .mainBtn {
