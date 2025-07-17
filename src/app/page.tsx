@@ -1,4 +1,4 @@
-"use client";;
+"use client";
 import GeneralModal from "@/components/ui/GeneralModal";
 import NoteEditor from "@/components/NoteEditor";
 import GeneralSideMenu from "@/components/ui/SideMenu";
@@ -39,14 +39,14 @@ export default function Home() {
       {userContext?.user ? (
         <>
           <TopBar />
-          <GeneralModal>
+          <GeneralModal width={80} height={80}>
             <NoteEditor />
           </GeneralModal>
           <GeneralSideMenu />
           <button
             className="addBtn"
             style={{ borderRadius: "50%" }}
-            onClick={handleModal}
+            onClick={()=>{handleModal}}
           >
             <Image
               src="/icons/plus.svg"
