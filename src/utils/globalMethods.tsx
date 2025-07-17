@@ -35,3 +35,56 @@ export function animateDivUnmount(ids: string[], onComplete: () => void) {
   });
 }
 
+interface EmailValidationResult {
+  isValid: boolean;
+  error?: string;
+}
+
+export function validateEmail(email: string): EmailValidationResult {
+  // regular expression for basic email validation
+  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+  if (!emailRegex.test(email)) {
+    return {
+      isValid: false,
+      error: "Please enter a valid email address.",
+    };
+  }
+
+  return {
+    isValid: true,
+  };
+}
+
+// password policy: 
+// minimum length: 8, 1 upper case, 1 lower case, 1 number, 1 special character
+interface PasswordValidationResult {
+  isValid: boolean;
+  errors: string[];
+}
+
+export function validatePassword(password: string): PasswordValidationResult {
+  const errors: string[] = [];
+  const minLength = 8;
+
+  if (password.length < minLength) {
+    errors.push(`Password must be at least ${minLength} characters long.`);
+  }
+  if (!/[A-Z]/.test(password)) {
+    errors.push("Password must contain at least one uppercase letter.");
+  }
+  if (!/[a-z]/.test(password)) {
+    errors.push("Password must contain at least one lowercase letter.");
+  }
+  if (!/[0-9]/.test(password)) {
+    errors.push("Password must contain at least one number.");
+  }
+  if (!/[!@#$%^&*(),.?":{}|<>]/.test(password)) {
+    errors.push("Password must contain at least one special character.");
+  }
+
+  return {
+    isValid: errors.length === 0,
+    errors: errors,
+  };
+}
