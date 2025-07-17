@@ -1,25 +1,21 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import "./style.scss";
 import { signIn, signUp } from "@/api/user";
 import AnimatedDiv from "../animated/AnimatedDiv";
 import GeneralModal from "../ui/GeneralModal";
 import { handleModal } from "@/utils/globalMethods";
+import { UserContext } from "@/utils/contexts";
 
 export default function Login() {
   const [formData, setFormData] = useState({ email: "", password: "" });
   const [creatingAccount, setCreatingAccount] = useState(false);
+  const userContext = useContext(UserContext);
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  function handleChange(e: React.ChangeEvent<HTMLInputElement>) {
     setFormData((prev) => ({
       ...prev,
       [e.target.name]: e.target.value,
     }));
-  };
-
-  function onSubmit() {
-    creatingAccount
-      ? signUp(formData.email, formData.password)
-      : signIn(formData.email, formData.password);
   }
 
   return (
@@ -29,9 +25,9 @@ export default function Login() {
         <button
           className="mainBtn"
           onClick={() => {
-            setCreatingAccount(false)
-            setFormData({ email: "", password: "" })
-            handleModal()
+            setCreatingAccount(false);
+            setFormData({ email: "", password: "" });
+            handleModal();
           }}
         >
           Login
@@ -40,9 +36,9 @@ export default function Login() {
         <button
           className="mainBtn"
           onClick={() => {
-            setCreatingAccount(true)
-            setFormData({ email: "", password: "" })
-            handleModal()
+            setCreatingAccount(true);
+            setFormData({ email: "", password: "" });
+            handleModal();
           }}
         >
           Create new account
@@ -68,7 +64,17 @@ export default function Login() {
               placeholder="Password"
             />
           </div>
-          <button className="mainBtn" onClick={onSubmit}>
+          <button
+            className="mainBtn"
+            onClick={async () => {
+              const user = creatingAccount
+                ? await signUp(formData.email, formData.password)
+                : await signIn(formData.email, formData.password);
+              if (user) {
+                userContext?.setUser(user.user);
+              }
+            }}
+          >
             {creatingAccount ? "Confirm" : "Login"}
           </button>
         </div>

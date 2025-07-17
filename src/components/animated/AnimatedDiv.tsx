@@ -1,4 +1,4 @@
-import React, { ReactNode, useEffect } from "react";
+import { ReactNode, useEffect } from "react";
 import { gsap, Power4 } from "gsap";
 import "../style.scss";
 
@@ -10,8 +10,9 @@ interface AnimatedDivProps {
 export default function AnimatedDiv({ children, className = "" }: AnimatedDivProps) {
   useEffect(() => {
     gsap.to(".animatedDiv", {
-      scale: 1,
+      opacity: 1,
       ease: Power4.easeOut,
+      duration: 1
     });
   }, []);
 
