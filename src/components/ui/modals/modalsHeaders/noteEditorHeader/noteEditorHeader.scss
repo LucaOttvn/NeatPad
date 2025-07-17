@@ -8,6 +8,7 @@
         height: 0;
         display: flex;
         flex-direction: column;
+        align-items: center;
         overflow: hidden;
         margin: 0 1rem 1rem 1rem;
         border-radius: var(--mainBorderRadius);
@@ -48,8 +49,16 @@
                 }
             }
         }
+
         .footer {
-background-color: blue;
+            width: fit-content;
+            background-color: var(--darkBlue);
+            margin: 0 0.5rem 0.5rem 0.5rem;
+            padding: 0.5rem;
+            border-radius: var(--mainBorderRadius);
+            display: flex;
+            justify-content: center;
+            align-items: center;
         }
     }
 
@@ -65,7 +74,7 @@ background-color: blue;
             margin: 1rem;
 
             .folderCardSelector {
-                height: 100%;
+                height: 2.5rem;
                 display: flex;
                 justify-content: center;
                 align-items: center;
