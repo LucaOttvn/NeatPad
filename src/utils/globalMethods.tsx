@@ -6,7 +6,7 @@ let isSideMenuOpen = false;
 export function handleModal(
   target: string | undefined,
 ) {
-  // if target is undefined close the generalBackdrop that stays behind each modal, in this way every modal in the app gets closed
+  // if target is undefined close the generalBackdrop that stays behind each modal, in this way every modal in the app gets closed even without having a specific id to point to
   gsap.to((target ? "#" : '') + (target ?? '.generalModalBackdrop'), {
     scale: target != undefined ? 1 : 0,
     duration: 0.2,

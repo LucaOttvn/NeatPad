@@ -78,52 +78,7 @@ export default function NotesOverview() {
         title="Others"
       />
 
-      <GeneralModal
-        id={ModalsNames.updateNote}
-        width={80}
-        height={80}
-        onCloseCallback={() => {
-          handleNoteOnModalClose();
-        }}
-      >
-        <NoteEditorModalHeader
-          note={notesContext?.notes.find(
-            (n) => n.id === notesContext.selectedNote
-          )}
-          modalId={ModalsNames.updateNote}
-          onCloseCallback={() => {
-            handleNoteOnModalClose();
-          }}
-        />
-        <NoteEditor />
-      </GeneralModal>
-
-      <GeneralModal id={ModalsNames.createFolder} height={50}>
-        <GeneralModalHeader
-          modalId={ModalsNames.createFolder}
-        ></GeneralModalHeader>
-        <FolderCreator />
-      </GeneralModal>
-
-      <GeneralModal
-        id={ModalsNames.newNote}
-        width={80}
-        height={80}
-        onCloseCallback={() => {
-          handleNoteOnModalClose();
-        }}
-      >
-        <NoteEditorModalHeader
-          note={notesContext?.notes.find(
-            (n) => n.id === notesContext.selectedNote
-          )}
-          modalId={ModalsNames.newNote}
-          onCloseCallback={() => {
-            handleNoteOnModalClose();
-          }}
-        />
-        <NoteEditor />
-      </GeneralModal>
+      <GeneralModal></GeneralModal>
     </div>
   );
 }
