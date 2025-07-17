@@ -14,13 +14,14 @@ export default function NoteCard(props: NoteCardProps) {
   const foldersContext = useContext(FoldersContext);
   const notesContext = useContext(NotesContext);
 
-  const foundSelectedFolderData = foldersContext?.folders.find(
-    (el) => el.id == foldersContext.selectedFolder
+  const foundParentFolder = foldersContext?.folders.find((el) =>
+    props.note.id ? el.notes.includes(props.note.id) : undefined
   );
 
-  const textColor = colors.find(
-    (item) => item.color == foundSelectedFolderData?.color
-  )?.text || "White"
+  const textColor =
+    colors.find((item) => item.color == foundParentFolder?.color)?.text ||
+    "White";
+
 
   return (
     <AnimatedDiv
@@ -33,16 +34,16 @@ export default function NoteCard(props: NoteCardProps) {
       <div
         className="cornerRounder1"
         style={{
-          background: foundSelectedFolderData?.color
-            ? `var(--${foundSelectedFolderData?.color})`
+          background: foundParentFolder?.color
+            ? `var(--${foundParentFolder?.color})`
             : "var(--lightBlack)",
         }}
       ></div>
       <div
         className="cornerRounder2"
         style={{
-          background: foundSelectedFolderData?.color
-            ? `var(--${foundSelectedFolderData?.color})`
+          background: foundParentFolder?.color
+            ? `var(--${foundParentFolder?.color})`
             : "var(--lightBlack)",
         }}
       ></div>
