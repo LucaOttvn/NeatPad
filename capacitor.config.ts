@@ -10,7 +10,7 @@ const config: CapacitorConfig = {
   },
   plugins: {
     SafeArea: {
-      enabled: true,
+      enabled: false,
     },
   },
 };
