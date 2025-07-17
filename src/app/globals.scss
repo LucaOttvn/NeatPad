@@ -102,7 +102,7 @@
 }
 
 html {
-  // margin-top: var(--safe-area-inset-top);
+  margin-top: var(--safe-area-inset-top);
   position: relative;
   --ion-safe-area-top: env(--safe-area-inset-top);
   --ion-safe-area-bottom: env(--safe-area-inset-bottom);
