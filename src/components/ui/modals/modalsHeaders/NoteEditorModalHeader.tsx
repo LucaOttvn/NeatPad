@@ -4,7 +4,6 @@ import { handleModal } from "@/utils/globalMethods";
 import { Note } from "@/utils/interfaces";
 import { gsap, Power4 } from "gsap";
 import { FoldersContext } from "@/contexts/foldersContext";
-import { ReactSVG } from "react-svg";
 import { NotesContext } from "@/contexts/notesContext";
 import './modalHeaders.scss';
 

@@ -2,7 +2,7 @@ import { ModalsNames, Note } from "@/utils/interfaces";
 import "./notesOverview.scss";
 import NoteEditor from "../ui/modals/noteEditor/NoteEditor";
 import GeneralModal from "../ui/modals/GeneralModal";
-import { useContext } from "react";
+import { useContext, useEffect } from "react";
 import { updateNote } from "@/api/notes";
 import NoteEditorModalHeader from "../ui/modals/modalsHeaders/NoteEditorModalHeader";
 import AnimatedText from "../animatedComponents/AnimatedText";
@@ -34,16 +34,29 @@ export default function NotesOverview() {
     notesToShow = notesContext!.notes;
   }
 
-  function handleNoteOnModalClose(newNote?: Note) {
+  function handleNoteOnModalClose() {
+    // if there's a selected note
     if (selectedNoteData) {
       selectedNoteData.last_update = new Date();
       updateNote(selectedNoteData);
     }
-    if (newNote) {
-      console.log(newNote);
+    else {
+      // const note: Note = {
+      //   title: 'New',
+      //   text: 'New',
+      //   state: 0,
+      //   user: userId,
+      //   last_update: new Date(),
+      //   pinned: false
+      // }
+      // createNote()
     }
     notesContext?.setSelectedNote(undefined);
   }
+
+  useEffect(() => {
+    console.log(selectedNoteData)
+  }, [selectedNoteData]);
 
   return (
     <div className="notesOverviewContainer">
@@ -53,7 +66,7 @@ export default function NotesOverview() {
         <AnimatedText className="title" text="My" />
         <AnimatedText className="title ms-5" text="Notes" />
       </div>}
-      {/* pinnedSection */}
+      {/* pinnedSection (show it only if there's at least one pinned note) */}
       {notesToShow.some((el) => el.pinned) && (
         <NotesSection
           notes={notesToShow.filter((el) => el.pinned)}

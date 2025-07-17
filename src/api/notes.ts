@@ -19,21 +19,13 @@ export async function getNotes(): Promise<Note[] | null> {
 }
 
 
-export async function createNote(userId: string) {
+export async function createNote(newNote: Note) {
 
-    const note: Note = {
-        title: 'New',
-        text: 'New',
-        state: 0,
-        user: userId,
-        last_update: new Date(),
-        pinned: false
-    }
     // Insert the new note into the "notes" table
     const { data, error } = await supabase
         .from('notes')
         .insert([
-            note
+            newNote
         ]);
 
     if (error) {
