@@ -1,5 +1,4 @@
 import { signIn, signUp } from '@/api/user';
-import AnimatedText from '@/components/animatedComponents/AnimatedText';
 import { ModalsContext } from '@/contexts/modalsContext';
 import { UserContext } from '@/contexts/userContext';
 import React, { useContext, useState } from 'react';
@@ -9,8 +8,6 @@ interface LoginModalProps {
 }
 
 export default function LoginModal(props: LoginModalProps) {
-
-    console.log(props.creatingAccount)
 
     const userContext = useContext(UserContext);
     const modalsContext = useContext(ModalsContext)
