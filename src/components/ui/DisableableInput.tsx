@@ -6,6 +6,7 @@ interface DisableableInputProps {
     updateData: Dispatch<SetStateAction<any>>
     values: { inputValue: any, disabled: boolean }
     inputRef: RefObject<HTMLInputElement | null>
+    placeholder?: string
 }
 
 // This component expects an object like { inputValue: any, disabled: boolean }
@@ -55,7 +56,7 @@ export default function DisableableInput(props: DisableableInputProps) {
         <div className='flex flex-col gap-2'>
             <span>Update {props.keyToUpdate}</span>
             <div className='flex gap-2'>
-                <input ref={props.inputRef} type="text" className='w-full' placeholder={`Insert ${props.keyToUpdate}`} disabled={props.values.disabled} value={props.values.inputValue} onChange={(e) => { handleInput(e) }} />
+                <input ref={props.inputRef} type="text" className='w-full' placeholder={`Insert ${props.placeholder || props.keyToUpdate}`} disabled={props.values.disabled} value={props.values.inputValue} onChange={(e) => { handleInput(e) }} />
 
                 <SvgButton style={{ display: props.values.disabled ? '' : 'none' }}
                     fileName='edit' onClick={handleInputsDisable} />
