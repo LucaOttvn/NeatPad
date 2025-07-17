@@ -1,5 +1,5 @@
 import { useContext } from "react";
-import "./ui.scss";
+import "../componentsStyle.scss";
 import { handleSideMenu } from "@/utils/globalMethods";
 import SvgButton from "./SvgButton";
 import { ScreenSizeContext } from "@/contexts/screenSizeContext";

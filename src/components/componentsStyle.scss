@@ -42,10 +42,6 @@
   }
 }
 
-.folderCard {
-  transition: 0.2s;
-}
-
 .generalSideMenu {
   z-index: 1;
   width: 0;
@@ -73,40 +69,137 @@
 
   .foldersList {
     display: flex;
+    flex-direction: column;
+    align-items: start;
+    justify-content: center;
+    gap: 1rem;
     padding-left: 2rem;
     width: 100%;
     height: 100%;
     position: relative;
     z-index: 0;
-    overflow: hidden;
-
+    overflow-x: hidden;
+    overflow-y: scroll;
+  
+    .folderCard {
+      // scale: 0;
+      width: 100%;
+      display: flex;
+      justify-content: flex-start;
+    }
+  
     * {
       &::-webkit-scrollbar {
         display: none;
         text-overflow: ellipsis;
       }
-
     }
+  }
+  
 
-    .shaderTop {
-      position: absolute;
-      top: 0;
-      left: 0;
+}
+
+.generalModalBackdrop {
+  width: 100%;
+  height: 100%;
+  position: fixed;
+  scale: 0;
+  top: 0;
+  left: 0;
+  transform: translate(-50%, -50%);
+  overflow: hidden;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  backdrop-filter: blur(5px);
+  z-index: 2;
+
+  .generalModal {
+    width: fit-content;
+    height: fit-content;
+    background-color: var(--lightBlack);
+    border-radius: var(--mainBorderRadius);
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+
+    .addNoteToFolder {
       width: 100%;
-      height: 4rem;
-      background: linear-gradient(var(--Black), transparent);
-      z-index: 1;
+      height: 0;
+      background-color: var(--darkGrey);
+      margin-top: 1rem;
+      overflow: hidden;
+      position: relative;
     }
 
-    .shaderBottom {
-      position: absolute;
-      bottom: 0;
-      left: 0;
+    .modalHeader {
       width: 100%;
-      height: 4rem;
-      background: linear-gradient(0deg, var(--Black), transparent);
-      z-index: 1;
+      padding: 1rem 1rem 0 1rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      gap: 4rem;
+      overflow: hidden;
     }
+  }
+}
+
+.topBar {
+  width: 100%;
+  height: 4rem;
+  position: fixed;
+  top: 0;
+  left: 0;
+  display: flex;
+  justify-content: start;
+  align-items: center;
+  // background: rgba(0, 0, 0, 0.8);
+  // backdrop-filter: blur(10px);
+  background: var(--Black);
+  padding: 0 0.5rem;
+  gap: 1rem;
+  z-index: 2;
+}
+
+
+
+.colorPicker {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1rem;
+
+  .colorSelector {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    transition: 0.2s;
+    border: solid 3px transparent;
+
+    &:active {
+      scale: 0.9;
+      border: solid 3px var(--White);
+    }
+
+    &:hover {
+      cursor: pointer;
+      scale: 0.95;
+      border: solid 3px var(--White);
+    }
+  }
+}
+
+.notesSection {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 0.8rem;
+
+  .notes {
+    width: 100%;
+    height: 100%;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+    gap: 0.8rem;
   }
 }
 
@@ -194,6 +287,15 @@
 
 // tablet && smartphones
 @media (max-width: 1000px) {
+
+  .generalModalBackdrop {
+    .generalModal {
+      width: 100% !important;
+      height: 100% !important;
+      border: none;
+      border-radius: 0 !important;
+    }
+  }
 
   .generalSideMenu {
     user-select: none;
