@@ -17,17 +17,19 @@
 }
 
 :root {
-  --mainBoxShadow: #303030 0px 8px 20px;
+  --mainBoxShadow: var(--Black) 2px 2px 5px;
   --bigBoxShadow: var(--Black) 0px 10px 30px;
   --mainBorderRadius: 15px;
+  --bigBorderRadius: 30px;
 
   --Black: #000000;
-  --lightBlack: #101010;
+  --lightBlack: #151515;
   --White: #f0f0f0;
   --softWhite: #cacaca;
+  --transparentWhite: #ffffff45;
   --lightGrey: #707070;
   --Grey: #505050;
-  --darkGrey: #1c2025;
+  --darkGrey: #22262c;
 
   --Pink: #f7a9a8;
   --darkPink: #d29190;
@@ -263,7 +265,8 @@ h1 {
   .iconBtn,
   .noteCard {
     &:hover {
-      scale: 0.95
+      scale: 0.9;
+      background: var(--Grey);
     }
   }
 }

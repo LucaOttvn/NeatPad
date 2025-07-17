@@ -2,10 +2,11 @@ export interface Note {
     id?: number
     title: string
     text: string
-    user: number
     last_update: Date
     pinned: boolean
     folder: number | null
+    user: number
+    collaborators: number[]
 }
 
 export interface User {
