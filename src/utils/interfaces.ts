@@ -13,6 +13,7 @@ export enum ModalsNames {
     updateNote = "updateNoteModal",
     login = "login",
     folderHandler = "folderHandlerModal",
+    settings = "settingsModal",
 }
 export enum SideMenusNames {
     folders = "foldersSideMenu",

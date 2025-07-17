@@ -9,6 +9,7 @@ import NoteEditor from "./noteEditor/NoteEditor";
 import LoginModal from "./LoginModal";
 import FolderHandler from "./FolderHandler";
 import { FoldersContext } from "@/contexts/foldersContext";
+import SettingsModal from "./settings/SettingsModal";
 
 interface GeneralModalProps {
   width?: number;
@@ -82,6 +83,10 @@ export default function GeneralModal(props: GeneralModalProps) {
         {modalsContext?.selectedModal == ModalsNames.login && <>
           <GeneralModalHeader modalId={ModalsNames.login} className="loginModalHeader" />
           <LoginModal />
+        </>}
+       
+        {modalsContext?.selectedModal == ModalsNames.settings && <>
+          <SettingsModal />
         </>}
       </div>
     </div>

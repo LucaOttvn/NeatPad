@@ -34,6 +34,7 @@ export default function Home() {
     })();
   }, []);
 
+  // delete mode animation for the add/delete note button
   useEffect(() => {
     gsap.to('#newNoteBtn', {
       rotateY: notesContext?.deleteMode.active ? '180deg' : '0deg',
@@ -67,7 +68,8 @@ export default function Home() {
       title: '',
       text: '',
       last_update: new Date(),
-      pinned: false
+      pinned: false,
+      folder: null
     }
     let newNoteFromDB = await createNote(newNote)
     if (newNoteFromDB) {
