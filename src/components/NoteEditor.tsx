@@ -17,12 +17,12 @@ export default function NoteEditor() {
           }}
         />
       </header>
-      <div
+      <textarea
         className="noteEditorInputField"
-        contentEditable
+        placeholder="Insert your note..."
         data-placeholder="Insert your note..."
       >
-      </div>
+      </textarea>
     </div>
   );
 }
