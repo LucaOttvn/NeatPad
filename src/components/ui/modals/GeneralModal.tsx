@@ -66,7 +66,7 @@ export default function GeneralModal() {
           // avoid the modal closure on modal's body click because of the parent div onclick event trigger
           e.stopPropagation();
         }}
-        style={{ width: modalStyle?.width, height: modalStyle?.height }}
+        style={{ width: modalStyle?.width, height: modalStyle?.height, maxWidth: modalStyle?.maxWidth }}
         // this allows the generalModalRef to automatically focus itself on open, since this condition is necessary to detect the ESC key press
         tabIndex={0}
         onKeyDown={(e) => {

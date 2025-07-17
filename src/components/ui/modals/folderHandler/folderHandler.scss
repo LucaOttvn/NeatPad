@@ -6,7 +6,6 @@
   align-items: center;
   flex-direction: column;
   gap: 3rem;
-  padding: 5rem;
   padding-top: 0;
   overflow-y: scroll;
 
@@ -23,12 +22,25 @@
     .heading {
       display: flex;
       flex-direction: column;
-      gap: 0.5rem;
+      gap: 2rem;
     }
 
     .createFolderBtn {
       width: 100%;
       height: 5rem;
+    }
+  }
+}
+
+// tablet && smartphones
+@media (max-width: 1000px) {
+  .folderHandler {
+    gap: 1rem;
+    justify-content: flex-start;
+    .wrapper {
+      .heading {
+        gap: 1rem
+      }
     }
   }
 }

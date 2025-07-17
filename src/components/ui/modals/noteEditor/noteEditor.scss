@@ -18,13 +18,13 @@
       font-size: 130%;
       background-color: var(--lightBlack) !important;
       overflow: hidden;
-      border: none;
-      border-bottom: solid 1px var(--lightGrey);
+      border: none !important;
+      border-bottom: solid 1px var(--lightGrey) !important;
       border-radius: 0;
+
       &:focus {
         outline: none;
         border: none;
-        border-bottom: solid 1px var(--White);
       }
     }
   }

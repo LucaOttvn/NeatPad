@@ -35,7 +35,7 @@ export default function SettingsModal(props: SettingsModalProps) {
           <ResetPasswordForm />
         </section>
         <div className='flex flex-col items-center gap-5'>
-          <button className='mainBtn center gap-2' style={{ background: 'var(--darkGrey)' }} onClick={logout}><ReactSVG src={'/icons/logout.svg'} className="icon" />Logout</button>
+          <button className='mainBtn center gap-2' style={{ background: 'var(--Grey)' }} onClick={logout}><ReactSVG src={'/icons/logout.svg'} className="icon" />Logout</button>
           <button className='mainBtn' style={{ background: 'var(--Red)' }} onClick={() => { handleDeleteSupabaseUser() }}>Delete account</button>
         </div>
       </div>

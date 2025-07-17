@@ -92,13 +92,13 @@ export default function LoginModal(props: LoginModalProps) {
                     <span className="ms-3">Account</span>
                 </div> : "Login"}
             </h1>
-            <div className="flex flex-col gap-4" onKeyDown={handleKeyDown}>
+            <div className="flex flex-col gap-5" onKeyDown={handleKeyDown}>
                 <input
                     onChange={handleChange}
                     type="text"
                     onKeyDown={handleKeyDown}
                     name="email"
-                    placeholder="Email"
+                    placeholder="Insert email"
                 />
                 <PasswordInput disabled={false} onChange={handleChange} value={formData.password} />
                 {!props.creatingAccount && <div className='w-full center'>

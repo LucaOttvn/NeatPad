@@ -21,13 +21,12 @@
   --bigBoxShadow: var(--Black) 0px 10px 30px;
   --mainBorderRadius: 10px;
 
-  --lightBlack: #2b2f35;
+  --lightBlack: #1c2025;
   --Black: #000000;
   --White: #f0f0f0;
   --softWhite: #cacaca;
   --lightGrey: #707070;
   --Grey: #505050;
-  --darkGrey: #202020;
 
   --Pink: #f7a9a8;
   --darkPink: #d29190;
@@ -78,7 +77,7 @@
   }
 
   &::-webkit-scrollbar-track {
-    background: var(--darkGrey);
+    background: var(--lightBlack);
   }
 
   &::-webkit-scrollbar-thumb {
@@ -113,14 +112,14 @@
 body {
   font-family: "Inter", sans-serif;
   background-color: var(--Black);
-  height: 100svh;
+  height: 100dvh;
   display: flex;
   flex-direction: column;
 }
 
 .mainBtn {
   width: fit-content;
-  padding: 0.4rem 1rem;
+  padding: 0.6rem 1.4rem;
   border-radius: var(--mainBorderRadius);
   background-color: var(--Blue);
   user-select: none;
@@ -174,7 +173,10 @@ textarea {
 input[type="text"],
 input[type="email"],
 input[type="password"] {
-  border-bottom: var(--White) 1px solid !important;
+  border: var(--White) 1px solid !important;
+  background-color: var(--);
+  border-radius: var(--mainBorderRadius);
+  // color: var(--Black);
 }
 
 .addBtn {

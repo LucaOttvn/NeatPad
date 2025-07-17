@@ -20,6 +20,7 @@ export async function getNotesByUserId(userId: number){
 
 
 export async function createNote(newNote: Note){
+
   const { data, error } = await supabase
     .from('notes')
     .insert([newNote])
