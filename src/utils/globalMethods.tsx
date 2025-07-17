@@ -1,8 +1,5 @@
 
-import { deleteNote, updateNote } from "@/api/notes";
-import { NotesContext } from "@/contexts/notesContext";
 import { gsap, Power4 } from "gsap";
-import { useContext } from "react";
 
 let isSideMenuOpen = false;
 

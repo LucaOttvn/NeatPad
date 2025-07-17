@@ -2,14 +2,15 @@ import AnimatedDiv from "@/components/animatedComponents/AnimatedDiv";
 import { useContext, useEffect, useRef, useState } from "react";
 import ColorPicker from "../ColorPicker";
 import { FoldersContext } from "@/contexts/foldersContext";
-import { Folder, ModalsNames } from "@/utils/interfaces";
+import { Folder } from "@/utils/interfaces";
 import { UserContext } from "@/contexts/userContext";
 import { createFolder, updateFolder } from "@/api/folders";
-import { handleModal } from "@/utils/globalMethods";
+import { ModalsContext } from "@/contexts/modalsContext";
 
 export default function FolderHandler() {
   const foldersContext = useContext(FoldersContext);
   const userContext = useContext(UserContext);
+  const modalsContext = useContext(ModalsContext);
 
   const [folderName, setFolderName] = useState("");
 
@@ -27,34 +28,36 @@ export default function FolderHandler() {
         if (foundFolder.current.color) setSelectedColor(foundFolder.current.color)
       }
     }
+    console.log(foldersContext?.updatingFolder)
   }, []);
 
   async function handleFolderCreation() {
 
     if (foldersContext?.updatingFolder) {
-      if (foundFolder.current) {
-        const changesDetected = foundFolder.current?.name != folderName || foundFolder.current.color != selectedColor
-        if (changesDetected) {
+
+      const changesDetected = foundFolder.current?.name != folderName || foundFolder.current.color != selectedColor
+      if (changesDetected) {
+        if (foundFolder.current) {
           await updateFolder(foundFolder.current.id!, { name: folderName, color: selectedColor })
           foldersContext.updateFolderState(foundFolder.current.id!, { name: folderName, color: foundFolder.current.color })
         }
-        handleModal(undefined)
-      } else {
-        const newFolder: Folder = {
-          name: folderName,
-          color: selectedColor || 'White',
-          user: userContext!.user!.id,
-        };
-        await createFolder(newFolder);
-        foldersContext?.setFolders((prevState: Folder[]) => [
-          ...prevState,
-          newFolder,
-        ]);
-        handleModal(undefined);
       }
+    } else {
+      const newFolder: Folder = {
+        name: folderName,
+        color: selectedColor || 'White',
+        user: userContext!.user!.id,
+      };
+      await createFolder(newFolder);
+      foldersContext?.setFolders((prevState: Folder[]) => [
+        ...prevState,
+        newFolder,
+      ]);
     }
+    foldersContext?.setUpdatingFolder(undefined)
+    modalsContext?.setSelectedModal(undefined)
   }
-  
+
   return (
     <AnimatedDiv className="FolderHandler">
       <div className="wrapper flex">
