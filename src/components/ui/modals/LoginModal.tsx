@@ -44,6 +44,7 @@ export default function LoginModal(props: LoginModalProps) {
 
             if (response.ok) {
                 const JSONRes = await response.json()
+                localStorage.setItem('JWT', JSONRes.token)
                 userContext?.setUser(JSONRes.user);
 
             } else {

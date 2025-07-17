@@ -1,11 +1,15 @@
 import { supabase } from '@/api/supabaseClient';
 import bcrypt from 'bcrypt';
 import { NextResponse } from 'next/server';
+import jwt from 'jsonwebtoken';
+
 
 export async function comparePassword(plainTextPassword: string, hashedPassword: string) {
     const match = await bcrypt.compare(plainTextPassword, hashedPassword);
     return match;
 }
+
+const JWT_SECRET = process.env.JWT_SECRET!;
 
 export async function POST(request: Request) {
     try {
@@ -33,7 +37,9 @@ export async function POST(request: Request) {
             return NextResponse.json({ error: 'Invalid credentials.' }, { status: 401 });
         }
 
-        return NextResponse.json({ message: 'Login successful', user: { id: user.id, email: user.email } }, { status: 200 });
+        const token = jwt.sign({ userId: user.id, email: user.email }, JWT_SECRET, { expiresIn: '7d' });
+
+        return NextResponse.json({ message: 'Login successful', token, user: { id: user.id, email: user.email } }, { status: 200 });
 
     } catch (error: any) {
         console.error('Signin error:', error);

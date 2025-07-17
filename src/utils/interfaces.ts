@@ -2,10 +2,15 @@ export interface Note {
     id?: number
     title: string
     text: string
-    user: string
+    user: number
     last_update: Date
     pinned: boolean
     folder: number | null
+}
+
+export interface User {
+    id?: number
+    email: string
 }
 
 export enum ModalsNames {

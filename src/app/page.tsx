@@ -1,12 +1,11 @@
 "use client";;
 import TopBar from "@/components/ui/TopBar";
 import Image from "next/image";
-import { getUser } from "@/api/user";
 import { useContext, useEffect, useLayoutEffect, useState } from "react";
 import { ScaleLoader } from "react-spinners";
 import AnimatedDiv from "@/components/animatedComponents/AnimatedDiv";
 import NotesOverview from "@/components/notesOverview/NotesOverview";
-import { ModalsNames, Note } from "@/utils/interfaces";
+import { ModalsNames, Note, User } from "@/utils/interfaces";
 import { UserContext } from "@/contexts/userContext";
 import GeneralSideMenu from "@/components/ui/SideMenu";
 import Login from "@/components/Login";
@@ -35,14 +34,42 @@ export default function Home() {
   }, [isMobile.value])
 
   useEffect(() => {
-    (async () => {
-      const user = await getUser();
-      setIsLoading(false);
-      if (userContext) {
-        userContext.setUser(user);
-      }
-    })();
+    const token = localStorage.getItem('JWT');
+
+    setIsLoading(true)
+
+    if (token) {
+      async function verifyToken() {
+        try {
+          const response = await fetch('/api/verifyToken', {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          });
+
+          if (response.ok) {
+            const data = await response.json();
+            const user: User = { id: data.userId, email: data.email }
+            userContext?.setUser(user)
+          } else {
+            localStorage.removeItem('JWT');
+            userContext?.setUser(undefined);
+          }
+        } catch (error) {
+          console.error('Error verifying token:', error);
+          localStorage.removeItem('JWT');
+          userContext?.setUser(undefined);
+        }
+      };
+
+      verifyToken();
+    } else {
+      userContext?.setUser(undefined);
+    }
+
+    setIsLoading(false)
   }, []);
+
 
   // delete mode animation for the add/delete note button
   useEffect(() => {
@@ -74,7 +101,7 @@ export default function Home() {
   // when the user clicks on the plus button, the createNote() gets triggered, this happens because the NoteEditor component needs a note with an already existing id because it's supposed to edit notes, not creating new ones (as you can guess from the name)
   async function openNewNoteModal() {
     const newNote: Note = {
-      user: userContext!.user!.id,
+      user: userContext!.user!.id!,
       title: '',
       text: '',
       last_update: new Date(),
