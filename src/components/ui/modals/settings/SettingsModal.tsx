@@ -28,7 +28,7 @@ export default function SettingsModal(props: SettingsModalProps) {
 
   return (
     <div className='settingsModal'>
-      <span className='title'>Settings</span>
+      <span className='title center'>Settings</span>
       <div className='w-full h-full flex flex-col justify-between items-center mt-10'>
         <section className='profileSection'>
           <span className='w-full center gap-2 p-2' style={{ fontSize: '110%', background: '#101010', borderRadius: 'var(--mainBorderRadius)' }}>Email: <b>{userContext?.user?.email}</b></span>

@@ -42,7 +42,7 @@ export default function LoginModal(props: LoginModalProps) {
             headers: {
                 'Content-Type': 'application/json',
             },
-            body: JSON.stringify({ email: formData.email, password: formData.password }),
+            body: JSON.stringify({ email: formData.email.trim(), password: formData.password.trim() }),
         });
 
         const JSONRes = await response.json()
@@ -86,7 +86,7 @@ export default function LoginModal(props: LoginModalProps) {
 
     return (
         <div className="loginModal">
-            <h1 className="title">
+            <h1 className="title center">
                 {props.creatingAccount ? <div className="flex flex-col items-start">
                     <span className="">Create</span>
                     <span className="ms-3">Account</span>

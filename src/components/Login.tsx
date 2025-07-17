@@ -9,7 +9,7 @@ export default function Login() {
   return (
     <AnimatedDiv className="loginContainer">
 
-      <AnimatedText className="title" text="NeatPad" />
+      <AnimatedText className="title center" text="NeatPad" />
 
       <div className="center flex-col gap-3">
         <button
