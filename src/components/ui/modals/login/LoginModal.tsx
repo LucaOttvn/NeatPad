@@ -74,7 +74,7 @@ export default function LoginModal(props: LoginModalProps) {
             headers: {
                 'Content-Type': 'application/json',
             },
-            body: JSON.stringify({ email: formData.email, resetLink: `https://neat-pad.vercel.app/recover-password?token=${token}` }),
+            body: JSON.stringify({ email: formData.email, resetLink: `https://www.neatpad.eu/recover-password?token=${token}` }),
         });
 
         console.log(response)
