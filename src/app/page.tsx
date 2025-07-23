@@ -93,24 +93,22 @@ export default function Home() {
 
     async function verifyToken() {
       try {
-        if (token) {
-          const response = await fetch('/api/verifyToken', {
-            headers: {
-              Authorization: `Bearer ${token}`,
-            },
-          });
+        if (!token) return userContext?.setUser(undefined);
 
-          if (response.ok) {
-            const data = await response.json();
-            const user: User = await getUserById(data.userId)
-            if (user) userContext?.setUser(user)
-          } else {
-            localStorage.removeItem('JWT');
-            userContext?.setUser(undefined);
-          }
-        } else {
-          userContext?.setUser(undefined);
+        const response = await fetch('/api/verifyToken', {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
+
+        if (!response.ok) {
+          localStorage.removeItem('JWT');
+          return userContext?.setUser(undefined);
         }
+
+        const data = await response.json();
+        const user: User = await getUserById(data.userId)
+        if (user) userContext?.setUser(user)
       } catch (error) {
         console.error('Error verifying token:', error);
         localStorage.removeItem('JWT');

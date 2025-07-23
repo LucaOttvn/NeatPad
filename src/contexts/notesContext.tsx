@@ -55,17 +55,13 @@ export function NotesProvider({ children }: { children: ReactNode }) {
 
     const currentNote = notes.find((note) => note.id == selectedNote)
 
-    if (currentNote) {
-      // if note's title and text are empty, delete it
-      if (currentNote.title === '' && currentNote.text === '') {
-        let updatedNotes = notes.filter(note => note.id != currentNote?.id)
-        setNotes(updatedNotes)
-        // delete the note from db
-        deleteNote(currentNote.id!)
-      }
-      // else {
-      //   updateNoteState(currentNote)
-      // }
+    if (!currentNote) return
+    // if note's title and text are empty, delete it
+    if (currentNote.title === '' && currentNote.text === '') {
+      let updatedNotes = notes.filter(note => note.id != currentNote?.id)
+      setNotes(updatedNotes)
+      // delete the note from db
+      deleteNote(currentNote.id!)
     }
   }
 
