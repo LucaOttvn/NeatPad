@@ -4,7 +4,7 @@ import { useContext, useRef } from "react";
 import { FoldersContext } from "@/contexts/foldersContext";
 import { NotesContext } from "@/contexts/notesContext";
 import gsap from 'gsap';
-import { isMobile, selectedModal, selectedSideMenu } from "@/utils/signals";
+import { isMobile, notes, selectedModal, selectedSideMenu } from "@/utils/signals";
 
 interface FolderProps {
   folder: Folder;
@@ -63,7 +63,7 @@ export default function FolderCard(props: FolderProps) {
           {props.folder.name.toUpperCase()}
         </span>
         <span style={{ color: `var(--${props.folder.color})` }} className="w-full center">
-          {notesContext?.notes.filter((note) => {
+          {notes.value.filter((note) => {
             return note.folders.find(el => el == props.folder.id)
           }).length} notes
         </span>

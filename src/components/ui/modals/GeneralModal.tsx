@@ -9,7 +9,7 @@ import LoginModal from "./login/LoginModal";
 import FolderHandler from "./folderHandler/FolderHandler";
 import { FoldersContext } from "@/contexts/foldersContext";
 import SettingsModal from "./settings/SettingsModal";
-import { isMobile, selectedModal } from "@/utils/signals";
+import { isMobile, notes, selectedModal } from "@/utils/signals";
 import { handleModal } from "@/utils/globalMethods";
 
 export default function GeneralModal() {
@@ -81,13 +81,13 @@ export default function GeneralModal() {
         {/* note editor */}
         {(selectedModal.value == ModalsNames.newNote || selectedModal.value == ModalsNames.updateNote) && <>
           <NoteEditorModalHeader
-            note={notesContext?.notes.find(
-              (el) => el.id === notesContext.selectedNote
+            note={notes.value.find(
+              (el) => el.id === notesContext?.selectedNote
             )}
             modalId={selectedModal.value == ModalsNames.newNote ? ModalsNames.newNote : ModalsNames.updateNote}
           />
-          <NoteEditor note={notesContext?.notes.find(
-            (el) => el.id === notesContext.selectedNote
+          <NoteEditor note={notes.value.find(
+            (el) => el.id === notesContext?.selectedNote
           )} /></>
           }
 

@@ -1,14 +1,12 @@
 "use client";
 import { deleteNote, updateNote } from "@/serverActions/notesActions";
 import { Note } from "@/utils/interfaces";
+import { notes } from "@/utils/signals";
 import { createContext, ReactNode, useState } from "react";
 
 interface NotesContextType {
-  notes: Note[];
-  setNotes: (Notes: Note[]) => void;
   selectedNote: number | undefined;
   setSelectedNote: (noteId: number | undefined) => void;
-  updateNoteState: (note: Note) => void
   deleteMode: DeleteMode
   setDeleteMode: (notes: DeleteMode) => void
   handleNoteEditorClose: () => void
@@ -24,7 +22,7 @@ export const NotesContext = createContext<NotesContextType | undefined>(
 );
 
 export function NotesProvider({ children }: { children: ReactNode }) {
-  const [notes, setNotes] = useState<Note[]>([]);
+
   const [selectedNote, setSelectedNote] = useState<number | undefined>();
   // this active toggle is necessary because of this use case:
   // When the user long presses a noteCard, the app enters the delete mode.
@@ -38,28 +36,16 @@ export function NotesProvider({ children }: { children: ReactNode }) {
     active: false, notes: []
   });
 
-  // in the noteEditor modal, this updates the local notes array but the real db update happens when the user closes the create/update modal in order to avoid tons of api calls on each key press
-  async function updateNoteState(note: Note) {
-    setNotes(prevState =>
-      prevState.map((el) =>
-        el.id === note.id
-          ? note
-          : el
-      )
-    );
-    await updateNote(note)
-  }
-
   // this method handles the note's saving and, if it's empty, it deletes it
   async function handleNoteEditorClose() {
 
-    const currentNote = notes.find((note) => note.id == selectedNote)
+    const currentNote = notes.value.find((note) => note.id == selectedNote)
 
     if (!currentNote) return
     // if note's title and text are empty, delete it
     if (currentNote.title === '' && currentNote.text === '') {
-      let updatedNotes = notes.filter(note => note.id != currentNote?.id)
-      setNotes(updatedNotes)
+      let updatedNotes = notes.value.filter(note => note.id != currentNote?.id)
+      // setNotes(updatedNotes)
       // delete the note from db
       deleteNote(currentNote.id!)
     }
@@ -67,7 +53,7 @@ export function NotesProvider({ children }: { children: ReactNode }) {
 
   return (
     <NotesContext.Provider
-      value={{ notes, setNotes, selectedNote, setSelectedNote, updateNoteState, deleteMode, setDeleteMode, handleNoteEditorClose }}
+      value={{ selectedNote, setSelectedNote, deleteMode, setDeleteMode, handleNoteEditorClose }}
     >
       {children}
     </NotesContext.Provider>

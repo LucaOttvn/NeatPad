@@ -9,6 +9,8 @@ import gsap from 'gsap';
 import MarkdownToolbar from './MarkdownToolbar';
 import ReactMarkdown from 'react-markdown';
 import remarkBreaks from 'remark-breaks';
+import { updateNote } from '@/serverActions/notesActions';
+import { updateNoteState } from '@/utils/signals';
 
 interface NoteEditorProps {
   note: Note | undefined
@@ -110,8 +112,8 @@ export default function NoteEditor(props: NoteEditorProps) {
     }
 
     // set a new timer to call saveNote after a delay
-    if (currentNote) debounceTimerRef.current = setTimeout(() => {
-      notesContext?.updateNoteState(currentNote)
+    if (currentNote) debounceTimerRef.current = setTimeout(async () => {
+      await updateNoteState(currentNote)
     }, 500);
   }, [currentNote]);
 

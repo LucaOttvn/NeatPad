@@ -5,9 +5,8 @@ import SvgButton from '@/components/ui/SvgButton';
 import { ReactSVG } from 'react-svg';
 import { Note, User } from '@/utils/interfaces';
 import { handleModal, validateEmail } from '@/utils/globalMethods';
-import { NotesContext } from '@/contexts/notesContext';
 import { UserContext } from '@/contexts/userContext';
-import { notesToShow } from '@/utils/signals';
+import { notes, updateNoteState } from '@/utils/signals';
 import { getUserByEmail, getUserById } from '@/serverActions/usersActions';
 
 interface CollaboratorsSectionProps {
@@ -17,7 +16,6 @@ interface CollaboratorsSectionProps {
 
 export default function CollaboratorsSection(props: CollaboratorsSectionProps) {
 
-    const notesContext = useContext(NotesContext)
     const userContext = useContext(UserContext)
     const [selectedCollaborators, setSelectedCollaborators] = useState<string[]>([])
     const [noteOwnerEmail, setNoteOwnerEmail] = useState<string>('')
@@ -76,12 +74,12 @@ export default function CollaboratorsSection(props: CollaboratorsSectionProps) {
 
         const updatedNote: Note = { ...props.note, collaborators: updatedCollaborators }
 
-        notesContext?.updateNoteState(updatedNote)
-        
+        await updateNoteState(updatedNote)
+
         emailInputRef.current.value = ''
     }
 
-    const stopCollaborating = () => {
+    const stopCollaborating = async () => {
         if (!props.note) return
 
         const collaborators = [...props.note?.collaborators]
@@ -90,28 +88,23 @@ export default function CollaboratorsSection(props: CollaboratorsSectionProps) {
 
         const updatedNote = { ...props.note, collaborators: updatedCollaborators }
 
-        notesContext!.updateNoteState(updatedNote)
+        await updateNoteState(updatedNote)
 
         // remove the note from the array of notesToShow
-        const notes = [...(notesContext?.notes || [])].filter(note => note.id != updatedNote.id)
-
-        notesContext?.setNotes(notes)
-
-        notesToShow.value = notes
-
+        notes.value = [...(notes.value || [])].filter(note => note.id != updatedNote.id)
         handleModal(undefined)
     }
 
-    const deleteSelectedCollaborators = () => {
+    const deleteSelectedCollaborators = async () => {
         if (!props.note) return
-        
+
         let collaborators = [...(props.note?.collaborators || [])]
-        
+
         const updatedCollaborators = collaborators.filter(collaborator => !selectedCollaborators.some(el => el == collaborator))
-        
+
         const note: Note = { ...props.note, collaborators: updatedCollaborators }
-        
-        notesContext?.updateNoteState(note)
+
+        await updateNoteState(note)
 
         setSelectedCollaborators([])
     }

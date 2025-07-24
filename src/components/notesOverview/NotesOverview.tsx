@@ -1,15 +1,14 @@
-import { ModalsNames, Note } from "@/utils/interfaces";
+import { ModalsNames } from "@/utils/interfaces";
 import "./notesOverview.scss";
-import { useContext, useEffect, useState } from "react";
+import { useContext, useEffect } from "react";
 import AnimatedText from "../animatedComponents/AnimatedText";
-import { NotesContext } from "@/contexts/notesContext";
 import { FoldersContext } from "@/contexts/foldersContext";
 import NotesSection from "../ui/NotesSection";
 import { UserContext } from "@/contexts/userContext";
 import { ReactSVG } from "react-svg";
 import AnimatedDiv from "../animatedComponents/AnimatedDiv";
 
-import { loading, notesToShow, selectedModal } from "@/utils/signals";
+import { loading, notes, notesToShow, selectedModal } from "@/utils/signals";
 import SearchBar from "../ui/searchBar/SearchBar";
 import { getNotesByUserEmail } from "@/serverActions/notesActions";
 import { getFoldersByUserId } from "@/serverActions/foldersActions";
@@ -21,11 +20,8 @@ interface NotesCompareParams {
 }
 
 export default function NotesOverview() {
-  const notesContext = useContext(NotesContext);
   const foldersContext = useContext(FoldersContext);
   const userContext = useContext(UserContext);
-
-  const [search, setSearch] = useState('')
 
   // if there's a selected folder set it
   const foundSelectedFolderData = foldersContext?.selectedFolder ? foldersContext?.folders.find(
@@ -39,54 +35,30 @@ export default function NotesOverview() {
 
   // listen for changes in the notes array or in the current folder
   useEffect(() => {
+
+    notesToShow.value = notes.value
+
     // if there's a selected folder, filter the notes by it, otherwise show them all
     if (foldersContext?.selectedFolder) {
-      const filteredNotes = notesContext?.notes.filter(note => note.folders.some(el=> el == foldersContext?.selectedFolder))
+      const filteredNotes = notes.value.filter(note => note.folders.some(el => el == foldersContext?.selectedFolder))
       if (filteredNotes) notesToShow.value = filteredNotes
     }
-    else {
-      if (!notesContext) return
-      notesToShow.value = notesContext.notes
-    }
-  }, [foldersContext?.selectedFolder, notesContext?.notes]);
+  }, [foldersContext?.selectedFolder, notes.value]);
 
   // get notes and folders
   async function fetchNotesAndFolders() {
     try {
       if (!userContext || !userContext.user || !userContext.user.id || !userContext.user.email) return
-      // const [notes, folders] = await Promise.all([getNotesByUserEmail(userContext.user.id, userContext.user.email), getFoldersByUserId(userContext?.user?.id!)]);
 
-      const notes: Note[] = await getNotesByUserEmail(userContext.user.id, userContext.user.email) || []
-      const folders = await getFoldersByUserId(userContext?.user?.id!)
-
-      if (notes) {
-        notesToShow.value = notes
-        notesContext?.setNotes(notes);
-      }
+      notes.value = (await getNotesByUserEmail(userContext.user.id, userContext.user.email)) || []
+      notesToShow.value = notes.value
+      const folders = (await getFoldersByUserId(userContext?.user?.id!)) || []
       if (folders) foldersContext?.setFolders(folders);
     } catch (err) {
       console.error("Error fetching initial data", err);
     }
     loading.value = false
   }
-
-  // when the user searches for something, check if the search param is included somewhere in the title or in the text of any note and, if it is, show it. Check on the pinned param too
-  function filterNotesToShow(notes: Note[], searchParam: string, pinned: boolean) {
-    return notes.filter(el =>
-      (pinned ? el.pinned : !el.pinned) &&
-      findSearchedNote({ noteText: el.text, noteTitle: el.title, searchParam })
-    );
-  };
-
-  // check if the note's text and title contain the search string
-  function findSearchedNote(stringsToCompare: NotesCompareParams) {
-    const noteTextIncludesSearchParam = stringsToCompare.noteText.toLowerCase().includes(stringsToCompare.searchParam.toLowerCase())
-    const noteTitleIncludesSearchParam = stringsToCompare.noteTitle.toLowerCase().includes(stringsToCompare.searchParam.toLowerCase())
-    if (!noteTextIncludesSearchParam && !noteTitleIncludesSearchParam) return false
-    return true
-  }
-
-  const pinnedFilteredNotes = filterNotesToShow(notesToShow.value, search, true);
 
   function setEditingFolder() {
     foldersContext?.setUpdatingFolder(foldersContext.selectedFolder)
@@ -110,22 +82,16 @@ export default function NotesOverview() {
           {foldersContext?.selectedFolder && <button className="mainBtn w-full end gap-2" style={{ padding: '0.6rem 0.8rem', background: 'var(--Orange)' }} onClick={() => { setEditingFolder() }}>
             <ReactSVG src={`/icons/edit.svg`} className="icon" style={{ scale: 1.2 }} />
           </button>}
-          <SearchBar search={search} setSearch={setSearch} />
+          <SearchBar />
         </AnimatedDiv>
       </div>
       {/* pinnedSection (show it only if there's at least one pinned note) */}
-      {pinnedFilteredNotes.length > 0 && (
-        <NotesSection
-          notes={pinnedFilteredNotes}
-          title="Pinned"
-        />
+      {notesToShow.value.filter(note => note.pinned).length > 0 && (
+        <NotesSection title="Pinned" notes={notesToShow.value.filter(note => note.pinned)} />
       )}
 
       {/* non-pinned notes section */}
-      {notesToShow.value.length > 0 ? <NotesSection
-        notes={filterNotesToShow(notesToShow.value, search, false)}
-        title="Others"
-      /> : <div className="w-full h-full center">
+      {notesToShow.value.length > 0 ? <NotesSection title="Others" notes={notesToShow.value.filter(note => !note.pinned)} /> : <div className="w-full h-full center">
         You haven't saved any notes yet
       </div>}
     </div>

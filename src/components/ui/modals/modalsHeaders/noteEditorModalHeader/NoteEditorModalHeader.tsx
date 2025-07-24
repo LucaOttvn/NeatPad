@@ -8,6 +8,7 @@ import './noteEditorModalHeader.scss';
 import { ReactSVG } from "react-svg";
 import { handleModal } from "@/utils/globalMethods";
 import CollaboratorsSection from "./CollaboratorsSection";
+import { updateNoteState } from "@/utils/signals";
 
 interface NoteEditorModalHeaderProps {
   modalId: string;
@@ -26,11 +27,13 @@ export default function NoteEditorModalHeader(props: NoteEditorModalHeaderProps)
   // note pinning handling
   useEffect(() => {
     const updatedNote = props.note;
-    if (updatedNote) {
-      updatedNote.pinned = pinned
-      // update the local state
-      notesContext?.updateNoteState(updatedNote)
+    if (!updatedNote) return
+    updatedNote.pinned = pinned
+    // update the local state
+    async function triggerUpdate() {
+      await updateNoteState(updatedNote!)
     }
+    triggerUpdate()
   }, [pinned]);
 
   // animations handling
@@ -43,7 +46,7 @@ export default function NoteEditorModalHeader(props: NoteEditorModalHeaderProps)
     });
   }, [foldersListOpened]);
 
-  function handleFolderSelection(clickedFolder: Folder) {
+  async function handleFolderSelection(clickedFolder: Folder) {
     const updatedNote = { ...props.note } as Note
     if (!updatedNote || !clickedFolder.id) return
     // if the clicked folder is already selected remove the selection, otherwise set it as the current one
@@ -65,7 +68,7 @@ export default function NoteEditorModalHeader(props: NoteEditorModalHeaderProps)
 
       updatedNote.folders.push(clickedFolder.id!)
     }
-    notesContext?.updateNoteState(updatedNote)
+    await updateNoteState(updatedNote)
   }
 
   return (

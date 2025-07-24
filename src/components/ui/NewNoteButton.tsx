@@ -3,7 +3,7 @@ import Image from "next/image";
 import { NotesContext } from '@/contexts/notesContext';
 import { animateDivUnmount } from '@/utils/globalMethods';
 import { Note, ModalsNames } from '@/utils/interfaces';
-import { loading, selectedModal } from '@/utils/signals';
+import { loading, notes, selectedModal } from '@/utils/signals';
 import { flushSync } from 'react-dom';
 import { UserContext } from '@/contexts/userContext';
 import gsap from 'gsap';
@@ -35,9 +35,8 @@ export default function NewNoteButton(props: NewNoteButtonProps) {
         let newNoteFromDB = await createNote(newNote)
         if (newNoteFromDB) {
             if (!notesContext) return null
-            let arr = [...notesContext.notes, newNoteFromDB]
+            notes.value = [...notes.value, newNoteFromDB]
             flushSync(() => {
-                notesContext.setNotes(arr)
                 notesContext.setSelectedNote(newNoteFromDB.id)
             })
             selectedModal.value = ModalsNames.newNote
@@ -75,8 +74,7 @@ export default function NewNoteButton(props: NewNoteButtonProps) {
                         return 'noteCard' + noteId
                     })
                     animateDivUnmount(notesToDelete, () => {
-                        let updatedNotes = notesContext.notes.filter(note => !notesContext.deleteMode.notes.includes(note.id!));
-                        notesContext.setNotes(updatedNotes)
+                        notes.value = notes.value.filter(note => !notesContext.deleteMode.notes.includes(note.id!));
                         deleteNote(notesContext.deleteMode.notes)
                         notesContext.setDeleteMode({ active: false, notes: [] })
                     })
