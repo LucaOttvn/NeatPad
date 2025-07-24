@@ -3,10 +3,9 @@ import SvgButton from "../../../SvgButton";
 import { Folder, Note } from "@/utils/interfaces";
 import { gsap } from "gsap";
 import { FoldersContext } from "@/contexts/foldersContext";
-import { NotesContext } from "@/contexts/notesContext";
 import './noteEditorModalHeader.scss';
 import { ReactSVG } from "react-svg";
-import { handleModal } from "@/utils/globalMethods";
+import { handleModal, handleNoteEditorClose } from "@/utils/globalMethods";
 import CollaboratorsSection from "./CollaboratorsSection";
 import { updateNoteState } from "@/utils/signals";
 
@@ -18,7 +17,6 @@ interface NoteEditorModalHeaderProps {
 // this is the header of the note editor, it has its own set of methods to handle notes creation/update
 export default function NoteEditorModalHeader(props: NoteEditorModalHeaderProps) {
   const foldersContext = useContext(FoldersContext);
-  const notesContext = useContext(NotesContext);
 
   const [pinned, setPinned] = useState(props.note ? props.note.pinned : false);
   const [foldersListOpened, setFoldersListOpened] = useState(false);
@@ -99,7 +97,7 @@ export default function NoteEditorModalHeader(props: NoteEditorModalHeaderProps)
         <SvgButton
           fileName="close"
           onClick={() => {
-            notesContext?.handleNoteEditorClose()
+            handleNoteEditorClose()
             handleModal(undefined)
           }}
         />

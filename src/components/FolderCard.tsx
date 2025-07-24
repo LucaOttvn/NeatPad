@@ -2,9 +2,8 @@ import { Folder, ModalsNames } from "@/utils/interfaces";
 import "./componentsStyle.scss";
 import { useContext, useRef } from "react";
 import { FoldersContext } from "@/contexts/foldersContext";
-import { NotesContext } from "@/contexts/notesContext";
 import gsap from 'gsap';
-import { isMobile, notes, selectedModal, selectedSideMenu } from "@/utils/signals";
+import { isMobile, notes, notesToDelete, selectedModal, selectedSideMenu } from "@/utils/signals";
 
 interface FolderProps {
   folder: Folder;
@@ -14,7 +13,6 @@ interface FolderProps {
 export default function FolderCard(props: FolderProps) {
 
   const foldersContext = useContext(FoldersContext)
-  const notesContext = useContext(NotesContext)
 
   const timerRef = useRef<any>(null)
 
@@ -26,7 +24,7 @@ export default function FolderCard(props: FolderProps) {
     })
 
     // in delete mode there's no action to trigger on long press, so don't handle it
-    if (notesContext?.deleteMode.active) return
+    if (notesToDelete.value.length > 0) return
 
     timerRef.current = setTimeout(() => {
       foldersContext?.setUpdatingFolder(props.folder.id)

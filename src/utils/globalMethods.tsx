@@ -1,6 +1,7 @@
 import { gsap } from "gsap";
 import { ModalsNames } from "./interfaces";
-import { isMobile, selectedModal } from "./signals";
+import { isMobile, notes, selectedModal, selectedNote } from "./signals";
+import { deleteNote } from "@/serverActions/notesActions";
 
 let modalAnimation: gsap.core.Tween | undefined
 
@@ -116,21 +117,35 @@ export function validatePassword(password: string): PasswordValidationResult {
 }
 
 export function isEncrypted(text: string): boolean {
-    const parts = text.split(':');
-    if (parts.length !== 2) {
-        return false;
-    }
-    const [ivHex, encryptedDataHex] = parts;
+  const parts = text.split(':');
+  if (parts.length !== 2) {
+    return false;
+  }
+  const [ivHex, encryptedDataHex] = parts;
 
-    // Check if IV part is 32 hex characters long
-    if (!/^[0-9a-fA-F]{32}$/.test(ivHex)) {
-        return false;
-    }
+  // Check if IV part is 32 hex characters long
+  if (!/^[0-9a-fA-F]{32}$/.test(ivHex)) {
+    return false;
+  }
 
-    // Check if encrypted data part contains only hex characters
-    if (!/^[0-9a-fA-F]+$/.test(encryptedDataHex)) {
-        return false;
-    }
+  // Check if encrypted data part contains only hex characters
+  if (!/^[0-9a-fA-F]+$/.test(encryptedDataHex)) {
+    return false;
+  }
 
-    return true;
+  return true;
+}
+
+// this method handles the note's saving and, if it's empty, it deletes it
+export async function handleNoteEditorClose() {
+
+  const currentNote = notes.value.find((note) => note.id == selectedNote.value)
+
+  if (!currentNote) return
+  // if note's title and text are empty, delete it
+  if (currentNote.title === '' && currentNote.text === '') {
+    notes.value = notes.value.filter(note => note.id != currentNote?.id)
+    // delete the note from db
+    deleteNote(currentNote.id!)
+  }
 }

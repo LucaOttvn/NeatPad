@@ -2,14 +2,12 @@
 import '@uiw/react-md-editor/markdown-editor.css';
 import '@uiw/react-markdown-preview/markdown.css';
 import "./noteEditor.scss";
-import { ChangeEvent, useContext, useEffect, useRef, useState } from "react";
-import { NotesContext } from "@/contexts/notesContext";
+import { ChangeEvent, useEffect, useRef, useState } from "react";
 import { Note } from "@/utils/interfaces";
 import gsap from 'gsap';
 import MarkdownToolbar from './MarkdownToolbar';
 import ReactMarkdown from 'react-markdown';
 import remarkBreaks from 'remark-breaks';
-import { updateNote } from '@/serverActions/notesActions';
 import { updateNoteState } from '@/utils/signals';
 
 interface NoteEditorProps {
@@ -17,7 +15,6 @@ interface NoteEditorProps {
 }
 
 export default function NoteEditor(props: NoteEditorProps) {
-  const notesContext = useContext(NotesContext);
 
   const [currentNote, setCurrentNote] = useState<Note | undefined>(props.note)
   const [useMarkdown, setUseMarkdown] = useState<boolean>(true)

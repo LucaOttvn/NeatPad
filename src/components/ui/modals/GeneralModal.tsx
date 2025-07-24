@@ -3,17 +3,16 @@ import "../../componentsStyle.scss";
 import { modalsList, ModalsNames } from "@/utils/interfaces";
 import GeneralModalHeader from "./modalsHeaders/GeneralModalHeader";
 import NoteEditorModalHeader from "./modalsHeaders/noteEditorModalHeader/NoteEditorModalHeader";
-import { NotesContext } from "@/contexts/notesContext";
 import NoteEditor from "./noteEditor/NoteEditor";
 import LoginModal from "./login/LoginModal";
 import FolderHandler from "./folderHandler/FolderHandler";
 import { FoldersContext } from "@/contexts/foldersContext";
 import SettingsModal from "./settings/SettingsModal";
-import { isMobile, notes, selectedModal } from "@/utils/signals";
-import { handleModal } from "@/utils/globalMethods";
+import { isMobile, notes, selectedModal, selectedNote } from "@/utils/signals";
+import { handleModal, handleNoteEditorClose } from "@/utils/globalMethods";
 
 export default function GeneralModal() {
-  const notesContext = useContext(NotesContext)
+
   const foldersContext = useContext(FoldersContext)
 
   const generalModalRef = useRef<HTMLDivElement>(null)
@@ -30,17 +29,18 @@ export default function GeneralModal() {
       // this removes the automatic browser's focus on the button when esc is pressed
       if (document.activeElement instanceof HTMLElement) document.activeElement.blur()
       if (selectedModal.value == ModalsNames.newNote || selectedModal.value == ModalsNames.updateNote) {
-        notesContext?.handleNoteEditorClose()
+        handleNoteEditorClose()
       }
       if (selectedModal.value == ModalsNames.folderHandler) { foldersContext?.setUpdatingFolder(undefined) }
       handleModal(undefined)
     }
   }
 
+  
   function handleBackdropClick() {
     // handle the note saving/deleting when the user clicks on the modals's backdrop to close it
     if (selectedModal.value == ModalsNames.newNote || selectedModal.value == ModalsNames.updateNote) {
-      notesContext?.handleNoteEditorClose()
+      handleNoteEditorClose()
     }
     handleModal(undefined)
   }
@@ -82,12 +82,12 @@ export default function GeneralModal() {
         {(selectedModal.value == ModalsNames.newNote || selectedModal.value == ModalsNames.updateNote) && <>
           <NoteEditorModalHeader
             note={notes.value.find(
-              (el) => el.id === notesContext?.selectedNote
+              (el) => el.id === selectedNote.value
             )}
             modalId={selectedModal.value == ModalsNames.newNote ? ModalsNames.newNote : ModalsNames.updateNote}
           />
           <NoteEditor note={notes.value.find(
-            (el) => el.id === notesContext?.selectedNote
+            (el) => el.id === selectedNote.value
           )} /></>
           }
 

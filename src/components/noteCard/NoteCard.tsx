@@ -3,10 +3,9 @@ import "./noteCard.scss";
 import AnimatedDiv from "../animatedComponents/AnimatedDiv";
 import { FoldersContext } from "@/contexts/foldersContext";
 import { useContext, useEffect, useRef } from "react";
-import { NotesContext } from "@/contexts/notesContext";
 import gsap from 'gsap';
 import { ReactSVG } from "react-svg";
-import { selectedModal } from "@/utils/signals";
+import { notesToDelete, selectedModal, selectedNote } from "@/utils/signals";
 import { UserContext } from "@/contexts/userContext";
 
 interface NoteCardProps {
@@ -16,7 +15,6 @@ interface NoteCardProps {
 export default function NoteCard(props: NoteCardProps) {
   const foldersContext = useContext(FoldersContext);
   const userContext = useContext(UserContext);
-  const notesContext = useContext(NotesContext);
   const timerRef = useRef<any>(null);
 
   const foundParentFolder = foldersContext?.folders.find((folder) => props.note.folders.find(el => el == folder.id));
@@ -34,28 +32,23 @@ export default function NoteCard(props: NoteCardProps) {
   }, []);
 
   useEffect(() => {
-    let noteToDelete = notesContext?.deleteMode.notes.find(noteId => noteId == props.note.id)
+    let noteToDelete = notesToDelete.value.find(noteId => noteId == props.note.id)
 
     gsap.to('#noteCard' + props.note.id, {
       outline: noteToDelete ? 'solid 4px var(--Red)' : 'none',
       duration: 0.2
     })
-
-    // this is the case described in notesContext.tsx about the deleteMode handling
-    if (notesContext?.deleteMode.active && notesContext.deleteMode.notes.length == 0) {
-      notesContext.setDeleteMode({ active: false, notes: notesContext.deleteMode.notes })
-    }
-  }, [notesContext?.deleteMode]);
-
+  }, [notesToDelete.value]);
 
   // start the timer to detect long presses
   function handleTouchStart() {
-    if (!notesContext?.deleteMode.active) {
-      timerRef.current = setTimeout(() => {
-        let notesToDeleteUpdated: number[] = [...notesContext!.deleteMode.notes, props.note.id!]
-        notesContext?.setDeleteMode({ active: true, notes: notesToDeleteUpdated })
-      }, 500);
-    }
+
+    // if delete mode isn't on already
+    if (notesToDelete.value.length > 0) return
+
+    timerRef.current = setTimeout(() => {
+      notesToDelete.value = [props.note.id!]
+    }, 500);
   }
 
   // if the user removes the finger from the screen before the end of the timeout, clear the timer so no card selection animation gets triggered
@@ -64,34 +57,31 @@ export default function NoteCard(props: NoteCardProps) {
   }
 
   function handleClick() {
-    // if in delete mode
-    if (notesContext!.deleteMode.active) {
-
-      // if the user isn't the note's owner
-      if (props.note.user != userContext?.user?.id) return alert('Collaborators cannot delete notes. To remove this note from your view, please remove your email from its collaborators list.')
-      let notesToDeleteUpdated: number[] = []
-
-      // is the cliked card already selected?
-      let isNoteAlreadySelected = notesContext?.deleteMode.notes.some(noteId => noteId == props.note.id)
-
-      // if it's already selected remove it, otherwise add it
-      notesToDeleteUpdated = isNoteAlreadySelected ? notesContext!.deleteMode.notes.filter(noteId => noteId != props.note.id!) : [...notesContext!.deleteMode.notes, props.note.id!]
-
-      notesContext?.setDeleteMode({ active: true, notes: notesToDeleteUpdated })
-    }
-    else {
+    // if the delete mode is off
+    if (notesToDelete.value.length == 0) {
       // show the clicked note
-      notesContext?.setSelectedNote(props.note.id);
-      selectedModal.value = ModalsNames.updateNote
+      selectedNote.value = props.note.id
+      return selectedModal.value = ModalsNames.updateNote
     }
+
+    // if the user isn't the note's owner
+    if (props.note.user != userContext?.user?.id) return alert('Collaborators cannot delete notes. To remove this note from your view, please remove your email from its collaborators list.')
+    let notesToDeleteUpdated: number[] = []
+
+    // is the cliked card already selected?
+    let isNoteAlreadySelected = notesToDelete.value.some(noteId => noteId == props.note.id)
+
+    // if it's already selected remove it, otherwise add it
+    notesToDelete.value = isNoteAlreadySelected ? notesToDelete.value.filter(noteId => noteId != props.note.id!) : [...notesToDelete.value, props.note.id!]
   }
 
   // handle right click on noteCard
   function handleContextMenu(e: React.MouseEvent) {
     e.preventDefault()
     if (props.note.user != userContext?.user?.id) return alert('Collaborators cannot delete notes. To remove this note from your view, please remove your email from its collaborators list.')
-    let notesToDeleteUpdated: number[] = [...notesContext!.deleteMode.notes, props.note.id!]
-    notesContext?.setDeleteMode({ active: true, notes: notesToDeleteUpdated })
+    // activate the delete mode only if it's not on already
+    if (notesToDelete.value.length > 0) return
+    notesToDelete.value = [props.note.id!]
   }
 
   return (
@@ -117,7 +107,7 @@ export default function NoteCard(props: NoteCardProps) {
           {props.note.title}
         </h1>
       )}
-      
+
       {!props.note.title && <h1 style={{ color: "var(--Grey)" }}>No title</h1>}
 
       <div className="start gap-2">
