@@ -22,11 +22,9 @@ export default function NoteCard(props: NoteCardProps) {
     "White";
 
   useEffect(() => {
-
     return () => {
       clearTimeout(timerRef.current);
     };
-
   }, []);
 
   useEffect(() => {

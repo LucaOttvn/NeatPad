@@ -19,7 +19,7 @@ import { handleModal } from "@/utils/globalMethods";
 
 import { getUserById } from "@/serverActions/usersActions";
 
-const minSwipeDistance = 50
+const minSwipeDistance = 100
 
 export default function Home() {
   useSignals()

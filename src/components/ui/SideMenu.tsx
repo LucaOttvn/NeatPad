@@ -7,7 +7,7 @@ import { folders, isMobile, selectedFolder, selectedModal, selectedSideMenu } fr
 import { handleSideMenu } from "@/utils/globalMethods";
 
 export default function GeneralSideMenu() {
-  
+
   const foldersListRef = useRef<HTMLDivElement | null>(null);
 
   // check README.md > ## SIDE EFFECTS FOR DOM SIGNALS for details
@@ -19,14 +19,12 @@ export default function GeneralSideMenu() {
     const foundIndex = folders.value.findIndex(el => el.id == selectedFolder.value);
     const target = document.getElementById('folder' + foundIndex);
 
-    if (target) {
-      target.scrollIntoView({
-        behavior: 'smooth',
-        block: 'center'
-      });
-    } else {
-      console.warn(`Element 'folder${foundIndex}' not found. Ensure it's rendered and the ID is correct.`);
-    }
+    if (!target) return console.warn(`Element 'folder${foundIndex}' not found. Ensure it's rendered and the ID is correct.`);
+
+    target.scrollIntoView({
+      behavior: 'smooth',
+      block: 'center'
+    });
   }, [selectedFolder.value]);
 
   const goHome = () => {
