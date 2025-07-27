@@ -4,7 +4,7 @@ import ColorPicker from "../../colorPicker/ColorPicker";
 import { FoldersContext } from "@/contexts/foldersContext";
 import { Folder } from "@/utils/interfaces";
 import { UserContext } from "@/contexts/userContext";
-import { selectedSideMenu } from "@/utils/signals";
+import { folders, selectedSideMenu, updateFolder5tate } from "@/utils/signals";
 import { handleModal } from "@/utils/globalMethods";
 import './folderHandler.scss';
 import { updateFolder, createFolder, deleteFolder } from "@/serverActions/foldersActions";
@@ -23,7 +23,7 @@ export default function FolderHandler() {
   useEffect(() => {
     // if updating a folder get its data into the view
     if (foldersContext?.updatingFolder) {
-      foundFolder.current = foldersContext.folders.find((folder) => folder.id == foldersContext.updatingFolder)
+      foundFolder.current = folders.value.find((folder) => folder.id == foldersContext.updatingFolder)
       if (foundFolder.current) {
         setFolderName(foundFolder.current.name)
         if (foundFolder.current.color) setSelectedColor(foundFolder.current.color)
@@ -38,14 +38,13 @@ export default function FolderHandler() {
 
     // if the user's updating the folder (so it's not a new one) and there are some actual updates
     if (isUpdating && folder && changesDetected) {
-      await updateFolder(folder.id!, {
+
+      let newFolder: Folder = {
         name: folderName,
         color: selectedColor,
-      });
-      foldersContext.updateFolderState(folder.id!, {
-        name: folderName,
-        color: selectedColor,
-      });
+        user: userContext?.user!.id!
+      }
+      updateFolder5tate(newFolder);
     }
     // if it's a new folder create a new Folder object and save it
     if (!isUpdating) {
@@ -57,10 +56,7 @@ export default function FolderHandler() {
       // insert the folder in the db
       const folderWithId = await createFolder(newFolder);
       // update the local state
-      foldersContext?.setFolders((prevState: Folder[]) => [
-        ...prevState,
-        folderWithId,
-      ]);
+      folders.value = [...folders.value, folderWithId]
     }
     // close the modal at the end
     foldersContext?.setUpdatingFolder(undefined);
@@ -72,7 +68,8 @@ export default function FolderHandler() {
     if (!foldersContext) return
 
     // update folders state
-    foldersContext?.setFolders(prev => prev.filter(folder => folder.id != foundFolder.current?.id))
+    folders.value = folders.value.filter(folder => folder.id != foundFolder.current?.id)
+
     if (foundFolder.current && foundFolder.current.id) await deleteFolder(foundFolder.current?.id)
     handleModal(undefined)
     foldersContext.setUpdatingFolder(undefined)

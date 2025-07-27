@@ -3,7 +3,7 @@ import { FoldersContext } from "@/contexts/foldersContext";
 import SvgButton from "./SvgButton";
 import FolderCard from "../FolderCard";
 import { ModalsNames } from "@/utils/interfaces";
-import { isMobile, selectedModal, selectedSideMenu } from "@/utils/signals";
+import { folders, isMobile, selectedModal, selectedSideMenu } from "@/utils/signals";
 import { handleSideMenu } from "@/utils/globalMethods";
 
 export default function GeneralSideMenu() {
@@ -16,7 +16,7 @@ export default function GeneralSideMenu() {
   }, [selectedSideMenu.value])
 
   useEffect(() => {
-    const foundIndex = foldersContext?.folders.findIndex(el => el.id == foldersContext.selectedFolder);
+    const foundIndex = folders.value.findIndex(el => el.id == foldersContext!.selectedFolder);
     const target = document.getElementById('folder' + foundIndex);
 
     if (target) {
@@ -54,10 +54,10 @@ export default function GeneralSideMenu() {
       </div>
 
       <div className="foldersList" ref={foldersListRef}>
-        {foldersContext?.folders.length! > 0 && foldersContext?.folders.map((folder, index) => (
+        {folders.value.length! > 0 && folders.value.map((folder, index) => (
           <FolderCard key={`${folder.name}-${index}`} index={index} folder={folder} />
         ))}
-        {foldersContext?.folders.length! == 0 && <span style={{ textWrap: 'nowrap' }}>You haven't created any folder yet</span>}
+        {folders.value.length! == 0 && <span style={{ textWrap: 'nowrap' }}>You haven't created any folder yet</span>}
       </div>
     </div>
   );

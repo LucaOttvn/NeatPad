@@ -1,13 +1,18 @@
-import { effect, signal } from "@preact/signals-react";
-import { ModalsNames, Note, SideMenusNames } from "./interfaces";
+import { signal } from "@preact/signals-react";
+import { Folder, ModalsNames, Note, SideMenusNames } from "./interfaces";
 import { updateNote } from "@/serverActions/notesActions";
-import gsap from 'gsap'
+import { updateFolder } from "@/serverActions/foldersActions";
 
 export const selectedSideMenu = signal<SideMenusNames | undefined>();
 export const selectedModal = signal<ModalsNames | undefined>();
 export const isMobile = signal(false);
 export const loading = signal(true);
+
+// notes signals
 export const notes = signal<Note[]>([])
+export const notesToShow = signal<Note[]>([])
+export const notesToDelete = signal<number[]>([])
+export const selectedNote = signal<number | undefined>()
 
 export async function updateNoteState(note: Note) {
     notes.value = notes.value.map(el =>
@@ -18,6 +23,14 @@ export async function updateNoteState(note: Note) {
     await updateNote(note)
 }
 
-export const notesToShow = signal<Note[]>([])
-export const notesToDelete = signal<number[]>([])
-export const selectedNote = signal<number | undefined>()
+// folders signals
+export const folders = signal<Folder[]>([])
+
+export async function updateFolder5tate(folder: Folder) {
+    folders.value = folders.value.map(el =>
+        el.id === folder.id
+            ? folder
+            : el
+    )
+    await updateFolder(folder)
+}

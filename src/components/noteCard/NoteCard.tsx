@@ -1,11 +1,10 @@
 import { colors, ModalsNames, Note } from "@/utils/interfaces";
 import "./noteCard.scss";
 import AnimatedDiv from "../animatedComponents/AnimatedDiv";
-import { FoldersContext } from "@/contexts/foldersContext";
 import { useContext, useEffect, useRef } from "react";
 import gsap from 'gsap';
 import { ReactSVG } from "react-svg";
-import { notesToDelete, selectedModal, selectedNote } from "@/utils/signals";
+import { folders, notesToDelete, selectedModal, selectedNote } from "@/utils/signals";
 import { UserContext } from "@/contexts/userContext";
 
 interface NoteCardProps {
@@ -13,11 +12,11 @@ interface NoteCardProps {
 }
 
 export default function NoteCard(props: NoteCardProps) {
-  const foldersContext = useContext(FoldersContext);
+
   const userContext = useContext(UserContext);
   const timerRef = useRef<any>(null);
 
-  const foundParentFolder = foldersContext?.folders.find((folder) => props.note.folders.find(el => el == folder.id));
+  const foundParentFolder = folders.value.find((folder) => props.note.folders.find(el => el == folder.id));
 
   const textColor =
     colors.find((item) => item.color == foundParentFolder?.color)?.text ||

@@ -7,7 +7,7 @@ import './noteEditorModalHeader.scss';
 import { ReactSVG } from "react-svg";
 import { handleModal, handleNoteEditorClose } from "@/utils/globalMethods";
 import CollaboratorsSection from "./CollaboratorsSection";
-import { updateNoteState } from "@/utils/signals";
+import { folders, updateNoteState } from "@/utils/signals";
 
 interface NoteEditorModalHeaderProps {
   modalId: string;
@@ -59,7 +59,7 @@ export default function NoteEditorModalHeader(props: NoteEditorModalHeaderProps)
       // this is why it's necessary to check whether the user has already set the current note to one of their folders and, if it did, remove the previous one before adding the new one
 
       // get the ids from the context notes array
-      const contextFolderIds = foldersContext?.folders.map(f => f.id);
+      const contextFolderIds = folders.value.map(f => f.id);
 
       // remove every folder that is included in contextFolders
       updatedNote.folders = updatedNote.folders.filter(id => !contextFolderIds?.includes(id));
@@ -106,7 +106,7 @@ export default function NoteEditorModalHeader(props: NoteEditorModalHeaderProps)
       <section className="addNoteToFolder">
         <span className="font-bold mx-5 mt-5">Add to folder</span>
         <div className="foldersList">
-          {foldersContext?.folders.map((folder, index) => {
+          {folders.value.map((folder, index) => {
             return (
               // folder card
               <div

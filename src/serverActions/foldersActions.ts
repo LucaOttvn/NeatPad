@@ -36,13 +36,12 @@ export async function createFolder(folder: Folder) {
 
 
 export async function updateFolder(
-    id: number,
-    updates: Partial<Folder>
+    folder: Folder
 ) {
     const { data, error } = await supabase
         .from("folders")
-        .update(updates)
-        .eq("id", id)
+        .update(folder)
+        .eq("id", folder.id)
         .select()
         .single();
 

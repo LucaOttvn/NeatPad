@@ -8,7 +8,7 @@ import { UserContext } from "@/contexts/userContext";
 import { ReactSVG } from "react-svg";
 import AnimatedDiv from "../animatedComponents/AnimatedDiv";
 
-import { loading, notes, notesToShow, selectedModal } from "@/utils/signals";
+import { folders, loading, notes, notesToShow, selectedModal } from "@/utils/signals";
 import SearchBar from "../ui/searchBar/SearchBar";
 import { getNotesByUserEmail } from "@/serverActions/notesActions";
 import { getFoldersByUserId } from "@/serverActions/foldersActions";
@@ -24,7 +24,7 @@ export default function NotesOverview() {
   const userContext = useContext(UserContext);
 
   // if there's a selected folder set it
-  const foundSelectedFolderData = foldersContext?.selectedFolder ? foldersContext?.folders.find(
+  const foundSelectedFolderData = foldersContext?.selectedFolder ? folders.value.find(
     (el) => el.id == foldersContext.selectedFolder
   ) : undefined;
 
@@ -52,8 +52,8 @@ export default function NotesOverview() {
 
       notes.value = (await getNotesByUserEmail(userContext.user.id, userContext.user.email)) || []
       notesToShow.value = notes.value
-      const folders = (await getFoldersByUserId(userContext?.user?.id!)) || []
-      if (folders) foldersContext?.setFolders(folders);
+      const foldersFound = (await getFoldersByUserId(userContext?.user?.id!)) || []
+      if (folders.value) folders.value = foldersFound
     } catch (err) {
       console.error("Error fetching initial data", err);
     }
