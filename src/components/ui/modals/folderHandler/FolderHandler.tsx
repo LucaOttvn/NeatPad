@@ -4,7 +4,7 @@ import ColorPicker from "../../colorPicker/ColorPicker";
 import { FoldersContext } from "@/contexts/foldersContext";
 import { Folder } from "@/utils/interfaces";
 import { UserContext } from "@/contexts/userContext";
-import { folders, selectedSideMenu, updateFolder5tate, updatingFolder } from "@/utils/signals";
+import { folders, selectedFolder, selectedSideMenu, updateFolder5tate, updatingFolder } from "@/utils/signals";
 import { handleModal } from "@/utils/globalMethods";
 import './folderHandler.scss';
 import { createFolder, deleteFolder } from "@/serverActions/foldersActions";
@@ -69,7 +69,7 @@ export default function FolderHandler() {
     handleModal(undefined)
     updatingFolder.value = undefined
 
-    foldersContext.setSelectedFolder(undefined)
+    selectedFolder.value = undefined
     selectedSideMenu.value = undefined
   }
 

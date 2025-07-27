@@ -26,6 +26,7 @@ export async function updateNoteState(note: Note) {
 // folders signals
 export const folders = signal<Folder[]>([])
 export const updatingFolder = signal<number | undefined>()
+export const selectedFolder = signal<number | undefined>()
 
 export async function updateFolder5tate(folder: Folder) {
     folders.value = folders.value.map(el =>

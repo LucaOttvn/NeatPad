@@ -2,7 +2,7 @@ import { useContext, useEffect } from 'react';
 import Image from "next/image";
 import { animateDivUnmount } from '@/utils/globalMethods';
 import { Note, ModalsNames } from '@/utils/interfaces';
-import { loading, notes, notesToDelete, selectedModal, selectedNote } from '@/utils/signals';
+import { loading, notes, notesToDelete, selectedFolder, selectedModal, selectedNote } from '@/utils/signals';
 import { flushSync } from 'react-dom';
 import { UserContext } from '@/contexts/userContext';
 import gsap from 'gsap';
@@ -28,7 +28,7 @@ export default function NewNoteButton(props: NewNoteButtonProps) {
             collaborators: []
         }
 
-        if (foldersContext?.selectedFolder) newNote.folders.push(foldersContext?.selectedFolder)
+        if (selectedFolder.value) newNote.folders.push(selectedFolder.value)
         let newNoteFromDB = await createNote(newNote)
         if (newNoteFromDB) {
             notes.value = [...notes.value, newNoteFromDB]

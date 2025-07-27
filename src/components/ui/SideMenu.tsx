@@ -3,7 +3,7 @@ import { FoldersContext } from "@/contexts/foldersContext";
 import SvgButton from "./SvgButton";
 import FolderCard from "../FolderCard";
 import { ModalsNames } from "@/utils/interfaces";
-import { folders, isMobile, selectedModal, selectedSideMenu } from "@/utils/signals";
+import { folders, isMobile, selectedFolder, selectedModal, selectedSideMenu } from "@/utils/signals";
 import { handleSideMenu } from "@/utils/globalMethods";
 
 export default function GeneralSideMenu() {
@@ -16,7 +16,7 @@ export default function GeneralSideMenu() {
   }, [selectedSideMenu.value])
 
   useEffect(() => {
-    const foundIndex = folders.value.findIndex(el => el.id == foldersContext!.selectedFolder);
+    const foundIndex = folders.value.findIndex(el => el.id == selectedFolder.value);
     const target = document.getElementById('folder' + foundIndex);
 
     if (target) {
@@ -27,7 +27,12 @@ export default function GeneralSideMenu() {
     } else {
       console.warn(`Element 'folder${foundIndex}' not found. Ensure it's rendered and the ID is correct.`);
     }
-  }, [foldersContext?.selectedFolder]);
+  }, [selectedFolder.value]);
+
+  const goHome = () => {
+    selectedFolder.value = undefined
+    selectedSideMenu.value = undefined
+  }
 
   return (
     <div id={selectedSideMenu.value} className="generalSideMenu">
@@ -36,10 +41,7 @@ export default function GeneralSideMenu() {
       <div className="center gap-10 pt-20 pb-10">
         <div
           className="sideMenuBtn"
-          onClick={() => {
-            foldersContext?.setSelectedFolder(undefined);
-            selectedSideMenu.value = undefined
-          }}
+          onClick={goHome}
         >
           <SvgButton fileName="home" onClick={() => { }} />
         </div>

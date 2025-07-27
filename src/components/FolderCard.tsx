@@ -1,9 +1,8 @@
 import { Folder, ModalsNames } from "@/utils/interfaces";
 import "./componentsStyle.scss";
-import { useContext, useRef } from "react";
-import { FoldersContext } from "@/contexts/foldersContext";
+import { useRef } from "react";
 import gsap from 'gsap';
-import { isMobile, notes, notesToDelete, selectedModal, selectedSideMenu, updatingFolder } from "@/utils/signals";
+import { isMobile, notes, notesToDelete, selectedFolder, selectedModal, selectedSideMenu, updatingFolder } from "@/utils/signals";
 
 interface FolderProps {
   folder: Folder;
@@ -11,8 +10,6 @@ interface FolderProps {
 }
 
 export default function FolderCard(props: FolderProps) {
-
-  const foldersContext = useContext(FoldersContext)
 
   const timerRef = useRef<any>(null)
 
@@ -42,7 +39,7 @@ export default function FolderCard(props: FolderProps) {
   }
 
   function handleClick() {
-    foldersContext?.setSelectedFolder(props.folder.id)
+    selectedFolder.value = props.folder.id
     // only on mobile, close the side menu on folder selection
     if (isMobile.value) selectedSideMenu.value = undefined
   }
