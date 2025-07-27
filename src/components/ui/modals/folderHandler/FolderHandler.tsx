@@ -60,8 +60,6 @@ export default function FolderHandler() {
 
   async function handleDeleteFolder() {
 
-    if (!foldersContext) return
-
     // update folders state
     folders.value = folders.value.filter(folder => folder.id != foundFolder.current?.id)
 
