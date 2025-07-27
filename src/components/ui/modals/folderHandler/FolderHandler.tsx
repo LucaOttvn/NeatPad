@@ -1,18 +1,18 @@
 import AnimatedDiv from "@/components/animatedComponents/AnimatedDiv";
-import { useContext, useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import ColorPicker from "../../colorPicker/ColorPicker";
-import { FoldersContext } from "@/contexts/foldersContext";
+
 import { Folder } from "@/utils/interfaces";
-import { UserContext } from "@/contexts/userContext";
-import { folders, selectedFolder, selectedSideMenu, updateFolder5tate, updatingFolder } from "@/utils/signals";
+
+import { folders, selectedFolder, selectedSideMenu, updateFolder5tate, updatingFolder, user } from "@/utils/signals";
 import { handleModal } from "@/utils/globalMethods";
 import './folderHandler.scss';
 import { createFolder, deleteFolder } from "@/serverActions/foldersActions";
 
 // modal to create/update/delete a folder
 export default function FolderHandler() {
-  const foldersContext = useContext(FoldersContext);
-  const userContext = useContext(UserContext);
+  
+  
 
   const [folderName, setFolderName] = useState("");
   const [selectedColor, setSelectedColor] = useState<string | undefined>(undefined);
@@ -41,7 +41,7 @@ export default function FolderHandler() {
       id: folder ? folder.id : undefined,
       name: folderName,
       color: selectedColor || 'White',
-      user: userContext?.user!.id!
+      user: user.value!.id!
     }
 
     if (updatingFolder.value && changesDetected) updateFolder5tate(newFolder);

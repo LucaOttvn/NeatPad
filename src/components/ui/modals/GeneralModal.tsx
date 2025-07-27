@@ -1,4 +1,4 @@
-import { useContext, useEffect, useLayoutEffect, useRef } from "react";
+import { useEffect, useLayoutEffect, useRef } from "react";
 import "../../componentsStyle.scss";
 import { modalsList, ModalsNames } from "@/utils/interfaces";
 import GeneralModalHeader from "./modalsHeaders/GeneralModalHeader";
@@ -6,14 +6,14 @@ import NoteEditorModalHeader from "./modalsHeaders/noteEditorModalHeader/NoteEdi
 import NoteEditor from "./noteEditor/NoteEditor";
 import LoginModal from "./login/LoginModal";
 import FolderHandler from "./folderHandler/FolderHandler";
-import { FoldersContext } from "@/contexts/foldersContext";
+
 import SettingsModal from "./settings/SettingsModal";
 import { isMobile, notes, selectedModal, selectedNote, updatingFolder } from "@/utils/signals";
 import { handleModal, handleNoteEditorClose } from "@/utils/globalMethods";
 
 export default function GeneralModal() {
 
-  const foldersContext = useContext(FoldersContext)
+  
 
   const generalModalRef = useRef<HTMLDivElement>(null)
 

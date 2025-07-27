@@ -1,5 +1,5 @@
-import { useContext, useEffect, useLayoutEffect, useRef } from "react";
-import { FoldersContext } from "@/contexts/foldersContext";
+import { useEffect, useLayoutEffect, useRef } from "react";
+
 import SvgButton from "./SvgButton";
 import FolderCard from "../FolderCard";
 import { ModalsNames } from "@/utils/interfaces";
@@ -7,7 +7,7 @@ import { folders, isMobile, selectedFolder, selectedModal, selectedSideMenu } fr
 import { handleSideMenu } from "@/utils/globalMethods";
 
 export default function GeneralSideMenu() {
-  const foldersContext = useContext(FoldersContext);
+  
   const foldersListRef = useRef<HTMLDivElement | null>(null);
 
   // check README.md > ## SIDE EFFECTS FOR DOM SIGNALS for details

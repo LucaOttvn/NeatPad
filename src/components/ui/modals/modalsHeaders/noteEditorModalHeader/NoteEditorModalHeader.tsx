@@ -1,8 +1,8 @@
-import { useContext, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import SvgButton from "../../../SvgButton";
 import { Folder, Note } from "@/utils/interfaces";
 import { gsap } from "gsap";
-import { FoldersContext } from "@/contexts/foldersContext";
+
 import './noteEditorModalHeader.scss';
 import { ReactSVG } from "react-svg";
 import { handleModal, handleNoteEditorClose } from "@/utils/globalMethods";
@@ -16,7 +16,7 @@ interface NoteEditorModalHeaderProps {
 
 // this is the header of the note editor, it has its own set of methods to handle notes creation/update
 export default function NoteEditorModalHeader(props: NoteEditorModalHeaderProps) {
-  const foldersContext = useContext(FoldersContext);
+  
 
   const [pinned, setPinned] = useState(props.note ? props.note.pinned : false);
   const [foldersListOpened, setFoldersListOpened] = useState(false);

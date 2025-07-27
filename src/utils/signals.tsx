@@ -1,5 +1,5 @@
 import { signal } from "@preact/signals-react";
-import { Folder, ModalsNames, Note, SideMenusNames } from "./interfaces";
+import { Folder, ModalsNames, Note, SideMenusNames, User } from "./interfaces";
 import { updateNote } from "@/serverActions/notesActions";
 import { updateFolder } from "@/serverActions/foldersActions";
 
@@ -36,3 +36,5 @@ export async function updateFolder5tate(folder: Folder) {
     )
     await updateFolder(folder)
 }
+
+export const user = signal<User | undefined>()

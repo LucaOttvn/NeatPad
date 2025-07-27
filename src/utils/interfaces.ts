@@ -10,6 +10,7 @@ export interface Note {
 }
 
 export interface User {
+    value: any
     id?: number
     email: string
     password: string

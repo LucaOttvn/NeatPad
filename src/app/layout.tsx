@@ -1,8 +1,6 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.scss";
-import { UserProvider } from "@/contexts/userContext";
-import { FolderProvider } from "@/contexts/foldersContext";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -28,13 +26,11 @@ export default function RootLayout({
     <html lang="en">
       <head>
         <link rel="icon" type="image/png" href="/images/logo.png" /></head>
-        <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover"></meta>
+      <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover"></meta>
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
-          <FolderProvider>
-            <UserProvider>{children}</UserProvider>
-          </FolderProvider>
+        {children}
       </body>
     </html>
   );

@@ -1,8 +1,9 @@
-import { useContext, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import PasswordInput from './PasswordInput';
 import { validatePassword } from '@/utils/globalMethods';
-import { UserContext } from '@/contexts/userContext';
+
 import { deleteToken, getTokenData } from '@/serverActions/resetPasswordTokenActions';
+import { user } from '@/utils/signals';
 
 interface ResetPasswordFormProps {
     forgotPassword?: boolean
@@ -11,7 +12,7 @@ interface ResetPasswordFormProps {
 
 export default function ResetPasswordForm(props: ResetPasswordFormProps) {
 
-    const userContext = useContext(UserContext)
+
     const [passwords, setPasswords] = useState({
         currentPassword: '',
         newPassword: ''
@@ -21,14 +22,14 @@ export default function ResetPasswordForm(props: ResetPasswordFormProps) {
         async function handleToken() {
             let tokenData
             if (props.token) tokenData = await getTokenData(props.token)
-            userContext?.setUser(tokenData.user)
+            user.value = tokenData.user
         }
         if (props.forgotPassword && props.token) handleToken()
     }, []);
 
     async function changePassword() {
 
-        if (!userContext?.user) return alert('Missing user')
+        if (!user.value) return alert('Missing user')
 
         const validatedPassword = validatePassword(passwords.newPassword);
         // return the first error in the errors array
@@ -39,7 +40,7 @@ export default function ResetPasswordForm(props: ResetPasswordFormProps) {
             currentPassword: string | undefined;
             newPassword: string;
         } = {
-            id: userContext?.user?.id!,
+            id: user.value!.id!,
             currentPassword: undefined,
             newPassword: passwords.newPassword,
         }
@@ -65,7 +66,7 @@ export default function ResetPasswordForm(props: ResetPasswordFormProps) {
 
         // remove the token from the db when used
         if (props.forgotPassword) {
-            await deleteToken(userContext?.user?.id!)
+            await deleteToken(user.value.id!)
         }
     }
 

@@ -1,11 +1,11 @@
 import { colors, ModalsNames, Note } from "@/utils/interfaces";
 import "./noteCard.scss";
 import AnimatedDiv from "../animatedComponents/AnimatedDiv";
-import { useContext, useEffect, useRef } from "react";
+import { useEffect, useRef } from "react";
 import gsap from 'gsap';
 import { ReactSVG } from "react-svg";
-import { folders, notesToDelete, selectedModal, selectedNote } from "@/utils/signals";
-import { UserContext } from "@/contexts/userContext";
+import { folders, notesToDelete, selectedModal, selectedNote, user } from "@/utils/signals";
+
 
 interface NoteCardProps {
   note: Note;
@@ -13,7 +13,6 @@ interface NoteCardProps {
 
 export default function NoteCard(props: NoteCardProps) {
 
-  const userContext = useContext(UserContext);
   const timerRef = useRef<any>(null);
 
   const foundParentFolder = folders.value.find((folder) => props.note.folders.find(el => el == folder.id));
@@ -64,8 +63,7 @@ export default function NoteCard(props: NoteCardProps) {
     }
 
     // if the user isn't the note's owner
-    if (props.note.user != userContext?.user?.id) return alert('Collaborators cannot delete notes. To remove this note from your view, please remove your email from its collaborators list.')
-    let notesToDeleteUpdated: number[] = []
+    if (props.note.user != user.value!.id) return alert('Collaborators cannot delete notes. To remove this note from your view, please remove your email from its collaborators list.')
 
     // is the cliked card already selected?
     let isNoteAlreadySelected = notesToDelete.value.some(noteId => noteId == props.note.id)
@@ -77,7 +75,7 @@ export default function NoteCard(props: NoteCardProps) {
   // handle right click on noteCard
   function handleContextMenu(e: React.MouseEvent) {
     e.preventDefault()
-    if (props.note.user != userContext?.user?.id) return alert('Collaborators cannot delete notes. To remove this note from your view, please remove your email from its collaborators list.')
+    if (props.note.user != user.value!.id) return alert('Collaborators cannot delete notes. To remove this note from your view, please remove your email from its collaborators list.')
     // activate the delete mode only if it's not on already
     if (notesToDelete.value.length > 0) return
     notesToDelete.value = [props.note.id!]

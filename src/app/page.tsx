@@ -1,22 +1,22 @@
 "use client";
 import TopBar from "@/components/ui/TopBar";
-import { useContext, useEffect, useLayoutEffect, useRef } from "react";
+import { useEffect, useLayoutEffect, useRef } from "react";
 import { ScaleLoader } from "react-spinners";
 import AnimatedDiv from "@/components/animatedComponents/AnimatedDiv";
 import NotesOverview from "@/components/notesOverview/NotesOverview";
 import { ModalsNames, SideMenusNames, User } from "@/utils/interfaces";
-import { UserContext } from "@/contexts/userContext";
+
 import Login from "@/components/Login";
 import GeneralModal from "@/components/ui/modals/GeneralModal";
 import { useSignals } from "@preact/signals-react/runtime";
-import { isMobile, loading, selectedModal, selectedSideMenu, updatingFolder } from "@/utils/signals";
+import { isMobile, loading, selectedModal, selectedSideMenu, updatingFolder, user } from "@/utils/signals";
 import NewNoteButton from "@/components/ui/NewNoteButton";
 import GeneralSideMenu from "@/components/ui/SideMenu";
 import { Capacitor } from "@capacitor/core";
 import { StatusBar } from "@capacitor/status-bar";
 import { App } from '@capacitor/app';
 import { handleModal } from "@/utils/globalMethods";
-import { FoldersContext } from "@/contexts/foldersContext";
+
 import { getUserById } from "@/serverActions/usersActions";
 
 const minSwipeDistance = 50
@@ -26,9 +26,6 @@ export default function Home() {
 
   const touchStartX = useRef(0);
   const swipeRef = useRef<HTMLDivElement>(null);
-
-  const foldersContext = useContext(FoldersContext)
-  const userContext = useContext(UserContext);
 
   const setupStatusBar = async () => {
     if (Capacitor.isNativePlatform()) {
@@ -93,7 +90,7 @@ export default function Home() {
 
     async function verifyToken() {
       try {
-        if (!token) return userContext?.setUser(undefined);
+        if (!token) return user.value = undefined
 
         const response = await fetch('/api/verifyToken', {
           headers: {
@@ -103,16 +100,16 @@ export default function Home() {
 
         if (!response.ok) {
           localStorage.removeItem('JWT');
-          return userContext?.setUser(undefined);
+          return user.value = undefined
         }
 
         const data = await response.json();
-        const user: User = await getUserById(data.userId)
-        if (user) userContext?.setUser(user)
+        const foundUser: User = await getUserById(data.userId)
+        if (foundUser) user.value = foundUser
       } catch (error) {
         console.error('Error verifying token:', error);
         localStorage.removeItem('JWT');
-        userContext?.setUser(undefined);
+        user.value = undefined
       } finally {
         loading.value = false
       }
@@ -127,7 +124,7 @@ export default function Home() {
         <ScaleLoader color={"white"} loading={true} />
       </div>}
 
-      {userContext?.user &&
+      {user.value &&
         <AnimatedDiv className="w-full h-full flex start">
           <TopBar />
           <div className="w-full h-full flex" style={{ paddingTop: "4rem" }} ref={swipeRef}>
@@ -136,7 +133,7 @@ export default function Home() {
           </div>
           <NewNoteButton />
         </AnimatedDiv>}
-      {!userContext?.user && <Login />}
+      {!user.value && <Login />}
       <GeneralModal />
     </>
   );

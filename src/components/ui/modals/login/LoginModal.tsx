@@ -1,6 +1,5 @@
-import { UserContext } from '@/contexts/userContext';
-import { loading } from '@/utils/signals';
-import React, { useContext, useState } from 'react';
+import { loading, user } from '@/utils/signals';
+import React, { useState } from 'react';
 import PasswordInput from '../../PasswordInput';
 import { handleModal } from '@/utils/globalMethods';
 import './loginModal.scss';
@@ -13,7 +12,7 @@ interface LoginModalProps {
 
 export default function LoginModal(props: LoginModalProps) {
 
-    const userContext = useContext(UserContext);
+    
 
     const [formData, setFormData] = useState({ email: "", password: "" });
 
@@ -53,7 +52,7 @@ export default function LoginModal(props: LoginModalProps) {
         }
 
         localStorage.setItem('JWT', JSONRes.token)
-        userContext?.setUser(JSONRes.user);
+        user.value = JSONRes.user
 
         loading.value = false
     }

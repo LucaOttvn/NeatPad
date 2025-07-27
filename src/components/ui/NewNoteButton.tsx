@@ -1,25 +1,23 @@
-import { useContext, useEffect } from 'react';
+import { useEffect } from 'react';
 import Image from "next/image";
 import { animateDivUnmount } from '@/utils/globalMethods';
 import { Note, ModalsNames } from '@/utils/interfaces';
-import { loading, notes, notesToDelete, selectedFolder, selectedModal, selectedNote } from '@/utils/signals';
+import { loading, notes, notesToDelete, selectedFolder, selectedModal, selectedNote, user } from '@/utils/signals';
 import { flushSync } from 'react-dom';
-import { UserContext } from '@/contexts/userContext';
+
 import gsap from 'gsap';
 import { createNote, deleteNote } from '@/serverActions/notesActions';
-import { FoldersContext } from '@/contexts/foldersContext';
 
 interface NewNoteButtonProps { }
 
 export default function NewNoteButton(props: NewNoteButtonProps) {
-    const userContext = useContext(UserContext)
-    const foldersContext = useContext(FoldersContext)
+    
 
     // when the user clicks on the plus button, the createNote() gets triggered, this has to happen because the NoteEditor component needs a note with an already existing id since it's supposed to edit notes, not creating new ones
     async function openNewNoteModal() {
         loading.value = true
         const newNote: Note = {
-            user: userContext!.user!.id!,
+            user: user.value!.id!,
             title: '',
             text: '',
             last_update: new Date(),

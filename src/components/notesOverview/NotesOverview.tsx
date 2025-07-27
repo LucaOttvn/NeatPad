@@ -1,13 +1,13 @@
 import { ModalsNames } from "@/utils/interfaces";
 import "./notesOverview.scss";
-import { useContext, useEffect } from "react";
+import { useEffect } from "react";
 import AnimatedText from "../animatedComponents/AnimatedText";
 import NotesSection from "../ui/NotesSection";
-import { UserContext } from "@/contexts/userContext";
+
 import { ReactSVG } from "react-svg";
 import AnimatedDiv from "../animatedComponents/AnimatedDiv";
 
-import { folders, loading, notes, notesToShow, selectedFolder, selectedModal, updatingFolder } from "@/utils/signals";
+import { folders, loading, notes, notesToShow, selectedFolder, selectedModal, updatingFolder, user } from "@/utils/signals";
 import SearchBar from "../ui/searchBar/SearchBar";
 import { getNotesByUserEmail } from "@/serverActions/notesActions";
 import { getFoldersByUserId } from "@/serverActions/foldersActions";
@@ -19,8 +19,6 @@ interface NotesCompareParams {
 }
 
 export default function NotesOverview() {
-
-  const userContext = useContext(UserContext);
 
   // if there's a selected folder set it
   const foundSelectedFolderData = selectedFolder.value ? folders.value.find(
@@ -47,11 +45,11 @@ export default function NotesOverview() {
   // get notes and folders
   async function fetchNotesAndFolders() {
     try {
-      if (!userContext || !userContext.user || !userContext.user.id || !userContext.user.email) return
+      if (!user.value || !user.value.id || !user.value.email) return
 
-      notes.value = (await getNotesByUserEmail(userContext.user.id, userContext.user.email)) || []
+      notes.value = (await getNotesByUserEmail(user.value.id, user.value.email)) || []
       notesToShow.value = notes.value
-      const foldersFound = (await getFoldersByUserId(userContext?.user?.id!)) || []
+      const foldersFound = (await getFoldersByUserId(user!.value.id!)) || []
       if (folders.value) folders.value = foldersFound
     } catch (err) {
       console.error("Error fetching initial data", err);
