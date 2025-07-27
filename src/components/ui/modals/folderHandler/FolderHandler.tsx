@@ -4,10 +4,10 @@ import ColorPicker from "../../colorPicker/ColorPicker";
 import { FoldersContext } from "@/contexts/foldersContext";
 import { Folder } from "@/utils/interfaces";
 import { UserContext } from "@/contexts/userContext";
-import { folders, selectedSideMenu, updateFolder5tate } from "@/utils/signals";
+import { folders, selectedSideMenu, updateFolder5tate, updatingFolder } from "@/utils/signals";
 import { handleModal } from "@/utils/globalMethods";
 import './folderHandler.scss';
-import { updateFolder, createFolder, deleteFolder } from "@/serverActions/foldersActions";
+import { createFolder, deleteFolder } from "@/serverActions/foldersActions";
 
 // modal to create/update/delete a folder
 export default function FolderHandler() {
@@ -15,51 +15,46 @@ export default function FolderHandler() {
   const userContext = useContext(UserContext);
 
   const [folderName, setFolderName] = useState("");
-
   const [selectedColor, setSelectedColor] = useState<string | undefined>(undefined);
 
   let foundFolder = useRef<Folder | undefined>(undefined)
 
   useEffect(() => {
     // if updating a folder get its data into the view
-    if (foldersContext?.updatingFolder) {
-      foundFolder.current = folders.value.find((folder) => folder.id == foldersContext.updatingFolder)
-      if (foundFolder.current) {
-        setFolderName(foundFolder.current.name)
-        if (foundFolder.current.color) setSelectedColor(foundFolder.current.color)
-      }
-    }
+    if (!updatingFolder.value) return
+    
+    foundFolder.current = folders.value.find((folder) => folder.id == updatingFolder.value)
+
+    if (!foundFolder.current) return
+
+    setFolderName(foundFolder.current.name)
+    
+    if (foundFolder.current.color) setSelectedColor(foundFolder.current.color)
   }, []);
 
   async function handleFolderCreation() {
-    const isUpdating = foldersContext?.updatingFolder;
     const folder = foundFolder.current;
     const changesDetected = folder?.name !== folderName || folder?.color !== selectedColor;
 
     // if the user's updating the folder (so it's not a new one) and there are some actual updates
-    if (isUpdating && folder && changesDetected) {
-
-      let newFolder: Folder = {
-        name: folderName,
-        color: selectedColor,
-        user: userContext?.user!.id!
-      }
-      updateFolder5tate(newFolder);
+    let newFolder: Folder = {
+      id: folder ? folder.id : undefined,
+      name: folderName,
+      color: selectedColor || 'White',
+      user: userContext?.user!.id!
     }
+
+    if (updatingFolder.value && changesDetected) updateFolder5tate(newFolder);
+
     // if it's a new folder create a new Folder object and save it
-    if (!isUpdating) {
-      const newFolder: Folder = {
-        name: folderName,
-        color: selectedColor || 'White',
-        user: userContext!.user!.id!,
-      };
+    if (!updatingFolder.value) {
       // insert the folder in the db
       const folderWithId = await createFolder(newFolder);
-      // update the local state
+      // then update the local state to have the complete folder obj with the id field
       folders.value = [...folders.value, folderWithId]
     }
     // close the modal at the end
-    foldersContext?.setUpdatingFolder(undefined);
+    updatingFolder.value = undefined
     handleModal(undefined);
   }
 
@@ -72,7 +67,7 @@ export default function FolderHandler() {
 
     if (foundFolder.current && foundFolder.current.id) await deleteFolder(foundFolder.current?.id)
     handleModal(undefined)
-    foldersContext.setUpdatingFolder(undefined)
+    updatingFolder.value = undefined
 
     foldersContext.setSelectedFolder(undefined)
     selectedSideMenu.value = undefined
@@ -84,7 +79,7 @@ export default function FolderHandler() {
       <div className="wrapper flex">
         <div className="heading">
           <div className="title flex flex-col items-start justify-start">
-            {foldersContext?.updatingFolder ? <span>Update</span> : <><span>Create</span>
+            {updatingFolder.value ? <span>Update</span> : <><span>Create</span>
               <span className="ms-3">New</span></>}
             <b
               className="ms-6"
@@ -119,7 +114,7 @@ export default function FolderHandler() {
         >
           Confirm
         </button>
-        {foldersContext?.updatingFolder && <>
+        {updatingFolder.value && <>
           or
           <button
             className="mainBtn createFolderBtn"

@@ -9,7 +9,7 @@ import { UserContext } from "@/contexts/userContext";
 import Login from "@/components/Login";
 import GeneralModal from "@/components/ui/modals/GeneralModal";
 import { useSignals } from "@preact/signals-react/runtime";
-import { isMobile, loading, selectedModal, selectedSideMenu } from "@/utils/signals";
+import { isMobile, loading, selectedModal, selectedSideMenu, updatingFolder } from "@/utils/signals";
 import NewNoteButton from "@/components/ui/NewNoteButton";
 import GeneralSideMenu from "@/components/ui/SideMenu";
 import { Capacitor } from "@capacitor/core";
@@ -37,7 +37,7 @@ export default function Home() {
   };
 
   const closeModal = () => {
-    if (selectedModal.value == ModalsNames.folderHandler) foldersContext?.setUpdatingFolder(undefined)
+    if (selectedModal.value == ModalsNames.folderHandler) updatingFolder.value = undefined
   }
 
   useEffect(() => {

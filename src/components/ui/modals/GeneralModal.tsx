@@ -8,7 +8,7 @@ import LoginModal from "./login/LoginModal";
 import FolderHandler from "./folderHandler/FolderHandler";
 import { FoldersContext } from "@/contexts/foldersContext";
 import SettingsModal from "./settings/SettingsModal";
-import { isMobile, notes, selectedModal, selectedNote } from "@/utils/signals";
+import { isMobile, notes, selectedModal, selectedNote, updatingFolder } from "@/utils/signals";
 import { handleModal, handleNoteEditorClose } from "@/utils/globalMethods";
 
 export default function GeneralModal() {
@@ -31,7 +31,7 @@ export default function GeneralModal() {
       if (selectedModal.value == ModalsNames.newNote || selectedModal.value == ModalsNames.updateNote) {
         handleNoteEditorClose()
       }
-      if (selectedModal.value == ModalsNames.folderHandler) { foldersContext?.setUpdatingFolder(undefined) }
+      if (selectedModal.value == ModalsNames.folderHandler) updatingFolder.value = undefined
       handleModal(undefined)
     }
   }

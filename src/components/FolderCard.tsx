@@ -3,7 +3,7 @@ import "./componentsStyle.scss";
 import { useContext, useRef } from "react";
 import { FoldersContext } from "@/contexts/foldersContext";
 import gsap from 'gsap';
-import { isMobile, notes, notesToDelete, selectedModal, selectedSideMenu } from "@/utils/signals";
+import { isMobile, notes, notesToDelete, selectedModal, selectedSideMenu, updatingFolder } from "@/utils/signals";
 
 interface FolderProps {
   folder: Folder;
@@ -27,7 +27,7 @@ export default function FolderCard(props: FolderProps) {
     if (notesToDelete.value.length > 0) return
 
     timerRef.current = setTimeout(() => {
-      foldersContext?.setUpdatingFolder(props.folder.id)
+      updatingFolder.value = props.folder.id
       selectedModal.value = ModalsNames.folderHandler
     }, 500);
   }

@@ -8,7 +8,7 @@ import { UserContext } from "@/contexts/userContext";
 import { ReactSVG } from "react-svg";
 import AnimatedDiv from "../animatedComponents/AnimatedDiv";
 
-import { folders, loading, notes, notesToShow, selectedModal } from "@/utils/signals";
+import { folders, loading, notes, notesToShow, selectedModal, updatingFolder } from "@/utils/signals";
 import SearchBar from "../ui/searchBar/SearchBar";
 import { getNotesByUserEmail } from "@/serverActions/notesActions";
 import { getFoldersByUserId } from "@/serverActions/foldersActions";
@@ -61,7 +61,7 @@ export default function NotesOverview() {
   }
 
   function setEditingFolder() {
-    foldersContext?.setUpdatingFolder(foldersContext.selectedFolder)
+    updatingFolder.value = foldersContext!.selectedFolder
     selectedModal.value = ModalsNames.folderHandler
   }
 
