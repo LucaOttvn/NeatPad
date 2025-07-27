@@ -1,0 +1,9 @@
+{
+  "name": "NeatPad",
+  "short_name": "NeatPad",
+  "description": "A neat approach to note-taking",
+  "start_url": "/",
+  "display": "standalone",
+  "icons": [],
+  "background_color": "#000000"
+}
