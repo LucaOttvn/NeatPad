@@ -130,7 +130,6 @@ export default function Home() {
           <TopBar />
           <div className="w-full h-full flex" style={{ paddingTop: "4rem" }} ref={swipeRef}>
             <GeneralSideMenu />
-            <InstallPWAButton/>
             <NotesOverview />
           </div>
           <NewNoteButton />

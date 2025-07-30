@@ -3,6 +3,7 @@ import { ModalsNames } from "@/utils/interfaces";
 import AnimatedDiv from "./animatedComponents/AnimatedDiv";
 import { selectedModal } from "@/utils/signals";
 import AnimatedText from "./animatedComponents/AnimatedText";
+import InstallPWAButton from "./InstallPwaButton";
 
 export default function Login() {
 
@@ -20,6 +21,9 @@ export default function Login() {
         >
           Login
         </button>
+
+        <InstallPWAButton />
+        
         <span>or</span>
         <button
           className="mainBtn"
