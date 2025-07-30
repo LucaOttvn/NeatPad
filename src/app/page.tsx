@@ -18,6 +18,7 @@ import { App } from '@capacitor/app';
 import { handleModal } from "@/utils/globalMethods";
 
 import { getUserById } from "@/serverActions/usersActions";
+import InstallPWAButton from "@/components/InstallPwaButton";
 
 const minSwipeDistance = 100
 
@@ -129,6 +130,7 @@ export default function Home() {
           <TopBar />
           <div className="w-full h-full flex" style={{ paddingTop: "4rem" }} ref={swipeRef}>
             <GeneralSideMenu />
+            <InstallPWAButton/>
             <NotesOverview />
           </div>
           <NewNoteButton />
