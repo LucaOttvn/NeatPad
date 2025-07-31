@@ -17,14 +17,11 @@ export default function NoteCard(props: NoteCardProps) {
 
   const foundParentFolder = folders.value.find((folder) => props.note.folders.find(el => el == folder.id));
 
-  const textColor =
-    colors.find((item) => item.color == foundParentFolder?.color)?.text ||
-    "White";
+  let textColor = "White"
+  if (foundParentFolder) textColor = colors.find((item) => item.color == foundParentFolder?.color)?.whiteText ? "White" : "Black";
 
   useEffect(() => {
-    return () => {
-      clearTimeout(timerRef.current);
-    };
+    return () => clearTimeout(timerRef.current);
   }, []);
 
   useEffect(() => {

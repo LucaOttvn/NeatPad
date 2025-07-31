@@ -85,7 +85,7 @@ export default function NotesOverview() {
       {/* pinnedSection (show it only if there's at least one pinned note) */}
       {notesToShow.value.filter(note => note.pinned).length > 0 && (
         <NotesSection title="Pinned" notes={notesToShow.value.filter(note => note.pinned)} />
-      )}
+      )}            
 
       {/* non-pinned notes section */}
       {notesToShow.value.length > 0 ? <NotesSection title="Others" notes={notesToShow.value.filter(note => !note.pinned)} /> : <div className="w-full h-full center">

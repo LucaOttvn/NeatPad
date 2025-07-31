@@ -38,3 +38,6 @@ export async function updateFolder5tate(folder: Folder) {
 }
 
 export const user = signal<User | undefined>()
+
+export const isAppInstallable = signal<any>()
+export const alreadyInstalledApp = signal(false)

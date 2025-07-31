@@ -82,73 +82,46 @@ export enum SideMenusNames {
     folders = "foldersSideMenu",
 }
 
-export const colors = [
-    {
-        color: "White",
-        text: 'Black'
-    },
+export const colors: {color: string, whiteText?: boolean}[] = [
     {
         color: "darkGrey",
-        text: 'White'
+        whiteText: true
+    },
+    {
+        color: "White",
     },
     {
         color: "Pink",
-        text: 'Black'
-    },
-    {
-        color: "FrenchPurple",
-        text: 'Black'
     },
     {
         color: "SlateRed",
-        text: 'Black'
     },
     {
-        color: "Magenta",
-        text: 'White'
+        color: "Purple",
     },
     {
         color: "Yellow",
-        text: 'Black'
-    },
-    {
-        color: "Orange",
-        text: 'Black'
-    },
-    {
-        color: "Indigo",
-        text: 'White'
     },
     {
         color: "Brown",
-        text: 'White'
     },
     {
-        color: "Turquoise",
-        text: 'Black'
+        color: "Orange",
     },
     {
-        color: "Green",
-        text: 'Black'
-    },
-    {
-        color: "ShamrockGreen",
-        text: 'Black'
-    },
-    {
-        color: "PersianGreen",
-        text: 'Black'
+        color: "Azure",
     },
     {
         color: "GreyishBlue",
-        text: 'Black'
     },
     {
-        color: "SlateBlue",
-        text: 'Black'
+        color: "Green",
     },
     {
         color: "Blue",
-        text: 'Black'
+    },
+    {
+        color: "darkGreen",
+        whiteText: true
     },
 ];

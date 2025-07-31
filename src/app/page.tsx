@@ -1,15 +1,14 @@
-"use client";
+"use client";;
 import TopBar from "@/components/ui/TopBar";
 import { useEffect, useLayoutEffect, useRef } from "react";
 import { ScaleLoader } from "react-spinners";
 import AnimatedDiv from "@/components/animatedComponents/AnimatedDiv";
-import NotesOverview from "@/components/notesOverview/NotesOverview";
 import { ModalsNames, SideMenusNames, User } from "@/utils/interfaces";
 
 import Login from "@/components/Login";
 import GeneralModal from "@/components/ui/modals/GeneralModal";
 import { useSignals } from "@preact/signals-react/runtime";
-import { isMobile, loading, selectedModal, selectedSideMenu, updatingFolder, user } from "@/utils/signals";
+import { alreadyInstalledApp, isAppInstallable, isMobile, loading, selectedModal, selectedSideMenu, updatingFolder, user } from "@/utils/signals";
 import NewNoteButton from "@/components/ui/NewNoteButton";
 import GeneralSideMenu from "@/components/ui/SideMenu";
 import { Capacitor } from "@capacitor/core";
@@ -18,7 +17,8 @@ import { App } from '@capacitor/app';
 import { handleModal } from "@/utils/globalMethods";
 
 import { getUserById } from "@/serverActions/usersActions";
-import InstallPWAButton from "@/components/InstallPwaButton";
+
+import NotesOverview from "@/components/notesOverview/NotesOverview";
 
 const minSwipeDistance = 100
 
@@ -37,6 +37,17 @@ export default function Home() {
   const closeModal = () => {
     if (selectedModal.value == ModalsNames.folderHandler) updatingFolder.value = undefined
   }
+
+  useEffect(() => {
+    window.addEventListener('beforeinstallprompt', (e) => {
+      e.preventDefault();
+      isAppInstallable.value = e
+    });
+
+    if (window.matchMedia('(display-mode: standalone)').matches) {
+      alreadyInstalledApp.value = true;
+    }
+  }, []);
 
   useEffect(() => {
     setupStatusBar()
