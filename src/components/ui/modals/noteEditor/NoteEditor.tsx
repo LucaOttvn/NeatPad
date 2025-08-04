@@ -9,6 +9,7 @@ import MarkdownToolbar from './MarkdownToolbar';
 import ReactMarkdown from 'react-markdown';
 import remarkBreaks from 'remark-breaks';
 import { updateNoteState } from '@/utils/signals';
+import { db } from '@/utils/db';
 
 interface NoteEditorProps {
   note: Note | undefined
@@ -110,6 +111,7 @@ export default function NoteEditor(props: NoteEditorProps) {
 
     // set a new timer to call saveNote after a delay
     if (currentNote) debounceTimerRef.current = setTimeout(async () => {
+      db.notes.put(currentNote)
       await updateNoteState(currentNote)
     }, 500);
   }, [currentNote]);

@@ -11,6 +11,8 @@ import { folders, loading, notes, notesToShow, selectedFolder, selectedModal, up
 import SearchBar from "../ui/searchBar/SearchBar";
 import { getNotesByUserEmail } from "@/serverActions/notesActions";
 import { getFoldersByUserId } from "@/serverActions/foldersActions";
+import { useLiveQuery } from "dexie-react-hooks";
+import { db } from "@/utils/db";
 
 interface NotesCompareParams {
   noteText: string
@@ -25,10 +27,19 @@ export default function NotesOverview() {
     (el) => el.id == selectedFolder.value
   ) : undefined;
 
+  const localNotes = useLiveQuery(() => db.notes.toArray());
+
   useEffect(() => {
     loading.value = true
+
+    if (localNotes) {
+      console.log(localNotes)
+      notes.value = localNotes
+      notesToShow.value = localNotes
+      return
+    }
     fetchNotesAndFolders();
-  }, []);
+  }, [localNotes]);
 
   // listen for changes in the notes array or in the current folder
   useEffect(() => {
@@ -45,10 +56,15 @@ export default function NotesOverview() {
   // get notes and folders
   async function fetchNotesAndFolders() {
     try {
+
       if (!user.value || !user.value.id || !user.value.email) return
 
       notes.value = (await getNotesByUserEmail(user.value.id, user.value.email)) || []
       notesToShow.value = notes.value
+
+      // set the fetched notes to the local db
+      await db.notes.bulkPut(notes.value)
+
       const foldersFound = (await getFoldersByUserId(user!.value.id!)) || []
       if (folders.value) folders.value = foldersFound
     } catch (err) {
@@ -85,7 +101,7 @@ export default function NotesOverview() {
       {/* pinnedSection (show it only if there's at least one pinned note) */}
       {notesToShow.value.filter(note => note.pinned).length > 0 && (
         <NotesSection title="Pinned" notes={notesToShow.value.filter(note => note.pinned)} />
-      )}            
+      )}
 
       {/* non-pinned notes section */}
       {notesToShow.value.length > 0 ? <NotesSection title="Others" notes={notesToShow.value.filter(note => !note.pinned)} /> : <div className="w-full h-full center">
