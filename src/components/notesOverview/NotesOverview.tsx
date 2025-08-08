@@ -31,8 +31,6 @@ export default function NotesOverview() {
   const localNotes = useLiveQuery(() => db.notes.toArray());
 
   useEffect(() => {
-    loading.value = true
-
     if (localNotes) {
       notes.value = localNotes
       notesToShow.value = localNotes
@@ -55,6 +53,7 @@ export default function NotesOverview() {
 
   // get notes and folders
   async function fetchNotesAndFolders() {
+    loading.value = true
     try {
 
       if (!user.value || !user.value.email) return
