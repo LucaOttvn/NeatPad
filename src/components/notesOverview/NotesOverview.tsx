@@ -10,9 +10,10 @@ import AnimatedDiv from "../animatedComponents/AnimatedDiv";
 import { folders, loading, notes, notesToShow, selectedFolder, selectedModal, updatingFolder, user } from "@/utils/signals";
 import SearchBar from "../ui/searchBar/SearchBar";
 import { getNotesByUserEmail } from "@/serverActions/notesActions";
-import { getFoldersByUserId } from "@/serverActions/foldersActions";
+
 import { useLiveQuery } from "dexie-react-hooks";
 import { db } from "@/utils/db";
+import { getFoldersByUserEmail } from "@/serverActions/foldersActions";
 
 interface NotesCompareParams {
   noteText: string
@@ -33,7 +34,6 @@ export default function NotesOverview() {
     loading.value = true
 
     if (localNotes) {
-      console.log(localNotes)
       notes.value = localNotes
       notesToShow.value = localNotes
       return
@@ -57,15 +57,15 @@ export default function NotesOverview() {
   async function fetchNotesAndFolders() {
     try {
 
-      if (!user.value || !user.value.id || !user.value.email) return
+      if (!user.value || !user.value.email) return
 
-      notes.value = (await getNotesByUserEmail(user.value.id, user.value.email)) || []
+      notes.value = (await getNotesByUserEmail(user.value.email)) || []
       notesToShow.value = notes.value
 
       // set the fetched notes to the local db
       await db.notes.bulkPut(notes.value)
 
-      const foldersFound = (await getFoldersByUserId(user!.value.id!)) || []
+      const foldersFound = (await getFoldersByUserEmail(user.value.email)) || []
       if (folders.value) folders.value = foldersFound
     } catch (err) {
       console.error("Error fetching initial data", err);

@@ -49,11 +49,11 @@ export async function updateUser(updatedUser: User) {
     return data;
 }
 
-export async function deleteUser(id: number) {
+export async function deleteUser(userEmail: string) {
     const { data, error } = await supabase
         .from("users")
         .delete()
-        .eq("id", id)
+        .eq("email", userEmail)
         .select()
         .single();
 

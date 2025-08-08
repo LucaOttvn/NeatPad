@@ -73,11 +73,11 @@ export async function updateNote(note: Note) {
     return data;
 }
 
-export async function getNotesByUserEmail(userId: number, userEmail: string): Promise<Note[] | null> {
+export async function getNotesByUserEmail(userEmail: string): Promise<Note[] | null> {
     const { data: notes, error } = await supabase
         .from('notes')
         .select('*')
-        .or(`user.eq.${userId},collaborators.cs.{${userEmail}}`) // check if user matches OR collaborators contains userEmail
+        .or(`user.eq.${userEmail},collaborators.cs.{${userEmail}}`) // check if user matches OR collaborators contains userEmail
         .order('last_update', { ascending: false });
 
     if (error) {

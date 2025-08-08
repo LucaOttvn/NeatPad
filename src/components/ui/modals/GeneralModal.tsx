@@ -4,7 +4,6 @@ import { modalsList, ModalsNames } from "@/utils/interfaces";
 import GeneralModalHeader from "./modalsHeaders/GeneralModalHeader";
 import NoteEditorModalHeader from "./modalsHeaders/noteEditorModalHeader/NoteEditorModalHeader";
 import NoteEditor from "./noteEditor/NoteEditor";
-import LoginModal from "./login/LoginModal";
 import FolderHandler from "./folderHandler/FolderHandler";
 
 import SettingsModal from "./settings/SettingsModal";
@@ -12,8 +11,6 @@ import { isMobile, notes, selectedModal, selectedNote, updatingFolder } from "@/
 import { handleModal, handleNoteEditorClose } from "@/utils/globalMethods";
 
 export default function GeneralModal() {
-
-  
 
   const generalModalRef = useRef<HTMLDivElement>(null)
 
@@ -36,7 +33,7 @@ export default function GeneralModal() {
     }
   }
 
-  
+
   function handleBackdropClick() {
     // handle the note saving/deleting when the user clicks on the modals's backdrop to close it
     if (selectedModal.value == ModalsNames.newNote || selectedModal.value == ModalsNames.updateNote) {
@@ -89,14 +86,7 @@ export default function GeneralModal() {
           <NoteEditor note={notes.value.find(
             (el) => el.id === selectedNote.value
           )} /></>
-          }
-
-        {/* login/create account */}
-        {(selectedModal.value == ModalsNames.login || selectedModal.value == ModalsNames.createAccount) && <>
-          <GeneralModalHeader modalId={ModalsNames.login} className="loginModalHeader" />
-          <LoginModal creatingAccount={selectedModal.value == ModalsNames.createAccount} />
-        </>}
-
+        }
 
         {/* settings */}
         {selectedModal.value == ModalsNames.settings && <>

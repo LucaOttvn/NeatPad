@@ -3,12 +3,12 @@
 import { supabase } from "@/utils/supabaseClient";
 import { Folder } from "@/utils/interfaces";
 
-export async function getFoldersByUserId(userId: number) {
+export async function getFoldersByUserEmail(userEmail: string) {
 
     const { data, error } = await supabase
         .from('folders')
         .select('*')
-        .eq('user', userId)
+        .eq('user', userEmail)
         .order('name', { ascending: true }); 
 
     if (error) {

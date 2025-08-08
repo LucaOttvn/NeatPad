@@ -6,7 +6,7 @@ import { updateFolder } from "@/serverActions/foldersActions";
 export const selectedSideMenu = signal<SideMenusNames | undefined>();
 export const selectedModal = signal<ModalsNames | undefined>();
 export const isMobile = signal(false);
-export const loading = signal(true);
+export const loading = signal(false);
 
 // notes signals
 export const notes = signal<Note[]>([])

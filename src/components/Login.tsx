@@ -1,9 +1,8 @@
 import "./componentsStyle.scss";
-import { ModalsNames } from "@/utils/interfaces";
 import AnimatedDiv from "./animatedComponents/AnimatedDiv";
-import { selectedModal } from "@/utils/signals";
 import AnimatedText from "./animatedComponents/AnimatedText";
-
+import { signIn } from "next-auth/react";
+import { ReactSVG } from "react-svg";
 export default function Login() {
 
   return (
@@ -13,23 +12,13 @@ export default function Login() {
 
       <div className="center flex-col gap-3">
         <button
-          className="mainBtn"
+          className="mainBtn center gap-3"
           onClick={() => {
-            selectedModal.value = ModalsNames.login
+            signIn('google', {redirect: false}, { prompt: "select_account" })
           }}
         >
-          Login
-        </button>
-
-        
-        <span>or</span>
-        <button
-          className="mainBtn"
-          onClick={() => {
-            selectedModal.value = ModalsNames.createAccount
-          }}
-        >
-          Create new account
+          <ReactSVG src="/icons/google.svg" />
+          Login with Google
         </button>
       </div>
     </AnimatedDiv>

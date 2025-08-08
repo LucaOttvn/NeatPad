@@ -5,22 +5,19 @@ export interface Note {
     last_update: Date
     pinned: boolean
     folders: number[]
-    user: number
+    user: string
     collaborators: string[]
 }
 
 export interface User {
-    value: any
-    id?: number
     email: string
-    password: string
 }
 
 export interface Folder {
     id?: number
     name: string
     color?: string
-    user: number
+    user: string
 }
 
 export enum ModalsNames {

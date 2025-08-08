@@ -3,8 +3,7 @@ import TopBar from "@/components/ui/TopBar";
 import { useEffect, useLayoutEffect, useRef } from "react";
 import { ScaleLoader } from "react-spinners";
 import AnimatedDiv from "@/components/animatedComponents/AnimatedDiv";
-import { ModalsNames, SideMenusNames, User } from "@/utils/interfaces";
-
+import { ModalsNames, SideMenusNames } from "@/utils/interfaces";
 import Login from "@/components/Login";
 import GeneralModal from "@/components/ui/modals/GeneralModal";
 import { useSignals } from "@preact/signals-react/runtime";
@@ -15,10 +14,8 @@ import { Capacitor } from "@capacitor/core";
 import { StatusBar } from "@capacitor/status-bar";
 import { App } from '@capacitor/app';
 import { handleModal } from "@/utils/globalMethods";
-
-import { getUserById } from "@/serverActions/usersActions";
-
 import NotesOverview from "@/components/notesOverview/NotesOverview";
+import { useSession } from "next-auth/react";
 
 const minSwipeDistance = 100
 
@@ -27,6 +24,7 @@ export default function Home() {
 
   const touchStartX = useRef(0);
   const swipeRef = useRef<HTMLDivElement>(null);
+  const { data: session, status } = useSession();
 
   const setupStatusBar = async () => {
     if (Capacitor.isNativePlatform()) {
@@ -86,7 +84,6 @@ export default function Home() {
     };
   }, [swipeRef.current]);
 
-
   useLayoutEffect(() => {
     function checkScreenSize() {
       isMobile.value = window.innerWidth < 768
@@ -97,46 +94,16 @@ export default function Home() {
   }, [])
 
   useEffect(() => {
-    loading.value = true
-    const token = localStorage.getItem('JWT');
-
-    async function verifyToken() {
-      try {
-        if (!token) return user.value = undefined
-
-        const response = await fetch('/api/verifyToken', {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        });
-
-        if (!response.ok) {
-          localStorage.removeItem('JWT');
-          return user.value = undefined
-        }
-
-        const data = await response.json();
-        const foundUser: User = await getUserById(data.userId)
-        if (foundUser) user.value = foundUser
-      } catch (error) {
-        console.error('Error verifying token:', error);
-        localStorage.removeItem('JWT');
-        user.value = undefined
-      } finally {
-        loading.value = false
-      }
-    };
-
-    verifyToken();
-  }, []);
+    if (session?.user?.email) user.value = { email: session.user?.email }
+  }, [session]);
 
   return (
-    <>
+    <div className="w-full h-full">
       {loading.value && <div className="loader">
         <ScaleLoader color={"white"} loading={true} />
       </div>}
 
-      {user.value &&
+      {status === 'authenticated' &&
         <AnimatedDiv className="w-full h-full flex start">
           <TopBar />
           <div className="w-full h-full flex" style={{ paddingTop: "4rem" }} ref={swipeRef}>
@@ -145,8 +112,8 @@ export default function Home() {
           </div>
           <NewNoteButton />
         </AnimatedDiv>}
-      {!user.value && <Login />}
+      {status == 'unauthenticated' && <Login />}
       <GeneralModal />
-    </>
+    </div>
   );
 }
