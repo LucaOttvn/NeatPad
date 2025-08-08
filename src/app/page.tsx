@@ -94,8 +94,17 @@ export default function Home() {
   }, [])
 
   useEffect(() => {
-    if (session?.user?.email) user.value = { email: session.user?.email }
-  }, [session]);
+    switch (status) {
+      case 'authenticated':
+        if (session?.user?.email) user.value = { email: session.user?.email }
+        break;
+      case 'loading':
+        loading.value = true
+        break;
+      default:
+        break;
+    }
+  }, [status]);
 
   return (
     <div className="w-full h-full">
@@ -103,7 +112,7 @@ export default function Home() {
         <ScaleLoader color={"white"} loading={true} />
       </div>}
 
-      {status === 'authenticated' &&
+      {user.value &&
         <AnimatedDiv className="w-full h-full flex start">
           <TopBar />
           <div className="w-full h-full flex" style={{ paddingTop: "4rem" }} ref={swipeRef}>
