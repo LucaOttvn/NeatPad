@@ -31,13 +31,14 @@ export default function NotesOverview() {
   const localNotes = useLiveQuery(() => db.notes.toArray());
 
   useEffect(() => {
-    if (localNotes) {
-      notes.value = localNotes
-      notesToShow.value = localNotes
-      return
-    }
+    // if (localNotes) {
+    //   console.log(localNotes)
+    //   notes.value = localNotes
+    //   notesToShow.value = localNotes
+    //   return
+    // }
     fetchNotesAndFolders();
-  }, [localNotes]);
+  }, []);
 
   // listen for changes in the notes array or in the current folder
   useEffect(() => {
@@ -55,15 +56,17 @@ export default function NotesOverview() {
   async function fetchNotesAndFolders() {
     loading.value = true
     try {
-
       if (!user.value || !user.value.email) return
 
-      const foundNotes = (await getNotesByUserEmail(user.value.email)) || []
+      const foundNotes = await getNotesByUserEmail(user.value!.email) || []
+      const foundFolders = await getFoldersByUserEmail(user.value!.email) || []
+
+      console.log(foundNotes)
+      console.log(foundFolders)
       
       // set the fetched notes to the local db
-      await db.notes.bulkPut(notes.value)
+      // await db.notes.bulkPut(notes.value)
       
-      const foundFolders = (await getFoldersByUserEmail(user.value.email)) || []
       folders.value = foundFolders
       notes.value = foundNotes
       notesToShow.value = foundNotes
