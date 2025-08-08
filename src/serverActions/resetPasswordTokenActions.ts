@@ -43,11 +43,11 @@ export async function saveToken(token: string, userId: number) {
     return data;
 }
 
-export async function deleteToken(userId: number) {
+export async function deleteToken(userEmail: string) {
     const { data, error } = await supabase
         .from("resetPasswordTokens")
         .delete()
-        .eq("user", userId)
+        .eq("user", userEmail)
         .select()
         .single();
 

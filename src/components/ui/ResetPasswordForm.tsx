@@ -36,11 +36,11 @@ export default function ResetPasswordForm(props: ResetPasswordFormProps) {
         if (!validatedPassword.isValid) return alert(validatedPassword.errors[0])
 
         let requestBody: {
-            id: number;
+            email: string;
             currentPassword: string | undefined;
             newPassword: string;
         } = {
-            id: user.value!.id!,
+            email: user.value!.email,
             currentPassword: undefined,
             newPassword: passwords.newPassword,
         }
@@ -66,7 +66,7 @@ export default function ResetPasswordForm(props: ResetPasswordFormProps) {
 
         // remove the token from the db when used
         if (props.forgotPassword) {
-            await deleteToken(user.value.id!)
+            await deleteToken(user.value!.email)
         }
     }
 

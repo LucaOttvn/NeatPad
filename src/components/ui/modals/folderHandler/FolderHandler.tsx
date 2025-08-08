@@ -41,7 +41,7 @@ export default function FolderHandler() {
       id: folder ? folder.id : undefined,
       name: folderName,
       color: selectedColor || 'White',
-      user: user.value!.id!
+      user: user.value!.email
     }
 
     if (updatingFolder.value && changesDetected) updateFolder5tate(newFolder);

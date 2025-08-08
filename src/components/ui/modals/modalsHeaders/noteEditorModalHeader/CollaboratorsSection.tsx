@@ -6,7 +6,7 @@ import { ReactSVG } from 'react-svg';
 import { Note, User } from '@/utils/interfaces';
 import { handleModal, validateEmail } from '@/utils/globalMethods';
 import { notes, updateNoteState, user } from '@/utils/signals';
-import { getUserByEmail, getUserById } from '@/serverActions/usersActions';
+import { getUserByEmail } from '@/serverActions/usersActions';
 
 interface CollaboratorsSectionProps {
     collaboratorsSectionOpen: boolean
@@ -21,8 +21,8 @@ export default function CollaboratorsSection(props: CollaboratorsSectionProps) {
 
     const getNoteOwnerEmail = async () => {
         if (!props.note || !props.note.user) return
-        const foundUser: User = await getUserById(props.note?.user)
-        const isUserOwner = props.note?.user == user.value!.id
+        const foundUser: User = await getUserByEmail(props.note?.user)
+        const isUserOwner = props.note?.user == user.value!.email
         const foundOwner = isUserOwner ? 'you' : foundUser.email
         setNoteOwnerEmail(foundOwner)
     }
@@ -127,7 +127,7 @@ export default function CollaboratorsSection(props: CollaboratorsSectionProps) {
 
                     {props.note?.collaborators.length == 0 && <span style={{ color: 'var(--Grey)' }}>There are no collaborators</span>}
 
-                    {user.value!.id == props.note?.user && <button className="trashBtn" disabled={selectedCollaborators.length == 0} onClick={() => {
+                    {user.value!.email == props.note?.user && <button className="trashBtn" disabled={selectedCollaborators.length == 0} onClick={() => {
                         deleteSelectedCollaborators()
                     }}>
                         <ReactSVG src={`/icons/trash.svg`} className="icon" />
@@ -137,7 +137,7 @@ export default function CollaboratorsSection(props: CollaboratorsSectionProps) {
             {/* footer section */}
             <div className="footer">
                 {/* if user is the note's owner */}
-                {user.value!.id == props.note?.user && <>
+                {user.value!.email == props.note?.user && <>
                     <span className="font-bold" style={{ fontSize: '110%' }}>Add collaborator</span>
                     <div className='newCollaboratorEmailSection'>
                         <input className='newCollaboratorEmailInput' ref={emailInputRef} type="email" placeholder='Insert email' />
@@ -147,7 +147,7 @@ export default function CollaboratorsSection(props: CollaboratorsSectionProps) {
                     </div>
                 </>}
                 {/* if user is a collaborator */}
-                {user.value!.id != props.note?.user && <button className='mainBtn' style={{ background: 'var(--Red)', marginInline: 'auto' }} onClick={() => {
+                {user.value!.email != props.note?.user && <button className='mainBtn' style={{ background: 'var(--Red)', marginInline: 'auto' }} onClick={() => {
                     stopCollaborating()
                 }}>Stop collaborating</button>}
             </div>

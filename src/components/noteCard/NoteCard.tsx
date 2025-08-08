@@ -58,7 +58,7 @@ export default function NoteCard(props: NoteCardProps) {
     }
 
     // if the user isn't the note's owner
-    if (props.note.user != user.value!.id) return alert('Collaborators cannot delete notes. To remove this note from your view, please remove your email from its collaborators list.')
+    if (props.note.user != user.value!.email) return alert('Collaborators cannot delete notes. To remove this note from your view, please remove your email from its collaborators list.')
 
     // is the cliked card already selected?
     let isNoteAlreadySelected = notesToDelete.value.some(noteId => noteId == props.note.id)
@@ -70,7 +70,7 @@ export default function NoteCard(props: NoteCardProps) {
   // handle right click on noteCard
   function handleContextMenu(e: React.MouseEvent) {
     e.preventDefault()
-    if (props.note.user != user.value!.id) return alert('Collaborators cannot delete notes. To remove this note from your view, please remove your email from its collaborators list.')
+    if (props.note.user != user.value!.email) return alert('Collaborators cannot delete notes. To remove this note from your view, please remove your email from its collaborators list.')
     // activate the delete mode only if it's not on already
     if (notesToDelete.value.length > 0) return
     notesToDelete.value = [props.note.id!]

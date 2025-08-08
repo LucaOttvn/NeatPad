@@ -17,7 +17,7 @@ export default function NewNoteButton(props: NewNoteButtonProps) {
     async function openNewNoteModal() {
         loading.value = true
         const newNote: Note = {
-            user: user.value!.id!,
+            user: user.value!.email,
             title: '',
             text: '',
             last_update: new Date(),

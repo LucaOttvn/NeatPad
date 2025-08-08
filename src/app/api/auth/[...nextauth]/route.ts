@@ -3,7 +3,7 @@ import NextAuth from "next-auth";
 import GoogleProvider from "next-auth/providers/google";
 
 // The `authOptions` object now exports a configuration object
-export const authOptions = {
+const authOptions = {
     // Configure one or more authentication providers
     providers: [
         GoogleProvider({
@@ -23,5 +23,3 @@ export const authOptions = {
 const handler = NextAuth(authOptions);
 
 export { handler as GET, handler as POST };
-
-
