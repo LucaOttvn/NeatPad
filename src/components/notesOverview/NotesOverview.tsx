@@ -58,14 +58,15 @@ export default function NotesOverview() {
 
       if (!user.value || !user.value.email) return
 
-      notes.value = (await getNotesByUserEmail(user.value.email)) || []
-      notesToShow.value = notes.value
-
+      const foundNotes = (await getNotesByUserEmail(user.value.email)) || []
+      
       // set the fetched notes to the local db
       await db.notes.bulkPut(notes.value)
-
-      const foldersFound = (await getFoldersByUserEmail(user.value.email)) || []
-      if (folders.value) folders.value = foldersFound
+      
+      const foundFolders = (await getFoldersByUserEmail(user.value.email)) || []
+      folders.value = foundFolders
+      notes.value = foundNotes
+      notesToShow.value = foundNotes
     } catch (err) {
       console.error("Error fetching initial data", err);
     } finally {
