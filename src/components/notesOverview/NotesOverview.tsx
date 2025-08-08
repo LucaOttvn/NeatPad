@@ -68,8 +68,9 @@ export default function NotesOverview() {
       if (folders.value) folders.value = foldersFound
     } catch (err) {
       console.error("Error fetching initial data", err);
+    } finally {
+      loading.value = false
     }
-    loading.value = false
   }
 
   function setEditingFolder() {
