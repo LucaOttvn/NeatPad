@@ -94,16 +94,10 @@ export default function Home() {
   }, [])
 
   useEffect(() => {
-    switch (status) {
-      case 'authenticated':
-        if (session?.user?.email) user.value = { email: session.user?.email }
-        break;
-      case 'loading':
-        loading.value = true
-        break;
-      default:
-        break;
-    }
+
+    if (status != 'authenticated') return
+    if (session?.user?.email) user.value = { email: session.user?.email }
+
   }, [status]);
 
   return (
