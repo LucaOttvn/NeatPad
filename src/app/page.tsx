@@ -94,10 +94,8 @@ export default function Home() {
   }, [])
 
   useEffect(() => {
-
     if (status != 'authenticated') return
     if (session?.user?.email) user.value = { email: session.user?.email }
-
   }, [status]);
 
   return (

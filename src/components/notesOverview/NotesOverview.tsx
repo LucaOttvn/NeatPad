@@ -3,23 +3,14 @@ import "./notesOverview.scss";
 import { useEffect } from "react";
 import AnimatedText from "../animatedComponents/AnimatedText";
 import NotesSection from "../ui/NotesSection";
-
 import { ReactSVG } from "react-svg";
 import AnimatedDiv from "../animatedComponents/AnimatedDiv";
-
 import { folders, loading, notes, notesToShow, selectedFolder, selectedModal, updatingFolder, user } from "@/utils/signals";
 import SearchBar from "../ui/searchBar/SearchBar";
 import { getNotesByUserEmail } from "@/serverActions/notesActions";
-
 import { useLiveQuery } from "dexie-react-hooks";
 import { db } from "@/utils/db";
 import { getFoldersByUserEmail } from "@/serverActions/foldersActions";
-
-interface NotesCompareParams {
-  noteText: string
-  noteTitle: string
-  searchParam: string
-}
 
 export default function NotesOverview() {
 
@@ -60,9 +51,6 @@ export default function NotesOverview() {
 
       const foundNotes = await getNotesByUserEmail(user.value!.email) || []
       const foundFolders = await getFoldersByUserEmail(user.value!.email) || []
-
-      console.log(foundNotes)
-      console.log(foundFolders)
       
       // set the fetched notes to the local db
       // await db.notes.bulkPut(notes.value)
