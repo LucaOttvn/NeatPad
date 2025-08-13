@@ -1,4 +1,4 @@
-import { ModalsNames } from "@/utils/interfaces";
+import { ModalsNames, Note } from "@/utils/interfaces";
 import "./notesOverview.scss";
 import { useEffect } from "react";
 import AnimatedText from "../animatedComponents/AnimatedText";
@@ -8,7 +8,6 @@ import AnimatedDiv from "../animatedComponents/AnimatedDiv";
 import { folders, loading, notes, notesToShow, selectedFolder, selectedModal, updatingFolder, user } from "@/utils/signals";
 import SearchBar from "../ui/searchBar/SearchBar";
 import { getNotesByUserEmail } from "@/serverActions/notesActions";
-import { useLiveQuery } from "dexie-react-hooks";
 import { db } from "@/utils/db";
 import { getFoldersByUserEmail } from "@/serverActions/foldersActions";
 
@@ -19,15 +18,25 @@ export default function NotesOverview() {
     (el) => el.id == selectedFolder.value
   ) : undefined;
 
-  const localNotes = useLiveQuery(() => db.notes.toArray());
+  // future local flow
+  // if navigator.online => fetch notes
+  // else => get local notes
+
+  // const localNotes = useLiveQuery(() => db.notes.toArray()) || [];
 
   useEffect(() => {
-    // if (localNotes) {
-    //   console.log(localNotes)
-    //   notes.value = localNotes
-    //   notesToShow.value = localNotes
-    //   return
-    // }
+
+    const fetcLocalhNotes = async () => {
+      const localNotes: Note[] = await db.notes.toArray();
+      notes.value = localNotes
+      notesToShow.value = localNotes
+      console.log(localNotes)
+    };
+    
+    if (!navigator.onLine) {
+      fetcLocalhNotes();
+      return
+    }
     fetchNotesAndFolders();
   }, []);
 
@@ -49,15 +58,14 @@ export default function NotesOverview() {
     try {
       if (!user.value || !user.value.email) return
 
-      const foundNotes = await getNotesByUserEmail(user.value!.email) || []
-      const foundFolders = await getFoldersByUserEmail(user.value!.email) || []
-      
-      // set the fetched notes to the local db
-      // await db.notes.bulkPut(notes.value)
-      
+      const foundNotes = (await getNotesByUserEmail(user.value!.email)) || []
+      const foundFolders = (await getFoldersByUserEmail(user.value!.email)) || []
+
       folders.value = foundFolders
       notes.value = foundNotes
       notesToShow.value = foundNotes
+      // set the fetched notes to the local db
+      await db.notes.bulkPut(foundNotes)
     } catch (err) {
       console.error("Error fetching initial data", err);
     } finally {
