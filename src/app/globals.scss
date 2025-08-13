@@ -23,27 +23,27 @@
   --bigBorderRadius: 30px;
 
   --Black: #000000;
-  --lightBlack: #151515;
+  --lightBlack: #101010;
   --White: #f0f0f0;
-  --softWhite: #cacaca;
+  --softWhite: #dddcdc;
   --transparentWhite: #ffffff45;
   --lightGrey: #707070;
-  --Grey: #505050;
-  --darkGrey: #22262c;
-  --Pink: #f7a9a8;
-  --SlateRed: #FE6D73;
-  --Purple: #9966CC;
-  --Yellow: #FADA5E;
-  --Brown: #C19A6B;
-  --Orange: #FFA500;
-  --Azure: #a9e5bb;
-  --Green: #1B998B;
-  --darkGreen: #31493C;
-  --Red: #da2323;
-  --Cyan: #9EADC8;
-  --GreyishBlue: #77A0A9;
-  --SlateBlue: #7678ed;
-  --Blue: #6495ED;
+  --Grey: #7B7B7B;
+  --darkGrey: #1a1e24;
+  --Pink: #FF4DA6;
+  --SlateRed: #E0354C;
+  --Purple: #9933CC;
+  --Yellow: #FFD700;
+  --Brown: #9E6B43;
+  --Orange: #FF8C00;
+  --Azure: #8BC478;
+  --Green: #00A693;
+  --darkGreen: #2E5E4E;
+  --Red: #CC0000;
+  --Cyan: #5F83B4;
+  --GreyishBlue: #6D8E97;
+  --SlateBlue: #6A70D3;
+  --Blue: #4169E1;
 }
 
 * {
@@ -83,16 +83,38 @@ html {
 
 body {
   font-family: "Inter", sans-serif;
-  background-color: var(--Black);
+  backdrop-filter: blur(10px);
   height: 100svh;
   display: flex;
   flex-direction: column;
   overflow-y: hidden;
 }
 
+.gradient-background {
+  background: linear-gradient(300deg, #5F83B4 0%, black 35%, black 65%, #5F83B4 100%);
+  background-size: 
+  200% 
+  200%;
+  animation: gradient-animation 30s ease infinite;
+}
+
+@keyframes gradient-animation {
+  0% {
+    background-position: 0% 50%;
+  }
+
+  30% {
+    background-position: 100% 50%;
+  }
+
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
 .mainBtn {
   width: fit-content;
-  padding: 0.6rem 1.4rem;
+  padding: 0.5rem 1.5rem;
   border-radius: var(--mainBorderRadius);
   background-color: var(--Blue);
   user-select: none;

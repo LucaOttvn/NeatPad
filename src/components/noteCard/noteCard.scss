@@ -1,27 +1,18 @@
 .noteCard {
   position: relative;
   width: fit-content;
-  height: 5rem;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
+  align-items: flex-start;
   gap: 0.4rem;
   user-select: none;
-  background-color: #202020;
   border-radius: var(--mainBorderRadius);
-  padding: 0.6rem 0.6rem;
+  padding: 0.6rem;
   z-index: 0;
   animation: onNoteCardMount 2s ease;
-
-  .folderName {
-    width: fit-content;
-    display: flex;
-    justify-content: flex-start;
-    gap: 0.5rem;
-    padding: 0.5rem 0.7rem 0.3rem 0.7rem;
-    border-radius: 15px;
-    background-color: var(--lightBlack);
-  }
+  background-color: #ffffff33;
+  border: 2px solid #ffffff70;
 
   span,
   h1 {
@@ -31,30 +22,36 @@
     z-index: 1;
   }
 
-  .pinBtn {
-    position: absolute;
-    right: 0;
-    top: 0;
-    border-radius: 0 0 0 var(--mainBorderRadius);
-    background-color: var(--Black);
-    z-index: 0;
+  footer {
+    width: fit-content;
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    overflow: hidden;
+    gap: 1rem;
+    background-color: var(--lightBlack);
+    border-radius: var(--mainBorderRadius);
+    padding: 0 0.5rem;
 
-    svg {
-      fill: var(--red);
+    .folderName {
+      width: fit-content;
+      display: flex;
+      justify-content: flex-start;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.5rem 0;
+    }
+
+    .collaboratorIcon {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100%;
+      gap: 0.2rem;
     }
   }
 
-  .collaboratorIcon {
-    width: 2rem;
-    height: 2rem;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    gap: 0.2rem;
-    background-color: var(--lightBlack);
-    border-radius: var(--mainBorderRadius);
-    padding: 0.4rem;
-  }
+
 }
 
 @keyframes onNoteCardMount {

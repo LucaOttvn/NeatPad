@@ -87,30 +87,39 @@ export default function NoteCard(props: NoteCardProps) {
       onClick={handleClick}
       onContextMenu={(e) => { handleContextMenu(e) }}
       style={{
-        background: foundParentFolder?.color
-          ? `var(--${foundParentFolder?.color})`
-          : "var(--darkGrey)",
+        boxShadow: `var(--${foundParentFolder?.color}) 0px 0px 7px`,
+        border: `var(--${foundParentFolder?.color}) solid 2px`,
       }}
     >
 
       {props.note.title && (
         // when the shared icon is visible, adapt the title's width
-        <h1 style={{ color: textColor ? `var(--${textColor})` : "auto" }}>
+        <h1 style={{color: 'var(--softWhite)'}}>
           {props.note.title}
         </h1>
       )}
 
       {!props.note.title && <h1 style={{ color: "var(--Grey)" }}>No title</h1>}
 
-      <div className="start gap-2">
+      <footer
+        style={{
+          background: foundParentFolder?.color
+            ? `var(--${foundParentFolder?.color})`
+            : "var(--darkGrey)",
+        }}
+      >
         <div className="folderName">
-          <ReactSVG src={`/icons/folder.svg`} className="icon" />
-          <span style={{ fontSize: '80%' }} className="font-bold">
+          {props.note.collaborators.length > 0 && <ReactSVG src={`/icons/folderFill.svg`} className="icon collaboratorIcon" beforeInjection={(svg) => {
+          svg.setAttribute("fill", textColor ? `var(--${textColor})` : "var(--White)");
+        }} />}
+          <span style={{ fontSize: '80%', color: textColor ? `var(--${textColor})` : "auto" }} className="font-bold">
             {foundParentFolder ? foundParentFolder.name : 'No folder'}
           </span>
         </div>
-        {props.note.collaborators.length > 0 && <ReactSVG src={`/icons/people.svg`} className="icon collaboratorIcon" />}
-      </div>
+        {props.note.collaborators.length > 0 && <ReactSVG src={`/icons/people.svg`} className="icon collaboratorIcon" beforeInjection={(svg) => {
+          svg.setAttribute("fill", textColor ? `var(--${textColor})` : "var(--White)");
+        }} />}
+      </footer>
 
     </AnimatedDiv>
   );

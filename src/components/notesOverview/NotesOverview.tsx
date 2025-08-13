@@ -26,15 +26,14 @@ export default function NotesOverview() {
 
   useEffect(() => {
 
-    const fetcLocalhNotes = async () => {
+    const fetchLocalNotes = async () => {
       const localNotes: Note[] = await db.notes.toArray();
       notes.value = localNotes
       notesToShow.value = localNotes
-      console.log(localNotes)
     };
     
     if (!navigator.onLine) {
-      fetcLocalhNotes();
+      fetchLocalNotes();
       return
     }
     fetchNotesAndFolders();

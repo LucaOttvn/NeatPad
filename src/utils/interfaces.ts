@@ -101,6 +101,7 @@ export const colors: {color: string, whiteText?: boolean}[] = [
     },
     {
         color: "Brown",
+        whiteText: true
     },
     {
         color: "Orange",
@@ -116,6 +117,7 @@ export const colors: {color: string, whiteText?: boolean}[] = [
     },
     {
         color: "Blue",
+        whiteText: true
     },
     {
         color: "darkGreen",
