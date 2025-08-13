@@ -87,7 +87,7 @@ export default function NoteCard(props: NoteCardProps) {
       onClick={handleClick}
       onContextMenu={(e) => { handleContextMenu(e) }}
       style={{
-        boxShadow: `var(--${foundParentFolder?.color}) 0px 0px 7px`,
+        // boxShadow: `var(--${foundParentFolder?.color}) 0px 0px 7px`,
         border: `var(--${foundParentFolder?.color}) solid 2px`,
       }}
     >
