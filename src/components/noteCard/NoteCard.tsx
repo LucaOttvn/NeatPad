@@ -109,9 +109,9 @@ export default function NoteCard(props: NoteCardProps) {
         }}
       >
         <div className="folderName">
-          {props.note.collaborators.length > 0 && <ReactSVG src={`/icons/folderFill.svg`} className="icon collaboratorIcon" beforeInjection={(svg) => {
+          <ReactSVG src={`/icons/folderFill.svg`} className="icon collaboratorIcon" beforeInjection={(svg) => {
           svg.setAttribute("fill", textColor ? `var(--${textColor})` : "var(--White)");
-        }} />}
+        }} />
           <span style={{ fontSize: '80%', color: textColor ? `var(--${textColor})` : "auto" }} className="font-bold">
             {foundParentFolder ? foundParentFolder.name : 'No folder'}
           </span>
