@@ -1,18 +1,15 @@
 .noteCard {
   position: relative;
-  width: fit-content;
+  width: 100%;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
   align-items: flex-start;
-  gap: 0.4rem;
   user-select: none;
-  border-radius: var(--mainBorderRadius);
   padding: 0.6rem;
   z-index: 0;
   animation: onNoteCardMount 2s ease;
-  background-color: #ffffff33;
-  border: 2px solid #ffffff70;
+  border-bottom: solid 1px var(--Grey);
 
   span,
   h1 {
@@ -22,6 +19,12 @@
     z-index: 1;
   }
 
+  h1 {}
+
+  span {
+    font-size: 80%;
+  }
+
   footer {
     width: fit-content;
     display: flex;
@@ -29,18 +32,6 @@
     align-items: center;
     overflow: hidden;
     gap: 1rem;
-    background-color: var(--lightBlack);
-    border-radius: var(--mainBorderRadius);
-    padding: 0 0.5rem;
-
-    .folderName {
-      width: fit-content;
-      display: flex;
-      justify-content: flex-start;
-      align-items: center;
-      gap: 0.5rem;
-      padding: 0.5rem 0;
-    }
 
     .collaboratorIcon {
       display: flex;

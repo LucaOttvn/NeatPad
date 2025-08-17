@@ -7,6 +7,8 @@ import { flushSync } from 'react-dom';
 import gsap from 'gsap';
 import { createNote, deleteNote } from '@/serverActions/notesActions';
 import { db } from '@/utils/db';
+import SvgButton from './SvgButton';
+import { ReactSVG } from 'react-svg';
 
 interface NewNoteButtonProps { }
 
@@ -65,7 +67,6 @@ export default function NewNoteButton(props: NewNoteButtonProps) {
         <button
             id="newNoteBtn"
             className="addBtn"
-            style={{ borderRadius: "50%" }}
             onClick={() => {
                 // if delete mode is off
                 if (notesToDelete.value.length == 0) {
@@ -89,14 +90,17 @@ export default function NewNoteButton(props: NewNoteButtonProps) {
                 alt=""
                 draggable={false}
             />
-            <Image
+            {/* <Image
                 id="plusBtn"
                 src="/icons/plus.svg"
                 width={25}
                 height={25}
                 alt=""
                 draggable={false}
-            />
+            /> */}
+            <ReactSVG src={`/icons/plus.svg`} className="icon" beforeInjection={(svg) => {
+                svg.setAttribute("fill", 'var(--White)');
+            }} />
         </button>
     );
 }

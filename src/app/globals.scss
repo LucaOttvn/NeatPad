@@ -15,11 +15,17 @@
   font-weight: normal;
   font-style: normal;
 }
+@font-face {
+  font-family: "Lekton-Regular";
+  src: url("/fonts/Lekton-Regular.ttf") format("truetype");
+  font-weight: normal;
+  font-style: normal;
+}
 
 :root {
   --mainBoxShadow: var(--Black) 2px 2px 5px;
   --bigBoxShadow: var(--Black) 0px 10px 30px;
-  --mainBorderRadius: 15px;
+  --mainBorderRadius: 0px;
   --bigBorderRadius: 30px;
 
   --Black: #000000;
@@ -82,12 +88,13 @@ html {
 }
 
 body {
-  font-family: "Inter", sans-serif;
+  font-family: "Lekton-Regular", sans-serif;
   backdrop-filter: blur(10px);
   height: 100svh;
   display: flex;
   flex-direction: column;
   overflow-y: hidden;
+  background-color: var(--lightBlack);
 }
 
 .gradient-background {
@@ -175,16 +182,17 @@ input[type="password"] {
 
 
 .addBtn {
-  width: 4rem;
-  height: 4rem;
-  border-radius: 50%;
-  background-color: var(--White);
+  width: 3.5rem;
+  height: 3.5rem;
+  border: solid 2px var(--softWhite);
   display: flex;
   justify-content: center;
   align-items: center;
   position: absolute;
-  bottom: 2rem;
-  right: 2rem;
+  bottom: 1.5rem;
+  right: 1.5rem;
+  backdrop-filter: blur(10px);
+  background-color: var(--lightBlack);
 
   #plusBtn {
     position: absolute;
@@ -230,7 +238,7 @@ h1 {
 }
 
 .title {
-  // font-family: "Poppins", 'sans-serif';
+  // font-family: "Inter", 'sans-serif';
   font-size: 300%;
   font-weight: bold;
   letter-spacing: 4px;

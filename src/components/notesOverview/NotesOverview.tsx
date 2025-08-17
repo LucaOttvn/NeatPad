@@ -31,7 +31,7 @@ export default function NotesOverview() {
       notes.value = localNotes
       notesToShow.value = localNotes
     };
-    
+
     if (!navigator.onLine) {
       fetchLocalNotes();
       return
@@ -80,21 +80,19 @@ export default function NotesOverview() {
   return (
     <div className="notesOverviewContainer">
       {/* title & search section */}
-      <div className="w-full flex flex-col gap-5">
+      <div className="w-full flex flex-col ml-5">
         {selectedFolder.value && <AnimatedText className="title" text={foundSelectedFolderData?.name.toUpperCase() || ''} color={foundSelectedFolderData?.color} />}
-        {!selectedFolder.value && <div className="flex flex-col items-start">
-          <AnimatedText className="title" text="My" />
-          <AnimatedText className="title ms-5" text="Notes" />
-        </div>}
+        {!selectedFolder.value && <AnimatedText className="title my-5" text="My notes" />}
+
         <AnimatedDiv className="w-full flex flex-wrap gap-5 start">
-          <button className="mainBtn w-full end gap-2" style={{ padding: '0.6rem 0.8rem' }} onClick={() => { fetchNotesAndFolders() }}>
+          {/* <button className="mainBtn w-full end gap-2" style={{ padding: '0.6rem 0.8rem' }} onClick={() => { fetchNotesAndFolders() }}>
             <ReactSVG src={`/icons/refresh.svg`} className="icon" style={{ scale: 1.2 }} />
-          </button>
+          </button> */}
           {/* if there's a selected folder, show the edit folder button */}
           {selectedFolder.value && <button className="mainBtn w-full end gap-2" style={{ padding: '0.6rem 0.8rem', background: 'var(--Orange)' }} onClick={() => { setEditingFolder() }}>
             <ReactSVG src={`/icons/edit.svg`} className="icon" style={{ scale: 1.2 }} />
           </button>}
-          <SearchBar />
+          {/* <SearchBar /> */}
         </AnimatedDiv>
       </div>
       {/* pinnedSection (show it only if there's at least one pinned note) */}
