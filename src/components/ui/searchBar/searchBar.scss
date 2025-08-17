@@ -1,12 +1,12 @@
 .searchBarContainer {
     background-color: var(--darkGrey);
     border-radius: var(--mainBorderRadius);
-
     display: flex;
-    justify-content: space-between;
+    justify-content: flex-start;
     align-items: center;
     padding-left: 0.7rem;
     input {
+        width: 100%;
         height: inherit;
         border: none !important;
     }

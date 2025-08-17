@@ -80,21 +80,20 @@ export default function NotesOverview() {
   return (
     <div className="notesOverviewContainer">
       {/* title & search section */}
-      <div className="w-full flex flex-col ml-5">
-        {selectedFolder.value && <AnimatedText className="title" text={foundSelectedFolderData?.name.toUpperCase() || ''} color={foundSelectedFolderData?.color} />}
-        {!selectedFolder.value && <AnimatedText className="title my-5" text="My notes" />}
+      <header>
+        <SearchBar />
+        {selectedFolder.value ? <AnimatedText className="title" text={foundSelectedFolderData?.name.toUpperCase() || ''} color={foundSelectedFolderData?.color} /> :
+          <AnimatedText className="title" text="My notes" />
+        }
 
-        <AnimatedDiv className="w-full flex flex-wrap gap-5 start">
-          {/* <button className="mainBtn w-full end gap-2" style={{ padding: '0.6rem 0.8rem' }} onClick={() => { fetchNotesAndFolders() }}>
+        {/* <button className="mainBtn w-full end gap-2" style={{ padding: '0.6rem 0.8rem' }} onClick={() => { fetchNotesAndFolders() }}>
             <ReactSVG src={`/icons/refresh.svg`} className="icon" style={{ scale: 1.2 }} />
           </button> */}
-          {/* if there's a selected folder, show the edit folder button */}
-          {selectedFolder.value && <button className="mainBtn w-full end gap-2" style={{ padding: '0.6rem 0.8rem', background: 'var(--Orange)' }} onClick={() => { setEditingFolder() }}>
-            <ReactSVG src={`/icons/edit.svg`} className="icon" style={{ scale: 1.2 }} />
-          </button>}
-          {/* <SearchBar /> */}
-        </AnimatedDiv>
-      </div>
+        {/* if there's a selected folder, show the edit folder button */}
+        {selectedFolder.value && <button className="mainBtn w-full end gap-2" style={{ padding: '0.6rem 0.8rem', background: 'var(--Orange)' }} onClick={() => { setEditingFolder() }}>
+          <ReactSVG src={`/icons/edit.svg`} className="icon" style={{ scale: 1.2 }} />
+        </button>}
+      </header>
       {/* pinnedSection (show it only if there's at least one pinned note) */}
       {notesToShow.value.filter(note => note.pinned).length > 0 && (
         <NotesSection title="Pinned" notes={notesToShow.value.filter(note => note.pinned)} />

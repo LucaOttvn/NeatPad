@@ -22,7 +22,7 @@ export default function SearchBar() {
   return (
     <div className='searchBarContainer'>
       <ReactSVG src={'/icons/search.svg'} />
-      <input type="text" placeholder='Search note' onChange={(e) => {
+      <input type="text" placeholder='Search' onChange={(e) => {
         setSearch(e.target.value)
       }} />
     </div>
