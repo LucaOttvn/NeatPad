@@ -8,7 +8,7 @@ import Login from "@/components/Login";
 import GeneralModal from "@/components/ui/modals/GeneralModal";
 import { useSignals } from "@preact/signals-react/runtime";
 import { alreadyInstalledApp, isAppInstallable, isMobile, loading, selectedModal, selectedSideMenu, updatingFolder, user } from "@/utils/signals";
-import NewNoteButton from "@/components/ui/NewNoteButton";
+import NewNoteButton from "@/components/ui/buttons/NewNoteButton";
 import GeneralSideMenu from "@/components/ui/SideMenu";
 import { Capacitor } from "@capacitor/core";
 import { StatusBar } from "@capacitor/status-bar";

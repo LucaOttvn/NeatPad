@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import SvgButton from "../../../SvgButton";
+import SvgButton from "../../../buttons/SvgButton";
 import { Folder, Note } from "@/utils/interfaces";
 import { gsap } from "gsap";
 

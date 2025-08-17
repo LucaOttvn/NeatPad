@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from 'react';
 import gsap from 'gsap';
 import './noteEditorModalHeader.scss';
-import SvgButton from '@/components/ui/SvgButton';
+import SvgButton from '@/components/ui/buttons/SvgButton';
 import { ReactSVG } from 'react-svg';
 import { Note, User } from '@/utils/interfaces';
 import { handleModal, validateEmail } from '@/utils/globalMethods';
@@ -127,7 +127,7 @@ export default function CollaboratorsSection(props: CollaboratorsSectionProps) {
 
                     {props.note?.collaborators.length == 0 && <span style={{ color: 'var(--Grey)' }}>There are no collaborators</span>}
 
-                    {user.value!.email == props.note?.user && <button className="trashBtn" disabled={selectedCollaborators.length == 0} onClick={() => {
+                    {user.value!.email == props.note?.user && <button className="deleteNoteButtonIcon" disabled={selectedCollaborators.length == 0} onClick={() => {
                         deleteSelectedCollaborators()
                     }}>
                         <ReactSVG src={`/icons/trash.svg`} className="icon" />

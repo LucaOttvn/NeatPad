@@ -1,0 +1,79 @@
+.iconBtn {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 50%;
+
+    &:hover {
+        background-color: var(--darkGrey);
+    }
+
+    svg {
+        margin: 0.4rem;
+        width: 20px !important;
+        height: 20px !important;
+    }
+}
+
+.newNoteButton {
+    width: 3.5rem;
+    height: 3.5rem;
+    background-color: var(--softWhite);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: absolute;
+    bottom: 1.5rem;
+    right: 1.5rem;
+    backdrop-filter: blur(10px);
+
+    #newNoteButtonIcon {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+    }
+
+    #deleteNoteButtonIcon {
+        scale: 0;
+        position: absolute;
+        top: 32%;
+        left: 30%;
+    }
+}
+
+.newNoteButton,
+.iconBtn {
+    cursor: pointer;
+    -webkit-user-drag: none;
+    transition: 0.2s;
+
+    &:active {
+        scale: 0.95;
+        filter: brightness(60%);
+    }
+}
+
+// tablet && smartphones
+@media (max-width: 768px) {
+
+    // remove hover effect on buttons
+    .iconBtn {
+        &:hover {
+            background-color: transparent;
+        }
+    }
+}
+
+// desktop
+@media (min-width: 768px) {
+
+    .mainBtn,
+    .newNoteButton,
+    .iconBtn {
+        &:hover {
+            transform: scale(0.9);
+            background: var(--Grey);
+        }
+    }
+}

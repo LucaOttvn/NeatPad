@@ -15,6 +15,7 @@
   font-weight: normal;
   font-style: normal;
 }
+
 @font-face {
   font-family: "Lekton-Regular";
   src: url("/fonts/Lekton-Regular.ttf") format("truetype");
@@ -99,9 +100,8 @@ body {
 
 .gradient-background {
   background: linear-gradient(300deg, #5F83B4 0%, black 35%, black 65%, #5F83B4 100%);
-  background-size: 
-  200% 
-  200%;
+  background-size:
+    200% 200%;
   animation: gradient-animation 30s ease infinite;
 }
 
@@ -125,21 +125,22 @@ body {
   border-radius: var(--mainBorderRadius);
   background-color: var(--Blue);
   user-select: none;
-}
-
-.mainBtn,
-.addBtn,
-.iconBtn,
-.noteCard {
   cursor: pointer;
   -webkit-user-drag: none;
   transition: 0.2s;
+
+  &:hover {
+    transform: scale(0.9);
+    background: var(--Grey);
+  }
 
   &:active {
     scale: 0.95;
     filter: brightness(60%);
   }
 }
+
+
 
 .loader {
   width: 100%;
@@ -180,52 +181,6 @@ input[type="password"] {
   border-radius: var(--mainBorderRadius);
 }
 
-
-.addBtn {
-  width: 3.5rem;
-  height: 3.5rem;
-  border: solid 2px var(--softWhite);
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  position: absolute;
-  bottom: 1.5rem;
-  right: 1.5rem;
-  backdrop-filter: blur(10px);
-  background-color: var(--lightBlack);
-
-  #plusBtn {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-  }
-
-  #trashBtn {
-    scale: 0;
-    position: absolute;
-    top: 32%;
-    left: 30%;
-  }
-}
-
-.iconBtn {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  border-radius: 50%;
-
-  &:hover {
-    background-color: var(--darkGrey);
-  }
-
-  svg {
-    margin: 0.4rem;
-    width: 20px !important;
-    height: 20px !important;
-  }
-}
-
 .icon {
   svg {
     width: 15px;
@@ -247,29 +202,4 @@ h1 {
   word-break: break-all;
   width: 100%;
   overflow: hidden;
-}
-
-// tablet && smartphones
-@media (max-width: 1000px) {
-
-  // remove hover effect on buttons
-  .iconBtn {
-    &:hover {
-      background-color: transparent;
-    }
-  }
-}
-
-// desktop
-@media (min-width: 1000px) {
-
-  .mainBtn,
-  .addBtn,
-  .iconBtn,
-  .noteCard {
-    &:hover {
-      scale: 0.9;
-      background: var(--Grey);
-    }
-  }
 }

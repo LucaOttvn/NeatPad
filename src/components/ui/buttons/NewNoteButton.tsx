@@ -7,8 +7,7 @@ import { flushSync } from 'react-dom';
 import gsap from 'gsap';
 import { createNote, deleteNote } from '@/serverActions/notesActions';
 import { db } from '@/utils/db';
-import SvgButton from './SvgButton';
-import { ReactSVG } from 'react-svg';
+import './buttons.scss';
 
 interface NewNoteButtonProps { }
 
@@ -46,16 +45,16 @@ export default function NewNoteButton(props: NewNoteButtonProps) {
     // delete mode animation for the add/delete note button
     useEffect(() => {
         const deleteModeOn = notesToDelete.value.length > 0
-        gsap.to('#newNoteBtn', {
+        gsap.to('#newNoteButton', {
             rotateY: deleteModeOn ? '180deg' : '0deg',
             background: deleteModeOn ? 'var(--Red)' : '',
             duration: 0.2,
             onComplete: () => {
-                gsap.to('#trashBtn', {
+                gsap.to('#deleteNoteButtonIcon', {
                     scale: deleteModeOn ? 1 : 0,
                     duration: 0.2
                 })
-                gsap.to('#plusBtn', {
+                gsap.to('#newNoteButtonIcon', {
                     scale: deleteModeOn ? 0 : 1,
                     duration: 0.2
                 })
@@ -65,8 +64,8 @@ export default function NewNoteButton(props: NewNoteButtonProps) {
 
     return (
         <button
-            id="newNoteBtn"
-            className="addBtn"
+            id="newNoteButton"
+            className="newNoteButton"
             onClick={() => {
                 // if delete mode is off
                 if (notesToDelete.value.length == 0) {
@@ -83,24 +82,14 @@ export default function NewNoteButton(props: NewNoteButtonProps) {
             }}
         >
             <Image
-                id="trashBtn"
+                id="deleteNoteButtonIcon"
                 src="/icons/trash.svg"
                 width={25}
                 height={25}
                 alt=""
                 draggable={false}
             />
-            {/* <Image
-                id="plusBtn"
-                src="/icons/plus.svg"
-                width={25}
-                height={25}
-                alt=""
-                draggable={false}
-            /> */}
-            <ReactSVG src={`/icons/plus.svg`} className="icon" beforeInjection={(svg) => {
-                svg.setAttribute("fill", 'var(--White)');
-            }} />
+            <span className='font-bold' style={{fontSize: 40, color: 'var(--lightBlack)'}}>+</span>
         </button>
     );
 }

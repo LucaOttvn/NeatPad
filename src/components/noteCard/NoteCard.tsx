@@ -17,9 +17,6 @@ export default function NoteCard(props: NoteCardProps) {
 
   const foundParentFolder = folders.value.find((folder) => props.note.folders.find(el => el == folder.id));
 
-  let textColor = "White"
-  if (foundParentFolder) textColor = colors.find((item) => item.color == foundParentFolder?.color)?.whiteText ? "White" : "Black";
-
   useEffect(() => {
     return () => clearTimeout(timerRef.current);
   }, []);
@@ -28,7 +25,7 @@ export default function NoteCard(props: NoteCardProps) {
     let noteToDelete = notesToDelete.value.find(noteId => noteId == props.note.id)
 
     gsap.to('#noteCard' + props.note.id, {
-      outline: noteToDelete ? 'solid 4px var(--Red)' : 'none',
+      boxShadow: noteToDelete ? 'inset 0 0 0 4px var(--Red)' : 'none',
       duration: 0.2
     })
   }, [notesToDelete.value]);
@@ -94,7 +91,7 @@ export default function NoteCard(props: NoteCardProps) {
 
       {props.note.title && (
         // when the shared icon is visible, adapt the title's width
-        <h1 style={{ color: 'var(--softWhite)' }}>
+        <h1 style={{ color: 'var(--White)' }}>
           {props.note.title}
         </h1>
       )}

@@ -1,6 +1,6 @@
 import { validatePassword } from '@/utils/globalMethods';
 import React, { RefObject, useEffect, useState } from 'react';
-import SvgButton from './SvgButton';
+import SvgButton from './buttons/SvgButton';
 
 interface PasswordInputProps {
     inputRef?: RefObject<HTMLInputElement | null>

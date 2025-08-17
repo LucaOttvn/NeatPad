@@ -10,6 +10,12 @@
   z-index: 0;
   animation: onNoteCardMount 2s ease;
   border-bottom: solid 1px var(--Grey);
+  cursor: pointer;
+
+  &:hover {
+    transition: 0.2s;
+    background-color: var(--darkGrey);
+  }
 
   span,
   h1 {
@@ -18,8 +24,6 @@
     text-overflow: ellipsis;
     z-index: 1;
   }
-
-  h1 {}
 
   span {
     font-size: 80%;
@@ -41,8 +45,6 @@
       gap: 0.2rem;
     }
   }
-
-
 }
 
 @keyframes onNoteCardMount {

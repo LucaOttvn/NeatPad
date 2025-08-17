@@ -163,12 +163,7 @@
     }
   }
 
-  // remove hover effect on folder cards
   .folderCard {
-    &:hover {
-      scale: 1;
-    }
-
     &:active {
       scale: 0.95;
     }
@@ -178,7 +173,9 @@
 // desktop
 @media (min-width: 1000px) {
   .folderCard {
+    transition: 0.2s;
     &:hover {
+      transform: scale(0.9);
       cursor: pointer;
     }
   }

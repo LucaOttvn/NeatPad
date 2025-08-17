@@ -1,6 +1,6 @@
 import { useEffect, useLayoutEffect, useRef } from "react";
 
-import SvgButton from "./SvgButton";
+import SvgButton from "./buttons/SvgButton";
 import FolderCard from "../FolderCard";
 import { ModalsNames } from "@/utils/interfaces";
 import { folders, isMobile, selectedFolder, selectedModal, selectedSideMenu } from "@/utils/signals";

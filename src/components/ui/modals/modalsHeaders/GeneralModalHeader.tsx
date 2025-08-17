@@ -1,4 +1,4 @@
-import SvgButton from "../../SvgButton";
+import SvgButton from "../../buttons/SvgButton";
 import { ModalsNames } from "@/utils/interfaces";
 import { selectedModal, updatingFolder } from "@/utils/signals";
 import { handleModal } from "@/utils/globalMethods";

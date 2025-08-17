@@ -1,6 +1,6 @@
 import "../componentsStyle.scss";
 import InstallPWASection from "../InstallPwaSection";
-import SvgButton from "./SvgButton";
+import SvgButton from "./buttons/SvgButton";
 import { ModalsNames, SideMenusNames } from "@/utils/interfaces";
 import { selectedModal, selectedSideMenu } from "@/utils/signals";
 
