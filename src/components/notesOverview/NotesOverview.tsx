@@ -1,10 +1,9 @@
-import { ModalsNames, Note } from "@/utils/interfaces";
+import { Folder, ModalsNames, Note } from "@/utils/interfaces";
 import "./notesOverview.scss";
 import { useEffect } from "react";
 import AnimatedText from "../animatedComponents/AnimatedText";
 import NotesSection from "../ui/NotesSection";
 import { ReactSVG } from "react-svg";
-import AnimatedDiv from "../animatedComponents/AnimatedDiv";
 import { folders, loading, notes, notesToShow, selectedFolder, selectedModal, updatingFolder, user } from "@/utils/signals";
 import SearchBar from "../ui/searchBar/SearchBar";
 import { getNotesByUserEmail } from "@/serverActions/notesActions";
@@ -18,12 +17,6 @@ export default function NotesOverview() {
     (el) => el.id == selectedFolder.value
   ) : undefined;
 
-  // future local flow
-  // if navigator.online => fetch notes
-  // else => get local notes
-
-  // const localNotes = useLiveQuery(() => db.notes.toArray()) || [];
-
   useEffect(() => {
 
     const fetchLocalNotes = async () => {
@@ -31,8 +24,13 @@ export default function NotesOverview() {
       notes.value = localNotes
       notesToShow.value = localNotes
     };
+    const fetchLocalFolders = async () => {
+      const localFolders: Folder[] = await db.folders.toArray();
+      folders.value = localFolders
+    };
 
     if (!navigator.onLine) {
+      fetchLocalFolders();
       fetchLocalNotes();
       return
     }
@@ -63,8 +61,9 @@ export default function NotesOverview() {
       folders.value = foundFolders
       notes.value = foundNotes
       notesToShow.value = foundNotes
-      // set the fetched notes to the local db
+      // set the fetched notes and folders to the local db
       await db.notes.bulkPut(foundNotes)
+      await db.folders.bulkPut(foundFolders)
     } catch (err) {
       console.error("Error fetching initial data", err);
     } finally {
