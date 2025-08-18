@@ -1,4 +1,4 @@
-import { Folder, ModalsNames, Note } from "@/utils/interfaces";
+import { ModalsNames } from "@/utils/interfaces";
 import "./notesOverview.scss";
 import { useEffect } from "react";
 import AnimatedText from "../animatedComponents/AnimatedText";
@@ -17,29 +17,52 @@ export default function NotesOverview() {
     (el) => el.id == selectedFolder.value
   ) : undefined;
 
-  useEffect(() => {
+  const fetchLocalData = async () => {
+    const [localFolders, localNotes] = await Promise.all([
+      db.folders.toArray(),
+      db.notes.toArray(),
+    ]);
 
-    const fetchLocalNotes = async () => {
-      const localNotes: Note[] = await db.notes.toArray();
-      notes.value = localNotes
-      notesToShow.value = localNotes
-    };
-    const fetchLocalFolders = async () => {
-      const localFolders: Folder[] = await db.folders.toArray();
-      folders.value = localFolders
-    };
+    folders.value = localFolders;
+    notes.value = localNotes;
+    notesToShow.value = localNotes;
+  };
 
-    if (!navigator.onLine) {
-      fetchLocalFolders();
-      fetchLocalNotes();
-      return
+  const fetchData = async () => {
+    if (!user.value?.email) return;
+
+    loading.value = true;
+    try {
+      const [foundNotes, foundFolders] = await Promise.all([
+        getNotesByUserEmail(user.value.email),
+        getFoldersByUserEmail(user.value.email),
+      ]);
+
+      folders.value = foundFolders || [];
+      notes.value = foundNotes || [];
+      notesToShow.value = foundNotes || [];
+
+      await Promise.all([
+        db.notes.bulkPut(notes.value),
+        db.folders.bulkPut(folders.value),
+      ]);
+    } catch (err) {
+      console.error("Error fetching initial data", err);
+    } finally {
+      loading.value = false;
     }
-    fetchNotesAndFolders();
+  };
+
+  useEffect(() => {
+    // if (navigator.onLine) {
+    //   fetchData();
+    //   return
+    // }
+    fetchLocalData();
   }, []);
 
   // listen for changes in the notes array or in the current folder
   useEffect(() => {
-
     notesToShow.value = notes.value
 
     // if there's a selected folder, filter the notes by it, otherwise show them all
@@ -48,28 +71,6 @@ export default function NotesOverview() {
     if (filteredNotes) notesToShow.value = filteredNotes
 
   }, [selectedFolder.value, notes.value]);
-
-  // get notes and folders
-  async function fetchNotesAndFolders() {
-    loading.value = true
-    try {
-      if (!user.value || !user.value.email) return
-
-      const foundNotes = (await getNotesByUserEmail(user.value!.email)) || []
-      const foundFolders = (await getFoldersByUserEmail(user.value!.email)) || []
-
-      folders.value = foundFolders
-      notes.value = foundNotes
-      notesToShow.value = foundNotes
-      // set the fetched notes and folders to the local db
-      await db.notes.bulkPut(foundNotes)
-      await db.folders.bulkPut(foundFolders)
-    } catch (err) {
-      console.error("Error fetching initial data", err);
-    } finally {
-      loading.value = false
-    }
-  }
 
   function setEditingFolder() {
     updatingFolder.value = selectedFolder.value

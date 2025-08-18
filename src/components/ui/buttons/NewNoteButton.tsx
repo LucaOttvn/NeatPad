@@ -2,7 +2,7 @@ import { useEffect } from 'react';
 import Image from "next/image";
 import { animateDivUnmount } from '@/utils/globalMethods';
 import { Note, ModalsNames } from '@/utils/interfaces';
-import { loading, notes, notesToDelete, selectedFolder, selectedModal, selectedNote, user } from '@/utils/signals';
+import { notes, notesToDelete, selectedFolder, selectedModal, selectedNote, user } from '@/utils/signals';
 import { flushSync } from 'react-dom';
 import gsap from 'gsap';
 import { createNote, deleteNote } from '@/serverActions/notesActions';
@@ -16,7 +16,6 @@ export default function NewNoteButton(props: NewNoteButtonProps) {
 
     // when the user clicks on the plus button, the createNote() gets triggered, this has to happen because the NoteEditor component needs a note with an already existing id since it's supposed to edit notes, not creating new ones
     async function openNewNoteModal() {
-        loading.value = true
         const newNote: Note = {
             user: user.value!.email,
             title: '',
@@ -27,19 +26,19 @@ export default function NewNoteButton(props: NewNoteButtonProps) {
             collaborators: []
         }
 
+        // if a folder is currently selected while creating a note, pre-save the note with that folder by default
         if (selectedFolder.value) newNote.folders.push(selectedFolder.value)
 
         await db.notes.add(newNote)
+        // selectedModal.value = ModalsNames.newNote
 
-        let newNoteFromDB = await createNote(newNote)
-        if (newNoteFromDB) {
-            notes.value = [...notes.value, newNoteFromDB]
-            flushSync(() => {
-                selectedNote.value = newNoteFromDB.id
-            })
-            selectedModal.value = ModalsNames.newNote
-        }
-        loading.value = false
+        // let newNoteFromDB = await createNote(newNote)
+        // if (newNoteFromDB) {
+        //     notes.value = [...notes.value, newNoteFromDB]
+        //     flushSync(() => {
+        //         selectedNote.value = newNoteFromDB.id
+        //     })
+        // }
     }
 
     // delete mode animation for the add/delete note button
@@ -62,6 +61,16 @@ export default function NewNoteButton(props: NewNoteButtonProps) {
         })
     }, [notesToDelete.value]);
 
+    const handleNotesDelete = () => {
+        let notesTags = notesToDelete.value.map((noteId) => 'noteCard' + noteId)
+        animateDivUnmount(notesTags, () => {
+            notes.value = notes.value.filter(note => !notesToDelete.value.includes(note.id!));
+            db.notes.bulkDelete(notesToDelete.value)
+            // deleteNote(notesToDelete.value)
+            notesToDelete.value = []
+        })
+    }
+
     return (
         <button
             id="newNoteButton"
@@ -71,14 +80,7 @@ export default function NewNoteButton(props: NewNoteButtonProps) {
                 if (notesToDelete.value.length == 0) {
                     return openNewNoteModal()
                 }
-                let notesTags = notesToDelete.value.map((noteId) => {
-                    return 'noteCard' + noteId
-                })
-                animateDivUnmount(notesTags, () => {
-                    notes.value = notes.value.filter(note => !notesToDelete.value.includes(note.id!));
-                    deleteNote(notesToDelete.value)
-                    notesToDelete.value = []
-                })
+                handleNotesDelete()
             }}
         >
             <Image
@@ -89,7 +91,7 @@ export default function NewNoteButton(props: NewNoteButtonProps) {
                 alt=""
                 draggable={false}
             />
-            <span className='font-bold' style={{fontSize: 40, color: 'var(--lightBlack)'}}>+</span>
+            <span className='font-bold' style={{ fontSize: 40, color: 'var(--lightBlack)' }}>+</span>
         </button>
     );
 }
