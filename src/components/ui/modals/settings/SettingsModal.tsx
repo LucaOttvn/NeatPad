@@ -23,10 +23,10 @@ export default function SettingsModal(props: SettingsModalProps) {
       <span className='title center'>Settings</span>
       <div className='w-full h-full flex flex-col justify-between items-center mt-10'>
         <section className='profileSection'>
-          <span className='w-full center gap-2 p-2' style={{ fontSize: '110%', background: '#101010', borderRadius: 'var(--mainBorderRadius)' }}>Email: <b>{user.value!.email}</b></span>
-          <div className="changePswd">
-            <h1 className='w-full center' style={{ fontSize: '140%' }}>Change password</h1>
-            <ResetPasswordForm />
+          <span className='w-full start gap-2 p-2'>Email: <b style={{background: 'var(--Grey)', padding: '0 0.5rem'}}>{user.value!.email}</b></span>
+          <div className="start">
+            <input type="checkbox" />
+            <span>Offline mode</span>
           </div>
         </section>
         <div className='flex items-center gap-5'>

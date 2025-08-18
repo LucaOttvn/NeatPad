@@ -9,7 +9,7 @@ import GeneralModal from "@/components/ui/modals/GeneralModal";
 import { useSignals } from "@preact/signals-react/runtime";
 import { alreadyInstalledApp, isAppInstallable, isMobile, loading, selectedModal, selectedSideMenu, updatingFolder, user } from "@/utils/signals";
 import NewNoteButton from "@/components/ui/buttons/NewNoteButton";
-import GeneralSideMenu from "@/components/ui/SideMenu";
+import GeneralSideMenu from "@/components/ui/sideMenu/SideMenu";
 import { Capacitor } from "@capacitor/core";
 import { StatusBar } from "@capacitor/status-bar";
 import { App } from '@capacitor/app';

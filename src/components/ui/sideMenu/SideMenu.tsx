@@ -1,7 +1,7 @@
 import { useEffect, useLayoutEffect, useRef } from "react";
-
-import SvgButton from "./buttons/SvgButton";
-import FolderCard from "../FolderCard";
+import './sideMenu.scss'
+import SvgButton from "../buttons/SvgButton";
+import FolderCard from "../../FolderCard";
 import { ModalsNames } from "@/utils/interfaces";
 import { folders, isMobile, selectedFolder, selectedModal, selectedSideMenu } from "@/utils/signals";
 import { handleSideMenu } from "@/utils/globalMethods";
@@ -34,7 +34,8 @@ export default function GeneralSideMenu() {
 
   return (
     <div id={selectedSideMenu.value} className="generalSideMenu">
-      <span className="title center" style={{ fontSize: '380%' }}>Folders</span>
+      {/* the nowrap is to avoid the title to wrap during the side menu closure because it's not pleasant to see */}
+      <span className="title center" style={{ fontSize: '380%', whiteSpace: 'nowrap' }}>Folders</span>
 
       <div className="center gap-10 pt-20 pb-10">
         <div

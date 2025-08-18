@@ -5,7 +5,7 @@ import GeneralModalHeader from "./modalsHeaders/GeneralModalHeader";
 import NoteEditorModalHeader from "./modalsHeaders/noteEditorModalHeader/NoteEditorModalHeader";
 import NoteEditor from "./noteEditor/NoteEditor";
 import FolderHandler from "./folderHandler/FolderHandler";
-
+import './generalModal.scss'
 import SettingsModal from "./settings/SettingsModal";
 import { isMobile, notes, selectedModal, selectedNote, updatingFolder } from "@/utils/signals";
 import { handleModal, handleNoteEditorClose } from "@/utils/globalMethods";
