@@ -1,4 +1,4 @@
-import { ModalsNames } from "@/utils/interfaces";
+import { ModalsNames, Note } from "@/utils/interfaces";
 import "./notesOverview.scss";
 import { useEffect } from "react";
 import AnimatedText from "../animatedComponents/AnimatedText";
@@ -24,7 +24,7 @@ export default function NotesOverview() {
     ]);
 
     folders.value = localFolders;
-    notes.value = localNotes;
+    // notes.value = localNotes;
     notesToShow.value = localNotes;
   };
 
@@ -38,15 +38,17 @@ export default function NotesOverview() {
         getFoldersByUserEmail(user.value.email),
       ]);
 
+      if (!foundNotes) return console.error('Error fetching notes')
+
       // add the synced flag to each note and set it to true since they're just been fetched from the db
-      const notesWithSyncedFlag = foundNotes?.map(note => ({...note, synced: true}))
+      const notesWithSyncedFlag: Note[] = foundNotes.map(note => ({...note, synced: true}))
 
       folders.value = foundFolders || [];
-      notes.value = notesWithSyncedFlag || [];
+      // notes.value = notesWithSyncedFlag || [];
       notesToShow.value = notesWithSyncedFlag || [];
 
       await Promise.all([
-        db.notes.bulkPut(notes.value),
+        db.notes.bulkPut(notesWithSyncedFlag),
         db.folders.bulkPut(folders.value),
       ]);
     } catch (err) {
@@ -63,16 +65,6 @@ export default function NotesOverview() {
     }
     // fetchLocalData();  
   }, []);
-
-  // listen for changes in the notes array or in the current folder
-  useEffect(() => {
-    notesToShow.value = notes.value
-
-    // if there's a selected folder, filter the notes by it, otherwise show them all
-    if (!selectedFolder.value) return
-    const filteredNotes = notes.value.filter(note => note.folders.some(el => el == selectedFolder.value))
-    if (filteredNotes) notesToShow.value = filteredNotes
-  }, [selectedFolder.value, notes.value]);
 
   function setEditingFolder() {
     updatingFolder.value = selectedFolder.value

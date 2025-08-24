@@ -1,20 +1,37 @@
-import { useEffect, useLayoutEffect, useRef } from "react";
+import { useEffect, useLayoutEffect, useRef, useState } from "react";
 import "../../componentsStyle.scss";
-import { modalsList, ModalsNames } from "@/utils/interfaces";
+import { modalsList, ModalsNames, Note } from "@/utils/interfaces";
 import GeneralModalHeader from "./modalsHeaders/GeneralModalHeader";
 import NoteEditorModalHeader from "./modalsHeaders/noteEditorModalHeader/NoteEditorModalHeader";
 import NoteEditor from "./noteEditor/NoteEditor";
 import FolderHandler from "./folderHandler/FolderHandler";
-import './generalModal.scss'
+import './generalModal.scss';
 import SettingsModal from "./settings/SettingsModal";
-import { isMobile, notes, selectedModal, selectedNote, updatingFolder } from "@/utils/signals";
+import { isMobile, selectedModal, selectedNote, updatingFolder } from "@/utils/signals";
 import { handleModal, handleNoteEditorClose } from "@/utils/globalMethods";
+import { db } from "@/utils/db";
 
 export default function GeneralModal() {
 
   const generalModalRef = useRef<HTMLDivElement>(null)
 
   const modalStyle = modalsList.find(el => el.name == selectedModal.value)
+
+  const [currentNote, setCurrentNote] = useState<Note | undefined>()
+
+  useEffect(() => {
+    const handleCurrentNote = async () => {
+      const localNotes = await db.notes.toArray()
+      const foundCurrentNote = localNotes.find((el) => el.id === selectedNote.value)
+      if (!foundCurrentNote) {
+        console.error('Current note not found')
+        return
+      }
+      setCurrentNote(foundCurrentNote)
+    }
+    handleCurrentNote()
+  }, []);
+
 
   useEffect(() => {
     // this allows the ESC button to be detected even if the user doesn't click on the modal before
@@ -32,6 +49,7 @@ export default function GeneralModal() {
       handleModal(undefined)
     }
   }
+
 
 
   function handleBackdropClick() {
@@ -77,15 +95,12 @@ export default function GeneralModal() {
 
         {/* note editor */}
         {(selectedModal.value == ModalsNames.newNote || selectedModal.value == ModalsNames.updateNote) && <>
-          <NoteEditorModalHeader
-            note={notes.value.find(
-              (el) => el.id === selectedNote.value
-            )}
+          {currentNote && <NoteEditorModalHeader
+            note={currentNote}
             modalId={selectedModal.value == ModalsNames.newNote ? ModalsNames.newNote : ModalsNames.updateNote}
-          />
-          <NoteEditor note={notes.value.find(
-            (el) => el.id === selectedNote.value
-          )} /></>
+          />}
+          {currentNote && <NoteEditor note={currentNote} />}
+        </>
         }
 
         {/* settings */}

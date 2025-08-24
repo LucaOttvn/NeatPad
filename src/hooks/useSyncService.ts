@@ -1,10 +1,10 @@
-"use client";
+"use client";;
 import { createNote, deleteNote, updateNote } from "@/serverActions/notesActions";
 import { db } from "@/utils/db";
 import { Note } from "@/utils/interfaces";
-import { notes } from "@/utils/signals";
+import { notes, notesToShow, selectedFolder } from "@/utils/signals";
 import { liveQuery } from "dexie";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 
 // syncronization between local and remote db
 export function useSyncService() {
@@ -32,9 +32,21 @@ export function useSyncService() {
         for (const noteId of localNotesToDelete) {
             const deletedNote = await deleteNote(noteId.id);
             if (!deletedNote) return console.log(deletedNote)
-            await db.notesTombstones.delete(noteId.id)
-            await db.notes.delete(noteId.id)
+
+
+            // FIX: THE SYNC SERVICE SHOULDNT MODIFY THE LOCAL STATE !!!!!!!!!!
+            // await db.notesTombstones.delete(noteId.id)
+            // await db.notes.delete(noteId.id)
         }
+    }
+
+    const updateNotesToShow = (notes: Note[]) => {
+        notesToShow.value = notes
+
+        // if there's a selected folder, filter the notes by it, otherwise show them all
+        if (!selectedFolder.value) return
+        const filteredNotes = notes.filter(note => note.folders.some(el => el == selectedFolder.value))
+        if (filteredNotes) notesToShow.value = filteredNotes
     }
 
     useEffect(() => {
@@ -42,6 +54,7 @@ export function useSyncService() {
         // listen for changes on notes
         liveQuery(() => db.notes.toArray()).subscribe({
             next: (result) => {
+                updateNotesToShow(result)
                 sync()
             },
             error: (error) => console.error("Error:", error),

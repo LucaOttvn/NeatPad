@@ -141,14 +141,14 @@ export function isEncrypted(text: string): boolean {
 // whenever the note editor closes, if the note's title and text are empty, delete it
 export async function handleNoteEditorClose() {
 
-  const currentNote = (await db.notes.toArray()).find((note) => note.id == selectedNote.value)
+  const currentNote = (await db.notes.toArray()).find((note) => note.id === selectedNote.value)
   console.log(currentNote)
 
   if (!currentNote) return
 
   // if note's title and text are empty, delete it
   if (currentNote.title === '' && currentNote.text === '') {
-    notes.value = notes.value.filter(note => note.id != currentNote?.id)
+    // notes.value = notes.value.filter(note => note.id != currentNote?.id)
     // add the note's id to the tombstones list
     await db.notesTombstones.put(currentNote)
   }

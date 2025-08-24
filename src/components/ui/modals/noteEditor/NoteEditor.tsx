@@ -8,9 +8,10 @@ import MarkdownToolbar from './MarkdownToolbar';
 import ReactMarkdown from 'react-markdown';
 import remarkBreaks from 'remark-breaks';
 import { db } from '@/utils/db';
+import { notes } from '@/utils/signals';
 
 interface NoteEditorProps {
-  note: Note | undefined
+  note: Note
 }
 
 interface NoteContent {
@@ -24,8 +25,8 @@ export default function NoteEditor(props: NoteEditorProps) {
   const [editMode, seteditMode] = useState<boolean>(false)
 
   const [noteContent, setNoteContent] = useState<NoteContent>({
-    title: props.note?.title || '',
-    text: props.note?.text || '',
+    title: props.note.title,
+    text: props.note.text,
   })
 
   const debounceTimerRef = useRef<NodeJS.Timeout | null>(null);
@@ -89,18 +90,19 @@ export default function NoteEditor(props: NoteEditorProps) {
     }
   };
 
-  const handleInput = async (keyToUpdate: 'title' | 'text', e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement> | string) => {
-
-    // setNoteContent(prev => ({...prev, [keyToUpdate]: }))
-    // if the user is typing in markdown mode, the type of e is different from the one that comes from the input field for the title or for the normal textarea
-    const usingMarkdown = (keyToUpdate == 'text' && editMode)
-    let inputValue: string = usingMarkdown ? e as string : (e as ChangeEvent<HTMLInputElement | HTMLTextAreaElement>).target.value
-
-    console.log(inputValue)
-    if (!props.note) return
-    let updatedNote: Note = { ...props.note, [keyToUpdate]: inputValue, synced: false }
-    await db.notes.put(updatedNote)
-  }
+  useEffect(() => {
+    const updateNotes = async () => {
+      
+      // update the local db
+      await db.notes.update(props.note.id, { title: noteContent.title, text: noteContent.text, synced: false })
+      const updatedNote = {...props.note, title: noteContent.title, text: noteContent.text, synced: false}
+      // update the visualized array
+      // notes.value = notes.value.map(note => {
+      //   return note.id === props.note.id ? updatedNote: note
+      // })
+    }
+    updateNotes()
+  }, [noteContent]);
 
   return (
     <div className="noteEditorContainer">
@@ -110,7 +112,7 @@ export default function NoteEditor(props: NoteEditorProps) {
           value={noteContent.title}
           placeholder="Insert title"
           onChange={(e) => {
-            handleInput('title', e)
+            setNoteContent(prev => ({ ...prev, title: e.target.value }))
           }}
         />
       </div>
@@ -129,7 +131,7 @@ export default function NoteEditor(props: NoteEditorProps) {
           ref={textareaRef}
           value={noteContent.text}
           onChange={(e) => {
-            handleInput('text', e)
+            setNoteContent(prev => ({ ...prev, text: e.target.value }))
           }}
           onKeyDown={handleKeyDown}
         ></textarea>

@@ -63,8 +63,6 @@ export default function NewNoteButton(props: NewNoteButtonProps) {
         animateDivUnmount(notesTags, async () => {
             const newTombstones: NoteTombstone[] = notesToDelete.value.map(id => ({id: id}))
             await db.notesTombstones.bulkPut(newTombstones)
-            // remove the notes to be deleted from the notes array
-            // notes.value = notes.value.filter(note => !notesToDelete.value.includes(note.id!));
             notesToDelete.value = []
         })
     }
