@@ -1,4 +1,4 @@
-import { signal } from "@preact/signals-react";
+import { effect, signal } from "@preact/signals-react";
 import { Folder, ModalsNames, Note, SideMenusNames, User } from "./interfaces";
 import { updateNote } from "@/serverActions/notesActions";
 import { updateFolder } from "@/serverActions/foldersActions";

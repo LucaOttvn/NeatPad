@@ -7,6 +7,11 @@ export interface Note {
     folders: number[]
     user: string
     collaborators: string[]
+    synced: boolean
+}
+
+export interface NoteTombstone {
+    id: number
 }
 
 export interface User {

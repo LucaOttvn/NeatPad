@@ -38,9 +38,12 @@ export async function decrypt(encryptedText: string) {
 
 export async function createNote(note: Note) {
 
+    // since the db note record doesn't need the synced flag, remove it before sending the note to it
+    const { synced, ...noteWithoutSynced } = note;
+
     const { data, error } = await supabase
         .from('notes')
-        .insert([note])
+        .insert([noteWithoutSynced])
         .select()
         .single();
 
@@ -59,10 +62,12 @@ export async function updateNote(note: Note) {
 
     const lastUpdateNote: Note = { ...note, text: encryptedText, last_update: new Date() }
 
+    const { synced, ...noteWithoutSynced } = lastUpdateNote;
+
     const { data, error } = await supabase
         .from('notes')
-        .update(lastUpdateNote)
-        .eq('id', lastUpdateNote.id)
+        .update(noteWithoutSynced)
+        .eq('id', noteWithoutSynced.id)
         .select()
 
     if (error) {
@@ -98,7 +103,7 @@ export async function getNotesByUserEmail(userEmail: string): Promise<Note[] | n
 
 export async function deleteNote(
     idOrIds: number | number[]
-): Promise<Note | Note[] | null> {
+) {
 
     let query = supabase.from("notes").delete();
 
@@ -117,7 +122,7 @@ export async function deleteNote(
 
     if (error) {
         console.error("Error deleting note(s):", error);
-        return null;
+        return error;
     }
 
     return data;

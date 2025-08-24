@@ -16,11 +16,14 @@ import { App } from '@capacitor/app';
 import { handleModal } from "@/utils/globalMethods";
 import NotesOverview from "@/components/notesOverview/NotesOverview";
 import { useSession } from "next-auth/react";
+import { useSyncService } from "@/hooks/useSyncService";
 
 const minSwipeDistance = 100
 
 export default function Home() {
   useSignals()
+  useSyncService();
+
 
   const touchStartX = useRef(0);
   const swipeRef = useRef<HTMLDivElement>(null);

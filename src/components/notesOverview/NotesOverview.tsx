@@ -38,9 +38,12 @@ export default function NotesOverview() {
         getFoldersByUserEmail(user.value.email),
       ]);
 
+      // add the synced flag to each note and set it to true since they're just been fetched from the db
+      const notesWithSyncedFlag = foundNotes?.map(note => ({...note, synced: true}))
+
       folders.value = foundFolders || [];
-      notes.value = foundNotes || [];
-      notesToShow.value = foundNotes || [];
+      notes.value = notesWithSyncedFlag || [];
+      notesToShow.value = notesWithSyncedFlag || [];
 
       await Promise.all([
         db.notes.bulkPut(notes.value),
@@ -54,11 +57,11 @@ export default function NotesOverview() {
   };
 
   useEffect(() => {
-    // if (navigator.onLine) {
-    //   fetchData();
-    //   return
-    // }
-    fetchLocalData();
+    if (navigator.onLine) {
+      fetchData();
+      return
+    }
+    // fetchLocalData();  
   }, []);
 
   // listen for changes in the notes array or in the current folder
@@ -69,7 +72,6 @@ export default function NotesOverview() {
     if (!selectedFolder.value) return
     const filteredNotes = notes.value.filter(note => note.folders.some(el => el == selectedFolder.value))
     if (filteredNotes) notesToShow.value = filteredNotes
-
   }, [selectedFolder.value, notes.value]);
 
   function setEditingFolder() {

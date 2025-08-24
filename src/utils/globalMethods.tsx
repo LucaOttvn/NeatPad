@@ -2,6 +2,7 @@ import { gsap } from "gsap";
 import { ModalsNames } from "./interfaces";
 import { isMobile, notes, selectedModal, selectedNote } from "./signals";
 import { deleteNote } from "@/serverActions/notesActions";
+import { db } from "./db";
 
 let modalAnimation: gsap.core.Tween | undefined
 
@@ -46,6 +47,9 @@ export function handleSideMenu(target: string | undefined, isMobile: boolean) {
   });
 }
 
+// this method is used to smoothly unmount the note cards selected to be deleted
+// div animation on onMount function, it accepts a callback onComplete that will be triggered after the animation
+// the goal is making the card disappear and then calling the actual callback to delete the card from the db, since immediately removing the card from the db would make it snap away without any animation instead
 export function animateDivUnmount(ids: string[], onComplete: () => void) {
 
   // this is a timeline because it can happen to animate more than one div at the same time, so wait for the whole timeline to be completed and then trigger the onComplete()
@@ -134,16 +138,18 @@ export function isEncrypted(text: string): boolean {
   return true;
 }
 
-// this method handles the note's saving and, if it's empty, it deletes it
+// whenever the note editor closes, if the note's title and text are empty, delete it
 export async function handleNoteEditorClose() {
 
-  const currentNote = notes.value.find((note) => note.id == selectedNote.value)
+  const currentNote = (await db.notes.toArray()).find((note) => note.id == selectedNote.value)
+  console.log(currentNote)
 
   if (!currentNote) return
+
   // if note's title and text are empty, delete it
   if (currentNote.title === '' && currentNote.text === '') {
     notes.value = notes.value.filter(note => note.id != currentNote?.id)
-    // delete the note from db
-    deleteNote(currentNote.id!)
+    // add the note's id to the tombstones list
+    await db.notesTombstones.put(currentNote)
   }
 }

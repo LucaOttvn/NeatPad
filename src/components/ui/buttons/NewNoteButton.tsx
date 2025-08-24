@@ -1,18 +1,15 @@
 import { useEffect } from 'react';
 import Image from "next/image";
 import { animateDivUnmount } from '@/utils/globalMethods';
-import { Note, ModalsNames } from '@/utils/interfaces';
+import { Note, ModalsNames, NoteTombstone } from '@/utils/interfaces';
 import { notes, notesToDelete, selectedFolder, selectedModal, selectedNote, user } from '@/utils/signals';
-import { flushSync } from 'react-dom';
 import gsap from 'gsap';
-import { createNote, deleteNote } from '@/serverActions/notesActions';
 import { db } from '@/utils/db';
 import './buttons.scss';
 
 interface NewNoteButtonProps { }
 
 export default function NewNoteButton(props: NewNoteButtonProps) {
-
 
     // when the user clicks on the plus button, the createNote() gets triggered, this has to happen because the NoteEditor component needs a note with an already existing id since it's supposed to edit notes, not creating new ones
     async function openNewNoteModal() {
@@ -23,22 +20,17 @@ export default function NewNoteButton(props: NewNoteButtonProps) {
             last_update: new Date(),
             pinned: false,
             folders: [],
-            collaborators: []
+            collaborators: [],
+            synced: false
         }
 
         // if a folder is currently selected while creating a note, pre-save the note with that folder by default
         if (selectedFolder.value) newNote.folders.push(selectedFolder.value)
 
         await db.notes.add(newNote)
-        // selectedModal.value = ModalsNames.newNote
 
-        // let newNoteFromDB = await createNote(newNote)
-        // if (newNoteFromDB) {
-        //     notes.value = [...notes.value, newNoteFromDB]
-        //     flushSync(() => {
-        //         selectedNote.value = newNoteFromDB.id
-        //     })
-        // }
+        selectedNote.value = newNote.id
+        selectedModal.value = ModalsNames.newNote
     }
 
     // delete mode animation for the add/delete note button
@@ -61,12 +53,18 @@ export default function NewNoteButton(props: NewNoteButtonProps) {
         })
     }, [notesToDelete.value]);
 
-    const handleNotesDelete = () => {
+    const handleClick = () => {
+        // if delete mode is off
+        if (notesToDelete.value.length == 0) return openNewNoteModal()
+
+        // if delete mode is on, delete the selected notes
         let notesTags = notesToDelete.value.map((noteId) => 'noteCard' + noteId)
-        animateDivUnmount(notesTags, () => {
-            notes.value = notes.value.filter(note => !notesToDelete.value.includes(note.id!));
-            db.notes.bulkDelete(notesToDelete.value)
-            // deleteNote(notesToDelete.value)
+
+        animateDivUnmount(notesTags, async () => {
+            const newTombstones: NoteTombstone[] = notesToDelete.value.map(id => ({id: id}))
+            await db.notesTombstones.bulkPut(newTombstones)
+            // remove the notes to be deleted from the notes array
+            // notes.value = notes.value.filter(note => !notesToDelete.value.includes(note.id!));
             notesToDelete.value = []
         })
     }
@@ -75,13 +73,7 @@ export default function NewNoteButton(props: NewNoteButtonProps) {
         <button
             id="newNoteButton"
             className="newNoteButton"
-            onClick={() => {
-                // if delete mode is off
-                if (notesToDelete.value.length == 0) {
-                    return openNewNoteModal()
-                }
-                handleNotesDelete()
-            }}
+            onClick={handleClick}
         >
             <Image
                 id="deleteNoteButtonIcon"

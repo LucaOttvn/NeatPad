@@ -17,7 +17,6 @@ interface NoteEditorModalHeaderProps {
 // this is the header of the note editor, it has its own set of methods to handle notes creation/update
 export default function NoteEditorModalHeader(props: NoteEditorModalHeaderProps) {
   
-
   const [pinned, setPinned] = useState(props.note ? props.note.pinned : false);
   const [foldersListOpened, setFoldersListOpened] = useState(false);
   const [collaboratorsSectionOpened, setCollaboratorsSectionOpened] = useState(false);
