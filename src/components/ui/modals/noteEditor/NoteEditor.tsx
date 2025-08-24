@@ -4,21 +4,29 @@ import '@uiw/react-markdown-preview/markdown.css';
 import "./noteEditor.scss";
 import { ChangeEvent, useEffect, useRef, useState } from "react";
 import { Note } from "@/utils/interfaces";
-import gsap from 'gsap';
 import MarkdownToolbar from './MarkdownToolbar';
 import ReactMarkdown from 'react-markdown';
 import remarkBreaks from 'remark-breaks';
-import { updateNoteState } from '@/utils/signals';
 import { db } from '@/utils/db';
 
 interface NoteEditorProps {
   note: Note | undefined
 }
 
+interface NoteContent {
+  title: string
+  text: string
+}
+
 export default function NoteEditor(props: NoteEditorProps) {
 
   // const [currentNote, setCurrentNote] = useState<Note | undefined>(props.note)
-  const [useMarkdown, setUseMarkdown] = useState<boolean>(true)
+  const [editMode, seteditMode] = useState<boolean>(false)
+
+  const [noteContent, setNoteContent] = useState<NoteContent>({
+    title: props.note?.title || '',
+    text: props.note?.text || '',
+  })
 
   const debounceTimerRef = useRef<NodeJS.Timeout | null>(null);
 
@@ -82,35 +90,24 @@ export default function NoteEditor(props: NoteEditorProps) {
   };
 
   const handleInput = async (keyToUpdate: 'title' | 'text', e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement> | string) => {
+
+    // setNoteContent(prev => ({...prev, [keyToUpdate]: }))
     // if the user is typing in markdown mode, the type of e is different from the one that comes from the input field for the title or for the normal textarea
-    const usingMarkdown = (keyToUpdate == 'text' && useMarkdown)
+    const usingMarkdown = (keyToUpdate == 'text' && editMode)
     let inputValue: string = usingMarkdown ? e as string : (e as ChangeEvent<HTMLInputElement | HTMLTextAreaElement>).target.value
 
+    console.log(inputValue)
     if (!props.note) return
     let updatedNote: Note = { ...props.note, [keyToUpdate]: inputValue, synced: false }
     await db.notes.put(updatedNote)
   }
-
-  useEffect(() => {
-    gsap.to('.view', {
-      background: useMarkdown ? 'var(--Green)' : 'var(--darkGrey)',
-      color: useMarkdown ? 'var(--Black)' : 'var(--White)',
-      duration: 0.2,
-      ease: 'power4.out'
-    })
-    gsap.to('.edit', {
-      background: useMarkdown ? 'var(--darkGrey)' : 'var(--Green)',
-      color: useMarkdown ? 'var(--White)' : 'var(--Black)',
-      duration: 0.2,
-      ease: 'power4.out'
-    })
-  }, [useMarkdown]);
 
   return (
     <div className="noteEditorContainer">
       <div className='titleSection'>
         <input
           type="text"
+          value={noteContent.title}
           placeholder="Insert title"
           onChange={(e) => {
             handleInput('title', e)
@@ -118,18 +115,19 @@ export default function NoteEditor(props: NoteEditorProps) {
         />
       </div>
 
-      <MarkdownToolbar setUseMarkdown={setUseMarkdown} />
+      <MarkdownToolbar editMode={editMode} seteditMode={seteditMode} />
 
-      {useMarkdown && <div className='markdownContainer'>
+      {!editMode && <div className='markdownContainer'>
         {/* remarkBreaks is to put the text on a new line every time the user clicks on enter on the keyboard, since the default markdown behaviour is to put it inline */}
-        <ReactMarkdown remarkPlugins={[remarkBreaks]}>{props.note?.text == '' ? 'No text' : props.note?.text}</ReactMarkdown>
+        <ReactMarkdown remarkPlugins={[remarkBreaks]}>{noteContent.text == '' ? 'No text' : noteContent.text}</ReactMarkdown>
       </div>}
       {
-        !useMarkdown && <textarea
+        editMode && <textarea
           className="noteEditorInputField"
           placeholder="Insert your note..."
           data-placeholder="Insert your note..."
           ref={textareaRef}
+          value={noteContent.text}
           onChange={(e) => {
             handleInput('text', e)
           }}

@@ -1,19 +1,44 @@
-import React, { Dispatch, SetStateAction } from 'react';
-import './noteEditor.scss'
+import { Dispatch, SetStateAction, useEffect } from 'react';
+import './noteEditor.scss';
+import gsap from 'gsap';
 
 interface MarkdownToolbarProps {
-    setUseMarkdown: Dispatch<SetStateAction<boolean>>
+    editMode: boolean
+    seteditMode: Dispatch<SetStateAction<boolean>>
 }
 
 export default function MarkdownToolbar(props: MarkdownToolbarProps) {
+
+    useEffect(() => {
+        handleToggleMode(props.editMode)
+    }, []);
+
+    const handleToggleMode = (editMode: boolean) => {
+        console.log(editMode)
+        gsap.to('.view', {
+            background: editMode ? 'var(--darkGrey)' : 'var(--Green)',
+            color: editMode ? 'var(--White)' : 'var(--Black)',
+            duration: 0.2,
+            ease: 'power4.out'
+        })
+        gsap.to('.edit', {
+            background: editMode ? 'var(--Green)' : 'var(--darkGrey)',
+            color: editMode ? 'var(--Black)' : 'var(--White)',
+            duration: 0.2,
+            ease: 'power4.out'
+        })
+    }
+
     return (
         <div className='markdownToolbar'>
-            <div className='useMarkdownToggle'>
+            <div className='editModeToggle'>
                 <div className='edit' onClick={() => {
-                    props.setUseMarkdown(false)
+                    props.seteditMode(true)
+                    handleToggleMode(true)
                 }}>Edit</div>
                 <div className='view' onClick={() => {
-                    props.setUseMarkdown(true)
+                    props.seteditMode(false)
+                    handleToggleMode(false)
                 }}>View</div>
             </div>
         </div>

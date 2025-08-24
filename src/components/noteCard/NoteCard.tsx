@@ -51,7 +51,8 @@ export default function NoteCard(props: NoteCardProps) {
     if (notesToDelete.value.length == 0) {
       // show the clicked note
       selectedNote.value = props.note.id
-      return selectedModal.value = ModalsNames.updateNote
+      selectedModal.value = ModalsNames.updateNote
+      return
     }
 
     // if the user isn't the note's owner
