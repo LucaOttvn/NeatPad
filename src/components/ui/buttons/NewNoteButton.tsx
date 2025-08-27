@@ -1,17 +1,22 @@
 import { useEffect } from 'react';
 import Image from "next/image";
 import { animateDivUnmount } from '@/utils/globalMethods';
-import { Note, ModalsNames, NoteTombstone } from '@/utils/interfaces';
-import { notes, notesToDelete, selectedFolder, selectedModal, selectedNote, user } from '@/utils/signals';
+import { Note, ModalsNames, Tombstone } from '@/utils/interfaces';
+import { notesToDelete, selectedFolder, selectedModal, selectedNote, user } from '@/utils/signals';
 import gsap from 'gsap';
 import { db } from '@/utils/db';
 import './buttons.scss';
 
-interface NewNoteButtonProps { }
 
-export default function NewNoteButton(props: NewNoteButtonProps) {
+/**
+ *  based on the current mode, this component serves different purposes  
+ when the delete mode is off, it creates a new note onClick  
+ when the delete mode is on, it deletes all the selected notes  
+ */
+export default function NewNoteButton() {
 
-    // when the user clicks on the plus button, the createNote() gets triggered, this has to happen because the NoteEditor component needs a note with an already existing id since it's supposed to edit notes, not creating new ones
+    // when the user clicks on the plus button, the createNote() gets triggered
+    // this has to happen because the NoteEditor component needs a note with an already existing id since it's supposed to edit notes, not creating new ones
     async function openNewNoteModal() {
         const newNote: Note = {
             user: user.value!.email,
@@ -33,7 +38,7 @@ export default function NewNoteButton(props: NewNoteButtonProps) {
         selectedModal.value = ModalsNames.newNote
     }
 
-    // delete mode animation for the add/delete note button
+    // delete mode rotation animation for the button
     useEffect(() => {
         const deleteModeOn = notesToDelete.value.length > 0
         gsap.to('#newNoteButton', {
@@ -61,8 +66,9 @@ export default function NewNoteButton(props: NewNoteButtonProps) {
         let notesTags = notesToDelete.value.map((noteId) => 'noteCard' + noteId)
 
         animateDivUnmount(notesTags, async () => {
-            const newTombstones: NoteTombstone[] = notesToDelete.value.map(id => ({id: id}))
+            const newTombstones: Tombstone[] = notesToDelete.value.map(id => ({ id: id }))
             await db.notesTombstones.bulkPut(newTombstones)
+            await db.notes.bulkDelete(notesToDelete.value)
             notesToDelete.value = []
         })
     }

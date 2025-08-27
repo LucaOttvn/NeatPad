@@ -5,8 +5,9 @@ import SvgButton from '@/components/ui/buttons/SvgButton';
 import { ReactSVG } from 'react-svg';
 import { Note, User } from '@/utils/interfaces';
 import { handleModal, validateEmail } from '@/utils/globalMethods';
-import { notes, updateNoteState, user } from '@/utils/signals';
+import { notesToShow, user } from '@/utils/signals';
 import { getUserByEmail } from '@/serverActions/usersActions';
+import { db } from '@/utils/db';
 
 interface CollaboratorsSectionProps {
     collaboratorsSectionOpen: boolean
@@ -72,7 +73,7 @@ export default function CollaboratorsSection(props: CollaboratorsSectionProps) {
 
         const updatedNote: Note = { ...props.note, collaborators: updatedCollaborators }
 
-        await updateNoteState(updatedNote)
+        await db.notes.update(updatedNote.id, {collaborators: updatedCollaborators})
 
         emailInputRef.current.value = ''
     }
@@ -86,10 +87,10 @@ export default function CollaboratorsSection(props: CollaboratorsSectionProps) {
 
         const updatedNote = { ...props.note, collaborators: updatedCollaborators }
 
-        await updateNoteState(updatedNote)
+        await db.notes.update(updatedNote.id, {collaborators: updatedCollaborators})
 
         // remove the note from the array of notesToShow
-        notes.value = [...(notes.value || [])].filter(note => note.id != updatedNote.id)
+        notesToShow.value = [...(notesToShow.value || [])].filter(note => note.id != updatedNote.id)
         handleModal(undefined)
     }
 
@@ -102,7 +103,7 @@ export default function CollaboratorsSection(props: CollaboratorsSectionProps) {
 
         const note: Note = { ...props.note, collaborators: updatedCollaborators }
 
-        await updateNoteState(note)
+        await db.notes.update(note.id, {collaborators: updatedCollaborators})
 
         setSelectedCollaborators([])
     }

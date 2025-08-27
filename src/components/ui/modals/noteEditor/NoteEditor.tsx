@@ -1,33 +1,22 @@
-"use client";;
+"use client";
 import '@uiw/react-md-editor/markdown-editor.css';
 import '@uiw/react-markdown-preview/markdown.css';
 import "./noteEditor.scss";
-import { ChangeEvent, useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Note } from "@/utils/interfaces";
 import MarkdownToolbar from './MarkdownToolbar';
 import ReactMarkdown from 'react-markdown';
 import remarkBreaks from 'remark-breaks';
 import { db } from '@/utils/db';
-import { notes } from '@/utils/signals';
+import { useGetCurrentNote } from '@/hooks/useGetCurrentNote';
 
-interface NoteEditorProps {
-  note: Note
-}
+// on every keystroke of the user, the component updates the useGetCurrentNote.note state
+// then, the component detects it through a useEffect[note] and updates the local db
+export default function NoteEditor() {
 
-interface NoteContent {
-  title: string
-  text: string
-}
-
-export default function NoteEditor(props: NoteEditorProps) {
-
-  // const [currentNote, setCurrentNote] = useState<Note | undefined>(props.note)
   const [editMode, seteditMode] = useState<boolean>(false)
 
-  const [noteContent, setNoteContent] = useState<NoteContent>({
-    title: props.note.title,
-    text: props.note.text,
-  })
+  const [note, setNote] = useGetCurrentNote()
 
   const debounceTimerRef = useRef<NodeJS.Timeout | null>(null);
 
@@ -45,7 +34,7 @@ export default function NoteEditor(props: NoteEditorProps) {
     if (event.key !== 'Enter') return
     const { selectionStart: cursorPosition } = event.target as HTMLTextAreaElement;
 
-    const txtToUpdate = props.note?.text || '';
+    const txtToUpdate = note?.text || '';
     const textBeforeCursor = txtToUpdate.substring(0, cursorPosition);
     const textAfterCursor = txtToUpdate.substring(cursorPosition);
 
@@ -76,7 +65,7 @@ export default function NoteEditor(props: NoteEditorProps) {
       // update the cursor position because by default the cursor goes to the bottom of the textarea on its update
       const newCursorPosition = cursorPosition + `\n${detectedCase} `.length;
 
-      let updatedNote: Note = { ...props.note, text: newContent } as Note
+      let updatedNote: Note = { ...note, text: newContent } as Note
       db.notes.put(updatedNote)
 
       // Set the cursor position after the state update
@@ -90,29 +79,31 @@ export default function NoteEditor(props: NoteEditorProps) {
     }
   };
 
+  // keep the local db up-to-date whenever the currentNote changes
   useEffect(() => {
-    const updateNotes = async () => {
-      
-      // update the local db
-      await db.notes.update(props.note.id, { title: noteContent.title, text: noteContent.text, synced: false })
-      const updatedNote = {...props.note, title: noteContent.title, text: noteContent.text, synced: false}
-      // update the visualized array
-      // notes.value = notes.value.map(note => {
-      //   return note.id === props.note.id ? updatedNote: note
-      // })
+    const updateNote = async () => {
+      if (!note) return
+      // check if there's some difference between the current note and the one saved in the local db
+      const localNotes = await db.notes.toArray()
+      const foundNote = localNotes.find(dbNote => dbNote.id == note.id)
+      // if there are no differences, don't update the note, this avoids to trigger an update by just opening a note
+      if (foundNote && (foundNote.title === note.title && foundNote.text === note.text)) return
+      await db.notes.update(note.id, { title: note.title, text: note.text, last_update: new Date(), synced: false })
     }
-    updateNotes()
-  }, [noteContent]);
+    updateNote()
+  }, [note]);
+
+  if (!note) return <span>No note</span>
 
   return (
     <div className="noteEditorContainer">
       <div className='titleSection'>
         <input
           type="text"
-          value={noteContent.title}
+          value={note?.title}
           placeholder="Insert title"
           onChange={(e) => {
-            setNoteContent(prev => ({ ...prev, title: e.target.value }))
+            setNote(prev => ({ ...prev!, title: e.target.value }))
           }}
         />
       </div>
@@ -121,7 +112,7 @@ export default function NoteEditor(props: NoteEditorProps) {
 
       {!editMode && <div className='markdownContainer'>
         {/* remarkBreaks is to put the text on a new line every time the user clicks on enter on the keyboard, since the default markdown behaviour is to put it inline */}
-        <ReactMarkdown remarkPlugins={[remarkBreaks]}>{noteContent.text == '' ? 'No text' : noteContent.text}</ReactMarkdown>
+        <ReactMarkdown remarkPlugins={[remarkBreaks]}>{note.text == '' ? 'No text' : note.text}</ReactMarkdown>
       </div>}
       {
         editMode && <textarea
@@ -129,9 +120,9 @@ export default function NoteEditor(props: NoteEditorProps) {
           placeholder="Insert your note..."
           data-placeholder="Insert your note..."
           ref={textareaRef}
-          value={noteContent.text}
+          value={note.text}
           onChange={(e) => {
-            setNoteContent(prev => ({ ...prev, text: e.target.value }))
+            setNote(prev => ({ ...prev!, text: e.target.value }))
           }}
           onKeyDown={handleKeyDown}
         ></textarea>

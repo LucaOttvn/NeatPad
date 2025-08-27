@@ -4,7 +4,7 @@ import AnimatedDiv from "../animatedComponents/AnimatedDiv";
 import { useEffect, useRef } from "react";
 import gsap from 'gsap';
 import { ReactSVG } from "react-svg";
-import { folders, notesToDelete, selectedModal, selectedNote, user } from "@/utils/signals";
+import { foldersToShow, notesToDelete, selectedModal, selectedNote, user } from "@/utils/signals";
 
 
 interface NoteCardProps {
@@ -15,7 +15,7 @@ export default function NoteCard(props: NoteCardProps) {
 
   const timerRef = useRef<any>(null);
 
-  const foundParentFolder = folders.value.find((folder) => props.note.folders.find(el => el == folder.id));
+  const foundParentFolder = foldersToShow.value.find((folder) => props.note.folders.find(el => el == folder.id));
 
   useEffect(() => {
     return () => clearTimeout(timerRef.current);

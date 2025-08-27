@@ -81,6 +81,7 @@
     width: 100%;
     height: 100%;
     overflow: scroll;
+    padding: 1rem;
 
     a {
       color: #007bff;
@@ -158,7 +159,6 @@
     display: flex;
     align-items: flex-start;
     padding: 1rem;
-    background-color: var(--ligthBlack);
     resize: none;
     color: var(--White);
     cursor: text;

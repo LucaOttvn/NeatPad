@@ -17,22 +17,6 @@ export default function GeneralModal() {
 
   const modalStyle = modalsList.find(el => el.name == selectedModal.value)
 
-  const [currentNote, setCurrentNote] = useState<Note | undefined>()
-
-  useEffect(() => {
-    const handleCurrentNote = async () => {
-      const localNotes = await db.notes.toArray()
-      const foundCurrentNote = localNotes.find((el) => el.id === selectedNote.value)
-      if (!foundCurrentNote) {
-        console.error('Current note not found')
-        return
-      }
-      setCurrentNote(foundCurrentNote)
-    }
-    handleCurrentNote()
-  }, []);
-
-
   useEffect(() => {
     // this allows the ESC button to be detected even if the user doesn't click on the modal before
     generalModalRef.current?.focus();
@@ -49,8 +33,6 @@ export default function GeneralModal() {
       handleModal(undefined)
     }
   }
-
-
 
   function handleBackdropClick() {
     // handle the note saving/deleting when the user clicks on the modals's backdrop to close it
@@ -95,11 +77,10 @@ export default function GeneralModal() {
 
         {/* note editor */}
         {(selectedModal.value == ModalsNames.newNote || selectedModal.value == ModalsNames.updateNote) && <>
-          {currentNote && <NoteEditorModalHeader
-            note={currentNote}
+         <NoteEditorModalHeader
             modalId={selectedModal.value == ModalsNames.newNote ? ModalsNames.newNote : ModalsNames.updateNote}
-          />}
-          {currentNote && <NoteEditor note={currentNote} />}
+          />
+         <NoteEditor />
         </>
         }
 

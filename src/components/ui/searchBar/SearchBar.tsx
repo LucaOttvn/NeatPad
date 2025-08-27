@@ -1,29 +1,27 @@
-import { useEffect, useState } from 'react';
 import './searchBar.scss';
 import { ReactSVG } from 'react-svg';
-import { Note } from '@/utils/interfaces';
-import { notesToShow, notes } from '@/utils/signals';
+import { notesToShow } from '@/utils/signals';
+import { db } from '@/utils/db';
 
 export default function SearchBar() {
-  const [search, setSearch] = useState('')
 
-  useEffect(() => {
-    notesToShow.value = notes.value.filter(note => findSearchedNote(note))
-  }, [search]);
-
-  // check if the note's text and title contain the search string
-  function findSearchedNote(noteToCompare: Note) {
-    const noteTitleIncludesSearchParam = noteToCompare.title.toLowerCase().includes(search.toLowerCase())
-    const noteTextIncludesSearchParam = noteToCompare.text.toLowerCase().includes(search.toLowerCase())
-    if (!noteTextIncludesSearchParam && !noteTitleIncludesSearchParam) return false
-    return noteToCompare
+  // check if the note's text or title contain the search string
+  const handleSearch = async (input: string) => {
+    const localNotes = await db.notes.toArray()
+    notesToShow.value = localNotes.filter(note => {
+      // find the searched note
+      const noteTitleIncludesSearchParam = note.title.toLowerCase().includes(input.toLowerCase())
+      const noteTextIncludesSearchParam = note.text.toLowerCase().includes(input.toLowerCase())
+      if (!noteTextIncludesSearchParam && !noteTitleIncludesSearchParam) return false
+      return note
+    })
   }
 
   return (
     <div className='searchBarContainer'>
       <ReactSVG src={'/icons/search.svg'} />
       <input type="text" placeholder='Search' onChange={(e) => {
-        setSearch(e.target.value)
+        handleSearch(e.target.value)
       }} />
     </div>
   );

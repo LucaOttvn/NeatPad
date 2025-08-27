@@ -14,7 +14,6 @@ export default function MarkdownToolbar(props: MarkdownToolbarProps) {
     }, []);
 
     const handleToggleMode = (editMode: boolean) => {
-        console.log(editMode)
         gsap.to('.view', {
             background: editMode ? 'var(--darkGrey)' : 'var(--Green)',
             color: editMode ? 'var(--White)' : 'var(--Black)',

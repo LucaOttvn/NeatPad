@@ -1,7 +1,6 @@
 import { gsap } from "gsap";
-import { ModalsNames } from "./interfaces";
-import { isMobile, notes, selectedModal, selectedNote } from "./signals";
-import { deleteNote } from "@/serverActions/notesActions";
+import { Folder, ModalsNames, Note } from "./interfaces";
+import { foldersToShow, isMobile, notesToShow, selectedFolder, selectedModal, selectedNote } from "./signals";
 import { db } from "./db";
 
 let modalAnimation: gsap.core.Tween | undefined
@@ -47,9 +46,13 @@ export function handleSideMenu(target: string | undefined, isMobile: boolean) {
   });
 }
 
-// this method is used to smoothly unmount the note cards selected to be deleted
-// div animation on onMount function, it accepts a callback onComplete that will be triggered after the animation
-// the goal is making the card disappear and then calling the actual callback to delete the card from the db, since immediately removing the card from the db would make it snap away without any animation instead
+/**
+ * this method is used to smoothly unmount the note cards selected to be deleted  
+ div animation on onMount function, it accepts a callback onComplete that will be triggered after the animation  
+ the goal is making the card disappear and then calling the actual callback to delete the card from the db, since immediately removing the card from the db would make it snap away without any animation instead
+ * @param ids 
+ * @param onComplete 
+ */
 export function animateDivUnmount(ids: string[], onComplete: () => void) {
 
   // this is a timeline because it can happen to animate more than one div at the same time, so wait for the whole timeline to be completed and then trigger the onComplete()
@@ -85,13 +88,15 @@ export function validateEmail(email: string): EmailValidationResult {
   };
 }
 
-// password policy: 
-// minimum length: 8, 1 upper case, 1 lower case, 1 number, 1 special character
 interface PasswordValidationResult {
   isValid: boolean;
   errors: string[];
 }
 
+/**
+ * password policy: 
+minimum length: 8, 1 upper case, 1 lower case, 1 number, 1 special character
+ */
 export function validatePassword(password: string): PasswordValidationResult {
   const errors: string[] = [];
   const minLength = 8;
@@ -138,11 +143,12 @@ export function isEncrypted(text: string): boolean {
   return true;
 }
 
-// whenever the note editor closes, if the note's title and text are empty, delete it
-export async function handleNoteEditorClose() {
+/**
+ * whenever the note editor closes, if the note's title and text are empty, delete it
+ */
+export const handleNoteEditorClose = async () => {
 
   const currentNote = (await db.notes.toArray()).find((note) => note.id === selectedNote.value)
-  console.log(currentNote)
 
   if (!currentNote) return
 
@@ -152,4 +158,32 @@ export async function handleNoteEditorClose() {
     // add the note's id to the tombstones list
     await db.notesTombstones.put(currentNote)
   }
+}
+
+/**
+ * whenever the db.notes local table gets updated:
+ * 1) filter them by selected folder
+ * 2) sort them by last_update
+ * 3) update notesToShow.value
+ * @param notes 
+ */
+export const updateNotesToShow = (notes: Note[]) => {
+  let updatedNotes: Note[] = notes
+  // if there's a selected folder, filter the notes by it, otherwise show them all
+  if (selectedFolder.value) {
+    updatedNotes = notes.filter(note => note.folders.some(el => el == selectedFolder.value))
+  }
+  updatedNotes.sort((a: Note, b: Note) => new Date(b.last_update).getTime() - new Date(a.last_update).getTime())
+  notesToShow.value = updatedNotes
+}
+
+/**
+ * whenever the db.folders local table gets updated:
+ * 1) alphabetically sort them
+ * 2) update foldersToShow.value
+ * @param foldersInput  
+ */
+export const updateFolders = (foldersInput: Folder[]) => {
+  const sortedFolders = foldersInput.sort((a, b) => a.name.localeCompare(b.name));
+  foldersToShow.value = sortedFolders
 }

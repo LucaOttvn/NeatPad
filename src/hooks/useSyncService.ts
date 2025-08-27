@@ -1,8 +1,8 @@
 "use client";;
 import { createNote, deleteNote, updateNote } from "@/serverActions/notesActions";
 import { db } from "@/utils/db";
-import { Note } from "@/utils/interfaces";
-import { notes, notesToShow, selectedFolder } from "@/utils/signals";
+import { updateFolders, updateNotesToShow } from "@/utils/globalMethods";
+import { folders } from "@/utils/signals";
 import { liveQuery } from "dexie";
 import { useEffect } from "react";
 
@@ -40,22 +40,13 @@ export function useSyncService() {
         }
     }
 
-    const updateNotesToShow = (notes: Note[]) => {
-        notesToShow.value = notes
-
-        // if there's a selected folder, filter the notes by it, otherwise show them all
-        if (!selectedFolder.value) return
-        const filteredNotes = notes.filter(note => note.folders.some(el => el == selectedFolder.value))
-        if (filteredNotes) notesToShow.value = filteredNotes
-    }
-
     useEffect(() => {
 
         // listen for changes on notes
         liveQuery(() => db.notes.toArray()).subscribe({
             next: (result) => {
                 updateNotesToShow(result)
-                sync()
+                // sync()
             },
             error: (error) => console.error("Error:", error),
         });
@@ -63,7 +54,16 @@ export function useSyncService() {
         // listen for changes on notesTombstones
         liveQuery(() => db.notesTombstones.toArray()).subscribe({
             next: (result) => {
-                syncNotesToDelete()
+                // syncNotesToDelete()
+            },
+            error: (error) => console.error("Error:", error),
+        });
+
+        // listen for changes on folders
+        liveQuery(() => db.folders.toArray()).subscribe({
+            next: (result) => {
+                updateFolders(result)
+                // sync()
             },
             error: (error) => console.error("Error:", error),
         });

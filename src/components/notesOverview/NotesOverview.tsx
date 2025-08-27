@@ -4,18 +4,31 @@ import { useEffect } from "react";
 import AnimatedText from "../animatedComponents/AnimatedText";
 import NotesSection from "../ui/NotesSection";
 import { ReactSVG } from "react-svg";
-import { folders, loading, notes, notesToShow, selectedFolder, selectedModal, updatingFolder, user } from "@/utils/signals";
+import {
+  foldersToShow,
+  loading,
+  notesToShow,
+  selectedFolder,
+  selectedModal,
+  updatingFolder,
+  user,
+} from "@/utils/signals";
 import SearchBar from "../ui/searchBar/SearchBar";
 import { getNotesByUserEmail } from "@/serverActions/notesActions";
 import { db } from "@/utils/db";
 import { getFoldersByUserEmail } from "@/serverActions/foldersActions";
+import { updateFolders, updateNotesToShow } from "@/utils/globalMethods";
 
 export default function NotesOverview() {
 
   // if there's a selected folder set it
-  const foundSelectedFolderData = selectedFolder.value ? folders.value.find(
+  const foundSelectedFolderData = selectedFolder.value ? foldersToShow.value.find(
     (el) => el.id == selectedFolder.value
   ) : undefined;
+
+  useEffect(() => {
+    console.log(foundSelectedFolderData)
+  }, [foundSelectedFolderData]);
 
   const fetchLocalData = async () => {
     const [localFolders, localNotes] = await Promise.all([
@@ -23,9 +36,11 @@ export default function NotesOverview() {
       db.notes.toArray(),
     ]);
 
-    folders.value = localFolders;
-    // notes.value = localNotes;
-    notesToShow.value = localNotes;
+    console.log(localFolders)
+    console.log(localNotes)
+
+    updateFolders(localFolders)
+    updateNotesToShow(localNotes)
   };
 
   const fetchData = async () => {
@@ -43,13 +58,13 @@ export default function NotesOverview() {
       // add the synced flag to each note and set it to true since they're just been fetched from the db
       const notesWithSyncedFlag: Note[] = foundNotes.map(note => ({...note, synced: true}))
 
-      folders.value = foundFolders || [];
+      foldersToShow.value = foundFolders || [];
       // notes.value = notesWithSyncedFlag || [];
       notesToShow.value = notesWithSyncedFlag || [];
 
       await Promise.all([
         db.notes.bulkPut(notesWithSyncedFlag),
-        db.folders.bulkPut(folders.value),
+        db.folders.bulkPut(foldersToShow.value),
       ]);
     } catch (err) {
       console.error("Error fetching initial data", err);
@@ -59,11 +74,11 @@ export default function NotesOverview() {
   };
 
   useEffect(() => {
-    if (navigator.onLine) {
-      fetchData();
-      return
-    }
-    // fetchLocalData();  
+    // if (navigator.onLine) {
+    //   fetchData();
+    //   return
+    // }
+    fetchLocalData();  
   }, []);
 
   function setEditingFolder() {

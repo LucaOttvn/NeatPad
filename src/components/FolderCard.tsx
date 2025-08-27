@@ -1,8 +1,17 @@
-import { Folder, ModalsNames } from "@/utils/interfaces";
+import { Folder, ModalsNames, Note } from "@/utils/interfaces";
 import "./componentsStyle.scss";
-import { useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import gsap from 'gsap';
-import { isMobile, notes, notesToDelete, selectedFolder, selectedModal, selectedSideMenu, updatingFolder } from "@/utils/signals";
+import {
+  isMobile,
+  notesToDelete,
+  notesToShow,
+  selectedFolder,
+  selectedModal,
+  selectedSideMenu,
+  updatingFolder,
+} from "@/utils/signals";
+import { db } from "@/utils/db";
 
 interface FolderProps {
   folder: Folder;
@@ -10,6 +19,15 @@ interface FolderProps {
 }
 
 export default function FolderCard(props: FolderProps) {
+
+  // this state is necessary for the notes counter under the card name, it can't be based upon the notesToShow array since that doesn't necessarily contains all the notes
+  const [localNotes, setLocalNotes] = useState<Note[] | undefined>()
+
+  useEffect(() => {
+    (async () => {
+      setLocalNotes(await db.notes.toArray())
+    })()
+  }, []);
 
   const timerRef = useRef<any>(null)
 
@@ -58,7 +76,7 @@ export default function FolderCard(props: FolderProps) {
           {props.folder.name.toUpperCase()}
         </span>
         <span style={{ color: `var(--${props.folder.color})` }} className="w-full center">
-          {notes.value.filter((note) => {
+          {localNotes && localNotes.filter((note) => {
             return note.folders.find(el => el == props.folder.id)
           }).length} notes
         </span>

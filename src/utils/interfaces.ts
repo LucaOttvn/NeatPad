@@ -9,8 +9,11 @@ export interface Note {
     collaborators: string[]
     synced: boolean
 }
-
-export interface NoteTombstone {
+/**
+ * this interface is necessary because Dexie doesn't recommend using a table made just of strings
+ * so its preferred to have a table made of objects with the id inside
+ */
+export interface Tombstone {
     id: number
 }
 
@@ -84,7 +87,7 @@ export enum SideMenusNames {
     folders = "foldersSideMenu",
 }
 
-export const colors: {color: string, whiteText?: boolean}[] = [
+export const colors: { color: string, whiteText?: boolean }[] = [
     {
         color: "darkGrey",
         whiteText: true

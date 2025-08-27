@@ -1,18 +1,14 @@
 import AnimatedDiv from "@/components/animatedComponents/AnimatedDiv";
 import { useEffect, useRef, useState } from "react";
 import ColorPicker from "../../colorPicker/ColorPicker";
-
 import { Folder } from "@/utils/interfaces";
-
-import { folders, selectedFolder, selectedSideMenu, updateFolder5tate, updatingFolder, user } from "@/utils/signals";
+import { foldersToShow, selectedFolder, selectedSideMenu, updatingFolder, user } from "@/utils/signals";
 import { handleModal } from "@/utils/globalMethods";
 import './folderHandler.scss';
-import { createFolder, deleteFolder } from "@/serverActions/foldersActions";
+import { db } from "@/utils/db";
 
 // modal to create/update/delete a folder
 export default function FolderHandler() {
-  
-  
 
   const [folderName, setFolderName] = useState("");
   const [selectedColor, setSelectedColor] = useState<string | undefined>(undefined);
@@ -20,15 +16,15 @@ export default function FolderHandler() {
   let foundFolder = useRef<Folder | undefined>(undefined)
 
   useEffect(() => {
-    // if updating a folder get its data into the view
+    // if updating a folder get its data into the input fields
     if (!updatingFolder.value) return
-    
-    foundFolder.current = folders.value.find((folder) => folder.id == updatingFolder.value)
+
+    foundFolder.current = foldersToShow.value.find((folder) => folder.id == updatingFolder.value)
 
     if (!foundFolder.current) return
 
     setFolderName(foundFolder.current.name)
-    
+
     if (foundFolder.current.color) setSelectedColor(foundFolder.current.color)
   }, []);
 
@@ -44,29 +40,24 @@ export default function FolderHandler() {
       user: user.value!.email
     }
 
-    if (updatingFolder.value && changesDetected) updateFolder5tate(newFolder);
+    // if it's an already existing folder, update it
+    if (updatingFolder.value && changesDetected) await db.folders.update(updatingFolder.value, { name: newFolder.name, color: newFolder.color, user: newFolder.user })
 
-    // if it's a new folder create a new Folder object and save it
-    if (!updatingFolder.value) {
-      // insert the folder in the db
-      const folderWithId = await createFolder(newFolder);
-      // then update the local state to have the complete folder obj with the id field
-      folders.value = [...folders.value, folderWithId]
-    }
+    // if it's a new folder create a new one in the db
+    if (!updatingFolder.value) await db.folders.add(newFolder);
+
     // close the modal at the end
     updatingFolder.value = undefined
     handleModal(undefined);
   }
 
   async function handleDeleteFolder() {
+    if (!foundFolder.current || !foundFolder.current.id) return
+    await db.notesTombstones.put(foundFolder.current.id)
+    await db.folders.delete(foundFolder.current.id)
 
-    // update folders state
-    folders.value = folders.value.filter(folder => folder.id != foundFolder.current?.id)
-
-    if (foundFolder.current && foundFolder.current.id) await deleteFolder(foundFolder.current?.id)
     handleModal(undefined)
     updatingFolder.value = undefined
-
     selectedFolder.value = undefined
     selectedSideMenu.value = undefined
   }
