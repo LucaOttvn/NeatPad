@@ -2,7 +2,6 @@
 import { createNote, deleteNote, updateNote } from "@/serverActions/notesActions";
 import { db } from "@/utils/db";
 import { updateFolders, updateNotesToShow } from "@/utils/globalMethods";
-import { folders } from "@/utils/signals";
 import { liveQuery } from "dexie";
 import { useEffect } from "react";
 
