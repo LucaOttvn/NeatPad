@@ -8,6 +8,7 @@ A neat approach to note-taking
  - [Project details](#project-details)
    - [Recover password page](#recover-password-page)
    - [API folder](#api-folder)
+   - [Remote syncronization logic](#remote-syncronization-logic)
    - [Side effects for DOM signals](#side-effects-for-dom-signals)
 
 ## Features
@@ -60,3 +61,55 @@ effect(()=>{
 ```
 ...would trigger the function immediately, causing problems with the animation itself.
 Because of this I put the function's call inside a useLayoutEffect hook in the component to wait for the DOM to be fully mounted and updated before triggering the animation.
+
+### Remote syncronization logic
+The app works in a full local-first approach, the syncronization with the remote db happens in the SyncService that keeps everything up-to-date.
+This is how it works:
+
+**Step 1: Items to sync insertion in the queue**
+1) a local db update happens (create/update/delete)
+2) create a new SyncQueueItem to push in the queue of items to sync
+```typescript
+new SyncQueueItem {
+   id: number
+   entityType: enum
+   operation: enum
+   time: Date
+}
+```
+3) add the new SyncQueueItem to the local db collection db.syncQueueItems.put()  
+
+**Step 2: listen for the status to be online**  
+In this phase the system will listen to the current internet connection status.
+If it's online the third step can start  
+
+**Step 3: organize data to sync**  
+Retrieve from the queue the ids of the items to add/update/delete and organize them into three different arrays
+```typescript
+const itemsToAdd = syncQueue.filter(item => item.operation == Operations.add)
+const itemsToUpdate = syncQueue.filter(item => item.operation == Operations.update)
+const itemsToDelete = syncQueue.filter(item => item.operation == Operations.delete)
+```
+
+**Step 4: organize data to sync**  
+```typescript
+let itemsToSync = {
+   notes: {
+      toAdd: []
+      toUpdate: []
+      toDelete: []
+   }
+   folders: {
+      toAdd: []
+      toUpdate: []
+      toDelete: []
+   }
+}
+
+// for each type of entity, look in the 3 operation arrays and filter them by operation
+Entities.forEach(entity => {
+   itemsToSync[entity].toAdd = itemsToAdd.filter(item => item.operation == Operations.add)
+   itemsToSync[entity].toUpdate = itemsToUpdate.filter(item => item.operation == Operations.update)
+   itemsToSync[entity].toDelete = itemsToDelete.filter(item => item.operation == Operations.delete)
+})
+```

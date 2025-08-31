@@ -1,4 +1,4 @@
-import { effect, signal } from "@preact/signals-react";
+import { signal } from "@preact/signals-react";
 import { Folder, ModalsNames, Note, SideMenusNames, User } from "./interfaces";
 
 export const selectedSideMenu = signal<SideMenusNames | undefined>();

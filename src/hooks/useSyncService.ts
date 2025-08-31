@@ -32,7 +32,6 @@ export function useSyncService() {
             const deletedNote = await deleteNote(noteId.id);
             if (!deletedNote) return console.log(deletedNote)
 
-
             // FIX: THE SYNC SERVICE SHOULDNT MODIFY THE LOCAL STATE !!!!!!!!!!
             // await db.notesTombstones.delete(noteId.id)
             // await db.notes.delete(noteId.id)
