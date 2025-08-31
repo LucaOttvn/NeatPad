@@ -84,14 +84,15 @@ In this phase the system will listen to the current internet connection status.
 If it's online the third step can start  
 
 **Step 3: organize data to sync**  
-Retrieve from the queue the ids of the items to add/update/delete and organize them into three different arrays
+Retrieve the ids of the items to add/update/delete from the queue and organize them into three different arrays
 ```typescript
-const itemsToAdd = syncQueue.filter(item => item.operation == Operations.add)
-const itemsToUpdate = syncQueue.filter(item => item.operation == Operations.update)
-const itemsToDelete = syncQueue.filter(item => item.operation == Operations.delete)
+const idsToAdd = syncQueue.filter(item => item.operation == Operations.add)
+const idsToUpdate = syncQueue.filter(item => item.operation == Operations.update)
+const idsToDelete = syncQueue.filter(item => item.operation == Operations.delete)
 ```
 
 **Step 4: organize data to sync**  
+Split the items to add by entity, find the full data from the id and sync
 ```typescript
 let itemsToSync = {
    notes: {
@@ -106,10 +107,17 @@ let itemsToSync = {
    }
 }
 
-// for each type of entity, look in the 3 operation arrays and filter them by operation
-Entities.forEach(entity => {
-   itemsToSync[entity].toAdd = itemsToAdd.filter(item => item.operation == Operations.add)
-   itemsToSync[entity].toUpdate = itemsToUpdate.filter(item => item.operation == Operations.update)
-   itemsToSync[entity].toDelete = itemsToDelete.filter(item => item.operation == Operations.delete)
+// for each type of entity (notes and folders), look in the 3 operation arrays and filter them by entity type
+EntitiesEnum.forEach(entity => {
+   itemsToSync[entity].toAdd = idsToAdd.filter(item => item.entity == entity)
+   itemsToSync[entity].toUpdate = idsToUpdate.filter(item => item.entity == entity)
+   itemsToSync[entity].toDelete = idsToDelete.filter(item => item.entity == entity)
+})
+
+EntitiesEnum.forEach(entity => {
+   const localData = db[entity].toArray().find()
+   itemsToSync[entity].toAdd.forEach(id => {
+      const foundItemToUpdate = localData.find(item => item.id === id)
+   })
 })
 ```
