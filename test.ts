@@ -1,3 +1,5 @@
+import { createNote } from "@/serverActions/notesActions"
+
 enum EntitiesEnum {
     notes = 'notes',
     folders = 'folders'
@@ -16,16 +18,16 @@ interface SyncQueueItem {
     time: Date
 }
 
-const syncQueueItems: any[] = []
+const syncQueue: any[] = []
 
 // for each entity
 Object.keys(EntitiesEnum).forEach(async entity => {
     const localDb = db[entity].toArray()
     // filter by entity type
-    const entitySyncItems = syncQueueItems.filter(item => item.entityType == entity)
-    let itemsToAdd: any[] = []
-    let itemsToUpdate: any[] = []
-    let itemsToDelete: any[] = []
+    const entitySyncItems = syncQueue.filter(item => item.entityType == entity)
+    let itemsToAdd: number[] = []
+    let itemsToUpdate: number[] = []
+    let itemsToDelete: number[] = []
 
     // split the data in toAdd/toUpdate/toDelete
     entitySyncItems.forEach(syncItem => {
@@ -36,7 +38,7 @@ Object.keys(EntitiesEnum).forEach(async entity => {
             case OperationsEnum.update:
                 itemsToUpdate.push(syncItem.id)
                 break;
-            case OperationsEnum.add:
+            case OperationsEnum.delete:
                 itemsToDelete.push(syncItem.id)
                 break;
 
@@ -45,7 +47,7 @@ Object.keys(EntitiesEnum).forEach(async entity => {
         }
     })
 
-    const dataToAdd = itemsToAdd
+    const dataToAdd: [EntitiesEnum] = itemsToAdd
         // return just the elements that are found in the local db (filter null values)
         .filter(id => localDb.some((item: any) => item.id === id))
         // return the data for each item to add and push it into the new array
@@ -59,10 +61,16 @@ Object.keys(EntitiesEnum).forEach(async entity => {
         .filter(id => localDb.some((item: any) => item.id === id))
         .map(id => localDb.find((item: any) => item.id === id));
 
-    // update the db
-    await Promise.all([
-        addNotes(dataToAdd),
-        updateNotes(dataToUpdate),
-        deleteNotes(dataToDelete)
-    ]);
+
+    if (entity === EntitiesEnum.notes) {
+        createNote(dataToAdd),
+        deleteNote(dataToDelete)
+        updateNote(dataToUpdate),
+    }
+
+    if (entity === EntitiesEnum.folders) {
+        createFolder(dataToAdd),
+        deleteFolder(dataToDelete)
+        updateFolder(dataToUpdate),
+    }
 });
