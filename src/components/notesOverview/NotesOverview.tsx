@@ -31,9 +31,9 @@ export default function NotesOverview() {
   const foundSelectedFolderData = selectedFolder.value ? foldersToShow.value.find(
     (el) => el.id == selectedFolder.value
   ) : undefined;
-  
+
   useAppForeground(() => {
-    fetchData()
+    if (navigator.onLine) fetchData()
   });
 
   const fetchLocalData = async () => {

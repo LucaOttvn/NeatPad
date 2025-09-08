@@ -6,7 +6,6 @@ import { useEffect } from "react";
 export function useAppForeground(onForeground: () => void) {
   useEffect(() => {
     const handleVisibility = () => {
-      console.log('visi')
       if (document.visibilityState === "visible") {
         onForeground();
       }
