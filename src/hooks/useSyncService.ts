@@ -31,10 +31,11 @@ export function useSyncService() {
             console.log('latest: ', latestVersion.text)
 
             // if remote and base are the same, it means that the local base version is up to date with the db
-            // in this case 
+            // in this case just update the remote note with the latest local version
             if (remoteVersion.text === baseVersion.text) {
                 console.log('remote and base are the same'.toUpperCase())
                 await updateNote({ ...latestVersion, last_update: new Date(), synced: true })
+                await db.notesBaseVersions.update(baseVersion.id, { text: latestVersion.text })
                 continue
             }
             // instead, if the remote version has been updated while the base local one hasn't, it means that the the merge has to happen
@@ -42,7 +43,7 @@ export function useSyncService() {
             const mergedText = processMergeResult(result as MergeRegion<string>[]);
             console.log('merged: ', mergedText);
             await updateNote({ ...latestVersion, text: mergedText, last_update: new Date(), synced: true })
-            db.notesBaseVersions.update(baseVersion.id, { text: mergedText })
+            await db.notesBaseVersions.update(baseVersion.id, { text: mergedText })
         }
 
         // // if the note is new, it'll have title and text empty, in that case create a new one on the remote db, otherwise update the existing one

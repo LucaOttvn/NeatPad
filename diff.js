@@ -28,5 +28,6 @@ console.log(mergedText);
 
 
 /**
- * se il remoto è diverso dal base
+ * this has to happen only when the 
+ * update remote => check if remote and base versions are equal => they won't be, so => merge
  */

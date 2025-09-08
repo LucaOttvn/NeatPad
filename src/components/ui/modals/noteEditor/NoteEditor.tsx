@@ -10,102 +10,128 @@ import remarkBreaks from 'remark-breaks';
 import { db } from '@/utils/db';
 import { useGetCurrentNote } from '@/hooks/useGetCurrentNote';
 
-// on every keystroke of the user, the component updates the useGetCurrentNote.note state
-// then, the component detects it through a useEffect[note] and updates the local db
+// NoteEditor component that allows editing notes with debounced updates to local indexedDB
+
 export default function NoteEditor() {
 
-  const [editMode, seteditMode] = useState<boolean>(false)
+  const [editMode, seteditMode] = useState<boolean>(false);
 
-  const [note, setNote] = useGetCurrentNote()
+  // note state from a custom hook that tracks the current note
+  const [note, setNote] = useGetCurrentNote();
 
+  // ref to store the debounce timer for database updates
+  const debounceUpdateRef = useRef<NodeJS.Timeout | null>(null);
+
+  // ref to store the debounce timer for component unmount cleanup
   const debounceTimerRef = useRef<NodeJS.Timeout | null>(null);
 
-  const textareaRef = useRef(null)
+  // textarea ref to control cursor position on formatting newlines
+  const textareaRef = useRef<HTMLTextAreaElement | null>(null);
 
+  // cleanup debounce timer on unmount
   useEffect(() => {
     return () => {
       if (debounceTimerRef.current) {
         clearTimeout(debounceTimerRef.current);
       }
+      if (debounceUpdateRef.current) {
+        clearTimeout(debounceUpdateRef.current);
+      }
     };
   }, []);
 
+  // handle Enter key inside textarea for markdown list auto-formatting
   const handleKeyDown = (event: React.KeyboardEvent<HTMLTextAreaElement>) => {
-    if (event.key !== 'Enter') return
+    if (event.key !== 'Enter') return;
+
     const { selectionStart: cursorPosition } = event.target as HTMLTextAreaElement;
 
     const txtToUpdate = note?.text || '';
     const textBeforeCursor = txtToUpdate.substring(0, cursorPosition);
     const textAfterCursor = txtToUpdate.substring(cursorPosition);
 
-    // find the beginning of the current line
-    // if there's a newline character before the cursor, that marks the end of the previous line and the beginning of the current one
+    // find current line text for detecting list markdown
     const lastNewlineIndex = textBeforeCursor.lastIndexOf('\n');
-    // lastNewlineIndex !== -1 checks if a newline char was found in textBeforeCursor
-    // textBeforeCursor.substring(lastNewlineIndex + 1) gets all the text from the beginning of the line apart from the /n, otherwise return the full standard string
     const currentLine = lastNewlineIndex !== -1
       ? textBeforeCursor.substring(lastNewlineIndex + 1)
       : textBeforeCursor;
 
-    const optionsToCheck: RegExp[] = [/^\s*-/]
+    // regex to detect list markdown patterns (e.g., starting with "-")
+    const optionsToCheck: RegExp[] = [/^\s*-/];
 
-    let detectedCase
+    let detectedCase;
     optionsToCheck.find((el) => {
-      const foundMatches = el.exec(currentLine)
-      if (!foundMatches) return false
-      detectedCase = foundMatches[0]
-      return true
-    })
+      const foundMatches = el.exec(currentLine);
+      if (!foundMatches) return false;
+      detectedCase = foundMatches[0];
+      return true;
+    });
 
-    // when a user is on a list item and presses enter, create a new list item
+    // if inside a list, insert new list item on Enter press
     if (detectedCase) {
       event.preventDefault();
 
       const newContent = textBeforeCursor + `\n${detectedCase} ` + textAfterCursor;
-      // update the cursor position because by default the cursor goes to the bottom of the textarea on its update
       const newCursorPosition = cursorPosition + `\n${detectedCase} `.length;
 
-      let updatedNote: Note = { ...note, text: newContent } as Note
-      db.notes.put(updatedNote)
+      const updatedNote: Note = { ...note, text: newContent } as Note;
+      db.notes.put(updatedNote);
 
-      // Set the cursor position after the state update
-      // Use setTimeout to ensure the DOM is updated before setting the cursor
+      // set cursor to the correct position after update
       setTimeout(() => {
         if (textareaRef.current) {
-          (textareaRef.current as HTMLTextAreaElement).selectionStart = newCursorPosition;
-          (textareaRef.current as HTMLTextAreaElement).selectionEnd = newCursorPosition;
+          textareaRef.current.selectionStart = newCursorPosition;
+          textareaRef.current.selectionEnd = newCursorPosition;
         }
       }, 0);
     }
   };
 
+  // debounced effect to update the note in db on changes to the note state
   useEffect(() => {
-    const updateNote = async () => {
-      if (!note) return
-      // this is the basic starting point of the note before any update
-      const baseVersion = await db.notes.get(note.id)
-
-      if (!baseVersion) return
-
-      // check if the current note's base version is included in it already
-      const isBaseVersionAlreadySaved = await db.notesBaseVersions.get(baseVersion.id)
-
-      // if there are no differences, don't update the note, this avoids to trigger an update by just opening a note
-      if (baseVersion.title === note.title && baseVersion.text === note.text) {
-        
-        // the base version of the note has to stay in db.notesBaseVersions only when there actually is an update to do, so, if there are no differences, remove it from the array
-        if (isBaseVersionAlreadySaved) await db.notesBaseVersions.delete(baseVersion.id)
-        return
-      }
-
-      if (!isBaseVersionAlreadySaved) await db.notesBaseVersions.put(baseVersion)
-
-      await db.notes.update(note.id, { title: note.title, text: note.text, last_update: new Date(), synced: false })
+    if (debounceUpdateRef.current) {
+      clearTimeout(debounceUpdateRef.current);
     }
-    updateNote()
+
+    debounceUpdateRef.current = setTimeout(() => {
+      const updateNote = async () => {
+        if (!note) return;
+        // get base version stored in the DB for comparison
+        const baseVersion = await db.notes.get(note.id);
+        if (!baseVersion) return;
+
+        // check if base version is already saved in a separate table
+        const isBaseVersionAlreadySaved = await db.notesBaseVersions.get(baseVersion.id);
+
+        // don't update if no changes compared to base version, remove base version if saved
+        if (baseVersion.title === note.title && baseVersion.text === note.text) {
+          if (isBaseVersionAlreadySaved) await db.notesBaseVersions.delete(baseVersion.id);
+          return;
+        }
+
+        // save base version if not already saved before updating
+        if (!isBaseVersionAlreadySaved) await db.notesBaseVersions.put(baseVersion);
+
+        // update note with new content, timestamp, and sync status
+        await db.notes.update(note.id, {
+          title: note.title,
+          text: note.text,
+          last_update: new Date(),
+          synced: false,
+        });
+      };
+      updateNote();
+    }, 300); // debounce delay 300ms
+
+    // cleanup debounce on effect re-run or unmount
+    return () => {
+      if (debounceUpdateRef.current) {
+        clearTimeout(debounceUpdateRef.current);
+      }
+    };
   }, [note]);
 
-  if (!note) return <span>No note</span>
+  if (!note) return <span>No note</span>;
 
   return (
     <div className="noteEditorContainer">
@@ -115,31 +141,35 @@ export default function NoteEditor() {
           value={note?.title}
           placeholder="Insert title"
           onChange={(e) => {
-            setNote(prev => ({ ...prev!, title: e.target.value }))
+            setNote(prev => ({ ...prev!, title: e.target.value }));
           }}
         />
       </div>
 
       <MarkdownToolbar editMode={editMode} seteditMode={seteditMode} />
 
-      {!editMode && <div className='markdownContainer'>
-        {/* remarkBreaks is to put the text on a new line every time the user clicks on enter on the keyboard, since the default markdown behaviour is to put it inline */}
-        <ReactMarkdown remarkPlugins={[remarkBreaks]}>{note.text == '' ? 'No text' : note.text}</ReactMarkdown>
-      </div>}
-      {
-        editMode && <textarea
+      {!editMode && (
+        <div className='markdownContainer'>
+          {/* remarkBreaks: add line breaks on Enter key */}
+          <ReactMarkdown remarkPlugins={[remarkBreaks]}>
+            {note.text === '' ? 'No text' : note.text}
+          </ReactMarkdown>
+        </div>
+      )}
+
+      {editMode && (
+        <textarea
           className="noteEditorInputField"
           placeholder="Insert your note..."
           data-placeholder="Insert your note..."
           ref={textareaRef}
           value={note.text}
           onChange={(e) => {
-            setNote(prev => ({ ...prev!, text: e.target.value }))
+            setNote(prev => ({ ...prev!, text: e.target.value }));
           }}
           onKeyDown={handleKeyDown}
-        ></textarea>
-      }
-    </div >
+        />
+      )}
+    </div>
   );
 }
-
