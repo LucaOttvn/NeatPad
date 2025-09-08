@@ -83,7 +83,7 @@ function combineConflict(o: string[], a: string[], b: string[]): string[] {
     return result;
 }
 
-function processMergeResult(mergeResult: MergeRegion<string>[]) {
+export function processMergeResult(mergeResult: MergeRegion<string>[]) {
     const pieces: string[] = [];
 
     for (const hunk of mergeResult) {

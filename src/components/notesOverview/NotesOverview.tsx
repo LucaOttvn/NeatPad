@@ -71,7 +71,7 @@ export default function NotesOverview() {
       fetchData();
       return
     }
-    // fetchLocalData();  
+    fetchLocalData();  
   }, []);
 
   function setEditingFolder() {
