@@ -23,3 +23,10 @@ const processMergeResult = (mergeResult) => {
 
 const mergedText = processMergeResult(result);
 console.log(mergedText);
+
+
+
+
+/**
+ * se il remoto è diverso dal base
+ */
