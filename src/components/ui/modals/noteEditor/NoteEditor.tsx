@@ -121,7 +121,7 @@ export default function NoteEditor() {
         });
       };
       updateNote();
-    }, 300); // debounce delay 300ms
+    }, 500); // debounce delay
 
     // cleanup debounce on effect re-run or unmount
     return () => {

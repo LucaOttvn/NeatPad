@@ -33,7 +33,7 @@ export function useSyncService() {
             // if remote and base are the same, it means that the local base version is up to date with the db
             // in this case just update the remote note with the latest local version
             if (remoteVersion.text === baseVersion.text) {
-                console.log('remote and base are the same'.toUpperCase())
+                console.log('//// remote and base are the same')
                 await updateNote({ ...latestVersion, last_update: new Date(), synced: true })
                 await db.notesBaseVersions.update(baseVersion.id, { text: latestVersion.text })
                 continue
