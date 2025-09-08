@@ -1,4 +1,4 @@
-"use client";
+"use client";;
 import * as Diff3 from 'node-diff3';
 import { createNote, deleteNote, getNote, updateNote } from "@/serverActions/notesActions";
 import { db } from "@/utils/db";
@@ -8,7 +8,6 @@ import { user } from "@/utils/signals";
 import { liveQuery } from "dexie";
 import { useEffect } from "react";
 import { processMergeResult } from '@/utils/diffingService';
-import { MergeRegion } from 'node-diff3';
 
 // syncronization between local and remote db
 export function useSyncService() {
@@ -50,12 +49,13 @@ export function useSyncService() {
             await db.notesBaseVersions.update(baseVersion.id, { text: mergedText })
         }
 
+        // notes to delete handling
         const localNotesToDelete = await db.notesTombstones.toArray();
-        console.log('notes to delete: ', localNotesToDelete)
 
         for (const noteTombstone of localNotesToDelete) {
             const deletedNote = await deleteNote(noteTombstone.id);
             if (!deletedNote) continue
+            // if the note has been successfully deleted, remove the tombstone
             await db.notesTombstones.delete(noteTombstone.id)
         }
     }

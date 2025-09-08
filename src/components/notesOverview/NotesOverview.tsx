@@ -18,13 +18,23 @@ import { getNotesByUserEmail } from "@/serverActions/notesActions";
 import { db } from "@/utils/db";
 import { getFoldersByUserEmail } from "@/serverActions/foldersActions";
 import { updateFolders, updateNotesToShow } from "@/utils/globalMethods";
+import { useAppForeground } from "@/hooks/useAppForeground";
 
+/**
+ * when should the notes be refetched?
+ * on remote db update?
+ * on interval?  
+ */
 export default function NotesOverview() {
 
   // if there's a selected folder set it
   const foundSelectedFolderData = selectedFolder.value ? foldersToShow.value.find(
     (el) => el.id == selectedFolder.value
   ) : undefined;
+  
+  useAppForeground(() => {
+    fetchData()
+  });
 
   const fetchLocalData = async () => {
     const [localFolders, localNotes] = await Promise.all([
@@ -46,10 +56,11 @@ export default function NotesOverview() {
         getFoldersByUserEmail(user.value.email),
       ]);
 
+      console.log('fetching')
       if (!foundNotes) return console.error('Error fetching notes')
 
       // add the synced flag to each note and set it to true since they're just been fetched from the db
-      const notesWithSyncedFlag: Note[] = foundNotes.map(note => ({...note, synced: true}))
+      const notesWithSyncedFlag: Note[] = foundNotes.map(note => ({ ...note, synced: true }))
 
       foldersToShow.value = foundFolders || [];
       // notes.value = notesWithSyncedFlag || [];
@@ -71,7 +82,7 @@ export default function NotesOverview() {
       fetchData();
       return
     }
-    fetchLocalData();  
+    fetchLocalData();
   }, []);
 
   function setEditingFolder() {
