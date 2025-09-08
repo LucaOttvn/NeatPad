@@ -22,6 +22,6 @@
       "@/*": ["./src/*"]
     }
   },
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts", "src/db/supabaseClient.ts", "src/components/ui/DisableableInput.tsx", "public/listener.js"],
+  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts", "src/db/supabaseClient.ts", "src/components/ui/DisableableInput.tsx", "public/listener.js", "diff.js"],
   "exclude": ["node_modules"]
 }

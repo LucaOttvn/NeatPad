@@ -79,15 +79,27 @@ export default function NoteEditor() {
     }
   };
 
-  // keep the local db up-to-date whenever the currentNote changes
   useEffect(() => {
     const updateNote = async () => {
       if (!note) return
-      // check if there's some difference between the current note and the one saved in the local db
-      const localNotes = await db.notes.toArray()
-      const foundNote = localNotes.find(dbNote => dbNote.id == note.id)
+      // this is the basic starting point of the note before any update
+      const baseVersion = await db.notes.get(note.id)
+
+      if (!baseVersion) return
+
+      // check if the current note's base version is included in it already
+      const isBaseVersionAlreadySaved = await db.notesBaseVersions.get(baseVersion.id)
+
       // if there are no differences, don't update the note, this avoids to trigger an update by just opening a note
-      if (foundNote && (foundNote.title === note.title && foundNote.text === note.text)) return
+      if (baseVersion.title === note.title && baseVersion.text === note.text) {
+        
+        // the base version of the note has to stay in db.notesBaseVersions only when there actually is an update to do, so, if there are no differences, remove it from the array
+        if (isBaseVersionAlreadySaved) await db.notesBaseVersions.delete(baseVersion.id)
+        return
+      }
+
+      if (!isBaseVersionAlreadySaved) await db.notesBaseVersions.put(baseVersion)
+
       await db.notes.update(note.id, { title: note.title, text: note.text, last_update: new Date(), synced: false })
     }
     updateNote()

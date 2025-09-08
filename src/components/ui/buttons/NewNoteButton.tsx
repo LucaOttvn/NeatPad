@@ -69,6 +69,8 @@ export default function NewNoteButton() {
             const newTombstones: Tombstone[] = notesToDelete.value.map(id => ({ id: id }))
             await db.notesTombstones.bulkPut(newTombstones)
             await db.notes.bulkDelete(notesToDelete.value)
+            // remove the deleted notes from the list of base notes to sync
+            await db.notesBaseVersions.bulkDelete(notesToDelete.value)
             notesToDelete.value = []
         })
     }

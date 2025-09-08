@@ -100,6 +100,30 @@ export async function getNotesByUserEmail(userEmail: string): Promise<Note[] | n
     return Promise.all(notes.map(processNoteForDisplay));
 }
 
+export async function getNote(userEmail: string, noteId: number): Promise<Note | null> {
+    const { data: note, error } = await supabase
+        .from('notes')
+        .select('*')
+        .eq('id', noteId)
+        .or(`user.eq.${userEmail},collaborators.cs.{${userEmail}}`) // check if user matches OR collaborators contains userEmail
+        .single()
+
+    if (error || !note) {
+        console.error("Error fetching data:", error);
+        return null;
+    }
+
+    async function processNoteForDisplay(note: Note): Promise<Note> {
+        return {
+            ...note,
+            text: isEncrypted(note.text) ? await decrypt(note.text) : note.text
+        };
+    }
+
+    // return Promise.all(notes.map(processNoteForDisplay));
+    return await processNoteForDisplay(note)
+}
+
 
 export async function deleteNote(
     idOrIds: number | number[]

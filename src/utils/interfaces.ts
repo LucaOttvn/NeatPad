@@ -9,6 +9,7 @@ export interface Note {
     collaborators: string[]
     synced: boolean
 }
+
 /**
  * this interface is necessary because Dexie doesn't recommend using a table made just of strings
  * so its preferred to have a table made of objects with the id inside

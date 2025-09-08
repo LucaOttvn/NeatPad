@@ -26,18 +26,11 @@ export default function NotesOverview() {
     (el) => el.id == selectedFolder.value
   ) : undefined;
 
-  useEffect(() => {
-    console.log(foundSelectedFolderData)
-  }, [foundSelectedFolderData]);
-
   const fetchLocalData = async () => {
     const [localFolders, localNotes] = await Promise.all([
       db.folders.toArray(),
       db.notes.toArray(),
     ]);
-
-    console.log(localFolders)
-    console.log(localNotes)
 
     updateFolders(localFolders)
     updateNotesToShow(localNotes)
@@ -74,11 +67,11 @@ export default function NotesOverview() {
   };
 
   useEffect(() => {
-    // if (navigator.onLine) {
-    //   fetchData();
-    //   return
-    // }
-    fetchLocalData();  
+    if (navigator.onLine) {
+      fetchData();
+      return
+    }
+    // fetchLocalData();  
   }, []);
 
   function setEditingFolder() {
