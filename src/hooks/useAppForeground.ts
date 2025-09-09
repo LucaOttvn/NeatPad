@@ -1,7 +1,7 @@
 import { useEffect } from "react";
 
 /**
- * listen on user's focus on the app and refetch data 
+ * Listen on user's focus on the app and trigegr a callback when called.
  */
 export function useAppForeground(onForeground: () => void) {
   useEffect(() => {

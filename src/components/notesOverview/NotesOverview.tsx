@@ -1,6 +1,5 @@
 import { ModalsNames, Note } from "@/utils/interfaces";
 import "./notesOverview.scss";
-import { useEffect } from "react";
 import AnimatedText from "../animatedComponents/AnimatedText";
 import NotesSection from "../ui/NotesSection";
 import { ReactSVG } from "react-svg";
@@ -21,9 +20,12 @@ import { updateFolders, updateNotesToShow } from "@/utils/globalMethods";
 import { useAppForeground } from "@/hooks/useAppForeground";
 
 /**
- * when should the notes be refetched?
- * on remote db update?
- * on interval?  
+ * This component contains the list of user's notes.  
+ * Every time that the user focuses on the app, a refetch of the notes is triggered.  
+ * This behaviour ensures that even if the app is left in background for a while and then focused again, the user is likely to have the latest version of the notes.  
+ * The "is likely" is because the system can't ensure that even if the user just fetched the data onFocus, some other user is updating a note shared with them.  
+ * In that case the current user could locally have an outdated version of the note compared to the other collaborator.  
+ * For that scenario the useSyncService will handle the diffing/merging of the note.  
  */
 export default function NotesOverview() {
 
@@ -32,8 +34,13 @@ export default function NotesOverview() {
     (el) => el.id == selectedFolder.value
   ) : undefined;
 
+  // whenever the user focuses the app, refetch data
   useAppForeground(() => {
-    if (navigator.onLine) fetchData()
+    if (navigator.onLine) {
+      fetchData();
+      return
+    }
+    fetchLocalData();
   });
 
   const fetchLocalData = async () => {
@@ -47,6 +54,7 @@ export default function NotesOverview() {
   };
 
   const fetchData = async () => {
+
     if (!user.value?.email) return;
 
     loading.value = true;
@@ -56,7 +64,6 @@ export default function NotesOverview() {
         getFoldersByUserEmail(user.value.email),
       ]);
 
-      console.log('fetching')
       if (!foundNotes) return console.error('Error fetching notes')
 
       // add the synced flag to each note and set it to true since they're just been fetched from the db
@@ -76,14 +83,6 @@ export default function NotesOverview() {
       loading.value = false;
     }
   };
-
-  useEffect(() => {
-    if (navigator.onLine) {
-      fetchData();
-      return
-    }
-    fetchLocalData();
-  }, []);
 
   function setEditingFolder() {
     updatingFolder.value = selectedFolder.value

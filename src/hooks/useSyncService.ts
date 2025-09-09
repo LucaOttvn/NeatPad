@@ -70,15 +70,7 @@ export function useSyncService() {
             },
             error: (error) => console.error("Error:", error),
         });
-
-        // listen for changes on notesTombstones
-        liveQuery(() => db.notesTombstones.toArray()).subscribe({
-            next: (result) => {
-                // syncNotesToDelete()
-            },
-            error: (error) => console.error("Error:", error),
-        });
-
+        
         // listen for changes on folders
         liveQuery(() => db.folders.toArray()).subscribe({
             next: (result) => {

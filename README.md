@@ -1,4 +1,7 @@
-# NeatPad
+```
+ █▄ █ ██▀ ▄▀▄ ▀█▀ █▀▄ ▄▀▄ █▀▄
+ █ ▀█ █▄▄ █▀█  █  █▀  █▀█ █▄▀
+```
 A neat approach to note-taking
 
  - [Features](#features)
@@ -9,6 +12,7 @@ A neat approach to note-taking
    - [Recover password page](#recover-password-page)
    - [API folder](#api-folder)
    - [Remote syncronization logic](#remote-syncronization-logic)
+   - [Remote sync process](#remote-sync-process)
    - [Side effects for DOM signals](#side-effects-for-dom-signals)
 
 ## Features
@@ -62,62 +66,18 @@ effect(()=>{
 ...would trigger the function immediately, causing problems with the animation itself.
 Because of this I put the function's call inside a useLayoutEffect hook in the component to wait for the DOM to be fully mounted and updated before triggering the animation.
 
-### Remote syncronization logic
-The app works in a full local-first approach, the syncronization with the remote db happens in the SyncService that keeps everything up-to-date.
-This is how it works:
+### Remote sync process
+There are some specific cases where the simple update of a note isn't enough. The two main examples of this happen when:  
+- The same user updates the same note from two different devices (or browser tabs):  
+   1) The user updates its local version on device 1 while the same note is open on the device 2
+   2) The remote version of the note in the database is updated with the latest version from device 1
+   3) Device 2, however, has not fetched the new remote version yet but is still displaying the old one(check [Why not real-time?](#why-not-real-time))
+   4) The user then updates the local version on device 2. In this scenario there would be a problem, since the note's text is fully saved on each update, the changes from device 1 that are already saved remotely would be overwritten by the latest version from device 2, resulting in data loss.
+   5) Therefore when the ```useSyncService``` detects any difference from the remote's version text and the local base version (the local starting point of the user 2 in this example) a **three-way merge** occurs, with the resulting data incorporating changes from both the local and remote versions.
 
-**Step 1: Items to sync insertion in the queue**
-1) a local db update happens (create/update/delete)
-2) create a new SyncQueueItem to push in the queue of items to sync
-```typescript
-new SyncQueueItem {
-   id: number
-   entityType: enum
-   operation: enum
-   time: Date
-}
-```
-3) add the new SyncQueueItem to the local db collection db.syncQueueItems.put()  
+- Two different users update the same shared note: this case is always the same of the first one but more likely to happen, the solution doesn't change though.  
 
-**Step 2: listen for the status to be online**  
-In this phase the system will listen to the current internet connection status.
-If it's online the third step can start  
-
-**Step 3: organize data to sync**  
-Retrieve the ids of the items to add/update/delete from the queue and organize them into three different arrays
-```typescript
-const idsToAdd = syncQueue.filter(item => item.operation == Operations.add)
-const idsToUpdate = syncQueue.filter(item => item.operation == Operations.update)
-const idsToDelete = syncQueue.filter(item => item.operation == Operations.delete)
-```
-
-**Step 4: organize data to sync**  
-Split the items to add by entity, find the full data from the id and sync
-```typescript
-let itemsToSync = {
-   notes: {
-      toAdd: []
-      toUpdate: []
-      toDelete: []
-   }
-   folders: {
-      toAdd: []
-      toUpdate: []
-      toDelete: []
-   }
-}
-
-// for each type of entity (notes and folders), look in the 3 operation arrays and filter them by entity type
-EntitiesEnum.forEach(entity => {
-   itemsToSync[entity].toAdd = idsToAdd.filter(item => item.entity == entity)
-   itemsToSync[entity].toUpdate = idsToUpdate.filter(item => item.entity == entity)
-   itemsToSync[entity].toDelete = idsToDelete.filter(item => item.entity == entity)
-})
-
-EntitiesEnum.forEach(entity => {
-   const localData = db[entity].toArray().find()
-   itemsToSync[entity].toAdd.forEach(id => {
-      const foundItemToUpdate = localData.find(item => item.id === id)
-   })
-})
-```
+#### Why not real time? 
+The app refetches data when the user's focus state on the page changes. I chose this approach instead of a real-time update based on remote database changes, thinking about the most likely uses of the app itself.  
+Most of the time, a user will open the app, write or read a note, and close it. For my personal use cases, the other main scenario is keeping a tab open in the browser and reopening it whenever I need to write something.  
+It's with this in mind that I decided a real-time approach would have been overkill for the purpose of NeatPad. The app is designed to refetch data based on user focus in a way that avoids redundant API calls just to update content that could be merged afterward anyway.
