@@ -1,6 +1,6 @@
 "use client";;
 import * as Diff3 from 'node-diff3';
-import { createNote, deleteNote, getNote, updateNote } from "@/serverActions/notesActions";
+import { createNote, deleteNote, getNote, getNotesByUserEmail, updateNote } from "@/serverActions/notesActions";
 import { db } from "@/utils/db";
 import { updateFolders, updateNotesToShow } from "@/utils/globalMethods";
 import { Note } from "@/utils/interfaces";
@@ -19,13 +19,18 @@ export function useSyncService() {
         const unsyncedNoteIds: (number | undefined)[] = unsyncedNotes.map(note => note?.id);
         // get the base versions of the notes that need to be synced
         const baseVersions: (Note | undefined)[] = await db.notesBaseVersions.bulkGet(unsyncedNoteIds)
+        // user.value will necessarily be not null since this method gets called in the notesOverview component that's accessible only if the user is logged in
+        const remoteNotes: Note[] | undefined = user.value ? await getNotesByUserEmail(user.value.email) || [] : undefined
+
+        if (!remoteNotes) return
 
         for (const unsyncedNote of unsyncedNotes) {
 
             if (!unsyncedNote || !unsyncedNote.id || !user.value) continue
             // if the note is new, it'll have title and text empty, in that case create a new one on the remote db, otherwise update the existing one
             if (unsyncedNote.title === '' && unsyncedNote.text === '') return await createNote(unsyncedNote)
-            const remoteVersion = await getNote(user.value.email, unsyncedNote.id)
+
+            const remoteVersion = remoteNotes.find(remoteNote => remoteNote.id === unsyncedNote.id)
             const baseVersion: Note | undefined = baseVersions.find(note => note?.id === unsyncedNote.id)
             if (!baseVersion || !remoteVersion) continue
 
@@ -58,6 +63,18 @@ export function useSyncService() {
             // if the note has been successfully deleted, remove the tombstone
             await db.notesTombstones.delete(noteTombstone.id)
         }
+
+        // at the end of the sync process, if there are some local notes that aren't in the remote db, remove them.
+        // this is necessary because deleting one note from one device (and so from the remote) doesn't remove it from other devices' local dbs too
+        const localNotes = await db.notes.toArray()
+        let notesToDeleteLocally: number[] = []
+
+        for (const localNote of localNotes) {
+            if (!remoteNotes.some(remoteNote => remoteNote.id === localNote.id) && localNote.id) {
+                notesToDeleteLocally.push(localNote.id)
+            }
+        }
+        await db.notes.bulkDelete(notesToDeleteLocally)
     }
 
     useEffect(() => {
@@ -70,7 +87,7 @@ export function useSyncService() {
             },
             error: (error) => console.error("Error:", error),
         });
-        
+
         // listen for changes on folders
         liveQuery(() => db.folders.toArray()).subscribe({
             next: (result) => {
