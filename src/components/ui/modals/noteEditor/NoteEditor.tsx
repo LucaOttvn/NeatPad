@@ -40,53 +40,6 @@ export default function NoteEditor() {
     };
   }, []);
 
-  // handle Enter key inside textarea for markdown list auto-formatting
-  const handleKeyDown = (event: React.KeyboardEvent<HTMLTextAreaElement>) => {
-    if (event.key !== 'Enter') return;
-
-    const { selectionStart: cursorPosition } = event.target as HTMLTextAreaElement;
-
-    const txtToUpdate = note?.text || '';
-    const textBeforeCursor = txtToUpdate.substring(0, cursorPosition);
-    const textAfterCursor = txtToUpdate.substring(cursorPosition);
-
-    // find current line text for detecting list markdown
-    const lastNewlineIndex = textBeforeCursor.lastIndexOf('\n');
-    const currentLine = lastNewlineIndex !== -1
-      ? textBeforeCursor.substring(lastNewlineIndex + 1)
-      : textBeforeCursor;
-
-    // regex to detect list markdown patterns (e.g., starting with "-")
-    const optionsToCheck: RegExp[] = [/^\s*-/];
-
-    let detectedCase;
-    optionsToCheck.find((el) => {
-      const foundMatches = el.exec(currentLine);
-      if (!foundMatches) return false;
-      detectedCase = foundMatches[0];
-      return true;
-    });
-
-    // if inside a list, insert new list item on Enter press
-    if (detectedCase) {
-      event.preventDefault();
-
-      const newContent = textBeforeCursor + `\n${detectedCase} ` + textAfterCursor;
-      const newCursorPosition = cursorPosition + `\n${detectedCase} `.length;
-
-      const updatedNote: Note = { ...note, text: newContent } as Note;
-      db.notes.put(updatedNote);
-
-      // set cursor to the correct position after update
-      setTimeout(() => {
-        if (textareaRef.current) {
-          textareaRef.current.selectionStart = newCursorPosition;
-          textareaRef.current.selectionEnd = newCursorPosition;
-        }
-      }, 0);
-    }
-  };
-
   // debounced effect to update the note in db on changes to the note state
   useEffect(() => {
     if (debounceUpdateRef.current) {
@@ -167,7 +120,6 @@ export default function NoteEditor() {
           onChange={(e) => {
             setNote(prev => ({ ...prev!, text: e.target.value }));
           }}
-          onKeyDown={handleKeyDown}
         />
       )}
     </div>

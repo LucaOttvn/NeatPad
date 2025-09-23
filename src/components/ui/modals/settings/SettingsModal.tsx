@@ -24,10 +24,6 @@ export default function SettingsModal(props: SettingsModalProps) {
       <div className='w-full h-full flex flex-col justify-between items-center mt-10'>
         <section className='profileSection'>
           <span className='w-full start gap-2 p-2'>Email: <b style={{background: 'var(--Grey)', padding: '0 0.5rem'}}>{user.value!.email}</b></span>
-          <div className="start">
-            <input type="checkbox" />
-            <span>Offline mode</span>
-          </div>
         </section>
         <div className='flex items-center gap-5'>
           <button className='mainBtn center gap-2' style={{ background: 'var(--Grey)' }} onClick={()=> signOut()}><ReactSVG src={'/icons/logout.svg'} className="icon" />Logout</button>
