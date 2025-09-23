@@ -26,8 +26,6 @@ A neat approach to note-taking
 This is essentially a Google Keep inspired notepad with a little more ahestetic touch (for my personal taste at least).
 This app was born from a need of a clean UX free of fancy or confusing extra features. While Google Keep already does a pretty good job I aimed to create something slightly more customized on my personal needs. 
 
-The app is available both in web and mobile version, the latter is made with [Capacitor](https://github.com/ionic-team/capacitor), check [Capacitor integration](#capacitor-integration).
-
 ## Run the project
 The db in use is Supabase, to connect your own you have to:
 1. Create an account on [Supabase](https://supabase.com)
