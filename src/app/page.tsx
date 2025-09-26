@@ -4,7 +4,7 @@ import { useEffect, useLayoutEffect, useRef } from "react";
 import { ScaleLoader } from "react-spinners";
 import AnimatedDiv from "@/components/animatedComponents/AnimatedDiv";
 import { ModalsNames, SideMenusNames } from "@/utils/interfaces";
-import Login from "@/components/Login";
+import Login from "@/components/login/Login";
 import GeneralModal from "@/components/ui/modals/GeneralModal";
 import { useSignals } from "@preact/signals-react/runtime";
 import { alreadyInstalledApp, isAppInstallable, isMobile, loading, selectedModal, selectedSideMenu, updatingFolder, user } from "@/utils/signals";

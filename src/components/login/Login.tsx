@@ -1,6 +1,6 @@
 import "./componentsStyle.scss";
-import AnimatedDiv from "./animatedComponents/AnimatedDiv";
-import AnimatedText from "./animatedComponents/AnimatedText";
+import AnimatedDiv from "../animatedComponents/AnimatedDiv";
+import AnimatedText from "../animatedComponents/AnimatedText";
 import { signIn } from "next-auth/react";
 import { ReactSVG } from "react-svg";
 export default function Login() {
