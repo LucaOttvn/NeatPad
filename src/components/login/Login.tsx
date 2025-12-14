@@ -1,4 +1,3 @@
-import "./componentsStyle.scss";
 import AnimatedDiv from "../animatedComponents/AnimatedDiv";
 import AnimatedText from "../animatedComponents/AnimatedText";
 import { signIn } from "next-auth/react";
