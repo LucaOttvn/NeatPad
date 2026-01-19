@@ -1,3 +1,5 @@
+⚠️ **Maintenance status:** This repository is no longer maintained.
+
 ```
  █▄ █ ██▀ ▄▀▄ ▀█▀ █▀▄ ▄▀▄ █▀▄
  █ ▀█ █▄▄ █▀█  █  █▀  █▀█ █▄▀
